@@ -107,11 +107,13 @@ const App = React.createClass({
                     navbar = <NavBar activeRoute={this.props.Route} // openModal={this.openSearchModal}
                                      RequestUser={this.props.RequestUser}
                                      checkInColor="red"/>;
-                } 
+                }
                 return (
                     <View style={styles.container}>
                         <Navigator initialRoute={initRoute}
-                                   ref={(nav) => {navigator = nav}}
+                                   ref={(nav) => {
+                                       navigator = nav
+                                   }}
                                    renderScene={ this._renderScene }
                                    onDidFocus={this.itemChangedFocus}
                                    navigationBar={navbar}
@@ -120,11 +122,14 @@ const App = React.createClass({
                 );
 
             }
-            return <View style={styles.container}>
-                <Login login={this.props.actions.login}
-                       resetPassword={this.props.actions.resetPassword}
-                       register={this.props.actions.register}
-                       error={this.props.Error}/></View>;
+            return (
+                <View style={styles.container}>
+                    <Login login={this.props.actions.login}
+                           resetPassword={this.props.actions.resetPassword}
+                           register={this.props.actions.register}
+                           error={this.props.Error}/>
+                </View>
+            );
         }
         // Should replace this with a splash art.
         return <Loading />;

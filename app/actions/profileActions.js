@@ -14,6 +14,7 @@ export function updateProfile(data, asyncActions) {
             fetchData('PATCH', data, getState().Global.UserToken, headers))
             .then((response) => response.json())
             .then((responseJson) => {
+
                 asyncActions(false);
                 return dispatch({type: types.UPDATE_PROFILE, profile: responseJson});
             })

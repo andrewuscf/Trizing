@@ -143,6 +143,9 @@ const EditProfile = React.createClass({
                                            autoCorrect={false}
                                            onChangeText={(text) =>this.setState({first_name: text})}
                                            value={this.state.first_name}
+                                           onSubmitEditing={(event) => {
+                                               this.refs.last_name.focus();
+                                           }}
                                            placeholder="First Name"/>
                                 <View
                                     style={{width: 1, backgroundColor: '#C7C7CD', marginBottom: 5, marginTop: 5, marginRight: 5}}/>
@@ -151,6 +154,10 @@ const EditProfile = React.createClass({
                                            autoCapitalize='words'
                                            keyboardType='default'
                                            autoCorrect={false}
+                                           ref="last_name"
+                                           onSubmitEditing={(event) => {
+                                               this.refs.phone_number.focus();
+                                           }}
                                            onChangeText={(text) =>this.setState({last_name: text})}
                                            value={this.state.last_name}
                                            placeholder="Last Name"/>
@@ -163,6 +170,9 @@ const EditProfile = React.createClass({
                                            maxLength={10}
                                            onChangeText={(number) =>this.setState({phone_number: number})}
                                            value={this.state.phone_number}
+                                           onSubmitEditing={(event) => {
+                                               this._onSubmit();
+                                           }}
                                            placeholder="Phone Number"/>
                             </View>
                         </View>

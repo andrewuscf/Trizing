@@ -33,7 +33,6 @@ export function removeToken(token) {
 
 export function login(email, pass) {
     const body = JSON.stringify({username: email, password: pass});
-
     return dispatch => {
         return fetch(`${API_ENDPOINT}auth/token/`, fetchData('POST', body))
             .then((response) => response.json())

@@ -9,6 +9,9 @@ import {
     TouchableHighlight,
     TextInput
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import BackBar from '../components/BackBar';
 
 const Login = React.createClass({
     propTypes: {
@@ -43,6 +46,7 @@ const Login = React.createClass({
 
     onPress() {
         // sign in + forgot credentials
+        console.log('hit');
         if (this.state.forgotCreds) {
             if (this.state.email) {
                 this.props.resetPassword(this.state.email.toLowerCase());
@@ -81,13 +85,20 @@ const Login = React.createClass({
         });
     },
 
+    back() {
+        this.setState({
+            forgotCreds: false,
+            signUp: false
+        });
+    },
+
 
     render() {
         // <Image style={styles.logo} source={require('../assets/images/small-white-logo.png')}/>
         return (
             <View style={styles.container}>
+                {this.state.forgotCreds || this.state.signUp ? <BackBar back={this.back}/> : null}
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-
 
                     <View style={styles.inputWrap}>
                         <TextInput ref="email" style={styles.textInput} autoCapitalize='none'
@@ -96,48 +107,58 @@ const Login = React.createClass({
                                    onChangeText={(text)=>this.setState({email: text})}
                                    value={this.state.email}
                                    onSubmitEditing={(event) => {
-                                        this.refs.password.focus();
+                                       this.refs.password.focus();
                                    }}
                                    placeholderTextColor="black"
                                    placeholder="Email"/>
                     </View>
 
-                    {(!this.state.forgotCreds) ? <View style={styles.inputWrap}>
-                        <TextInput ref="password" style={styles.textInput} autoCapitalize='none' secureTextEntry={true}
-                                   autoCorrect={false}
-                                   onChangeText={(text)=>this.setState({password: text})}
-                                   value={this.state.password}
-                                   onSubmitEditing={(event) => {
-                                        this.onPress();
-                                   }}
-                                   placeholderTextColor="black"
-                                   placeholder="Password"/>
-                    </View> : null}
+                    {(!this.state.forgotCreds) ?
+                        <View style={styles.inputWrap}>
+                            <TextInput ref="password" style={styles.textInput} autoCapitalize='none'
+                                       secureTextEntry={true}
+                                       autoCorrect={false}
+                                       onChangeText={(text)=>this.setState({password: text})}
+                                       value={this.state.password}
+                                       onSubmitEditing={(event) => {
+                                           this.onPress();
+                                       }}
+                                       placeholderTextColor="black"
+                                       placeholder="Password"/>
+                            <TouchableOpacity onPress={this.toggleForgotCreds} focusedOpacity={1}
+                                              activeOpacity={1}>
+                                <Icon name="question-circle-o" size={20} style={styles.forgotIcon}/>
+                            </TouchableOpacity>
+                        </View>
+                        : null
+                    }
 
                     {(this.state.signUp) ?
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{flexDirection: 'row', paddingTop: 50}}>
                             <TouchableOpacity onPress={this.selectType.bind(null, 1)}
                                               style={[styles.typeButtons, this.state.type == 1 ? styles.selectedType : styles.notSelected]}>
                                 <Text style={this.state.type == 1 ? styles.selectedText : styles.notSelectedText}>Trainer</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={this.selectType.bind(null, 2)}
                                               style={[styles.typeButtons, this.state.type == 2 ? styles.selectedType : styles.notSelected]}>
-                                <Text style={this.state.type == 2 ? styles.selectedText : styles.notSelectedText}>Client</Text>
+                                <Text
+                                    style={this.state.type == 2 ? styles.selectedText : styles.notSelectedText}>Client</Text>
                             </TouchableOpacity>
                         </View> : null}
 
-                    <TouchableHighlight style={styles.button} onPress={this.onPress} underlayColor='#99d9f4'>
-                        <Text style={styles.buttonText}>{(!this.state.forgotCreds) ? 'SIGN IN' : 'RESET'}</Text>
-                    </TouchableHighlight>
+
+                    {!this.state.forgotCreds && !this.state.signUp ?
+                        <TouchableOpacity style={[styles.button, styles.signUpButton]} onPress={this.toggleSignUp}>
+                            <Text style={styles.buttonText}>SIGN UP</Text>
+                        </TouchableOpacity>
+                        : null
+                    }
+
                 </ScrollView>
-                <View style={styles.extraButtons}>
-                    <TouchableOpacity style={styles.bottomButtons} onPress={this.toggleForgotCreds} focusedOpacity={1} activeOpacity={1}>
-                        <Text style={styles.buttonForgotText}>{(!this.state.forgotCreds) ? 'Forgot?' : 'Cancel'}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.bottomButtons} onPress={this.toggleSignUp}>
-                        <Text style={styles.buttonForgotText}>{(this.state.signUp) ? 'Cancel' : 'Sign up'}</Text>
-                    </TouchableOpacity>
-                </View>
+
+                <TouchableOpacity style={styles.bottomButton} onPress={this.onPress} underlayColor='#99d9f4'>
+                    <Icon name="arrow-right" size={30} color='white'/>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -160,26 +181,18 @@ const styles = StyleSheet.create({
     },
     inputWrap: {
         alignSelf: 'stretch',
-        // marginTop: 5,
         marginBottom: 12,
-        paddingLeft: 3,
         height: 40,
-        borderBottomWidth: 1,
-        borderColor: 'black'
-    },
-    nameFields: {
-        flexDirection: 'row',
-    },
-    nameInput: {
-        flex: 2
+        borderBottomWidth: .5,
+        borderColor: '#aaaaaa',
     },
     textInput: {
         color: 'black',
         fontSize: 17,
-        // fontFamily: 'OpenSans-Semibold',
-        // borderWidth: 0,
+        fontFamily: 'OpenSans-Light',
         backgroundColor: 'transparent',
-        padding: 3,
+        paddingTop: 3,
+        paddingBottom: 3,
         height: 40
     },
     typeButtons: {
@@ -191,31 +204,41 @@ const styles = StyleSheet.create({
     },
     notSelected: {
         borderWidth: 1,
-        borderColor: 'white',
+        borderColor: '#1352e2',
+        backgroundColor: 'transparent'
     },
     selectedType: {
-        backgroundColor: 'black'
+        backgroundColor: '#1352e2'
     },
     selectedText: {
-        color: '#00BFFF',
-        fontSize: 14
-        // fontFamily: 'OpenSans-Bold',
+        color: 'white',
+        fontSize: 14,
+        fontFamily: 'OpenSans-Bold',
         // textDecorationLine: 'none'
     },
+    forgotIcon: {
+        color: '#424242',
+        bottom: 8,
+        right: 0,
+        position: 'absolute'
+
+    },
     notSelectedText: {
-        color: 'black',
-        fontSize: 14
-        // fontFamily: 'OpenSans-Bold',
+        color: '#1352e2',
+        fontSize: 14,
+        fontFamily: 'OpenSans-Bold',
         // textDecorationLine: 'none'
     },
     buttonText: {
-        color: '#00BFFF',
-        fontSize: 15
-        // fontFamily: 'OpenSans-Bold',
+        color: '#1352e2',
+        fontSize: 15,
+        fontFamily: 'OpenSans-Bold',
     },
     button: {
         marginTop: 20,
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
+        borderWidth: 1,
+        borderColor: '#1352e2',
         justifyContent: 'center',
         alignItems: 'center',
         paddingTop: 10,
@@ -224,26 +247,17 @@ const styles = StyleSheet.create({
         paddingRight: 30,
         borderRadius: 21
     },
-    buttonForgotText: {
-        color: 'black',
-        fontSize: 14,
-        // fontFamily: 'OpenSans-Bold',
-        // textDecorationLine: 'underline'
-    },
-    extraButtons: {
+    bottomButton: {
         height: 50,
         bottom: 0,
         left: 0,
-        flexDirection: 'row'
-    },
-    bottomButtons: {
-        flex: 2,
-        backgroundColor: '#1fc8fc',
+        backgroundColor: '#22c064',
         opacity: .5,
-        borderWidth:1,
-        borderColor: '#84defa',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    signUpButton: {
+        marginTop: 350
     }
 });
 
