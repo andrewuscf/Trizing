@@ -46,6 +46,10 @@ const App = React.createClass({
             // case 'Home':
             //     return <SceneComponent navigator={ nav } route={route} {...route.passProps}
             //                            openModal={this.openSearchModal}/>;
+
+            case 'AddClient':
+                return <SceneComponent navigator={ nav } route={route} {...route.passProps}
+                                       RequestUser={this.props.RequestUser}/>;
             default :
                 return <SceneComponent navigator={ nav } route={route} {...route.passProps}/>;
 

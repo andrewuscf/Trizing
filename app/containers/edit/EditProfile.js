@@ -189,19 +189,6 @@ const EditProfile = React.createClass({
     }
 });
 
-
-const DatePickerStyle = {
-    dateIcon: {
-        position: 'absolute',
-        left: 0,
-        top: 4,
-        marginLeft: 0
-    },
-    dateInput: {
-        borderWidth: 0,
-    }
-};
-
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1

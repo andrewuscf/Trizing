@@ -5,7 +5,8 @@ import {
     View,
     ListView,
     RefreshControl,
-    ScrollView
+    ScrollView,
+    TouchableOpacity
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -59,14 +60,17 @@ const Home = React.createClass({
 
 
     render() {
-        console.log(this.props)
         const user = this.props.RequestUser;
         const isTrainer = user.type == 'Trainer';
         let content = null;
         if (isTrainer) {
             content = (
                 <View>
-                    <PeopleBar navigator={this.props.navigator} people={this.props.Clients} />
+                    <PeopleBar navigator={this.props.navigator} people={this.props.Clients}/>
+                    <TouchableOpacity onPress={this._redirect.bind(null, 'AddClient', null)}
+                                      style={[styles.addClientSection, GlobalStyle.simpleBottomBorder]}>
+                        <Text style={styles.addClientsText}>Add Clients</Text>
+                    </TouchableOpacity>
                 </View>
             )
         } else {
@@ -91,17 +95,18 @@ const Home = React.createClass({
 
 
 const styles = StyleSheet.create({
-    scrollView: {},
+    scrollView: {
+        // backgroundColor: '#edebe6'
+    },
     contentContainerStyle: {},
     topCard: {
         elevation: 8,
-        marginBottom: 6
     },
     welcome: {
         backgroundColor: 'white',
         alignItems: 'center',
-        paddingTop: 25,
-        paddingBottom: 25,
+        paddingTop: 15,
+        paddingBottom: 15,
         paddingLeft: 20,
         paddingRight: 20
     },
@@ -110,6 +115,22 @@ const styles = StyleSheet.create({
         color: '#494949',
         fontFamily: 'OpenSans-Semibold'
     },
+    addClientSection: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottomLeftRadius: 8,
+        borderBottomRightRadius: 8,
+        backgroundColor: 'white',
+        borderBottomWidth: 0.5,
+        borderRightWidth: 0.5,
+        borderLeftWidth: 0.5,
+    },
+    addClientsText: {
+        fontSize: getFontSize(18),
+        color: '#b1aea5',
+        fontFamily: 'OpenSans-Semibold',
+        margin: 10
+    }
 });
 
 const stateToProps = (state) => {
