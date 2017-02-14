@@ -4,21 +4,18 @@ import * as types from './actionTypes';
 import {fetchData, API_ENDPOINT, refreshPage} from './utils';
 
 
-export function updateProfile(data, asyncActions) {
-    asyncActions(true);
-    const headers = {
-        'Content-Type': 'multipart/form-data',
-    };
+export function getClients(data, refresh=false) {
+    let url = `${API_ENDPOINT}clients/`;
     return (dispatch, getState) => {
-        return fetch(`${API_ENDPOINT}user/profile/${getState().Global.RequestUser.id}/`,
-            fetchData('PATCH', data, getState().Global.UserToken, headers))
+        if (refresh) {
+            dispatch(refreshPage());
+        }
+        return fetch(url, fetchData('GET', null, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
-                asyncActions(false);
-                return dispatch({type: types.UPDATE_PROFILE, profile: responseJson});
+                return dispatch({type: types.LOAD_CLIENTS, response: responseJson, refresh: refresh});
             })
             .catch((error) => {
-                asyncActions(false);
                 return dispatch({
                     type: types.API_ERROR, error: JSON.stringify({
                         title: 'Request could not be performed.',

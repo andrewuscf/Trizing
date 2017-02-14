@@ -13,5 +13,8 @@ export const CLEAR_API_ERROR = 'CLEAR_API_ERROR';
 export const API_ERROR = 'API_ERROR';
 
 
+// Home Constants
+export const LOAD_CLIENTS = 'LOAD_CLIENTS';
+
 // Profile Constants
-export const  UPDATE_PROFILE = 'UPDATE_PROFILE';
+export const UPDATE_PROFILE = 'UPDATE_PROFILE';

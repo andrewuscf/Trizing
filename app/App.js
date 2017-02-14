@@ -99,25 +99,27 @@ const App = React.createClass({
     render() {
         if (!this.state.splashArt) {
             if (this.props.UserToken) {
-                let initRoute = {component: EditProfile, name: 'EditProfile'};
                 let navbar = null;
                 if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
-                    const user = this.props.RequestUser;
-                    initRoute = {component: Home, name: 'Home'};
                     navbar = <NavBar activeRoute={this.props.Route} // openModal={this.openSearchModal}
                                      RequestUser={this.props.RequestUser}
                                      checkInColor="red"/>;
+                    return (
+                        <View style={styles.container}>
+                            <Navigator initialRoute={{component: Home, name: 'Home'}}
+                                       ref={(nav) => {
+                                       navigator = nav
+                                   }}
+                                       renderScene={ this._renderScene }
+                                       onDidFocus={this.itemChangedFocus}
+                                       navigationBar={navbar}
+                            />
+                        </View>
+                    );
                 }
                 return (
                     <View style={styles.container}>
-                        <Navigator initialRoute={initRoute}
-                                   ref={(nav) => {
-                                       navigator = nav
-                                   }}
-                                   renderScene={ this._renderScene }
-                                   onDidFocus={this.itemChangedFocus}
-                                   navigationBar={navbar}
-                        />
+                        <EditProfile />
                     </View>
                 );
 

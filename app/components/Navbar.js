@@ -38,7 +38,7 @@ var NavBar = React.createClass({
             <View style={styles.primaryBar}>
                 <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Home')}>
                     <View style={styles.button}>
-                        <Icon name="th-list" size={20}
+                        <Icon name="home" size={20}
                               color={ (!this.isActiveRoute('Home')) ? iconColor : iconColorActive }/>
                     </View>
                 </TouchableOpacity>

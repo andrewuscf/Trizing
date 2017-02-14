@@ -12,28 +12,29 @@ import {connect} from 'react-redux';
 // import FCM from 'react-native-fcm';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
-// import * as HomeActions from '../actions/HomeActions';
+import * as HomeActions from '../actions/homeActions';
 
 import {getRoute} from '../routes';
+import {getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
+
+import PeopleBar from '../components/PeopleBar';
 
 
 const Home = React.createClass({
 
     componentDidMount() {
-        // if (!this.props.WorkRequests.length && !this.props.Jobs.length) {
-        //     this.getNeeded();
-        // }
+        if (!this.props.Clients.length) {
+            this.getNeeded();
+        }
         // this.getToken();
     },
 
-    // getNeeded(refresh = false) {
-    //     if (this.props.RequestUser.type == 'Client') {
-    //         this.props.actions.getWorkRequests(refresh);
-    //     } else {
-    //         this.props.actions.getJobs(refresh);
-    //     }
-    // },
+    getNeeded(refresh = false) {
+        if (this.props.RequestUser.type == 'Trainer') {
+            this.props.actions.getClients(refresh);
+        }
+    },
 
     // getToken() {
     //     const self = this;
@@ -45,7 +46,7 @@ const Home = React.createClass({
 
 
     _refresh() {
-        // this.getNeeded(true);
+        this.getNeeded(true);
     },
 
     onEndReached() {
@@ -58,28 +59,71 @@ const Home = React.createClass({
 
 
     render() {
-        return <View style={GlobalStyle.container}><Text>Home</Text></View>
+        console.log(this.props)
+        const user = this.props.RequestUser;
+        const isTrainer = user.type == 'Trainer';
+        let content = null;
+        if (isTrainer) {
+            content = (
+                <View>
+                    <PeopleBar navigator={this.props.navigator} people={this.props.Clients} />
+                </View>
+            )
+        } else {
+            content = <Text>Client</Text>;
+        }
+        return (
+            <View style={GlobalStyle.container}>
+                <ScrollView ref='home_scroll'
+                            refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
+                            style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
+                    <View style={styles.topCard}>
+                        <View style={[styles.welcome, GlobalStyle.simpleBottomBorder]}>
+                            <Text style={styles.welcomeMessage}>Hello, {user.profile.first_name}</Text>
+                        </View>
+                    </View>
+                    {content}
+                </ScrollView>
+            </View>
+        )
     }
 });
 
 
 const styles = StyleSheet.create({
-    // container: {
-    //     flex: 1,
-    // }
+    scrollView: {},
+    contentContainerStyle: {},
+    topCard: {
+        elevation: 8,
+        marginBottom: 6
+    },
+    welcome: {
+        backgroundColor: 'white',
+        alignItems: 'center',
+        paddingTop: 25,
+        paddingBottom: 25,
+        paddingLeft: 20,
+        paddingRight: 20
+    },
+    welcomeMessage: {
+        fontSize: getFontSize(30),
+        color: '#494949',
+        fontFamily: 'OpenSans-Semibold'
+    },
 });
 
 const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
-        // ...state.Home
+        Refreshing: state.Global.Refreshing,
+        ...state.Home
     };
 };
 
-// const dispatchToProps = (dispatch) => {
-//     return {
-//         actions: bindActionCreators(HomeActions, dispatch)
-//     }
-// };
+const dispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(HomeActions, dispatch)
+    }
+};
 
-export default connect(stateToProps, null)(Home);
+export default connect(stateToProps, dispatchToProps)(Home);
