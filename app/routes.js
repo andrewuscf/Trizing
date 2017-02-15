@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 // Main Pages
 import Home from './containers/Home';
+import Profile from './containers/Profile';
 
 // Edit Pages
 import EditProfile from './containers/edit/EditProfile';
@@ -11,8 +12,9 @@ import ManageClients from './containers/create/ManageClients';
 
 var MAIN_ROUTES = [
     {component: Home, name: 'Home'},
+    {component: Profile, name: 'Profile'},
     {component: EditProfile, name: 'EditProfile'},
-    {component: ManageClients, name: 'ManageClients'}
+    {component: ManageClients, name: 'ManageClients'},
 ];
 
 export function getRoute(routeName, props) {

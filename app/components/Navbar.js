@@ -12,7 +12,7 @@ var NavBar = React.createClass({
         if (routeName == 'Profile') {
             index = _.findIndex(this.props.navigator.state.routeStack, {
                 name: routeName,
-                passProps: {user: this.props.RequestUser}
+                passProps: {user: this.props.RequestUser.id}
             });
         } else {
             index = _.findIndex(this.props.navigator.state.routeStack, {name: routeName});
@@ -21,7 +21,7 @@ var NavBar = React.createClass({
             this.props.navigator.jumpTo(this.props.navigator.state.routeStack[index]);
         } else {
             if (routeName == 'Profile') {
-                this.props.navigator.push(getRoute(routeName, {user: this.props.RequestUser}));
+                this.props.navigator.push(getRoute(routeName, {id: this.props.RequestUser.id}));
                 return;
             }
             this.props.navigator.push(getRoute(routeName));
