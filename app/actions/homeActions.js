@@ -4,7 +4,7 @@ import * as types from './actionTypes';
 import {fetchData, API_ENDPOINT, refreshPage} from './utils';
 
 
-export function getClients(data, refresh=false) {
+export function getClients(refresh=false) {
     let url = `${API_ENDPOINT}clients/`;
     return (dispatch, getState) => {
         if (refresh) {

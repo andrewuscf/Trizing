@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     icon: {
         width: 36,
         height: 9,
-        backgroundColor: '#00BFFF'
     }
 });
 

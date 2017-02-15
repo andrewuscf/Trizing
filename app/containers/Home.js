@@ -67,7 +67,7 @@ const Home = React.createClass({
             content = (
                 <View>
                     <PeopleBar navigator={this.props.navigator} people={this.props.Clients}/>
-                    <TouchableOpacity onPress={this._redirect.bind(null, 'AddClient', null)}
+                    <TouchableOpacity onPress={this._redirect.bind(null, 'ManageClients', null)}
                                       style={[styles.addClientSection, GlobalStyle.simpleBottomBorder]}>
                         <Text style={styles.addClientsText}>Add Clients</Text>
                     </TouchableOpacity>

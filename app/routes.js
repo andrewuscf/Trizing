@@ -7,12 +7,12 @@ import Home from './containers/Home';
 import EditProfile from './containers/edit/EditProfile';
 
 // Create Pages
-import AddClient from './containers/create/AddClient';
+import ManageClients from './containers/create/ManageClients';
 
 var MAIN_ROUTES = [
     {component: Home, name: 'Home'},
     {component: EditProfile, name: 'EditProfile'},
-    {component: AddClient, name: 'AddClient'}
+    {component: ManageClients, name: 'ManageClients'}
 ];
 
 export function getRoute(routeName, props) {

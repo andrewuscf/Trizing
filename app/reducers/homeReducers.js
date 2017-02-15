@@ -11,6 +11,7 @@ export default function homeReducers(state = initialState, action = null) {
             return {
                 ...state,
                 Clients: (action.refresh) ? action.response.results : state.Clients.concat(action.response.results),
+                Refreshing: false
             };
 
 
