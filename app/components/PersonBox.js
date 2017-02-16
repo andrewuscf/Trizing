@@ -45,15 +45,17 @@ const PersonBox = React.createClass({
                     <Text style={styles.userName}>{person.first_name} {person.last_name}</Text>
                     <Text style={styles.title}>Test</Text>
                 </View>
-                {person.user != trainer.id ?
-                    trainer.id == person.trainer ?
-                        <TouchableOpacity activeOpacity={1} onPress={this._removeClient}>
-                            <Icon name="trash" size={28} color='red'/>
-                        </TouchableOpacity> :
-                        <TouchableOpacity activeOpacity={1} onPress={this._action} style={styles.addUser}>
-                            <Icon name="plus" size={20} color='green'/>
-                            <Text style={styles.addText}>Add</Text>
-                        </TouchableOpacity>
+                {!person.requested ?
+                    person.user != trainer.id ?
+                        trainer.id == person.trainer ?
+                            <TouchableOpacity activeOpacity={1} onPress={this._removeClient}>
+                                <Icon name="trash" size={28} color='red'/>
+                            </TouchableOpacity> :
+                            <TouchableOpacity activeOpacity={1} onPress={this._action} style={styles.addUser}>
+                                <Icon name="plus" size={20} color='green'/>
+                                <Text style={styles.addText}>Add</Text>
+                            </TouchableOpacity>
+                        : null
                     : null
                 }
 

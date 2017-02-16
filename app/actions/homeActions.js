@@ -35,3 +35,13 @@ export function removeClient(clientId) {
             })
     }
 }
+
+export function sendRequest(data) {
+    let url = `${API_ENDPOINT}requests/`;
+    return (dispatch, getState) => {
+        return fetch(url, fetchData('POST', null, getState().Global.UserToken))
+            .then((response) => {
+                return dispatch({type: types.SEND_REQUEST, clientId: clientId});
+            })
+    }
+}
