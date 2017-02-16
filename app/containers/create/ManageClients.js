@@ -104,8 +104,7 @@ const ManageClients = React.createClass({
         if (validateEmail(text)) {
             fetch.abort(1);
             this.getUsersList(text);
-        } else {
-            if (this.state.fetchedUsers.length)
+        } else if (this.state.fetchedUsers.length) {
                 this.setState({fetchedUsers: []});
         }
         this.setState({filterText: text});
