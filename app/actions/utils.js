@@ -38,3 +38,9 @@ export function refreshPage() {
 export function getFontSize(size = 22) {
     return Math.floor(size * 0.7);
 }
+
+export function trimToLength(text, m) {
+    return (text.length > m)
+        ? text.substring(0, m).split(" ").slice(0, -1).join(" ") + "..."
+        : text;
+}

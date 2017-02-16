@@ -15,6 +15,7 @@ export const API_ERROR = 'API_ERROR';
 
 // Home Constants
 export const LOAD_CLIENTS = 'LOAD_CLIENTS';
+export const DELETE_CLIENT = 'DELETE_CLIENT';
 
 // Profile Constants
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';

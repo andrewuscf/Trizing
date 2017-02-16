@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import * as constants from '../actions/actionTypes';
 
 
@@ -12,6 +13,13 @@ export default function homeReducers(state = initialState, action = null) {
                 ...state,
                 Clients: (action.refresh) ? action.response.results : state.Clients.concat(action.response.results),
                 Refreshing: false
+            };
+
+        case constants.DELETE_CLIENT:
+            const index = _.findIndex(state.Clients, {'user': action.clientId });
+            return {
+                ...state,
+                Clients: state.Clients.slice(0, index).concat(state.Clients.slice(index + 1))
             };
 
 

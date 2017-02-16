@@ -4,7 +4,7 @@ import * as types from './actionTypes';
 import {fetchData, API_ENDPOINT, refreshPage} from './utils';
 
 
-export function getClients(refresh=false) {
+export function getClients(refresh = false) {
     let url = `${API_ENDPOINT}clients/`;
     return (dispatch, getState) => {
         if (refresh) {
@@ -23,5 +23,15 @@ export function getClients(refresh=false) {
                     })
                 });
             });
+    }
+}
+
+export function removeClient(clientId) {
+    let url = `${API_ENDPOINT}client/${clientId}/`;
+    return (dispatch, getState) => {
+        return fetch(url, fetchData('DELETE', null, getState().Global.UserToken))
+            .then((response) => {
+                return dispatch({type: types.DELETE_CLIENT, clientId: clientId});
+            })
     }
 }

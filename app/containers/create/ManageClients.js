@@ -76,8 +76,7 @@ const ManageClients = React.createClass({
                 return person;
             }
         });
-        if (clients.length == 0) {
-            console.log('hit')
+        if (clients.length == 0 && this.state.filterText) {
             clients = [{
                 thumbnail: EMPTY_AVATAR,
                 first_name: this.state.filterText,
@@ -111,21 +110,24 @@ const ManageClients = React.createClass({
 
     renderSearchBar(){
         return (
-            <View style={styles.subNav}>
-                <Icon name="search" size={16} color={this.state.iconColor}/>
-                <TextInput
-                    ref="searchinput"
-                    style={[styles.filterInput, {flex: this.state.flex} ]}
-                    underlineColorAndroid='transparent'
-                    autoCapitalize='none'
-                    autoCorrect={false}
-                    placeholderTextColor='#a7a59f'
-                    onChangeText={(text)=> {this.setState({filterText: text})}}
-                    onFocus={this.onFocus}
-                    value={this.state.filterText}
-                    placeholder="Search Clients or Send Invite with Email"
-                />
-                {this._renderCancel()}
+            <View>
+                <BackBar back={this._back}/>
+                <View style={styles.subNav}>
+                    <Icon name="search" size={16} color={this.state.iconColor}/>
+                    <TextInput
+                        ref="searchinput"
+                        style={[styles.filterInput, {flex: this.state.flex} ]}
+                        underlineColorAndroid='transparent'
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        placeholderTextColor='#a7a59f'
+                        onChangeText={(text)=> {this.setState({filterText: text})}}
+                        onFocus={this.onFocus}
+                        value={this.state.filterText}
+                        placeholder="Search Clients or Send Invite with Email"
+                    />
+                    {this._renderCancel()}
+                </View>
             </View>
         )
     },
@@ -133,7 +135,6 @@ const ManageClients = React.createClass({
 
     render() {
         const user = this.props.RequestUser;
-        console.log(user)
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         const dataSource = ds.cloneWithRows(this.filterPeople());
         return (
@@ -143,23 +144,14 @@ const ManageClients = React.createClass({
                       style={styles.container} enableEmptySections={true}
                       dataSource={dataSource}
                       renderRow={(person) =>
-                          <PersonBox navigator={this.props.navigator} person={person} />
+                          <PersonBox navigator={this.props.navigator} person={person} RequestUser={user} 
+                          removeClient={this.props.actions.removeClient} />
                       }
             />
         );
 
     }
 });
-
-{/*<View style={GlobalStyle.mainContainer}>*/}
-    {/*<BackBar back={this._back}/>*/}
-    {/**/}
-
-    {/*<SubmitButton buttonStyle={styles.button}*/}
-                  {/*textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'*/}
-                  {/*text='Save'/>*/}
-{/*</View>*/}
-
 
 const styles = StyleSheet.create({
     container: {
@@ -202,13 +194,13 @@ const styles = StyleSheet.create({
         width: deviceWidth,
         position: 'absolute',
         bottom: 0,
-        left: 0,
+        left: 0
     },
     submitText: {
         color: 'white',
         fontSize: 15,
-        // fontFamily: 'OpenSans-Bold',
-    },
+        fontFamily: 'OpenSans-Bold'
+    }
 });
 
 
