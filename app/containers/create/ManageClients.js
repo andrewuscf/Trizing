@@ -14,8 +14,9 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import fetch from 'react-native-cancelable-fetch';
 
-import {fetchData, API_ENDPOINT} from '../../actions/utils';
+import {fetchData, API_ENDPOINT, validateEmail} from '../../actions/utils';
 
 import * as HomeActions from '../../actions/homeActions';
 
@@ -39,6 +40,7 @@ const ManageClients = React.createClass({
             flex: null,
             showCancel: false,
             iconColor: '#a7a59f',
+            fetchedUsers: []
         }
     },
 
@@ -64,6 +66,16 @@ const ManageClients = React.createClass({
         this.props.navigator.pop();
     },
 
+    getUsersList(text) {
+        fetch(`${API_ENDPOINT}clients/?email=${text}`, fetchData('GET', null, this.props.UserToken), 1)
+            .then(res => res.json())
+            .then(data => {
+                this.setState({
+                    fetchedUsers: data.results
+                });
+            });
+    },
+
     filterPeople() {
         let clients = this.props.Clients.filter((person) => {
             if (!this.state.filterText) {
@@ -76,15 +88,26 @@ const ManageClients = React.createClass({
                 return person;
             }
         });
-        if (clients.length == 0 && this.state.filterText) {
+        if (clients.length == 0 && this.state.filterText && this.state.fetchedUsers.length == 0) {
             clients = [{
                 thumbnail: EMPTY_AVATAR,
                 first_name: this.state.filterText,
                 last_name: ''
             }]
+        } else {
+            clients = clients.concat(this.state.fetchedUsers)
         }
-
         return clients
+    },
+
+    textChange(text) {
+        if (validateEmail(text)) {
+            fetch.abort(1);
+            this.getUsersList(text);
+        } else {
+
+        }
+        this.setState({filterText: text});
     },
 
     clickCancel: function () {
@@ -116,12 +139,12 @@ const ManageClients = React.createClass({
                     <Icon name="search" size={16} color={this.state.iconColor}/>
                     <TextInput
                         ref="searchinput"
-                        style={[styles.filterInput, {flex: this.state.flex} ]}
+                        style={[styles.filterInput, {flex: this.state.flex}]}
                         underlineColorAndroid='transparent'
                         autoCapitalize='none'
                         autoCorrect={false}
                         placeholderTextColor='#a7a59f'
-                        onChangeText={(text)=> {this.setState({filterText: text})}}
+                        onChangeText={this.textChange}
                         onFocus={this.onFocus}
                         value={this.state.filterText}
                         placeholder="Search Clients or Send Invite with Email"
@@ -144,8 +167,8 @@ const ManageClients = React.createClass({
                       style={styles.container} enableEmptySections={true}
                       dataSource={dataSource}
                       renderRow={(person) =>
-                          <PersonBox navigator={this.props.navigator} person={person} RequestUser={user} 
-                          removeClient={this.props.actions.removeClient} />
+                          <PersonBox navigator={this.props.navigator} person={person} RequestUser={user}
+                                     removeClient={this.props.actions.removeClient}/>
                       }
             />
         );
@@ -208,6 +231,7 @@ const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
         Refreshing: state.Global.Refreshing,
+        UserToken: state.Global.UserToken,
         ...state.Home
     };
 };
