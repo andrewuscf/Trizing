@@ -105,7 +105,8 @@ const ManageClients = React.createClass({
             fetch.abort(1);
             this.getUsersList(text);
         } else {
-
+            if (this.state.fetchedUsers.length)
+                this.setState({fetchedUsers: []});
         }
         this.setState({filterText: text});
     },
