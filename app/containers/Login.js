@@ -101,7 +101,30 @@ const Login = React.createClass({
         return (
             <View style={styles.container}>
                 {this.state.forgotCreds || this.state.signUp ? <BackBar back={this.back}/> : null}
-                <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+
+                <Text style={styles.logo}>LOGO</Text>
+
+                <View style={styles.fbLogin}>
+                    <LoginButton
+                        publishPermissions={["publish_actions"]}
+                        onLoginFinished={
+                            (error, result) => {
+                                if (error) {
+                                    alert("login has error: " + result.error);
+                                } else if (result.isCancelled) {
+                                    alert("login is cancelled.");
+                                } else {
+                                    AccessToken.getCurrentAccessToken().then(
+                                        (data) => {
+                                            alert(data.accessToken.toString())
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                        onLogoutFinished={() => alert("logout.")}/>
+                </View>
+                <View style={styles.contentContainer}>
 
                     <View style={styles.inputWrap}>
                         <TextInput ref="email" style={styles.textInput} autoCapitalize='none'
@@ -151,38 +174,19 @@ const Login = React.createClass({
                             </TouchableOpacity>
                         </View> : null}
 
-                    <LoginButton
-                        publishPermissions={["publish_actions"]}
-                        onLoginFinished={
-                            (error, result) => {
-                                if (error) {
-                                    alert("login has error: " + result.error);
-                                } else if (result.isCancelled) {
-                                    alert("login is cancelled.");
-                                } else {
-                                    AccessToken.getCurrentAccessToken().then(
-                                        (data) => {
-                                            alert(data.accessToken.toString())
-                                        }
-                                    )
-                                }
-                            }
-                        }
-                        onLogoutFinished={() => alert("logout.")}/>
-
+                    <TouchableOpacity style={[styles.button]} onPress={this.onPress}>
+                        <Text style={styles.buttonText}>{!this.state.signUp ? 'Log In' : 'Submit'}</Text>
+                    </TouchableOpacity>
 
                     {!this.state.forgotCreds && !this.state.signUp ?
-                        <TouchableOpacity style={[styles.button, styles.signUpButton]} onPress={this.toggleSignUp}>
+                        <TouchableOpacity style={[styles.button]} onPress={this.toggleSignUp}>
                             <Text style={styles.buttonText}>SIGN UP</Text>
                         </TouchableOpacity>
                         : null
                     }
 
-                </ScrollView>
+                </View>
 
-                <TouchableOpacity style={styles.bottomButton} onPress={this.onPress} underlayColor='#99d9f4'>
-                    <Icon name="arrow-right" size={30} color='white'/>
-                </TouchableOpacity>
             </View>
         );
     }
@@ -192,16 +196,27 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    contentContainer: {
+    fbLogin: {
+        flex: .3,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 40,
+        borderBottomWidth: .5,
+        borderColor: '#aaaaaa',
+    },
+    contentContainer: {
+        flex: 1.4,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingLeft: 40,
+        paddingRight: 40,
+        // alignSelf: 'stretch'
     },
     logo: {
-        width: 154,
+        // width: 154,
         height: 70,
-        marginTop: 100,
-        marginBottom: 100,
+        alignSelf: 'center'
+        // marginTop: 100,
+        // marginBottom: 100,
     },
     inputWrap: {
         alignSelf: 'stretch',
@@ -280,9 +295,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    signUpButton: {
-        marginTop: 350
-    }
 });
 
 export default Login;
