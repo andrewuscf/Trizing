@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         borderColor: '#d4d4d4',
         borderBottomWidth: 1,
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        // justifyContent: 'space-between',
     },
     topNavButton: {
         padding: 10,

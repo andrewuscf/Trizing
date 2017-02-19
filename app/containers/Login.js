@@ -7,15 +7,19 @@ import {
     StyleSheet,
     TouchableOpacity,
     TouchableHighlight,
-    TextInput
+    TextInput,
+    Dimensions
 } from 'react-native';
 import {
     LoginButton,
     AccessToken
 } from 'react-native-fbsdk';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Hr from '../components/HR';
 
 import BackBar from '../components/BackBar';
+
+var {height, width} = Dimensions.get('window');
 
 const Login = React.createClass({
     propTypes: {
@@ -27,6 +31,7 @@ const Login = React.createClass({
     getInitialState() {
         return {
             email: null,
+            username: null,
             password: null,
             forgotCreds: false,
             signUp: false,
@@ -44,7 +49,9 @@ const Login = React.createClass({
     toggleSignUp() {
         this.setState({
             forgotCreds: false,
-            signUp: !this.state.signUp
+            signUp: !this.state.signUp,
+            email: null,
+            username: null
         });
     },
 
@@ -56,9 +63,10 @@ const Login = React.createClass({
                 this.toggleForgotCreds();
             }
         } else if (this.state.signUp) {
-            if (this.state.email && this.state.password && this.state.type) {
+            if (this.state.username && this.state.email && this.state.password && this.state.type) {
                 const data = {
                     email: this.state.email.toLowerCase(),
+                    username: this.state.username.toLowerCase(),
                     password: this.state.password,
                     type: this.state.type
                 };
@@ -75,6 +83,7 @@ const Login = React.createClass({
     resetComponent() {
         this.setState({
             email: null,
+            username: null,
             password: null,
             forgotCreds: false,
             signUp: false,
@@ -100,9 +109,17 @@ const Login = React.createClass({
         // <Image style={styles.logo} source={require('../assets/images/small-white-logo.png')}/>
         return (
             <View style={styles.container}>
-                {this.state.forgotCreds || this.state.signUp ? <BackBar back={this.back}/> : null}
+                {this.state.forgotCreds || this.state.signUp ?
+                    <BackBar back={this.back}>
+                        <Text style={{alignSelf: 'center', marginLeft: 120}}>SIGN UP</Text>
+                    </BackBar>
+                    : null
+                }
 
-                <Text style={styles.logo}>LOGO</Text>
+                {!this.state.forgotCreds && !this.state.signUp ?
+                    <Text style={styles.logo}>LOGO</Text>
+                    : null
+                }
 
                 <View style={styles.fbLogin}>
                     <LoginButton
@@ -124,7 +141,32 @@ const Login = React.createClass({
                         }
                         onLogoutFinished={() => alert("logout.")}/>
                 </View>
+
+                <Hr text='OR'
+                    lineStyle={{
+                        backgroundColor: "#aaaaaa",
+                    }}
+                    textStyle={{
+                        color: "#aaaaaa",
+                    }}
+                />
+
                 <View style={styles.contentContainer}>
+
+                    {(this.state.signUp) ?
+                        <View style={styles.inputWrap}>
+                            <TextInput ref="username" style={styles.textInput} autoCapitalize='none'
+                                       underlineColorAndroid='transparent'
+                                       autoCorrect={false}
+                                       onChangeText={(text)=>this.setState({username: text})}
+                                       value={this.state.username}
+                                       onSubmitEditing={(event) => {
+                                           this.refs.email.focus();
+                                       }}
+                                       placeholderTextColor="black"
+                                       placeholder="Username"/>
+                        </View> : null
+                    }
 
                     <View style={styles.inputWrap}>
                         <TextInput ref="email" style={styles.textInput} autoCapitalize='none'
@@ -137,7 +179,7 @@ const Login = React.createClass({
                                        this.refs.password.focus();
                                    }}
                                    placeholderTextColor="black"
-                                   placeholder="Email"/>
+                                   placeholder={this.state.signUp ? 'Email' : 'Email or username'}/>
                     </View>
 
                     {(!this.state.forgotCreds) ?
@@ -162,7 +204,7 @@ const Login = React.createClass({
                     }
 
                     {(this.state.signUp) ?
-                        <View style={{flexDirection: 'row', paddingTop: 50}}>
+                        <View style={{flexDirection: 'row', paddingTop: 20}}>
                             <TouchableOpacity onPress={this.selectType.bind(null, 1)}
                                               style={[styles.typeButtons, this.state.type == 1 ? styles.selectedType : styles.notSelected]}>
                                 <Text style={this.state.type == 1 ? styles.selectedText : styles.notSelectedText}>Trainer</Text>
@@ -200,15 +242,14 @@ const styles = StyleSheet.create({
         flex: .3,
         justifyContent: 'center',
         alignItems: 'center',
-        borderBottomWidth: .5,
-        borderColor: '#aaaaaa',
+        // paddingBottom: 10
     },
     contentContainer: {
-        flex: 1.4,
+        flex: .8,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingLeft: 40,
-        paddingRight: 40,
+        // paddingLeft: 40,
+        // paddingRight: 40,
         // alignSelf: 'stretch'
     },
     logo: {
@@ -219,11 +260,12 @@ const styles = StyleSheet.create({
         // marginBottom: 100,
     },
     inputWrap: {
-        alignSelf: 'stretch',
+        alignSelf: 'center',
         marginBottom: 12,
         height: 40,
         borderBottomWidth: .5,
         borderColor: '#aaaaaa',
+        width: width * .80,
     },
     textInput: {
         color: 'black',
@@ -280,20 +322,12 @@ const styles = StyleSheet.create({
         borderColor: '#1352e2',
         justifyContent: 'center',
         alignItems: 'center',
+        width: width * .80,
         paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 30,
         paddingRight: 30,
-        borderRadius: 21
-    },
-    bottomButton: {
-        height: 50,
-        bottom: 0,
-        left: 0,
-        backgroundColor: '#22c064',
-        opacity: .5,
-        alignItems: 'center',
-        justifyContent: 'center'
+        // borderRadius: 21
     },
 });
 
