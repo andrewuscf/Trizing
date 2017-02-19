@@ -35,6 +35,26 @@
         </dict>
       </dict>
     </dict>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>fb1822005241396103</string>
+      </array>
+      </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>1822005241396103</string>
+    <key>FacebookDisplayName</key>
+    <string>Trizing</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>fbapi</string>
+      <string>fb-messenger-api</string>
+      <string>fbauth2</string>
+      <string>fbshareextension</string>
+    </array>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string/>
     <key>NSPhotoLibraryUsageDescription</key>

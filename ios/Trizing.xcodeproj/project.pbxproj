@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -35,7 +36,9 @@
 		2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */; };
 		2D02E4C91E0B4AEC006451C7 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* TrizingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* TrizingTests.m */; };
+		2E836AEC5D68A75D2918F9B1 /* libPods-Trizing-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0942CDC3D2283FCE032076F5 /* libPods-Trizing-tvOS.a */; };
 		3E4B6C1DC6B94CE2905130D7 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA93046519634EE083C2E02A /* Entypo.ttf */; };
+		492365071E5980750058073B /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49800F521E597312008F9359 /* libRCTFBSDK.a */; };
 		493C44801E5194F600A97577 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44761E5194F600A97577 /* OpenSans-Bold.ttf */; };
 		493C44811E5194F600A97577 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44761E5194F600A97577 /* OpenSans-Bold.ttf */; };
 		493C44821E5194F600A97577 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44761E5194F600A97577 /* OpenSans-Bold.ttf */; };
@@ -66,14 +69,17 @@
 		493C44A31E5194F600A97577 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447E1E5194F600A97577 /* OpenSans-Semibold.ttf */; };
 		4DE103561B9C4C5EA74215DC /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8922F3E8EB4D416EB646539C /* Octicons.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
+		6194325F03321AAB6ED13B9F /* libPods-Trizing-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6FBCA42C2E184906EAE148 /* libPods-Trizing-tvOSTests.a */; };
 		649F4E2B75CF46938C278C28 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49359926A7D6491C94B813C8 /* EvilIcons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		864D3C1EB28F44BFB158F359 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90DE0954FDB64659BA0BE25F /* SimpleLineIcons.ttf */; };
 		8BA7CC0251774FAFA39CA7BB /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD921850405B4BF6AD810168 /* MaterialIcons.ttf */; };
 		8D861DE18DA6486CB263D16F /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 042706F2338545A4934FAAC3 /* MaterialCommunityIcons.ttf */; };
 		A1E240D2528C4386A199E1CE /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81BAFB8DB9B841A9BB6356FB /* Foundation.ttf */; };
+		B63C3EDE6EA0D884F7FEAB3E /* libPods-Trizing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F868D10BC07EA86CD5E5125D /* libPods-Trizing.a */; };
 		C9331A105430440BB49E2823 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 105CA0C2B2A44A9FB77CC12A /* libRNVectorIcons.a */; };
 		CB4DD15CC00E41CCA3FDA64B /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 995E3393F9844DDC9EE44EAE /* FontAwesome.ttf */; };
+		E9C9AF8692BDA8F6749B2719 /* libPods-TrizingTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EC626B757C2DE173626DA1C /* libPods-TrizingTests.a */; };
 		EEFA4CDFCC754E788D9A0E7A /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99EFCA2327074196B81CCAFC /* Ionicons.ttf */; };
 /* End PBXBuildFile section */
 
@@ -253,6 +259,13 @@
 			remoteGlobalIDString = 3D3CD9181DE5FBD800167DC4;
 			remoteInfo = "jschelpers-tvOS";
 		};
+		49800F511E597312008F9359 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FF837605A194A8AB6E98775 /* RCTFBSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9350E0F11CE3B0920041D815;
+			remoteInfo = RCTFBSDK;
+		};
 		5E9157321DD0AC6500FF2AA8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */;
@@ -294,6 +307,7 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* TrizingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrizingTests.m; sourceTree = "<group>"; };
 		042706F2338545A4934FAAC3 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		0942CDC3D2283FCE032076F5 /* libPods-Trizing-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trizing-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		105CA0C2B2A44A9FB77CC12A /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
@@ -308,6 +322,7 @@
 		2086D88B1E516C3300D9945E /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* Trizing-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Trizing-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Trizing-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Trizing-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		41598DCACC98D3BD3F00368B /* Pods-TrizingTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrizingTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrizingTests/Pods-TrizingTests.debug.xcconfig"; sourceTree = "<group>"; };
 		49359926A7D6491C94B813C8 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		493C44761E5194F600A97577 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Bold.ttf"; path = "../app/assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		493C44771E5194F600A97577 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-BoldItalic.ttf"; path = "../app/assets/fonts/OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
@@ -316,18 +331,29 @@
 		493C447A1E5194F600A97577 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Italic.ttf"; path = "../app/assets/fonts/OpenSans-Italic.ttf"; sourceTree = "<group>"; };
 		493C447B1E5194F600A97577 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Light.ttf"; path = "../app/assets/fonts/OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		493C447E1E5194F600A97577 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Semibold.ttf"; path = "../app/assets/fonts/OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
+		4D040E6939A3394128C13CEE /* Pods-Trizing.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing/Pods-Trizing.debug.xcconfig"; sourceTree = "<group>"; };
 		4DE33148379349C5AFACDF35 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		4EC626B757C2DE173626DA1C /* libPods-TrizingTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TrizingTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
+		5FF837605A194A8AB6E98775 /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7B87053A2BB34784AB011E20 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		81BAFB8DB9B841A9BB6356FB /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		88EFD593787E6CBF7801DC1E /* Pods-Trizing-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing-tvOS/Pods-Trizing-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		8922F3E8EB4D416EB646539C /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		90DE0954FDB64659BA0BE25F /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		9373D043B42E10AADDD0B447 /* Pods-Trizing-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing-tvOSTests/Pods-Trizing-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		964565CEF5A8BC66A7AC2152 /* Pods-TrizingTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrizingTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrizingTests/Pods-TrizingTests.release.xcconfig"; sourceTree = "<group>"; };
+		97A9193E47C012E7C27B7032 /* Pods-Trizing-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing-tvOS/Pods-Trizing-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		995E3393F9844DDC9EE44EAE /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		99EFCA2327074196B81CCAFC /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		AA93046519634EE083C2E02A /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		AD921850405B4BF6AD810168 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		BF433F16B63F21240FA4BB03 /* Pods-Trizing-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing-tvOSTests/Pods-Trizing-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C8AC1A1DCD40DEDD96E800C4 /* Pods-Trizing.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing.release.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing/Pods-Trizing.release.xcconfig"; sourceTree = "<group>"; };
+		F868D10BC07EA86CD5E5125D /* libPods-Trizing.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trizing.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA6FBCA42C2E184906EAE148 /* libPods-Trizing-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trizing-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -336,6 +362,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
+				E9C9AF8692BDA8F6749B2719 /* libPods-TrizingTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +383,8 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				C9331A105430440BB49E2823 /* libRNVectorIcons.a in Frameworks */,
+				492365071E5980750058073B /* libRCTFBSDK.a in Frameworks */,
+				B63C3EDE6EA0D884F7FEAB3E /* libPods-Trizing.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,6 +400,7 @@
 				2D02E4C61E0B4AEC006451C7 /* libRCTSettings-tvOS.a in Frameworks */,
 				2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */,
 				2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */,
+				2E836AEC5D68A75D2918F9B1 /* libPods-Trizing-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,6 +408,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6194325F03321AAB6ED13B9F /* libPods-Trizing-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -530,6 +561,40 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		3AB4262C0D064C885E46CCCB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F868D10BC07EA86CD5E5125D /* libPods-Trizing.a */,
+				0942CDC3D2283FCE032076F5 /* libPods-Trizing-tvOS.a */,
+				FA6FBCA42C2E184906EAE148 /* libPods-Trizing-tvOSTests.a */,
+				4EC626B757C2DE173626DA1C /* libPods-TrizingTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		49800F4A1E597311008F9359 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				49800F521E597312008F9359 /* libRCTFBSDK.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4F25D0BF5CDF86949706FF08 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4D040E6939A3394128C13CEE /* Pods-Trizing.debug.xcconfig */,
+				C8AC1A1DCD40DEDD96E800C4 /* Pods-Trizing.release.xcconfig */,
+				97A9193E47C012E7C27B7032 /* Pods-Trizing-tvOS.debug.xcconfig */,
+				88EFD593787E6CBF7801DC1E /* Pods-Trizing-tvOS.release.xcconfig */,
+				BF433F16B63F21240FA4BB03 /* Pods-Trizing-tvOSTests.debug.xcconfig */,
+				9373D043B42E10AADDD0B447 /* Pods-Trizing-tvOSTests.release.xcconfig */,
+				41598DCACC98D3BD3F00368B /* Pods-TrizingTests.debug.xcconfig */,
+				964565CEF5A8BC66A7AC2152 /* Pods-TrizingTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -564,6 +629,7 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				7B87053A2BB34784AB011E20 /* RNVectorIcons.xcodeproj */,
+				5FF837605A194A8AB6E98775 /* RCTFBSDK.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -585,6 +651,8 @@
 				00E356EF1AD99517003FC87E /* TrizingTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				12DDA82037BA492C837D184A /* Resources */,
+				4F25D0BF5CDF86949706FF08 /* Pods */,
+				3AB4262C0D064C885E46CCCB /* Frameworks */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -608,9 +676,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TrizingTests" */;
 			buildPhases = (
+				1AA034BE653F6E01A7B4AAFC /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
+				C6474F50FCC79F3E3B41A0C4 /* [CP] Embed Pods Frameworks */,
+				54AF7FCB497255C6F0DBCE2C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -626,10 +697,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Trizing" */;
 			buildPhases = (
+				60EF086C1B33FD2EBC278CA9 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				B1A0BB10DCFD39FC6101196B /* [CP] Embed Pods Frameworks */,
+				0697E30B8FFB70D5A0EE83C4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -644,10 +718,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Trizing-tvOS" */;
 			buildPhases = (
+				15C620514753C58CACDE2659 /* [CP] Check Pods Manifest.lock */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
 				2D02E4791E0B4A5D006451C7 /* Resources */,
 				2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */,
+				0595141D7295CACAE4C9F056 /* [CP] Embed Pods Frameworks */,
+				715B15E01184D11CCB52571E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -662,9 +739,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Trizing-tvOSTests" */;
 			buildPhases = (
+				7052B8548DA66E6454737A25 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
+				9E2AA35E5095D63A29C8C917 /* [CP] Embed Pods Frameworks */,
+				0A161880BE350CA555F7B369 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -723,6 +803,10 @@
 				{
 					ProductGroup = 2086D88C1E516C3300D9945E /* Products */;
 					ProjectRef = 2086D88B1E516C3300D9945E /* RCTCameraRoll.xcodeproj */;
+				},
+				{
+					ProductGroup = 49800F4A1E597311008F9359 /* Products */;
+					ProjectRef = 5FF837605A194A8AB6E98775 /* RCTFBSDK.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
@@ -937,6 +1021,13 @@
 			remoteRef = 3DAD3EAE1DF850E9000B6D8A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		49800F521E597312008F9359 /* libRCTFBSDK.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTFBSDK.a;
+			remoteRef = 49800F511E597312008F9359 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1054,6 +1145,81 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/packager/react-native-xcode.sh";
 		};
+		0595141D7295CACAE4C9F056 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Trizing-tvOS/Pods-Trizing-tvOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		0697E30B8FFB70D5A0EE83C4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Trizing/Pods-Trizing-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		0A161880BE350CA555F7B369 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Trizing-tvOSTests/Pods-Trizing-tvOSTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		15C620514753C58CACDE2659 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		1AA034BE653F6E01A7B4AAFC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1067,6 +1233,111 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/packager/react-native-xcode.sh";
+		};
+		54AF7FCB497255C6F0DBCE2C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TrizingTests/Pods-TrizingTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		60EF086C1B33FD2EBC278CA9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		7052B8548DA66E6454737A25 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		715B15E01184D11CCB52571E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Trizing-tvOS/Pods-Trizing-tvOS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9E2AA35E5095D63A29C8C917 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Trizing-tvOSTests/Pods-Trizing-tvOSTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B1A0BB10DCFD39FC6101196B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Trizing/Pods-Trizing-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C6474F50FCC79F3E3B41A0C4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TrizingTests/Pods-TrizingTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1135,6 +1406,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 41598DCACC98D3BD3F00368B /* Pods-TrizingTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1146,6 +1418,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1160,6 +1433,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 964565CEF5A8BC66A7AC2152 /* Pods-TrizingTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -1168,6 +1442,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1182,6 +1457,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4D040E6939A3394128C13CEE /* Pods-Trizing.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1201,6 +1477,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C8AC1A1DCD40DEDD96E800C4 /* Pods-Trizing.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1219,6 +1496,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97A9193E47C012E7C27B7032 /* Pods-Trizing-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1233,6 +1511,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1249,6 +1528,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 88EFD593787E6CBF7801DC1E /* Pods-Trizing-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1263,6 +1543,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1279,6 +1560,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BF433F16B63F21240FA4BB03 /* Pods-Trizing-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1293,6 +1575,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Trizing-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1304,6 +1587,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9373D043B42E10AADDD0B447 /* Pods-Trizing-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1317,6 +1601,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Trizing-tvOSTests";

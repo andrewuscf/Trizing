@@ -34,9 +34,11 @@ export function removeToken(token) {
 export function login(email, pass) {
     const body = JSON.stringify({username: email, password: pass});
     return dispatch => {
+        console.log(body)
         return fetch(`${API_ENDPOINT}auth/token/`, fetchData('POST', body))
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson)
                 if (responseJson.token) {
                     return dispatch(setTokenInRedux(responseJson.token, true));
                 }
@@ -50,6 +52,7 @@ export function login(email, pass) {
                 }
             })
             .catch((error) => {
+                console.log(error)
                 return dispatch({
                     type: types.API_ERROR, error: JSON.stringify({
                         title: 'Request could not be performed.',

@@ -1,8 +1,16 @@
 package com.trizing;
 
 import com.facebook.react.ReactActivity;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import android.content.Intent;
 
 public class MainActivity extends ReactActivity {
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data);
+    }
 
     /**
      * Returns the name of the main component registered from JavaScript.

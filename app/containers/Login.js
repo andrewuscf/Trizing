@@ -9,6 +9,10 @@ import {
     TouchableHighlight,
     TextInput
 } from 'react-native';
+import {
+    LoginButton,
+    AccessToken
+} from 'react-native-fbsdk';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import BackBar from '../components/BackBar';
@@ -46,7 +50,6 @@ const Login = React.createClass({
 
     onPress() {
         // sign in + forgot credentials
-        console.log('hit');
         if (this.state.forgotCreds) {
             if (this.state.email) {
                 this.props.resetPassword(this.state.email.toLowerCase());
@@ -103,6 +106,7 @@ const Login = React.createClass({
                     <View style={styles.inputWrap}>
                         <TextInput ref="email" style={styles.textInput} autoCapitalize='none'
                                    keyboardType='email-address'
+                                   underlineColorAndroid='transparent'
                                    autoCorrect={false}
                                    onChangeText={(text)=>this.setState({email: text})}
                                    value={this.state.email}
@@ -116,6 +120,7 @@ const Login = React.createClass({
                     {(!this.state.forgotCreds) ?
                         <View style={styles.inputWrap}>
                             <TextInput ref="password" style={styles.textInput} autoCapitalize='none'
+                                       underlineColorAndroid='transparent'
                                        secureTextEntry={true}
                                        autoCorrect={false}
                                        onChangeText={(text)=>this.setState({password: text})}
@@ -145,6 +150,25 @@ const Login = React.createClass({
                                     style={this.state.type == 2 ? styles.selectedText : styles.notSelectedText}>Client</Text>
                             </TouchableOpacity>
                         </View> : null}
+
+                    <LoginButton
+                        publishPermissions={["publish_actions"]}
+                        onLoginFinished={
+                            (error, result) => {
+                                if (error) {
+                                    alert("login has error: " + result.error);
+                                } else if (result.isCancelled) {
+                                    alert("login is cancelled.");
+                                } else {
+                                    AccessToken.getCurrentAccessToken().then(
+                                        (data) => {
+                                            alert(data.accessToken.toString())
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                        onLogoutFinished={() => alert("logout.")}/>
 
 
                     {!this.state.forgotCreds && !this.state.signUp ?
