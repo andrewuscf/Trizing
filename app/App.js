@@ -71,7 +71,7 @@ const App = React.createClass({
     },
 
     componentWillMount() {
-        AsyncStorage.removeItem('USER_TOKEN');
+        // AsyncStorage.removeItem('USER_TOKEN');
         AsyncStorage.getItem('USER_TOKEN', (err, result) => {
             if (result) {
                 this.props.actions.setTokenInRedux(result);

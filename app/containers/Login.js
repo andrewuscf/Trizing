@@ -36,7 +36,6 @@ const Login = React.createClass({
             password: null,
             forgotCreds: false,
             signUp: false,
-            type: null
         }
     },
 
@@ -64,12 +63,11 @@ const Login = React.createClass({
                 this.toggleForgotCreds();
             }
         } else if (this.state.signUp) {
-            if (this.state.username && this.state.email && this.state.password && this.state.type) {
+            if (this.state.username && this.state.email && this.state.password) {
                 const data = {
                     email: this.state.email.toLowerCase(),
                     username: this.state.username.toLowerCase(),
                     password: this.state.password,
-                    type: this.state.type
                 };
                 this.props.register(data);
                 this.resetComponent();
@@ -86,13 +84,6 @@ const Login = React.createClass({
             email: null,
             username: null,
             password: null,
-            type: null
-        });
-    },
-
-    selectType(num) {
-        this.setState({
-            type: num
         });
     },
 
@@ -209,19 +200,6 @@ const Login = React.createClass({
                         : null
                     }
 
-                    {(this.state.signUp) ?
-                        <View style={{flexDirection: 'row', paddingTop: 20}}>
-                            <TouchableOpacity onPress={this.selectType.bind(null, 1)}
-                                              style={[styles.typeButtons, this.state.type == 1 ? styles.selectedType : styles.notSelected]}>
-                                <Text style={this.state.type == 1 ? styles.selectedText : styles.notSelectedText}>Trainer</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={this.selectType.bind(null, 2)}
-                                              style={[styles.typeButtons, this.state.type == 2 ? styles.selectedType : styles.notSelected]}>
-                                <Text
-                                    style={this.state.type == 2 ? styles.selectedText : styles.notSelectedText}>Client</Text>
-                            </TouchableOpacity>
-                        </View> : null}
-
                     <TouchableOpacity style={[styles.button]} onPress={this.onPress}>
                         <Text style={styles.buttonText}>{!this.state.signUp && !this.state.forgotCreds ? 'Log In' : 'Submit'}</Text>
                     </TouchableOpacity>
@@ -282,39 +260,12 @@ const styles = StyleSheet.create({
         paddingBottom: 3,
         height: 40
     },
-    typeButtons: {
-        flex: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingBottom: 10,
-        paddingTop: 10
-    },
-    notSelected: {
-        borderWidth: 1,
-        borderColor: '#1352e2',
-        backgroundColor: 'transparent'
-    },
-    selectedType: {
-        backgroundColor: '#1352e2'
-    },
-    selectedText: {
-        color: 'white',
-        fontSize: 14,
-        fontFamily: 'OpenSans-Bold',
-        // textDecorationLine: 'none'
-    },
     forgotIcon: {
         color: '#424242',
         bottom: 8,
         right: 0,
         position: 'absolute'
 
-    },
-    notSelectedText: {
-        color: '#1352e2',
-        fontSize: 14,
-        fontFamily: 'OpenSans-Bold',
-        // textDecorationLine: 'none'
     },
     buttonText: {
         color: '#1352e2',

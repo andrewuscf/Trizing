@@ -105,7 +105,6 @@ export function register(data) {
         return fetch(`${API_ENDPOINT}auth/register/`, fetchData('POST', JSONDATA))
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
                 let message;
                 if (responseJson.email) {
                     message = {
