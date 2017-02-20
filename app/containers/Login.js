@@ -127,11 +127,10 @@ const Login = React.createClass({
                 { !this.state.forgotCreds ?
                     <View style={styles.fbLogin}>
                         <LoginButton
-                            publishPermissions={["publish_actions"]}
                             onLoginFinished={
                                 (error, result) => {
                                     if (error) {
-                                        alert("login has error: " + result.error);
+                                        console.log(error)
                                     } else if (result.isCancelled) {
                                         alert("login is cancelled.");
                                     } else {

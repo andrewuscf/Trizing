@@ -52,7 +52,6 @@ export function login(email, pass) {
                 }
             })
             .catch((error) => {
-                console.log(error)
                 return dispatch(
                     removeToken()
                 );
