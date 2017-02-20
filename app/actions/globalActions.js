@@ -1,7 +1,7 @@
 'use strict';
 
 import * as types from './actionTypes';
-import {fetchData, API_ENDPOINT, refreshPage} from './utils';
+import {fetchData, API_ENDPOINT, refreshPage, SITE} from './utils';
 import {AsyncStorage} from 'react-native';
 
 
@@ -135,6 +135,26 @@ export function register(data) {
             });
     }
 }
+
+export function socialAuth(access_token) {
+    return (dispatch, getState) => {
+        return fetch(`${SITE}social/register/facebook/?access_token=${access_token}`, fetchData('GET', null))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson.token)
+                    return dispatch(setTokenInRedux(responseJson.token, true));
+            })
+            .catch((error) => {
+                return dispatch({
+                    type: types.API_ERROR, error: JSON.stringify({
+                        title: 'Request could not be performed.',
+                        text: 'Please try again later.'
+                    })
+                });
+            });
+    }
+}
+
 
 export function clearAPIError() {
     return {type: types.CLEAR_API_ERROR}

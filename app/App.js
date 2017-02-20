@@ -71,7 +71,7 @@ const App = React.createClass({
     },
 
     componentWillMount() {
-        AsyncStorage.removeItem('USER_TOKEN');
+        // AsyncStorage.removeItem('USER_TOKEN');
         AsyncStorage.getItem('USER_TOKEN', (err, result) => {
             if (result) {
                 this.props.actions.setTokenInRedux(result);
@@ -129,7 +129,8 @@ const App = React.createClass({
                     <Login login={this.props.actions.login}
                            resetPassword={this.props.actions.resetPassword}
                            register={this.props.actions.register}
-                           error={this.props.Error}/>
+                           error={this.props.Error}
+                           socialAuth={this.props.actions.socialAuth}/>
                 </View>
             );
         }

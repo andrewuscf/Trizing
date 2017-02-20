@@ -28,3 +28,24 @@ export function updateProfile(data, asyncActions) {
             });
     }
 }
+
+
+export function updateUser(data) {
+    let jsondata = JSON.stringify(data);
+    return (dispatch, getState) => {
+        return fetch(`${API_ENDPOINT}user/${getState().Global.RequestUser.id}/`,
+            fetchData('PATCH', jsondata, getState().Global.UserToken))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                return dispatch({type: types.UPDATE_USER, request_user: responseJson});
+            })
+            .catch((error) => {
+                return dispatch({
+                    type: types.API_ERROR, error: JSON.stringify({
+                        title: 'Request could not be performed.',
+                        text: 'Please try again later.'
+                    })
+                });
+            });
+    }
+}

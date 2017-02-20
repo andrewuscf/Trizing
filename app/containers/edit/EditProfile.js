@@ -33,12 +33,14 @@ const EditProfile = React.createClass({
             previewImage: null,
             first_name: null,
             last_name: null,
+            type: null
         };
         if (this.props.RequestUser) {
             initData = {
                 ...initData,
-                first_name: this.props.RequestUser.first_name,
-                last_name: this.props.RequestUser.last_name,
+                username: this.props.RequestUser.username,
+                first_name: this.props.RequestUser.profile.first_name,
+                last_name: this.props.RequestUser.profile.last_name,
                 phone_number: this.props.RequestUser.profile.phone_number
             }
         }
@@ -47,10 +49,18 @@ const EditProfile = React.createClass({
 
     componentDidUpdate(prevProps) {
         if (!prevProps.RequestUser && this.props.RequestUser) {
+            var type = null;
+            if (this.props.RequestUser.type == 'Trainer') {
+                type = 1;
+            } else if (this.props.RequestUser.type == 'Client') {
+                type = 2;
+            }
             this.setState({
-                first_name: this.props.RequestUser.first_name,
-                last_name: this.props.RequestUser.last_name,
-                phone_number: this.props.RequestUser.profile.phone_number
+                username: this.props.RequestUser.username,
+                first_name: this.props.RequestUser.profile.first_name,
+                last_name: this.props.RequestUser.profile.last_name,
+                phone_number: this.props.RequestUser.profile.phone_number,
+                type: type
             })
         }
     },
@@ -87,6 +97,12 @@ const EditProfile = React.createClass({
         this.state.first_name && this.state.last_name);
     },
 
+    selectType(num) {
+        this.setState({
+            type: num
+        });
+    },
+
     _onSubmit(){
         if (this.checkAllRequired()) {
             let profileData = new FormData();
@@ -101,9 +117,12 @@ const EditProfile = React.createClass({
             profileData.append("first_name", this.state.first_name);
             profileData.append("last_name", this.state.last_name);
             profileData.append("phone_number", this.state.phone_number);
-            if (this.state.requested_rate)
-                profileData.append("requested_rate", parseInt(this.state.requested_rate));
             this.props.actions.updateProfile(profileData, this.asyncActions);
+            const data = {
+                username: this.state.username,
+                type: this.state.type
+            };
+            this.props.actions.updateUser()
         }
     },
 
@@ -147,8 +166,7 @@ const EditProfile = React.createClass({
                                                this.refs.last_name.focus();
                                            }}
                                            placeholder="First Name"/>
-                                <View
-                                    style={{width: 1, backgroundColor: '#C7C7CD', marginBottom: 5, marginTop: 5, marginRight: 5}}/>
+                                <View style={styles.divider}/>
                                 <TextInput style={[styles.textInput, styles.nameInput]}
                                            underlineColorAndroid='transparent'
                                            autoCapitalize='words'
@@ -164,6 +182,19 @@ const EditProfile = React.createClass({
                             </View>
 
                             <View style={styles.section}>
+                                <TextInput ref="username" style={styles.textInput}
+                                           underlineColorAndroid='transparent'
+                                           autoCapitalize='none'
+                                           maxLength={150}
+                                           onSubmitEditing={(event) => {
+                                               this._onSubmit();
+                                           }}
+                                           nChangeText={(text) =>this.setState({username: text})}
+                                           value={this.state.username}
+                                           placeholder="Username"/>
+                            </View>
+
+                            <View style={styles.section}>
                                 <TextInput ref="phone_number" style={styles.textInput}
                                            underlineColorAndroid='transparent'
                                            keyboardType="phone-pad"
@@ -175,6 +206,23 @@ const EditProfile = React.createClass({
                                            }}
                                            placeholder="Phone Number"/>
                             </View>
+
+                            {(!this.getInitialState().type) ?
+                                <View style={{flexDirection: 'row', paddingTop: 20}}>
+                                    <TouchableOpacity onPress={this.selectType.bind(null, 1)}
+                                                      style={[styles.typeButtons, this.state.type == 1 ? styles.selectedType : styles.notSelected]}>
+                                        <Text style={this.state.type == 1 ? styles.selectedText : styles.notSelectedText}>Trainer</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={this.selectType.bind(null, 2)}
+                                                      style={[styles.typeButtons, this.state.type == 2 ? styles.selectedType : styles.notSelected]}>
+                                        <Text
+                                            style={this.state.type == 2 ? styles.selectedText : styles.notSelectedText}>Client</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                : null
+                            }
+
+
                         </View>
                     </ScrollView>
                     <SubmitButton buttonStyle={styles.button}
@@ -265,6 +313,45 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 15,
         // fontFamily: 'OpenSans-Bold',
+    },
+    divider: {
+        width: 1,
+        backgroundColor: '#C7C7CD',
+        marginBottom: 5,
+        marginTop: 5,
+        marginRight: 5
+    },
+    typeButtons: {
+        flex: 2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: 10,
+        paddingTop: 10
+    },
+    notSelected: {
+        borderWidth: 1,
+        borderColor: '#1352e2',
+        backgroundColor: 'transparent'
+    },
+    selectedType: {
+        backgroundColor: '#1352e2'
+    },
+    selectedText: {
+        color: 'white',
+        fontSize: 14,
+        fontFamily: 'OpenSans-Bold',
+        // textDecorationLine: 'none'
+    },
+    notSelectedText: {
+        color: '#1352e2',
+        fontSize: 14,
+        fontFamily: 'OpenSans-Bold',
+        // textDecorationLine: 'none'
+    },
+    buttonText: {
+        color: '#1352e2',
+        fontSize: 15,
+        fontFamily: 'OpenSans-Bold',
     },
 });
 

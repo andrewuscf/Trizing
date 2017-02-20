@@ -20,3 +20,4 @@ export const SEND_REQUEST = 'SEND_REQUEST';
 
 // Profile Constants
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
+export const UPDATE_USER = 'UPDATE_USER';

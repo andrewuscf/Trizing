@@ -26,6 +26,7 @@ const Login = React.createClass({
         login: React.PropTypes.func.isRequired,
         resetPassword: React.PropTypes.func.isRequired,
         register: React.PropTypes.func.isRequired,
+        socialAuth: React.PropTypes.func.isRequired,
     },
 
     getInitialState() {
@@ -110,8 +111,10 @@ const Login = React.createClass({
         return (
             <View style={styles.container}>
                 {this.state.forgotCreds || this.state.signUp ?
-                    <BackBar back={this.back}>
-                        <Text style={{alignSelf: 'center', marginLeft: 120}}>SIGN UP</Text>
+                    <BackBar back={this.back} navStyle={{alignItems: 'center'}}>
+                        <Text style={{alignSelf: 'center', flex: 2}}>
+                            {this.state.signUp ? 'SIGN UP' : 'FORGOT PASSWORD'}
+                        </Text>
                     </BackBar>
                     : null
                 }
@@ -121,35 +124,41 @@ const Login = React.createClass({
                     : null
                 }
 
-                <View style={styles.fbLogin}>
-                    <LoginButton
-                        publishPermissions={["publish_actions"]}
-                        onLoginFinished={
-                            (error, result) => {
-                                if (error) {
-                                    alert("login has error: " + result.error);
-                                } else if (result.isCancelled) {
-                                    alert("login is cancelled.");
-                                } else {
-                                    AccessToken.getCurrentAccessToken().then(
-                                        (data) => {
-                                            alert(data.accessToken.toString())
-                                        }
-                                    )
+                { !this.state.forgotCreds ?
+                    <View style={styles.fbLogin}>
+                        <LoginButton
+                            publishPermissions={["publish_actions"]}
+                            onLoginFinished={
+                                (error, result) => {
+                                    if (error) {
+                                        alert("login has error: " + result.error);
+                                    } else if (result.isCancelled) {
+                                        alert("login is cancelled.");
+                                    } else {
+                                        AccessToken.getCurrentAccessToken().then(
+                                            (data) => {
+                                                this.props.socialAuth(data.accessToken);
+                                            }
+                                        )
+                                    }
                                 }
                             }
-                        }
-                        onLogoutFinished={() => alert("logout.")}/>
-                </View>
+                            />
+                    </View>
+                    : null
+                }
 
-                <Hr text='OR'
-                    lineStyle={{
-                        backgroundColor: "#aaaaaa",
-                    }}
-                    textStyle={{
-                        color: "#aaaaaa",
-                    }}
-                />
+                { !this.state.forgotCreds ?
+                    <Hr text='OR'
+                        lineStyle={{
+                            backgroundColor: "#aaaaaa",
+                        }}
+                        textStyle={{
+                            color: "#aaaaaa",
+                        }}
+                    />
+                    : null
+                }
 
                 <View style={styles.contentContainer}>
 
@@ -217,7 +226,7 @@ const Login = React.createClass({
                         </View> : null}
 
                     <TouchableOpacity style={[styles.button]} onPress={this.onPress}>
-                        <Text style={styles.buttonText}>{!this.state.signUp ? 'Log In' : 'Submit'}</Text>
+                        <Text style={styles.buttonText}>{!this.state.signUp && !this.state.forgotCreds ? 'Log In' : 'Submit'}</Text>
                     </TouchableOpacity>
 
                     {!this.state.forgotCreds && !this.state.signUp ?
