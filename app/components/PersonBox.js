@@ -12,9 +12,21 @@ const PersonBox = React.createClass({
         person: React.PropTypes.object.isRequired,
         RequestUser: React.PropTypes.object.isRequired,
         removeClient: React.PropTypes.func.isRequired,
+        sendRequest: React.PropTypes.func.isRequired
+    },
+
+    getInitialState() {
+        return {
+            invited: this.props.RequestUser.profile.requested
+        }
     },
 
     _action() {
+        console.log('hit')
+        if (this.props.RequestUser.id != this.props.person.profile.trainer) {
+            this.props.sendRequest({to_user: this.props.person.id});
+            this.setState({invited: true});
+        }
 
     },
 
@@ -24,30 +36,31 @@ const PersonBox = React.createClass({
             'Are you sure you want remove this client?',
             [
                 {text: 'Cancel', null, style: 'cancel'},
-                {text: 'Delete', onPress: () => this.props.removeClient(this.props.person.user)},
+                {text: 'Delete', onPress: () => this.props.removeClient(this.props.person.id)},
             ]
         );
     },
 
     goToProfile() {
-        // this.props.navigator.push(getRoute('Profile', userId));
+        this.props.navigator.push(getRoute('Profile', {id:this.props.person.id}));
     },
 
 
     render() {
         const person = this.props.person;
         const trainer = this.props.RequestUser;
+        console.log(person)
         return (
             <View style={styles.container}>
-                <AvatarImage style={styles.avatar} image={person.thumbnail} resizeImage={102}
+                <AvatarImage style={styles.avatar} image={person.profile.thumbnail} resizeImage={102}
                              goToProfile={this.goToProfile}/>
                 <View style={styles.text}>
-                    <Text style={styles.userName}>{person.first_name} {person.last_name}</Text>
+                    <Text style={styles.userName}>{person.profile.first_name} {person.profile.last_name}</Text>
                     <Text style={styles.title}>Test</Text>
                 </View>
-                {!person.requested ?
-                    person.user != trainer.id ?
-                        trainer.id == person.trainer ?
+                {!this.state.invited ?
+                    person.id != trainer.id ?
+                        trainer.id == person.profile.trainer ?
                             <TouchableOpacity activeOpacity={1} onPress={this._removeClient}>
                                 <Icon name="trash" size={28} color='red'/>
                             </TouchableOpacity> :

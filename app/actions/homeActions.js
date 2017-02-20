@@ -39,9 +39,9 @@ export function removeClient(clientId) {
 export function sendRequest(data) {
     let url = `${API_ENDPOINT}requests/`;
     return (dispatch, getState) => {
-        return fetch(url, fetchData('POST', null, getState().Global.UserToken))
+        return fetch(url, fetchData('POST', JSON.stringify(data), getState().Global.UserToken))
             .then((response) => {
-                return dispatch({type: types.SEND_REQUEST, clientId: clientId});
+                return dispatch({type: types.SEND_REQUEST});
             })
     }
 }

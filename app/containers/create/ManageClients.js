@@ -67,7 +67,7 @@ const ManageClients = React.createClass({
     },
 
     getUsersList(text) {
-        fetch(`${API_ENDPOINT}clients/?email=${text}`, fetchData('GET', null, this.props.UserToken), 1)
+        fetch(`${API_ENDPOINT}user/list/?search=${text}`, fetchData('GET', null, this.props.UserToken), 1)
             .then(res => res.json())
             .then(data => {
                 this.setState({
@@ -88,25 +88,12 @@ const ManageClients = React.createClass({
                 return person;
             }
         });
-        if (clients.length == 0 && this.state.filterText && this.state.fetchedUsers.length == 0) {
-            clients = [{
-                thumbnail: EMPTY_AVATAR,
-                first_name: this.state.filterText,
-                last_name: ''
-            }]
-        } else {
-            clients = clients.concat(this.state.fetchedUsers)
-        }
+        clients = clients.concat(this.state.fetchedUsers);
         return clients
     },
 
     textChange(text) {
-        if (validateEmail(text)) {
-            fetch.abort(1);
-            this.getUsersList(text);
-        } else if (this.state.fetchedUsers.length) {
-                this.setState({fetchedUsers: []});
-        }
+        this.getUsersList(text);
         this.setState({filterText: text});
     },
 
@@ -147,7 +134,7 @@ const ManageClients = React.createClass({
                         onChangeText={this.textChange}
                         onFocus={this.onFocus}
                         value={this.state.filterText}
-                        placeholder="Search Clients or Send Invite with Email"
+                        placeholder="Search Clients or Send Invite with username"
                     />
                     {this._renderCancel()}
                 </View>
@@ -168,7 +155,8 @@ const ManageClients = React.createClass({
                       dataSource={dataSource}
                       renderRow={(person) =>
                           <PersonBox navigator={this.props.navigator} person={person} RequestUser={user}
-                                     removeClient={this.props.actions.removeClient}/>
+                                     removeClient={this.props.actions.removeClient}
+                                     sendRequest={this.props.actions.sendRequest}/>
                       }
             />
         );

@@ -13,15 +13,15 @@ const PeopleBar = React.createClass({
     },
 
     goToProfile(userId) {
-        // this.props.navigator.push(getRoute('Profile', {'id': userId}));
+        this.props.navigator.push(getRoute('Profile', {id: userId}));
     },
 
     render() {
         let list = this.props.people.map((user, i) => {
-            let image = user.thumbnail ? user.thumbnail : user.avatar;
+            let image = user.profile.thumbnail ? user.profile.thumbnail : user.profile.avatar;
             return (
                 <AvatarImage key={i} style={styles.avatar} image={image}
-                             redirect={this.goToProfile.bind(null, user.user.id)}/>
+                             redirect={this.goToProfile.bind(null, user.id)}/>
             )
         });
 
