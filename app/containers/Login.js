@@ -116,6 +116,7 @@ const Login = React.createClass({
                 { !this.state.forgotCreds ?
                     <View style={styles.fbLogin}>
                         <LoginButton
+                            readPermissions={['email']}
                             onLoginFinished={
                                 (error, result) => {
                                     if (error) {

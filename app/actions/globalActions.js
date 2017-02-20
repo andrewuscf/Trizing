@@ -1,8 +1,8 @@
 'use strict';
-
 import * as types from './actionTypes';
 import {fetchData, API_ENDPOINT, refreshPage, SITE} from './utils';
 import {AsyncStorage} from 'react-native';
+import {LoginManager} from 'react-native-fbsdk';
 
 
 export function setActiveRoute(routeName) {
@@ -26,6 +26,7 @@ export function removeDeviceNotification(token) {
 export function removeToken(token) {
     return (dispatch) => {
         AsyncStorage.removeItem('USER_TOKEN');
+        LoginManager.logOut();
         if (token) dispatch(removeDeviceNotification(token));
         dispatch({type: types.REMOVE_TOKEN});
     };
@@ -66,6 +67,8 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
+                if (responseJson.detail)
+                    return dispatch(removeToken());
                 return dispatch({type: types.LOAD_REQUEST_USER, request_user: responseJson});
             })
             .catch((error) => {

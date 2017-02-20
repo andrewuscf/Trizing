@@ -32,17 +32,14 @@ export function updateProfile(data, asyncActions) {
 
 export function updateUser(data) {
     let jsondata = JSON.stringify(data);
-    console.log(jsondata)
     return (dispatch, getState) => {
         return fetch(`${API_ENDPOINT}user/${getState().Global.RequestUser.id}/`,
             fetchData('PATCH', jsondata, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
                 return dispatch({type: types.UPDATE_USER, request_user: responseJson});
             })
             .catch((error) => {
-                console.log(error)
                 return dispatch({
                     type: types.API_ERROR, error: JSON.stringify({
                         title: 'Request could not be performed.',
