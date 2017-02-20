@@ -86,8 +86,6 @@ const Login = React.createClass({
             email: null,
             username: null,
             password: null,
-            forgotCreds: false,
-            signUp: false,
             type: null
         });
     },

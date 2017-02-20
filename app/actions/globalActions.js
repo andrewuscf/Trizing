@@ -34,11 +34,9 @@ export function removeToken(token) {
 export function login(email, pass) {
     const body = JSON.stringify({username: email, password: pass});
     return dispatch => {
-        console.log(body)
         return fetch(`${API_ENDPOINT}auth/token/`, fetchData('POST', body))
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
                 if (responseJson.token) {
                     return dispatch(setTokenInRedux(responseJson.token, true));
                 }
@@ -107,6 +105,7 @@ export function register(data) {
         return fetch(`${API_ENDPOINT}auth/register/`, fetchData('POST', JSONDATA))
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson);
                 let message;
                 if (responseJson.email) {
                     message = {
@@ -119,9 +118,17 @@ export function register(data) {
                             text: 'Please use another email or log into your account.'
                         };
                 }
+                if (responseJson.username) {
+                    if (responseJson.username.constructor === Array)
+                        message = {
+                            title: responseJson.username[0],
+                            text: 'Please use another username or log into your account.'
+                        };
+                }
                 return dispatch({type: types.REGISTER_USER, message: JSON.stringify(message)});
             })
             .catch((error) => {
+                console.log(error);
                 return dispatch({
                     type: types.API_ERROR, error: JSON.stringify({
                         title: 'Request could not be performed.',
