@@ -49,18 +49,12 @@ const EditProfile = React.createClass({
 
     componentDidUpdate(prevProps) {
         if (!prevProps.RequestUser && this.props.RequestUser) {
-            var type = null;
-            if (this.props.RequestUser.type == 'Trainer') {
-                type = 1;
-            } else if (this.props.RequestUser.type == 'Client') {
-                type = 2;
-            }
             this.setState({
                 username: this.props.RequestUser.username,
                 first_name: this.props.RequestUser.profile.first_name,
                 last_name: this.props.RequestUser.profile.last_name,
                 phone_number: this.props.RequestUser.profile.phone_number,
-                type: type
+                type: this.props.RequestUser.type ? this.props.RequestUser.type : null
             })
         }
     },
@@ -75,7 +69,7 @@ const EditProfile = React.createClass({
 
     getSelectedImages(images) {
         this.setState({
-            previewImage: images[0],
+            previewImage: images[0]
         });
         this.toggleRoll();
         this.refs._scrollView.scrollTo({y: 0, false});
@@ -105,6 +99,12 @@ const EditProfile = React.createClass({
 
     _onSubmit(){
         if (this.checkAllRequired()) {
+            const data = {
+                username: this.state.username,
+                type: this.state.type
+            };
+            this.props.actions.updateUser(data);
+
             let profileData = new FormData();
             if (this.state.previewImage) {
                 profileData.append("avatar", {
@@ -118,11 +118,6 @@ const EditProfile = React.createClass({
             profileData.append("last_name", this.state.last_name);
             profileData.append("phone_number", this.state.phone_number);
             this.props.actions.updateProfile(profileData, this.asyncActions);
-            const data = {
-                username: this.state.username,
-                type: this.state.type
-            };
-            this.props.actions.updateUser()
         }
     },
 
@@ -202,16 +197,18 @@ const EditProfile = React.createClass({
                                            onChangeText={(number) =>this.setState({phone_number: number})}
                                            value={this.state.phone_number}
                                            onSubmitEditing={(event) => {
-                                               this._onSubmit();
+                                               if (this.props.RequestUser.type)
+                                                   this._onSubmit();
                                            }}
                                            placeholder="Phone Number"/>
                             </View>
 
-                            {(!this.getInitialState().type) ?
+                            {(!this.props.RequestUser.type) ?
                                 <View style={{flexDirection: 'row', paddingTop: 20}}>
                                     <TouchableOpacity onPress={this.selectType.bind(null, 1)}
                                                       style={[styles.typeButtons, this.state.type == 1 ? styles.selectedType : styles.notSelected]}>
-                                        <Text style={this.state.type == 1 ? styles.selectedText : styles.notSelectedText}>Trainer</Text>
+                                        <Text
+                                            style={this.state.type == 1 ? styles.selectedText : styles.notSelectedText}>Trainer</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={this.selectType.bind(null, 2)}
                                                       style={[styles.typeButtons, this.state.type == 2 ? styles.selectedType : styles.notSelected]}>

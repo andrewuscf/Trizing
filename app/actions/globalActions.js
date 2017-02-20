@@ -53,12 +53,9 @@ export function login(email, pass) {
             })
             .catch((error) => {
                 console.log(error)
-                return dispatch({
-                    type: types.API_ERROR, error: JSON.stringify({
-                        title: 'Request could not be performed.',
-                        text: 'Please try again later.'
-                    })
-                });
+                return dispatch(
+                    removeToken()
+                );
             });
     }
 }

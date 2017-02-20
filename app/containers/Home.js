@@ -32,7 +32,7 @@ const Home = React.createClass({
     },
 
     getNeeded(refresh = false) {
-        if (this.props.RequestUser.type == 'Trainer') {
+        if (this.props.RequestUser.type == 1) {
             this.props.actions.getClients(refresh);
         }
     },
@@ -61,7 +61,7 @@ const Home = React.createClass({
 
     render() {
         const user = this.props.RequestUser;
-        const isTrainer = user.type == 'Trainer';
+        const isTrainer = user.type == 1;
         let content = null;
         if (isTrainer) {
             content = (
