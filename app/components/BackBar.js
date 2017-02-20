@@ -33,11 +33,15 @@ const styles = StyleSheet.create({
         borderColor: '#d4d4d4',
         borderBottomWidth: 1,
         flexDirection: 'row',
+        alignItems: 'center',
         // justifyContent: 'space-between',
     },
     topNavButton: {
-        padding: 10,
-        flexDirection: 'row'
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        flexDirection: 'row',
+        flex: .2
     },
     cancelButton: {
         left: 0,
