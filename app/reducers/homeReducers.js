@@ -4,6 +4,7 @@ import * as constants from '../actions/actionTypes';
 
 const initialState = {
     Clients: [],
+    Notifications: []
 };
 
 export default function homeReducers(state = initialState, action = null) {
@@ -16,10 +17,16 @@ export default function homeReducers(state = initialState, action = null) {
             };
 
         case constants.DELETE_CLIENT:
-            const index = _.findIndex(state.Clients, {'user': action.clientId });
+            const index = _.findIndex(state.Clients, {'user': action.clientId});
             return {
                 ...state,
                 Clients: state.Clients.slice(0, index).concat(state.Clients.slice(index + 1))
+            };
+
+        case constants.GET_NOTIFICATIONS:
+            return {
+                ...state,
+                Notifications: (action.refresh) ? action.response.results : state.Notifications.concat(action.response.results)
             };
         //
         // case constants.SEND_REQUEST:

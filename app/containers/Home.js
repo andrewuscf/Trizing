@@ -6,7 +6,8 @@ import {
     ListView,
     RefreshControl,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
+    Platform
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -14,6 +15,7 @@ import {connect} from 'react-redux';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as HomeActions from '../actions/homeActions';
+import * as GlobalActions from '../actions/globalActions';
 
 import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
@@ -34,6 +36,9 @@ const Home = React.createClass({
     getNeeded(refresh = false) {
         if (this.props.RequestUser.type == 1) {
             this.props.actions.getClients(refresh);
+        }
+        if (refresh) {
+            this.props.getNotifications(refresh);
         }
     },
 
@@ -76,6 +81,8 @@ const Home = React.createClass({
         } else {
             content = <Text>Client</Text>;
         }
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        const dataSource = ds.cloneWithRows(this.props.Notifications.slice(0, 4));
         return (
             <View style={GlobalStyle.container}>
                 <ScrollView ref='home_scroll'
@@ -87,6 +94,19 @@ const Home = React.createClass({
                         </View>
                     </View>
                     {content}
+                    {this.props.Notifications.length ?
+                        <View style={styles.notificationSection}>
+                            <ListView ref='notification_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                                      style={styles.container} enableEmptySections={true} dataSource={dataSource}
+                                      renderRow={(notification) => <NotificationBox navigator={this.props.navigator} notification={notification} />}
+                            />
+                            <TouchableOpacity onPress={this._redirect.bind(null, 'Notifications', null)}
+                                              style={[styles.addClientSection, GlobalStyle.simpleBottomBorder]}>
+                                <Text style={styles.addClientsText}>View All Notifications</Text>
+                            </TouchableOpacity>
+                        </View>
+                        : null
+                    }
                 </ScrollView>
             </View>
         )
@@ -96,11 +116,13 @@ const Home = React.createClass({
 
 const styles = StyleSheet.create({
     scrollView: {
-        // backgroundColor: '#edebe6'
+        backgroundColor: '#e6e8ed'
     },
-    contentContainerStyle: {},
+    contentContainerStyle: {
+        backgroundColor: '#e6e8ed'
+    },
     topCard: {
-        elevation: 8,
+        elevation: 8
     },
     welcome: {
         backgroundColor: 'white',
@@ -130,6 +152,15 @@ const styles = StyleSheet.create({
         color: '#b1aea5',
         fontFamily: 'OpenSans-Semibold',
         margin: 10
+    },
+    notificationSection: {
+        // backgroundColor: 'white',
+        marginTop: 13,
+        borderColor: '#e1e3df',
+        borderTopWidth: 1,
+        // flexDirection: 'row',
+        // alignItems: 'center',
+        // paddingBottom: 13
     }
 });
 
@@ -143,7 +174,8 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
     return {
-        actions: bindActionCreators(HomeActions, dispatch)
+        actions: bindActionCreators(HomeActions, dispatch),
+        getNotifications: bindActionCreators(GlobalActions.getNotifications, dispatch)
     }
 };
 

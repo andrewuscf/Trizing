@@ -160,6 +160,17 @@ export function socialAuth(access_token) {
     }
 }
 
+export function getNotifications(refresh=false) {
+    let url = `${API_ENDPOINT}notifications/`;
+    return (dispatch, getState) => {
+        return fetch(url, fetchData('GET', null, getState().Global.UserToken))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                return dispatch({type: types.GET_NOTIFICATIONS, response: responseJson, refresh: refresh});
+            })
+    }
+}
+
 
 export function clearAPIError() {
     return {type: types.CLEAR_API_ERROR}
