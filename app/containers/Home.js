@@ -21,6 +21,7 @@ import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
+import NotificationBox from '../components/NotificationBox';
 import PeopleBar from '../components/PeopleBar';
 
 
@@ -88,11 +89,7 @@ const Home = React.createClass({
                 <ScrollView ref='home_scroll'
                             refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
-                    <View style={styles.topCard}>
-                        <View style={[styles.welcome, GlobalStyle.simpleBottomBorder]}>
-                            <Text style={styles.welcomeMessage}>Hello, {user.profile.first_name}</Text>
-                        </View>
-                    </View>
+
                     {content}
                     {this.props.Notifications.length ?
                         <View style={styles.notificationSection}>
@@ -121,22 +118,6 @@ const styles = StyleSheet.create({
     contentContainerStyle: {
         backgroundColor: '#e6e8ed'
     },
-    topCard: {
-        elevation: 8
-    },
-    welcome: {
-        backgroundColor: 'white',
-        alignItems: 'center',
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 20,
-        paddingRight: 20
-    },
-    welcomeMessage: {
-        fontSize: getFontSize(30),
-        color: '#494949',
-        fontFamily: 'OpenSans-Semibold'
-    },
     addClientSection: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -145,7 +126,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderBottomWidth: 0.5,
         borderRightWidth: 0.5,
-        borderLeftWidth: 0.5,
+        borderLeftWidth: 0.5
     },
     addClientsText: {
         fontSize: getFontSize(18),

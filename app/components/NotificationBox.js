@@ -1,5 +1,11 @@
 import React from 'react';
-import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+    Image,
+    StyleSheet,
+    TouchableOpacity,
+    View,
+    Text
+} from 'react-native';
 
 const NotificationBox = React.createClass({
     propTypes: {
@@ -7,23 +13,28 @@ const NotificationBox = React.createClass({
         navigator: React.PropTypes.object.isRequired,
     },
 
-    onPress(userId) {
-        if (this.props.redirect) {
-            this.props.redirect();
-        }
+    _onPress() {
+        console.log('hit')
     },
 
 
     render() {
-        return <View></View>;
+        const notification = this.props.notification;
+        console.log(notification)
+        return (
+            <View style={styles.box}>
+                <Text>test</Text>
+            </View>
+        );
     }
 });
 
 var styles = StyleSheet.create({
-    avatar: {
+    box: {
         height: 50,
-        width: 50,
-        borderRadius: 25
+        backgroundColor: 'white',
+        borderColor: '#e1e3df',
+        borderBottomWidth: .5
     }
 });
 

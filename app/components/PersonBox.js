@@ -17,12 +17,11 @@ const PersonBox = React.createClass({
 
     getInitialState() {
         return {
-            invited: this.props.RequestUser.profile.requested
+            invited: this.props.person.profile.requested
         }
     },
 
     _action() {
-        console.log('hit')
         if (this.props.RequestUser.id != this.props.person.profile.trainer) {
             this.props.sendRequest({to_user: this.props.person.id});
             this.setState({invited: true});
@@ -49,7 +48,6 @@ const PersonBox = React.createClass({
     render() {
         const person = this.props.person;
         const trainer = this.props.RequestUser;
-        console.log(person)
         return (
             <View style={styles.container}>
                 <AvatarImage style={styles.avatar} image={person.profile.thumbnail} resizeImage={102}
@@ -68,7 +66,7 @@ const PersonBox = React.createClass({
                                 <Icon name="plus" size={20} color='green'/>
                                 <Text style={styles.addText}>Add</Text>
                             </TouchableOpacity>
-                        : null
+                        : <Icon name="check" size={20} color='green'/>
                     : null
                 }
 

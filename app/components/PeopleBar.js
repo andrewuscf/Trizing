@@ -28,14 +28,18 @@ const PeopleBar = React.createClass({
         // add messages if no clients
         if (this.props.people.length == 0) {
             list = <Text key={0} style={styles.peopleEmpty}>You have no active clients!</Text>;
-        }
-
-        return (
-            <View style={styles.container}>
+        } else {
+            list = (
                 <ScrollView style={styles.peopleList} contentContainerStyle={styles.checkContentContainer}
                             showsHorizontalScrollIndicator={false} horizontal={true}>
                     {list}
                 </ScrollView>
+            )
+        }
+
+        return (
+            <View style={styles.container}>
+                {list}
             </View>
         );
     }
@@ -47,15 +51,17 @@ const styles = StyleSheet.create({
         paddingTop: 13,
         borderColor: '#e1e3df',
         borderBottomWidth: 1,
+        borderTopWidth: 1,
         flexDirection: 'row',
         alignItems: 'center',
         paddingBottom: 13
     },
     peopleEmpty: {
-        alignSelf: 'center',
         color: '#b1aea5',
         fontSize: 16,
         fontFamily: 'OpenSans-Semibold',
+        textAlign: 'center',
+        flex: 1
     },
     peopleList: {
         flex: 1
@@ -67,7 +73,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingLeft: 6,
         paddingRight: 6,
-        height: 50
+        height: 50,
     },
     avatar: {
         marginRight: 12
