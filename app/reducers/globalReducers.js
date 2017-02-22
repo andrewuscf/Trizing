@@ -14,12 +14,6 @@ const initialState = {
 
 export default function AppReducers(state = initialState, action = null) {
     switch (action.type) {
-        case constants.SET_ACTIVE_ROUTE:
-            return {
-                ...state,
-                Route: action.route
-            };
-
         case constants.SET_TOKEN:
             return {
                 ...state,

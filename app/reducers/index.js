@@ -4,9 +4,15 @@ import {combineReducers} from 'redux';
 
 import Global from './globalReducers';
 import Home from './homeReducers';
+import Calendar from './calendarReducers';
+import Chat from './chatReducers';
+import Feed from './feedReducers';
 
 export default combineReducers({
     Global,
-    Home
+    Home,
+    Calendar,
+    Chat,
+    Feed
 });
 

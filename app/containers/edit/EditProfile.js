@@ -169,7 +169,7 @@ const EditProfile = React.createClass({
                                            autoCorrect={false}
                                            ref="last_name"
                                            onSubmitEditing={(event) => {
-                                               this.refs.phone_number.focus();
+                                               this.refs.username.focus();
                                            }}
                                            onChangeText={(text) =>this.setState({last_name: text})}
                                            value={this.state.last_name}
@@ -182,7 +182,7 @@ const EditProfile = React.createClass({
                                            autoCapitalize='none'
                                            maxLength={150}
                                            onSubmitEditing={(event) => {
-                                               this._onSubmit();
+                                               this.refs.phone_number.focus();
                                            }}
                                            nChangeText={(text) =>this.setState({username: text})}
                                            value={this.state.username}

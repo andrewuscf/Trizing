@@ -4,12 +4,6 @@ import {fetchData, API_ENDPOINT, refreshPage, SITE} from './utils';
 import {AsyncStorage} from 'react-native';
 import {LoginManager} from 'react-native-fbsdk';
 
-
-export function setActiveRoute(routeName) {
-    return {type: types.SET_ACTIVE_ROUTE, route: routeName}
-}
-
-
 export function setTokenInRedux(token, FromAPI = false) {
     if (FromAPI) {
         AsyncStorage.setItem('USER_TOKEN', token)

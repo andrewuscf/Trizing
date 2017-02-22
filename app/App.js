@@ -36,7 +36,8 @@ const App = React.createClass({
 
     getInitialState: function () {
         return {
-            splashArt: true
+            splashArt: true,
+            Route: 'Home'
         };
     },
 
@@ -51,10 +52,6 @@ const App = React.createClass({
 
         }
 
-    },
-
-    itemChangedFocus(route) {
-        this.props.actions.setActiveRoute(route.name);
     },
 
     componentDidUpdate(prevProps, prevState) {
@@ -101,7 +98,7 @@ const App = React.createClass({
             if (this.props.UserToken) {
                 let navbar = null;
                 if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
-                    navbar = <NavBar activeRoute={this.props.Route} // openModal={this.openSearchModal}
+                    navbar = <NavBar route={this.state.Route} // openModal={this.openSearchModal}
                                      RequestUser={this.props.RequestUser}
                                      checkInColor="red"/>;
                     return (
@@ -111,7 +108,6 @@ const App = React.createClass({
                                        navigator = nav
                                    }}
                                        renderScene={ this._renderScene }
-                                       onDidFocus={this.itemChangedFocus}
                                        navigationBar={navbar}
                             />
                         </View>

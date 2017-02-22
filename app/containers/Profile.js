@@ -92,7 +92,6 @@ const Profile = React.createClass({
     render() {
         const user = this.state.user;
         if (user) {
-            console.log(JSON.stringify(user));
             let userImage = user.profile.avatar;
             if (user.profile.thumbnail)
                 userImage = user.profile.thumbnail;
