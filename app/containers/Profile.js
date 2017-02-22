@@ -4,13 +4,16 @@ import {
     Text,
     View,
     ScrollView,
+    Alert,
+    TouchableOpacity
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as ProfileActions from '../actions/profileActions';
-import {getUser} from '../actions/globalActions';
+import {getUser, removeToken} from '../actions/globalActions';
 
 import {fetchData, API_ENDPOINT, trunc} from '../actions/utils';
 import {getRoute} from '../routes';
@@ -88,6 +91,17 @@ const Profile = React.createClass({
         this.props.navigator.pop();
     },
 
+    _logOut() {
+        Alert.alert(
+            'Log out',
+            'Are you sure you want to log out?',
+            [
+                {text: 'Cancel', null, style: 'cancel'},
+                {text: 'Yes', onPress: () => this.props.removeToken()},
+            ]
+        );
+    },
+
 
     render() {
         const user = this.state.user;
@@ -99,6 +113,9 @@ const Profile = React.createClass({
                 <View style={GlobalStyle.container}>
                     <BackBar back={this._back}>
                         <Text style={styles.userNameTop}>{trunc(user.username, 26)}</Text>
+                        <TouchableOpacity style={styles.logOut} onPress={this._logOut}>
+                                <Icon name="power-off" size={20} color='red'/>
+                        </TouchableOpacity>
                     </BackBar>
                     <ScrollView ref='scrollView' keyboardDismissMode='interactive'
                                 style={styles.mainContainer} contentContainerStyle={styles.contentContainerStyle}>
@@ -145,6 +162,11 @@ const styles = StyleSheet.create({
     },
     name: {
         fontFamily: 'OpenSans-Bold',
+    },
+    logOut: {
+        position: 'absolute',
+        top: 10,
+        right: 10
     }
 });
 
@@ -158,7 +180,8 @@ const stateToProps = (state) => {
 const dispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(ProfileActions, dispatch),
-        getUser: bindActionCreators(getUser, dispatch)
+        getUser: bindActionCreators(getUser, dispatch),
+        removeToken: bindActionCreators(removeToken, dispatch)
     }
 };
 

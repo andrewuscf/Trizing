@@ -88,7 +88,7 @@ const EditProfile = React.createClass({
     checkAllRequired() {
         return !!(this.state.phone_number &&
         (this.state.previewImage || this.props.RequestUser.profile.avatar) &&
-        this.state.first_name && this.state.last_name);
+        this.state.first_name && this.state.last_name && this.state.type);
     },
 
     selectType(num) {

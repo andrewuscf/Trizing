@@ -22,10 +22,7 @@ export default function AppReducers(state = initialState, action = null) {
             };
 
         case constants.REMOVE_TOKEN:
-            return {
-                ...state,
-                UserToken: ''
-            };
+            return {};
 
         case constants.LOAD_REQUEST_USER:
             return {
