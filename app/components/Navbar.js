@@ -44,34 +44,34 @@ var NavBar = React.createClass({
         return (
             <View style={styles.primaryBar}>
 
-                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Home')}>
+                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Home', null)}>
                     <View style={styles.button}>
                         <Icon name="home" size={20}
                               color={ (!this.isActiveRoute('Home')) ? iconColor : iconColorActive }/>
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Calendar')}>
+                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Calendar', null)}>
                     <View style={styles.button}>
                         <Icon name="calendar-check-o" size={20}
                               color={ (!this.isActiveRoute('Calendar')) ? iconColor : iconColorActive }/>
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Feed')}>
+                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Feed', null)}>
                     <View style={styles.createButton}>
                         <Icon name="fire" size={20} color={ (!this.isActiveRoute('Feed')) ? iconColor : iconColorActive }/>
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Chat')}>
+                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Chat', null)}>
                     <View style={styles.button}>
                         <Icon name="comment-o" size={20}
                               color={ (!this.isActiveRoute('Chat')) ? iconColor : iconColorActive }/>
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Profile')}>
+                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Profile', null)}>
                     <View style={styles.button}>
                         <Icon name="user" size={20}
                               color={ (!this.isActiveRoute('Profile')) ? iconColor : iconColorActive }/>

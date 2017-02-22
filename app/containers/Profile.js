@@ -106,6 +106,7 @@ const Profile = React.createClass({
     render() {
         const user = this.state.user;
         if (user) {
+            const isRequestUser = user.id == this.props.RequestUser.id;
             let userImage = user.profile.avatar;
             if (user.profile.thumbnail)
                 userImage = user.profile.thumbnail;
@@ -114,7 +115,7 @@ const Profile = React.createClass({
                     <BackBar back={this._back}>
                         <Text style={styles.userNameTop}>{trunc(user.username, 26)}</Text>
                         <TouchableOpacity style={styles.logOut} onPress={this._logOut}>
-                                <Icon name="power-off" size={20} color='red'/>
+                            <Icon name="power-off" size={20} color='red'/>
                         </TouchableOpacity>
                     </BackBar>
                     <ScrollView ref='scrollView' keyboardDismissMode='interactive'
@@ -128,9 +129,15 @@ const Profile = React.createClass({
                                     <Text> {moment(user.checked_notifications).fromNow(false)}</Text>
                                 </Text>
                             </View>
+                            {isRequestUser ?
+                                <TouchableOpacity onPress={this._redirect.bind(null, 'EditProfile', null)}>
+                                    <Icon name="pencil" size={20} color='red'/>
+                                </TouchableOpacity>
+                                : null
+                            }
                         </View>
                         {this.props.RequestUser.id == user.profile.trainer ?
-                            <TrainingPlan trainerId={this.props.RequestUser.id} clientId={user.id} />
+                            <TrainingPlan trainerId={this.props.RequestUser.id} clientId={user.id}/>
                             : null}
                     </ScrollView>
                 </View>
