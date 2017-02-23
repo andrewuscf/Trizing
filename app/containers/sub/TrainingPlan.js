@@ -5,22 +5,25 @@ import {
     View,
     TouchableOpacity
 } from 'react-native';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
-
+import * as ProfileActions from '../../actions/profileActions';
 import GlobalStyle from '../globalStyle';
+
+
+import Loading from '../../components/Loading';
 
 
 const TrainingPlan = React.createClass({
     propTypes: {
-        trainerId: React.PropTypes.number.isRequired,
         clientId: React.PropTypes.number.isRequired,
-        id: React.PropTypes.number,
     },
 
     getInitialState() {
         return {
             user: null,
-            refreshing: false
+            loading: true
         }
     },
 
@@ -29,32 +32,32 @@ const TrainingPlan = React.createClass({
     },
 
     render() {
-        if (this.props.id) {
-            return (
-                <View><Text>has training plan</Text></View>
-            )
-        }
+        if (this.state.loading)
+            return <Loading />;
         return (
-            <TouchableOpacity onPress={this._createProgram} style={[styles.noTrainingPlan, GlobalStyle.simpleBottomBorder]}>
-                <Text style={[styles.noTrainingPlanText,]}>Create a Training Program</Text>
-            </TouchableOpacity>
+            <View style={GlobalStyle.container}>
+                <Text>Training Plan</Text>
+            </View>
         )
     }
 });
 
 
 const styles = StyleSheet.create({
-    noTrainingPlan: {
-        padding: 20,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    noTrainingPlanText: {
-        fontSize: 15,
-        // color: '#C7C7CD'
-        // fontFamily: 'OpenSans-Bold',
-    }
 });
 
-export default TrainingPlan;
+const stateToProps = (state) => {
+    return {
+        RequestUser: state.Global.RequestUser,
+        UserToken: state.Global.UserToken,
+    };
+};
+
+const dispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(ProfileActions, dispatch),
+    }
+};
+
+export default connect(stateToProps, dispatchToProps)(TrainingPlan);
+

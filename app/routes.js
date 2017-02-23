@@ -10,6 +10,7 @@ import Profile from './containers/Profile';
 
 // Sub Pages
 import Notifications from './containers/sub/Notifications';
+import TrainingPlan from './containers/sub/TrainingPlan';
 
 // Edit Pages
 import EditProfile from './containers/edit/EditProfile';
@@ -25,7 +26,8 @@ var MAIN_ROUTES = [
     {component: Profile, name: 'Profile'},
     {component: EditProfile, name: 'EditProfile'},
     {component: ManageClients, name: 'ManageClients'},
-    {component: Notifications, name: 'Notifications'}
+    {component: Notifications, name: 'Notifications'},
+    {component: TrainingPlan, name: 'TrainingPlan'}
 ];
 
 export function getRoute(routeName, props) {

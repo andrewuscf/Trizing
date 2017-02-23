@@ -114,9 +114,12 @@ const Profile = React.createClass({
                 <View style={GlobalStyle.container}>
                     <BackBar back={this._back}>
                         <Text style={styles.userNameTop}>{trunc(user.username, 26)}</Text>
-                        <TouchableOpacity style={styles.logOut} onPress={this._logOut}>
-                            <Icon name="power-off" size={20} color='red'/>
-                        </TouchableOpacity>
+                        {isRequestUser ?
+                            <TouchableOpacity style={styles.logOut} onPress={this._logOut}>
+                                <Icon name="power-off" size={20} color='red'/>
+                            </TouchableOpacity>
+                            : null
+                        }
                     </BackBar>
                     <ScrollView ref='scrollView' keyboardDismissMode='interactive'
                                 style={styles.mainContainer} contentContainerStyle={styles.contentContainerStyle}>
@@ -137,8 +140,11 @@ const Profile = React.createClass({
                             }
                         </View>
                         {this.props.RequestUser.id == user.profile.trainer ?
-                            <TrainingPlan trainerId={this.props.RequestUser.id} clientId={user.id}/>
-                            : null}
+                            <TouchableOpacity onPress={this._redirect.bind(null, 'TrainingPlan', {clientId: user.id})}>
+                                <Text>Create a Training Program</Text>
+                            </TouchableOpacity>
+                            : null
+                        }
                     </ScrollView>
                 </View>
             )
