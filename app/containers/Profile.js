@@ -23,7 +23,7 @@ import AvatarImage from '../components/AvatarImage';
 import BackBar from '../components/BackBar';
 import Loading from '../components/Loading';
 
-import TrainingPlan from './create/TrainingPlan';
+import TrainingPlan from './sub/TrainingPlan';
 
 
 moment.updateLocale('en', {

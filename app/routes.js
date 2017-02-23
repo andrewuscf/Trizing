@@ -7,11 +7,15 @@ import Feed from './containers/Feed';
 import Chat from './containers/Chat';
 import Profile from './containers/Profile';
 
+
+// Sub Pages
+import Notifications from './containers/sub/Notifications';
+
 // Edit Pages
 import EditProfile from './containers/edit/EditProfile';
 
 // Create Pages
-import ManageClients from './containers/create/ManageClients';
+import ManageClients from './containers/sub/ManageClients';
 
 var MAIN_ROUTES = [
     {component: Home, name: 'Home'},
@@ -20,7 +24,8 @@ var MAIN_ROUTES = [
     {component: Chat, name: 'Chat'},
     {component: Profile, name: 'Profile'},
     {component: EditProfile, name: 'EditProfile'},
-    {component: ManageClients, name: 'ManageClients'}
+    {component: ManageClients, name: 'ManageClients'},
+    {component: Notifications, name: 'Notifications'}
 ];
 
 export function getRoute(routeName, props) {
