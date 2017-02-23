@@ -165,6 +165,21 @@ export function getNotifications(refresh=false) {
     }
 }
 
+export function readNotification(id) {
+    const url = `${API_ENDPOINT}notification/${id}/`;
+    return (dispatch, getState) => {
+        const data = JSON.stringify({unread: false});
+        return fetch(url, fetchData('PATCH', data, getState().Global.UserToken))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                return dispatch({type: types.READ_NOTIFICATION, noteId: id});
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+}
+
 
 export function clearAPIError() {
     return {type: types.CLEAR_API_ERROR}

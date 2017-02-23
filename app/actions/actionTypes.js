@@ -17,6 +17,7 @@ export const LOAD_CLIENTS = 'LOAD_CLIENTS';
 export const DELETE_CLIENT = 'DELETE_CLIENT';
 export const SEND_REQUEST = 'SEND_REQUEST';
 export const GET_NOTIFICATIONS = 'GET_NOTIFICATIONS';
+export const READ_NOTIFICATION = 'READ_NOTIFICATION';
 
 // Profile Constants
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';

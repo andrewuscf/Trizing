@@ -28,6 +28,19 @@ export default function homeReducers(state = initialState, action = null) {
                 ...state,
                 Notifications: (action.refresh) ? action.response.results : state.Notifications.concat(action.response.results)
             };
+
+        case constants.READ_NOTIFICATION:
+            return {
+                ...state,
+                Notifications: state.Notifications.map(notification =>
+                    (notification.id === action.noteId) ?
+                    {
+                        ...notification,
+                        unread: false
+                    } :
+                        notification
+                )
+            };
         //
         // case constants.SEND_REQUEST:
         //     const index = _.findIndex(state.Clients, {'user': action.clientId });

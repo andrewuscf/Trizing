@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 
 import {getRoute} from '../routes';
-import {getFontSize} from '../actions/utils';
+import {getFontSize, trunc} from '../actions/utils';
 
 import GlobalStyle from '../containers/globalStyle';
 
@@ -24,7 +24,8 @@ moment.updateLocale('en', {
 const NotificationBox = React.createClass({
     propTypes: {
         notification: React.PropTypes.object.isRequired,
-        navigator: React.PropTypes.object.isRequired
+        navigator: React.PropTypes.object.isRequired,
+        readNotification: React.PropTypes.func.isRequired
     },
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -44,6 +45,9 @@ const NotificationBox = React.createClass({
     onPress() {
         const action = this.props.notification.action;
         console.log(action)
+        if (this.props.notification.unread) {
+            this.props.readNotification(this.props.notification.id);
+        }
     },
 
 
@@ -63,7 +67,7 @@ const NotificationBox = React.createClass({
                         <View style={styles.noteText}>
                             <Text style={styles.notifText}>
                                 <Text style={styles.firstName}>{action.actor.profile.first_name} </Text>
-                                <Text style={styles.noteAction}>{this.trimToLength(action.verb, 27)}</Text>
+                                <Text style={styles.noteAction}>{action.verb}</Text>
                             </Text>
                         </View>
                     </View>
@@ -77,7 +81,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',
-        padding: 15,
+        padding: 5,
         backgroundColor: 'white'
     },
     notifText: {

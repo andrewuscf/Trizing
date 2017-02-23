@@ -95,7 +95,9 @@ const Home = React.createClass({
                         <View style={styles.notificationSection}>
                             <ListView ref='notification_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                                       style={styles.container} enableEmptySections={true} dataSource={dataSource}
-                                      renderRow={(notification) => <NotificationBox navigator={this.props.navigator} notification={notification} />}
+                                      renderRow={(notification) => <NotificationBox
+                                        navigator={this.props.navigator} notification={notification}
+                                        readNotification={this.props.readNotification}/>}
                             />
                             <TouchableOpacity onPress={this._redirect.bind(null, 'Notifications', null)}
                                               style={[styles.addClientSection, GlobalStyle.simpleBottomBorder]}>
@@ -156,7 +158,8 @@ const stateToProps = (state) => {
 const dispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(HomeActions, dispatch),
-        getNotifications: bindActionCreators(GlobalActions.getNotifications, dispatch)
+        getNotifications: bindActionCreators(GlobalActions.getNotifications, dispatch),
+        readNotification: bindActionCreators(GlobalActions.readNotification, dispatch)
     }
 };
 
