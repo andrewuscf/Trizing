@@ -92,7 +92,7 @@ const Home = React.createClass({
 
                     {content}
                     {this.props.Notifications.length ?
-                        <View style={styles.notificationSection}>
+                        <View style={styles.section}>
                             <ListView ref='notification_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                                       style={styles.container} enableEmptySections={true} dataSource={dataSource}
                                       renderRow={(notification) => <NotificationBox
@@ -136,8 +136,8 @@ const styles = StyleSheet.create({
         fontFamily: 'OpenSans-Semibold',
         margin: 10
     },
-    notificationSection: {
-        // backgroundColor: 'white',
+    section: {
+        backgroundColor: 'white',
         marginTop: 13,
         borderColor: '#e1e3df',
         borderTopWidth: 1,

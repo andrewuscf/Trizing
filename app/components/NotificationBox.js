@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 
 import {getRoute} from '../routes';
-import {getFontSize, trunc} from '../actions/utils';
+import {getFontSize} from '../actions/utils';
 
 import GlobalStyle from '../containers/globalStyle';
 
@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         padding: 5,
-        backgroundColor: 'white'
     },
     notifText: {
         fontFamily: 'OpenSans-Semibold',
