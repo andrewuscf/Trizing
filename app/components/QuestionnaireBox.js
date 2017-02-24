@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
         width: (width/2) - 20,
         margin: 10,
         height: 150,
-        borderBottomWidth: .5,
-        borderColor: '#e1e3df',
+        borderWidth: .5,
+        borderColor: '#ccc',
     },
 });
 
