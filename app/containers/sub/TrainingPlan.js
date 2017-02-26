@@ -30,13 +30,17 @@ const TrainingPlan = React.createClass({
 
     getInitialState() {
         return {
-            user: null,
             questionnaires: null,
             questionnairesNext: null,
             workout_plans: null,
             macro_plans: null,
             tab: this.props.tab ? this.props.tab : 1,
-            refreshing: false
+            refreshing: false,
+            selected: {
+                questionnaire: null,
+                workout: null,
+                macro_plan: null
+            }
         }
     },
 
@@ -82,6 +86,15 @@ const TrainingPlan = React.createClass({
         return tab == this.state.tab
     },
 
+    selectQuestionnaire(id) {
+        this.setState({
+            selected: {
+                ...this.state.selected,
+                questionnaire: id
+            }
+        });
+    },
+
     render() {
         if (!this.state.questionnaires && !this.state.workout_plans && !this.state.macro_plans)
             return <Loading />;
@@ -111,24 +124,26 @@ const TrainingPlan = React.createClass({
                     </TouchableOpacity>
                 </View>
 
-                <View style={styles.mainContent}>
-                    <QuestionnaireBox />
-                    <QuestionnaireBox />
-                    <QuestionnaireBox />
-                    <QuestionnaireBox />
+                {this.state.tab == 1 ?
+                    <View style={styles.mainContent}>
+                        <QuestionnaireBox selectQuestionnaire={this.selectQuestionnaire} />
 
-                    {dataSource ?
-                        <ListView ref='content' removeClippedSubviews={(Platform.OS !== 'ios')}
-                                  style={styles.container} enableEmptySections={true} dataSource={dataSource}
-                                  renderRow={(object) => {
-                                      if (this.state.tab == 1) {
-                                          return <QuestionnaireBox questionnaire={object}/>
-                                      }
-                                  }}
-                        />
-                        : null
-                    }
-                </View>
+                        {dataSource ?
+                            <ListView ref='content' removeClippedSubviews={(Platform.OS !== 'ios')}
+                                      style={styles.container} enableEmptySections={true} dataSource={dataSource}
+                                      renderRow={(object) => {
+                                          if (this.state.tab == 1) {
+                                              return <QuestionnaireBox questionnaire={object}
+                                                                       selected={object.id == this.state.selected.questionnaire}
+                                                                       selectQuestionnaire={this.selectQuestionnaire}/>
+                                          }
+                                      }}
+                            />
+                            : null
+                        }
+                    </View>
+                    : null
+                }
 
             </View>
         )
