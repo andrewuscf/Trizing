@@ -24,7 +24,6 @@ const MacroBox = React.createClass({
         if (this.props.plan) {
             this.props.selectMacroPlan(this.props.questionnaire.id)
         } else {
-            console.log('no plan')
             this.props._redirect('CreateMacroPlan',{training_plan_id: this.props.training_plan.id})
         }
     },
@@ -66,7 +65,7 @@ const styles = StyleSheet.create({
         margin: 10,
         borderWidth: .5,
         borderColor: '#e1e3df',
-        padding: 10,
+        padding: 10
     },
     selectedBox: {
         borderColor: 'blue'
@@ -82,11 +81,11 @@ const styles = StyleSheet.create({
         lineHeight: getFontSize(26),
         backgroundColor: 'transparent',
         color: '#4d4d4e',
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'OpenSans-Semibold'
     },
     edit: {
         position: 'absolute',
-        right: 0,
+        right: 0
     }
 });
 
