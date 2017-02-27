@@ -11,6 +11,7 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {Pie} from 'react-native-pathjs-charts';
 
 import GlobalStyle from '../globalStyle';
 
@@ -22,6 +23,30 @@ import BackBar from '../../components/BackBar';
 
 
 var {height, width} = Dimensions.get('window');
+
+
+let options = {
+    margin: {
+        top: 5,
+        left: 0,
+        right: 0,
+        bottom: 0
+    },
+    width: 250,
+    height: 250,
+    animate: {
+        type: 'oneByOne',
+        duration: 200,
+        fillTransition: 3
+    },
+    legendPosition: 'topLeft',
+    r: 50,
+    label: {
+        fontSize: 8,
+        fontWeight: true,
+        color: '#ECF0F1'
+    }
+};
 
 const CreateMacroPlan = React.createClass({
     propTypes: {
@@ -71,6 +96,26 @@ const CreateMacroPlan = React.createClass({
 
 
     render() {
+        let data = [];
+        if (this.state.protein)
+            data.push({
+                "name": `Protein (${this.state.protein}g)`,
+                "amount": this.state.protein * 10,
+                "color": {'r': 25, 'g': 99, 'b': 201}
+            });
+        if (this.state.carbs)
+            data.push({
+                "name": `Carbs (${this.state.carbs}g)`,
+                "amount": this.state.carbs * 10,
+                "color": {'r': 24, 'g': 175, 'b': 35}
+            });
+        if (this.state.fats)
+            data.push({
+                "name": `Fats (${this.state.fats}g)`,
+                "amount": this.state.fats * 10,
+                "color": {'r': 198, 'g': 84, 'b': 45}
+            });
+        console.log(data);
         return (
             <View style={GlobalStyle.container}>
                 <BackBar back={this._onBack}>
@@ -124,7 +169,13 @@ const CreateMacroPlan = React.createClass({
 
                 <View style={{alignItems: 'center', justifyContent: 'center'}}>
                     <Text>Total Calories:</Text>
-                    <Text>{this.calculateCalories() ? this.calculateCalories(): null}</Text>
+                    <Text>{this.calculateCalories() ? this.calculateCalories() : null}</Text>
+                </View>
+                <View style={{alignSelf: 'center', marginLeft: 0}}>
+                    <Pie data={data}
+                         options={options}
+                         accessorKey="amount"
+                    />
                 </View>
                 <TouchableOpacity style={[styles.button]} onPress={this._onCreate}>
                     <Text style={styles.buttonText}>CREATE</Text>
@@ -154,8 +205,8 @@ const styles = StyleSheet.create({
     button: {
         position: 'absolute',
         bottom: 0,
-        right:0,
-        left:0,
+        right: 0,
+        left: 0,
         backgroundColor: 'transparent',
         borderWidth: 1,
         borderColor: '#1352e2',
@@ -170,7 +221,7 @@ const styles = StyleSheet.create({
     },
     titleText: {
         fontSize: 15,
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'OpenSans-Bold'
     }
 });
 
