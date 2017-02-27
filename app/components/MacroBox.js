@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
     center: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginRight: 100
     },
     details: {
         flexDirection: 'column',
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
     },
     date: {
         fontSize: getFontSize(15),
-        lineHeight: getFontSize(16),
+        lineHeight: getFontSize(26),
     },
     mainText: {
         fontSize: getFontSize(22),
