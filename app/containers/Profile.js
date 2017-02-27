@@ -159,10 +159,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     userNameTop: {
-        flex: 3,
-        alignSelf: 'center',
-        textAlign: 'center',
-        paddingLeft: -30,
         fontSize: 15,
         fontFamily: 'OpenSans-Bold',
     },
