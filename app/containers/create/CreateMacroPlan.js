@@ -115,7 +115,6 @@ const CreateMacroPlan = React.createClass({
                 "amount": this.state.fats * 10,
                 "color": {'r': 198, 'g': 84, 'b': 45}
             });
-        console.log(data);
         return (
             <View style={GlobalStyle.container}>
                 <BackBar back={this._onBack}>

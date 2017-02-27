@@ -142,6 +142,7 @@ const Profile = React.createClass({
                         </View>
                         {this.props.RequestUser.id == user.profile.trainer ?
                             <TrainingPlan clientId={user.id} UserToken={this.props.UserToken}
+                                          training_plan={user.training_plan}
                                           _redirect={this._redirect}/>
                             : null
                         }

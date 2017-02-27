@@ -7,6 +7,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment';
 
 import {getFontSize} from '../actions/utils';
 import {getRoute} from '../routes';
@@ -14,7 +15,7 @@ import {getRoute} from '../routes';
 const MacroBox = React.createClass({
     propTypes: {
         plan: React.PropTypes.object,
-        training_plan: React.PropTypes.object.isRequired,
+        training_plan: React.PropTypes.number.isRequired,
         selectMacroPlan: React.PropTypes.func.isRequired,
         _redirect: React.PropTypes.func.isRequired,
         selected: React.PropTypes.bool,
@@ -24,7 +25,7 @@ const MacroBox = React.createClass({
         if (this.props.plan) {
             this.props.selectMacroPlan(this.props.questionnaire.id)
         } else {
-            this.props._redirect('CreateMacroPlan',{training_plan_id: this.props.training_plan.id})
+            this.props._redirect('CreateMacroPlan', {training_plan_id: this.props.training_plan})
         }
     },
 
@@ -34,21 +35,29 @@ const MacroBox = React.createClass({
 
 
     render() {
-        console.log(this.props.training_plan)
         const plan = this.props.plan;
+        let created_at = null;
+        if (plan) {
+            created_at = moment.utc(plan.created_at)
+        }
         return (
             <TouchableOpacity style={[styles.container, (this.props.selected) ? styles.selectedBox : null]}
                               onPress={this._onPress}>
                 {!plan ?
 
                     <View style={styles.center}>
-                        <Icon name="plus" size={30} color='blue'/>
-                        <Text style={styles.mainText}>Create Macro New</Text>
+                        <Icon name="plus" size={30} color='#1352e2'/>
+                        <View style={styles.details}>
+                            <Text style={styles.mainText}>Create Macro New</Text>
+                        </View>
                     </View>
                     :
                     <View style={styles.center}>
-                        <Icon name="cutlery" size={30} color='blue'/>
-                        <Text style={styles.mainText}>{plan.name}</Text>
+                        <Icon name="cutlery" size={30} color='#1352e2'/>
+                        <View style={styles.details}>
+                            <Text style={styles.mainText}>{plan.name}</Text>
+                            <Text style={styles.date}>Created: {created_at.format('MMM DD, YY')}</Text>
+                        </View>
                         <TouchableOpacity onPress={this._onEdit}>
                             <Icon style={styles.edit} name="ellipsis-v" size={30} color='#4d4d4e'/>
                         </TouchableOpacity>
@@ -68,15 +77,21 @@ const styles = StyleSheet.create({
         padding: 10
     },
     selectedBox: {
-        borderColor: 'blue'
+        borderColor: '#1352e2'
     },
     center: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 4
+    },
+    details: {
+        flexDirection: 'column',
+        paddingLeft: 18,
+    },
+    date: {
+        fontSize: getFontSize(15),
+        lineHeight: getFontSize(16),
     },
     mainText: {
-        paddingLeft: 18,
         fontSize: getFontSize(22),
         lineHeight: getFontSize(26),
         backgroundColor: 'transparent',

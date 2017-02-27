@@ -8,6 +8,7 @@ import {
     Dimensions
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment';
 
 import {getFontSize} from '../actions/utils';
 import {getRoute} from '../routes';
@@ -33,19 +34,28 @@ const QuestionnaireBox = React.createClass({
 
     render() {
         const questionnaire = this.props.questionnaire;
+        let created_at = null;
+        if (questionnaire) {
+            created_at = moment.utc(questionnaire.created_at)
+        }
         return (
             <TouchableOpacity style={[styles.container, (this.props.selected) ? styles.selectedBox : null]}
                               onPress={this._onPress}>
                 {!questionnaire ?
 
                     <View style={styles.center}>
-                        <Icon name="plus-square" size={55} color='black'/>
-                        <Text style={styles.mainText}>Create New</Text>
+                        <Icon name="plus" size={30} color='black'/>
+                        <View style={styles.details}>
+                            <Text style={styles.mainText}>Create New</Text>
+                        </View>
                     </View>
                     :
                     <View style={styles.center}>
-                        <Icon name="list-ol" size={55} color='black'/>
-                        <Text style={styles.mainText}>{questionnaire.name}</Text>
+                        <Icon name="list-ol" size={30} color='black' style={{marginLeft: -2}}/>
+                        <View style={styles.details}>
+                            <Text style={styles.mainText}>{questionnaire.name}</Text>
+                            <Text style={styles.date}>Created: {created_at.format('MMM DD, YY')}</Text>
+                        </View>
                     </View>
                 }
             </TouchableOpacity>
@@ -55,23 +65,37 @@ const QuestionnaireBox = React.createClass({
 
 const styles = StyleSheet.create({
     container: {
-        width: (width / 2) - 20,
+        flex: 1,
         margin: 10,
-        height: 150,
         borderWidth: .5,
-        borderColor: '#ccc',
-        justifyContent: 'center',
-        alignItems: 'center'
+        borderColor: '#e1e3df',
+        padding: 10
     },
     selectedBox: {
-        borderColor: 'blue',
+        borderColor: '#1352e2'
     },
     center: {
-        justifyContent: 'center',
-        alignItems: 'center'
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    details: {
+        flexDirection: 'column',
+        paddingLeft: 18,
+    },
+    date: {
+        fontSize: getFontSize(15),
+        lineHeight: getFontSize(16),
     },
     mainText: {
-        paddingTop: 10
+        fontSize: getFontSize(22),
+        lineHeight: getFontSize(26),
+        backgroundColor: 'transparent',
+        color: '#4d4d4e',
+        fontFamily: 'OpenSans-Semibold'
+    },
+    edit: {
+        position: 'absolute',
+        right: 0
     }
 });
 
