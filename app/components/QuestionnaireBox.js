@@ -18,6 +18,7 @@ const QuestionnaireBox = React.createClass({
     propTypes: {
         questionnaire: React.PropTypes.object,
         selectQuestionnaire: React.PropTypes.func.isRequired,
+        _redirect: React.PropTypes.func.isRequired,
         selected: React.PropTypes.bool
     },
 

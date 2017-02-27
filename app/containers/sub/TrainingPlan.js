@@ -5,26 +5,24 @@ import {
     View,
     TouchableOpacity,
     RefreshControl,
-    ScrollView,
     ListView,
     Platform
 } from 'react-native';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
 
-import * as ProfileActions from '../../actions/profileActions';
 import GlobalStyle from '../globalStyle';
 
 import {API_ENDPOINT, fetchData} from '../../actions/utils';
 
 
 import Loading from '../../components/Loading';
+import MacroBox from '../../components/MacroBox';
 import QuestionnaireBox from '../../components/QuestionnaireBox';
 
 
 const TrainingPlan = React.createClass({
     propTypes: {
         clientId: React.PropTypes.number.isRequired,
+        _redirect: React.PropTypes.func.isRequired,
         tab: React.PropTypes.number,
     },
 
@@ -40,7 +38,8 @@ const TrainingPlan = React.createClass({
                 questionnaire: null,
                 workout: null,
                 macro_plan: null
-            }
+            },
+            training_plan: {}
         }
     },
 
@@ -49,8 +48,23 @@ const TrainingPlan = React.createClass({
     },
 
     getNeeded() {
+        this.getTrainingPlan();
         if (this.state.tab == 1)
             this.getQuestionnaires();
+    },
+
+    getTrainingPlan() {
+        fetch(`${API_ENDPOINT}training/?client=${this.props.clientId}`,
+            fetchData('GET', null, this.props.UserToken))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    training_plan: responseJson.results[0]
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     },
 
     getQuestionnaires() {
@@ -67,10 +81,6 @@ const TrainingPlan = React.createClass({
             .catch((error) => {
                 console.log(error);
             });
-    },
-
-    _createProgram() {
-        console.log('fdslajf')
     },
 
     _onTabPress(tab) {
@@ -91,6 +101,15 @@ const TrainingPlan = React.createClass({
             selected: {
                 ...this.state.selected,
                 questionnaire: id
+            }
+        });
+    },
+
+    selectMacroPlan(id) {
+        this.setState({
+            selected: {
+                ...this.state.selected,
+                macro_plan: id
             }
         });
     },
@@ -120,30 +139,43 @@ const TrainingPlan = React.createClass({
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(3)) ? styles.selectedText : null]}
                                       onPress={this._onTabPress.bind(null, 3)}>
-                        <Text>Workout Plan</Text>
+                        <Text>Workouts</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.tabView, (this.isSelected(4)) ? styles.selectedText : null]}
+                                      onPress={this._onTabPress.bind(null, 4)}>
+                        <Text>Progress</Text>
                     </TouchableOpacity>
                 </View>
 
-                {this.state.tab == 1 ?
-                    <View style={styles.mainContent}>
-                        <QuestionnaireBox selectQuestionnaire={this.selectQuestionnaire} />
+                <View style={styles.mainContent}>
+                    {this.state.tab == 1 ?
+                        <QuestionnaireBox selectQuestionnaire={this.selectQuestionnaire}
+                                          _redirect={this.props._redirect}/> : null}
 
-                        {dataSource ?
-                            <ListView ref='content' removeClippedSubviews={(Platform.OS !== 'ios')}
-                                      style={styles.container} enableEmptySections={true} dataSource={dataSource}
-                                      renderRow={(object) => {
+                    {this.state.tab == 2 ?
+                        <MacroBox selectMacroPlan={this.selectMacroPlan}
+                                  training_plan={this.state.training_plan}
+                                  _redirect={this.props._redirect}/> : null}
+
+                    {dataSource ?
+                        <ListView ref='content' removeClippedSubviews={(Platform.OS !== 'ios')}
+                                  style={styles.listContainer} enableEmptySections={true} dataSource={dataSource}
+                                  renderRow={(object) => {
                                           if (this.state.tab == 1) {
                                               return <QuestionnaireBox questionnaire={object}
                                                                        selected={object.id == this.state.selected.questionnaire}
                                                                        selectQuestionnaire={this.selectQuestionnaire}/>
+                                          } else if(this.state.tab == 2) {
+                                              return <MacroBox plan={object} selectMacroPlan={this.selectMacroPlan}
+                                              selected={object.id == this.state.selected.macro_plan}
+                                              training_plan={this.state.training_plan}
+                                              _redirect={this.props._redirect}/>
                                           }
                                       }}
-                            />
-                            : null
-                        }
-                    </View>
-                    : null
-                }
+                        />
+                        : null
+                    }
+                </View>
 
             </View>
         )
@@ -165,32 +197,21 @@ const styles = StyleSheet.create({
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',
-        borderLeftWidth: .5,
-        borderColor: '#e1e3df',
     },
     selectedText: {
         borderBottomWidth: 2,
         borderBottomColor: 'blue',
     },
     mainContent: {
+        flex: 1,
         justifyContent: 'center',
         flexDirection: 'row',
         flexWrap: 'wrap',
+    },
+    listContainer: {
+        flex: 1
     }
 });
 
-const stateToProps = (state) => {
-    return {
-        RequestUser: state.Global.RequestUser,
-        UserToken: state.Global.UserToken,
-    };
-};
-
-const dispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators(ProfileActions, dispatch),
-    }
-};
-
-export default connect(stateToProps, dispatchToProps)(TrainingPlan);
+export default TrainingPlan;
 

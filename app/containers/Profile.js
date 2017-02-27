@@ -19,6 +19,7 @@ import {fetchData, API_ENDPOINT, trunc} from '../actions/utils';
 import {getRoute} from '../routes';
 import GlobalStyle from './globalStyle';
 
+
 import AvatarImage from '../components/AvatarImage';
 import BackBar from '../components/BackBar';
 import Loading from '../components/Loading';
@@ -140,9 +141,8 @@ const Profile = React.createClass({
                             }
                         </View>
                         {this.props.RequestUser.id == user.profile.trainer ?
-                            <TouchableOpacity onPress={this._redirect.bind(null, 'TrainingPlan', {clientId: user.id})}>
-                                <Text>Create a Training Program</Text>
-                            </TouchableOpacity>
+                            <TrainingPlan clientId={user.id} UserToken={this.props.UserToken}
+                                          _redirect={this._redirect}/>
                             : null
                         }
                     </ScrollView>
