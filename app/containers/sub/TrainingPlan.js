@@ -11,7 +11,7 @@ import {
 
 import GlobalStyle from '../globalStyle';
 
-import {API_ENDPOINT, fetchData, getFontSize} from '../../actions/utils';
+import {API_ENDPOINT, fetchData, getFontSize, checkStatus} from '../../actions/utils';
 
 
 import Loading from '../../components/Loading';
@@ -56,7 +56,7 @@ const TrainingPlan = React.createClass({
         let jsondata = JSON.stringify(data);
         fetch(`${API_ENDPOINT}training/macros/`,
             fetchData('POST', jsondata, this.props.UserToken))
-            .then((response) => response.json())
+            .then(checkStatus)
             .then((responseJson) => {
                 this.setState({
                     macro_plans: [
@@ -80,7 +80,7 @@ const TrainingPlan = React.createClass({
         if (!refresh && this.state.macro_plansNext)
             url = this.state.macro_plansNext;
 
-        fetch(url, fetchData('GET', null, this.props.UserToken)).then((response) => response.json())
+        fetch(url, fetchData('GET', null, this.props.UserToken)).then(checkStatus)
             .then((responseJson) => {
                 if (!this.state.macro_plansNext || refresh)
                     this.setState({macro_plans: responseJson.results, macro_plansNext: responseJson.next});
@@ -97,7 +97,7 @@ const TrainingPlan = React.createClass({
 
     updatePlan(data) {
         fetch(`${API_ENDPOINT}training/${this.props.training_plan.id}/`,
-            fetchData('PATCH', JSON.stringify(data), this.props.UserToken)).then((response) => response.json())
+            fetchData('PATCH', JSON.stringify(data), this.props.UserToken)).then(checkStatus)
             .then((responseJson) => {
                 console.log(responseJson);
             })

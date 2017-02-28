@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import * as ProfileActions from '../actions/profileActions';
 import {getUser, removeToken, getQuestionnaires} from '../actions/globalActions';
 
-import {fetchData, API_ENDPOINT, trunc} from '../actions/utils';
+import {fetchData, API_ENDPOINT, trunc, checkStatus} from '../actions/utils';
 import {getRoute} from '../routes';
 import GlobalStyle from './globalStyle';
 
@@ -68,7 +68,7 @@ const Profile = React.createClass({
                 this.setState({user: this.props.RequestUser});
         } else {
             fetch(`${API_ENDPOINT}user/${this.props.id}/`, fetchData('GET', null, this.props.UserToken))
-                .then((response) => response.json())
+                .then(checkStatus)
                 .then((responseJson) => {
                     this.setState({
                         user: responseJson

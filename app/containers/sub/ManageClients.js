@@ -16,7 +16,7 @@ import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import fetch from 'react-native-cancelable-fetch';
 
-import {fetchData, API_ENDPOINT, validateEmail} from '../../actions/utils';
+import {fetchData, API_ENDPOINT, validateEmail, checkStatus} from '../../actions/utils';
 
 import * as HomeActions from '../../actions/homeActions';
 
@@ -67,7 +67,7 @@ const ManageClients = React.createClass({
 
     getUsersList(text) {
         fetch(`${API_ENDPOINT}user/list/?search=${text}`, fetchData('GET', null, this.props.UserToken), 1)
-            .then(res => res.json())
+            .then(checkStatus)
             .then(data => {
                 this.setState({
                     fetchedUsers: data.results
