@@ -17,7 +17,6 @@ import ManageClients from './containers/sub/ManageClients';
 import EditProfile from './containers/edit/EditProfile';
 
 // Create Pages
-import CreateMacroPlan from './containers/create/CreateMacroPlan';
 
 var MAIN_ROUTES = [
     {component: Home, name: 'Home'},
@@ -29,7 +28,6 @@ var MAIN_ROUTES = [
     {component: ManageClients, name: 'ManageClients'},
     {component: Notifications, name: 'Notifications'},
     {component: TrainingPlan, name: 'TrainingPlan'},
-    {component: CreateMacroPlan, name: 'CreateMacroPlan'}
 ];
 
 export function getRoute(routeName, props) {

@@ -24,7 +24,7 @@ const TrainingPlan = React.createClass({
         clientId: React.PropTypes.number.isRequired,
         training_plan: React.PropTypes.number.isRequired,
         _redirect: React.PropTypes.func.isRequired,
-        tab: React.PropTypes.number,
+        tab: React.PropTypes.number
     },
 
     getInitialState() {
@@ -55,13 +55,38 @@ const TrainingPlan = React.createClass({
             this.getMacros();
     },
 
-    getMacros() {
-        fetch(`${API_ENDPOINT}training/macros/?client=${this.props.clientId}`,
+    createMacroPlan(data) {
+        let jsondata = JSON.stringify(data);
+        fetch(`${API_ENDPOINT}training/macros/`,
+            fetchData('POST', jsondata, this.props.UserToken))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({macro_plans: [
+                    responseJson,
+                    ...this.state.macro_plans
+                ]});
+                console.log(responseJson);
+            })
+            .catch((error) => {
+                return dispatch({
+                    type: types.API_ERROR, error: JSON.stringify({
+                        title: 'Request could not be performed.',
+                        text: 'Please try again later.'
+                    })
+                });
+            });
+    },
+
+    getMacros(refresh = false) {
+        let url = `${API_ENDPOINT}training/macros/?client=${this.props.clientId}`;
+        if (!refresh && this.state.macro_plansNext)
+            url = this.state.macro_plansNext;
+
+        fetch(url,
             fetchData('GET', null, this.props.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
-                if (!this.state.macro_plansNext)
+                if (!this.state.macro_plansNext || refresh)
                     this.setState({macro_plans: responseJson.results, macro_plansNext: responseJson.next});
                 else
                     this.setState({
@@ -132,13 +157,14 @@ const TrainingPlan = React.createClass({
     },
 
     renderCreateBar(){
-        if (this.state.tab == 1 ) {
+        if (this.state.tab == 1) {
             return <QuestionnaireBox selectQuestionnaire={this.selectQuestionnaire}
                                      _redirect={this.props._redirect}/>
         } else if (this.state.tab == 2) {
             return <MacroBox selectMacroPlan={this.selectMacroPlan}
-                      training_plan={this.props.training_plan}
-                      _redirect={this.props._redirect}/>
+                             createMacroPlan={this.createMacroPlan}
+                             training_plan={this.props.training_plan}
+                             _redirect={this.props._redirect}/>
         }
         return ''
     },

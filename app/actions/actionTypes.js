@@ -22,3 +22,5 @@ export const READ_NOTIFICATION = 'READ_NOTIFICATION';
 // Profile Constants
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const UPDATE_USER = 'UPDATE_USER';
+export const CREATE_MACRO_PLAN = 'CREATE_MACRO_PLAN';
+export const CLEAR_MACRO_PLAN = 'CLEAR_MACRO_PLAN';
