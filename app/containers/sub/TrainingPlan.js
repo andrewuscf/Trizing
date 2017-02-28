@@ -22,35 +22,32 @@ import QuestionnaireBox from '../../components/QuestionnaireBox';
 const TrainingPlan = React.createClass({
     propTypes: {
         clientId: React.PropTypes.number.isRequired,
-        training_plan: React.PropTypes.number.isRequired,
+        training_plan: React.PropTypes.object.isRequired,
         _redirect: React.PropTypes.func.isRequired,
+        getQuestionnaires: React.PropTypes.func.isRequired,
+        Questionnaires: React.PropTypes.array.isRequired,
+        QuestionnairesNext: React.PropTypes.string,
         tab: React.PropTypes.number
     },
 
     getInitialState() {
         return {
-            questionnaires: null,
-            questionnairesNext: null,
             workout_plans: null,
             macro_plansNext: null,
             macro_plans: null,
             tab: this.props.tab ? this.props.tab : 1,
             refreshing: false,
-            selected: {
-                questionnaire: null,
-                workout: null,
-                macro_plan: null
-            },
+            training_plan: this.props.training_plan,
         }
     },
 
     componentDidMount() {
-        this.getNeeded();
+        this.getNeeded(true);
     },
 
     getNeeded(refresh = false) {
         if (this.state.tab == 1)
-            this.getQuestionnaires(refresh);
+            this.props.getQuestionnaires(refresh);
         else if (this.state.tab == 2)
             this.getMacros(refresh);
     },
@@ -85,7 +82,6 @@ const TrainingPlan = React.createClass({
 
         fetch(url, fetchData('GET', null, this.props.UserToken)).then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
                 if (!this.state.macro_plansNext || refresh)
                     this.setState({macro_plans: responseJson.results, macro_plansNext: responseJson.next});
                 else
@@ -99,20 +95,11 @@ const TrainingPlan = React.createClass({
             });
     },
 
-    getQuestionnaires(refresh = false) {
-        let url = `${API_ENDPOINT}training/questionnaires/`;
-        if (!refresh && this.state.questionnairesNext)
-            url = this.state.questionnairesNext;
-
-        fetch(url, fetchData('GET', null, this.props.UserToken)).then((response) => response.json())
+    updatePlan(data) {
+        fetch(`${API_ENDPOINT}training/${this.props.training_plan.id}/`,
+            fetchData('PATCH', JSON.stringify(data), this.props.UserToken)).then((response) => response.json())
             .then((responseJson) => {
-                if (!this.state.questionnairesNext || refresh)
-                    this.setState({questionnaires: responseJson.results, questionnairesNext: responseJson.next});
-                else
-                    this.setState({
-                        questionnaires: this.state.questionnaires.concat(responseJson.results),
-                        questionnairesNext: responseJson.next
-                    });
+                console.log(responseJson);
             })
             .catch((error) => {
                 console.log(error);
@@ -121,8 +108,8 @@ const TrainingPlan = React.createClass({
 
     _onTabPress(tab) {
         if (tab != this.state.tab) {
-            if (tab == 1 && !this.state.questionnaires) {
-                this.getQuestionnaires();
+            if (tab == 1 && !this.props.Questionnaires.length) {
+                this.props.getQuestionnaires(true);
             }
             else if (tab == 2 && !this.state.macro_plans) {
                 this.getMacros();
@@ -136,8 +123,8 @@ const TrainingPlan = React.createClass({
     },
 
     _onEndReached() {
-        if (this.state.tab == 1 && this.state.questionnairesNext)
-            this.getQuestionnaires();
+        if (this.state.tab == 1 && this.state.QuestionnairesNext)
+            this.props.getQuestionnaires();
         else if (this.state.tab == 2 && this.state.macro_plansNext)
             this.getMacros();
     },
@@ -148,17 +135,19 @@ const TrainingPlan = React.createClass({
 
     selectQuestionnaire(id) {
         this.setState({
-            selected: {
-                ...this.state.selected,
+            training_plan: {
+                ...this.state.training_plan,
                 questionnaire: id
             }
         });
+        this.updatePlan({questionnaire: id});
     },
 
     selectMacroPlan(id) {
+        this.updatePlan({macro_plan: id});
         this.setState({
-            selected: {
-                ...this.state.selected,
+            training_plan: {
+                ...this.state.training_plan,
                 macro_plan: id
             }
         });
@@ -166,14 +155,18 @@ const TrainingPlan = React.createClass({
 
     renderCreateBar(){
         if (this.state.tab == 1) {
-            return <QuestionnaireBox selectQuestionnaire={this.selectQuestionnaire}
-                                     _redirect={this.props._redirect}/>
+            return (
+                <View>
+                    <QuestionnaireBox selectQuestionnaire={this.selectQuestionnaire}
+                                      _redirect={this.props._redirect}/>
+                    <Text style={styles.helpText}>PRESS AND HOLD TO MAKE ACTIVE</Text>
+                </View>
+            )
         } else if (this.state.tab == 2) {
             return (
                 <View>
-                    <MacroBox selectMacroPlan={this.selectMacroPlan}
-                              createMacroPlan={this.createMacroPlan}
-                              training_plan={this.props.training_plan}
+                    <MacroBox createMacroPlan={this.createMacroPlan}
+                              training_plan={this.props.training_plan.id}
                               _redirect={this.props._redirect}/>
                     <Text style={styles.helpText}>PRESS AND HOLD TO MAKE ACTIVE</Text>
                 </View>
@@ -183,12 +176,12 @@ const TrainingPlan = React.createClass({
     },
 
     render() {
-        if (!this.state.questionnaires && !this.state.workout_plans && !this.state.macro_plans)
+        if (!this.props.Questionnaires && !this.state.workout_plans && !this.state.macro_plans)
             return <Loading />;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = null;
-        if (this.state.tab == 1 && this.state.questionnaires) {
-            dataSource = ds.cloneWithRows(this.state.questionnaires);
+        if (this.state.tab == 1 && this.props.Questionnaires) {
+            dataSource = ds.cloneWithRows(this.props.Questionnaires);
         } else if (this.state.tab == 2 && this.state.macro_plans) {
             dataSource = ds.cloneWithRows(this.state.macro_plans);
         } else if (this.state.tab == 3 && this.state.workout_plans) {
@@ -226,12 +219,12 @@ const TrainingPlan = React.createClass({
                                       if (this.state.tab == 1) {
                                           return <QuestionnaireBox questionnaire={object}
                                                                    _redirect={this.props._redirect}
-                                                                   selected={object.id == this.state.selected.questionnaire}
+                                                                   selected={object.id == this.state.training_plan.questionnaire}
                                                                    selectQuestionnaire={this.selectQuestionnaire}/>
                                       } else if (this.state.tab == 2) {
                                           return <MacroBox plan={object} selectMacroPlan={this.selectMacroPlan}
-                                                           selected={object.id == this.state.selected.macro_plan}
-                                                           training_plan={this.props.training_plan}
+                                                           selected={object.id == this.state.training_plan.macro_plan}
+                                                           training_plan={this.props.training_plan.id}
                                                            _redirect={this.props._redirect}/>
                                       }
                                   }}

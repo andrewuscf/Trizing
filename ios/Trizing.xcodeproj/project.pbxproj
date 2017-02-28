@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -36,6 +37,7 @@
 		2D02E4C91E0B4AEC006451C7 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* TrizingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* TrizingTests.m */; };
 		2E836AEC5D68A75D2918F9B1 /* libPods-Trizing-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0942CDC3D2283FCE032076F5 /* libPods-Trizing-tvOS.a */; };
+		3BB04ED95D0E417CA74B9383 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3805A7BCE2E5418E88F5E9AB /* libRNSVG.a */; };
 		3E4B6C1DC6B94CE2905130D7 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA93046519634EE083C2E02A /* Entypo.ttf */; };
 		492365071E5980750058073B /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49800F521E597312008F9359 /* libRCTFBSDK.a */; };
 		493C44801E5194F600A97577 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44761E5194F600A97577 /* OpenSans-Bold.ttf */; };
@@ -80,7 +82,6 @@
 		CB4DD15CC00E41CCA3FDA64B /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 995E3393F9844DDC9EE44EAE /* FontAwesome.ttf */; };
 		E9C9AF8692BDA8F6749B2719 /* libPods-TrizingTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EC626B757C2DE173626DA1C /* libPods-TrizingTests.a */; };
 		EEFA4CDFCC754E788D9A0E7A /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99EFCA2327074196B81CCAFC /* Ionicons.ttf */; };
-		3BB04ED95D0E417CA74B9383 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3805A7BCE2E5418E88F5E9AB /* libRNSVG.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -259,6 +260,13 @@
 			remoteGlobalIDString = 3D3CD9181DE5FBD800167DC4;
 			remoteInfo = "jschelpers-tvOS";
 		};
+		497A844A1E64120D0081F605 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B81740734C94F918964E3E7 /* RNSVG.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
+			remoteInfo = RNSVG;
+		};
 		49800F511E597312008F9359 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5FF837605A194A8AB6E98775 /* RCTFBSDK.xcodeproj */;
@@ -323,6 +331,7 @@
 		20B0F08C1E5D739400EB5550 /* Trizing.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Trizing.entitlements; path = Trizing/Trizing.entitlements; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* Trizing-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Trizing-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Trizing-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Trizing-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3805A7BCE2E5418E88F5E9AB /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
 		41598DCACC98D3BD3F00368B /* Pods-TrizingTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrizingTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrizingTests/Pods-TrizingTests.debug.xcconfig"; sourceTree = "<group>"; };
 		49359926A7D6491C94B813C8 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		493C44761E5194F600A97577 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Bold.ttf"; path = "../app/assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
@@ -335,6 +344,7 @@
 		4D040E6939A3394128C13CEE /* Pods-Trizing.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing/Pods-Trizing.debug.xcconfig"; sourceTree = "<group>"; };
 		4DE33148379349C5AFACDF35 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		4EC626B757C2DE173626DA1C /* libPods-TrizingTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TrizingTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B81740734C94F918964E3E7 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		5FF837605A194A8AB6E98775 /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -355,8 +365,6 @@
 		C8AC1A1DCD40DEDD96E800C4 /* Pods-Trizing.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing.release.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing/Pods-Trizing.release.xcconfig"; sourceTree = "<group>"; };
 		F868D10BC07EA86CD5E5125D /* libPods-Trizing.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trizing.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA6FBCA42C2E184906EAE148 /* libPods-Trizing-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trizing-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5B81740734C94F918964E3E7 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; name = "RNSVG.xcodeproj"; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		3805A7BCE2E5418E88F5E9AB /* libRNSVG.a */ = {isa = PBXFileReference; name = "libRNSVG.a"; path = "libRNSVG.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -575,6 +583,14 @@
 				4EC626B757C2DE173626DA1C /* libPods-TrizingTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		497A842C1E64120D0081F605 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				497A844B1E64120D0081F605 /* libRNSVG.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		49800F4A1E597311008F9359 /* Products */ = {
@@ -859,6 +875,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = 497A842C1E64120D0081F605 /* Products */;
+					ProjectRef = 5B81740734C94F918964E3E7 /* RNSVG.xcodeproj */;
+				},
+				{
 					ProductGroup = 2086D86D1E516BFA00D9945E /* Products */;
 					ProjectRef = 7B87053A2BB34784AB011E20 /* RNVectorIcons.xcodeproj */;
 				},
@@ -1033,6 +1053,13 @@
 			fileType = archive.ar;
 			path = libjschelpers.a;
 			remoteRef = 3DAD3EAE1DF850E9000B6D8A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		497A844B1E64120D0081F605 /* libRNSVG.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSVG.a;
+			remoteRef = 497A844A1E64120D0081F605 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		49800F521E597312008F9359 /* libRCTFBSDK.a */ = {

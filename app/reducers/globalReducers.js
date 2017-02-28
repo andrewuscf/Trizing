@@ -9,7 +9,9 @@ const initialState = {
     UserToken: '',
     Route: null,
     Refreshing: false,
-    Error: null
+    Error: null,
+    Questionnaires: [],
+    QuestionnairesNext: null
 };
 
 export default function AppReducers(state = initialState, action = null) {
@@ -67,6 +69,13 @@ export default function AppReducers(state = initialState, action = null) {
                     ...state.RequestUser,
                     profile: action.profile
                 }
+            };
+
+        case constants.GET_QUESTIONNAIRES:
+            return {
+                ...state,
+                Questionnaires: action.refresh ? action.response.results : state.Questionnaires.concat(action.response.results),
+                QuestionnairesNext: action.response.next
             };
 
         default:

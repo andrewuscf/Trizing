@@ -17,8 +17,8 @@ const MacroBox = React.createClass({
     propTypes: {
         plan: React.PropTypes.object,
         training_plan: React.PropTypes.number.isRequired,
-        selectMacroPlan: React.PropTypes.func.isRequired,
         _redirect: React.PropTypes.func.isRequired,
+        selectMacroPlan: React.PropTypes.func,
         selected: React.PropTypes.bool
     },
 
@@ -31,6 +31,7 @@ const MacroBox = React.createClass({
             calories: null,
             showForm: false,
             showDetails: false,
+            lastPress: 0
         }
     },
 
@@ -69,8 +70,15 @@ const MacroBox = React.createClass({
 
     _onPress() {
         if (this.props.plan) {
-            // this.props.selectMacroPlan(this.props.questionnaire.id)
-            this.setState({showDetails: !this.state.showDetails})
+            var delta = new Date().getTime() - this.state.lastPress;
+            if(delta < 200) {
+                console.log('Double tap')
+            } else {
+                this.setState({showDetails: !this.state.showDetails});
+            }
+            this.setState({
+                lastPress: new Date().getTime()
+            })
         } else {
             this.setState({showForm: true})
         }
@@ -81,7 +89,9 @@ const MacroBox = React.createClass({
     },
 
     _onLongPress() {
-        console.log('long press')
+        if (this.props.plan) {
+            this.props.selectMacroPlan(this.props.plan.id);
+        }
     },
 
 

@@ -184,3 +184,18 @@ export function readNotification(id) {
 export function clearAPIError() {
     return {type: types.CLEAR_API_ERROR}
 }
+
+export function getQuestionnaires(refresh = false) {
+    return (dispatch, getState) => {
+        let url = `${API_ENDPOINT}training/questionnaires/`;
+        if (!refresh && getState().Global.QuestionnairesNext)
+            url = getState().Global.QuestionnairesNext;
+        return fetch(url, fetchData('GET', null, getState().Global.UserToken)).then((response) => response.json())
+            .then((responseJson) => {
+                return dispatch({type: types.GET_QUESTIONNAIRES, response: responseJson, refresh: refresh});
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+}

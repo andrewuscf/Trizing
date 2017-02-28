@@ -13,7 +13,7 @@ import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as ProfileActions from '../actions/profileActions';
-import {getUser, removeToken} from '../actions/globalActions';
+import {getUser, removeToken, getQuestionnaires} from '../actions/globalActions';
 
 import {fetchData, API_ENDPOINT, trunc} from '../actions/utils';
 import {getRoute} from '../routes';
@@ -136,6 +136,9 @@ const Profile = React.createClass({
                     </View>
                     {this.props.RequestUser.id == user.profile.trainer ?
                         <TrainingPlan clientId={user.id} UserToken={this.props.UserToken}
+                                      Questionnaires={this.props.Questionnaires}
+                                      QuestionnairesNext={this.props.QuestionnairesNext}
+                                      getQuestionnaires={this.props.getQuestionnaires}
                                       training_plan={user.training_plan}
                                       _redirect={this._redirect}/>
                         : null
@@ -174,6 +177,8 @@ const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
         UserToken: state.Global.UserToken,
+        Questionnaires: state.Global.Questionnaires,
+        QuestionnairesNext: state.Global.QuestionnairesNext,
     };
 };
 
@@ -181,7 +186,8 @@ const dispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(ProfileActions, dispatch),
         getUser: bindActionCreators(getUser, dispatch),
-        removeToken: bindActionCreators(removeToken, dispatch)
+        removeToken: bindActionCreators(removeToken, dispatch),
+        getQuestionnaires: bindActionCreators(getQuestionnaires, dispatch)
     }
 };
 
