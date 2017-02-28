@@ -175,7 +175,7 @@ const TrainingPlan = React.createClass({
                               createMacroPlan={this.createMacroPlan}
                               training_plan={this.props.training_plan}
                               _redirect={this.props._redirect}/>
-                    <Text style={styles.helpText}>Press and Hold to make active</Text>
+                    <Text style={styles.helpText}>PRESS AND HOLD TO MAKE ACTIVE</Text>
                 </View>
             )
         }
