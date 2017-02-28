@@ -49,12 +49,11 @@ const PersonBox = React.createClass({
         const person = this.props.person;
         const trainer = this.props.RequestUser;
         return (
-            <View style={styles.container}>
-                <AvatarImage style={styles.avatar} image={person.profile.thumbnail} resizeImage={102}
-                             goToProfile={this.goToProfile}/>
+            <TouchableOpacity style={styles.container} onPress={this.goToProfile}>
+                <AvatarImage style={styles.avatar} image={person.profile.thumbnail} resizeImage={102}/>
                 <View style={styles.text}>
-                    <Text style={styles.userName}>{person.profile.first_name} {person.profile.last_name}</Text>
-                    <Text style={styles.title}>Test</Text>
+                    <Text style={styles.userName}>{person.username}</Text>
+                    <Text style={styles.title}>{person.profile.first_name} {person.profile.last_name}</Text>
                 </View>
                 {!this.state.invited ?
                     person.id != trainer.id ?
@@ -70,7 +69,7 @@ const PersonBox = React.createClass({
                     : null
                 }
 
-            </View>
+            </TouchableOpacity>
         );
     }
 });

@@ -56,7 +56,6 @@ const ManageClients = React.createClass({
 
     onFocus() {
         this.setState({
-            flex: 1,
             showCancel: true,
             iconColor: '#797979'
         });
@@ -81,8 +80,8 @@ const ManageClients = React.createClass({
             if (!this.state.filterText) {
                 return person
             }
-            var first_name = person.first_name.toLowerCase();
-            var last_name = person.last_name.toLowerCase();
+            var first_name = person.profile.first_name.toLowerCase();
+            var last_name = person.profile.last_name.toLowerCase();
             if (_.includes(first_name, this.state.filterText.toLowerCase())
                 || _.includes(last_name, this.state.filterText.toLowerCase())) {
                 return person;
@@ -100,9 +99,9 @@ const ManageClients = React.createClass({
     clickCancel: function () {
         this.setState({
             filterText: null,
-            flex: null,
             showCancel: false,
-            iconColor: '#a7a59f'
+            iconColor: '#a7a59f',
+            fetchedUsers: []
         });
     },
 
@@ -121,12 +120,12 @@ const ManageClients = React.createClass({
     renderSearchBar(){
         return (
             <View>
-                <BackBar back={this._back}/>
+                <BackBar back={this._back} navStyle={{height: 40}}/>
                 <View style={styles.subNav}>
                     <Icon name="search" size={16} color={this.state.iconColor}/>
                     <TextInput
                         ref="searchinput"
-                        style={[styles.filterInput, {flex: this.state.flex}]}
+                        style={[styles.filterInput]}
                         underlineColorAndroid='transparent'
                         autoCapitalize='none'
                         autoCorrect={false}
@@ -170,6 +169,7 @@ const styles = StyleSheet.create({
         // backgroundColor: '#edebe6'
     },
     filterInput: {
+        flex: 1,
         width: 105,
         color: '#797979',
         fontSize: 14,
