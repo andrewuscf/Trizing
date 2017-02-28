@@ -80,10 +80,6 @@ const Profile = React.createClass({
         }
     },
 
-    onEndReached() {
-        console.log('End reach')
-    },
-
     _redirect(routeName, props = null) {
         this.props.navigator.push(getRoute(routeName, props));
     },
@@ -122,31 +118,28 @@ const Profile = React.createClass({
                             : null
                         }
                     </BackBar>
-                    <ScrollView ref='scrollView' keyboardDismissMode='interactive'
-                                style={styles.mainContainer} contentContainerStyle={styles.contentContainerStyle}>
-                        <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
-                            <AvatarImage style={styles.avatar} image={userImage}/>
-                            <View style={styles.userInfo}>
-                                <Text
-                                    style={styles.name}>{trunc(`${user.profile.first_name} ${user.profile.last_name}`, 26)}</Text>
-                                <Text>Last Active:
-                                    <Text> {moment(user.checked_notifications).fromNow(false)}</Text>
-                                </Text>
-                            </View>
-                            {isRequestUser ?
-                                <TouchableOpacity onPress={this._redirect.bind(null, 'EditProfile', null)}>
-                                    <Icon name="pencil" size={20} color='red'/>
-                                </TouchableOpacity>
-                                : null
-                            }
+                    <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
+                        <AvatarImage style={styles.avatar} image={userImage}/>
+                        <View style={styles.userInfo}>
+                            <Text
+                                style={styles.name}>{trunc(`${user.profile.first_name} ${user.profile.last_name}`, 26)}</Text>
+                            <Text>Last Active:
+                                <Text> {moment(user.checked_notifications).fromNow(false)}</Text>
+                            </Text>
                         </View>
-                        {this.props.RequestUser.id == user.profile.trainer ?
-                            <TrainingPlan clientId={user.id} UserToken={this.props.UserToken}
-                                          training_plan={user.training_plan}
-                                          _redirect={this._redirect}/>
+                        {isRequestUser ?
+                            <TouchableOpacity onPress={this._redirect.bind(null, 'EditProfile', null)}>
+                                <Icon name="pencil" size={20} color='red'/>
+                            </TouchableOpacity>
                             : null
                         }
-                    </ScrollView>
+                    </View>
+                    {this.props.RequestUser.id == user.profile.trainer ?
+                        <TrainingPlan clientId={user.id} UserToken={this.props.UserToken}
+                                      training_plan={user.training_plan}
+                                      _redirect={this._redirect}/>
+                        : null
+                    }
                 </View>
             )
         }
@@ -156,9 +149,6 @@ const Profile = React.createClass({
 
 
 const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-    },
     userNameTop: {
         fontSize: 15,
         fontFamily: 'OpenSans-Bold',

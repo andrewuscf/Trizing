@@ -48,11 +48,11 @@ const TrainingPlan = React.createClass({
         this.getNeeded();
     },
 
-    getNeeded() {
+    getNeeded(refresh = false) {
         if (this.state.tab == 1)
-            this.getQuestionnaires();
+            this.getQuestionnaires(refresh);
         else if (this.state.tab == 2)
-            this.getMacros();
+            this.getMacros(refresh);
     },
 
     createMacroPlan(data) {
@@ -67,7 +67,6 @@ const TrainingPlan = React.createClass({
                         ...this.state.macro_plans
                     ]
                 });
-                console.log(responseJson);
             })
             .catch((error) => {
                 return dispatch({
@@ -84,10 +83,9 @@ const TrainingPlan = React.createClass({
         if (!refresh && this.state.macro_plansNext)
             url = this.state.macro_plansNext;
 
-        fetch(url,
-            fetchData('GET', null, this.props.UserToken))
-            .then((response) => response.json())
+        fetch(url, fetchData('GET', null, this.props.UserToken)).then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson)
                 if (!this.state.macro_plansNext || refresh)
                     this.setState({macro_plans: responseJson.results, macro_plansNext: responseJson.next});
                 else
@@ -101,13 +99,14 @@ const TrainingPlan = React.createClass({
             });
     },
 
-    getQuestionnaires() {
-        fetch(`${API_ENDPOINT}training/questionnaires/`,
-            fetchData('GET', null, this.props.UserToken))
-            .then((response) => response.json())
+    getQuestionnaires(refresh = false) {
+        let url = `${API_ENDPOINT}training/questionnaires/`;
+        if (!refresh && this.state.questionnairesNext)
+            url = this.state.questionnairesNext;
+
+        fetch(url, fetchData('GET', null, this.props.UserToken)).then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
-                if (!this.state.questionnairesNext)
+                if (!this.state.questionnairesNext || refresh)
                     this.setState({questionnaires: responseJson.results, questionnairesNext: responseJson.next});
                 else
                     this.setState({
@@ -133,7 +132,14 @@ const TrainingPlan = React.createClass({
     },
 
     _refresh() {
+        this.getNeeded(true)
+    },
 
+    _onEndReached() {
+        if (this.state.tab == 1 && this.state.questionnairesNext)
+            this.getQuestionnaires();
+        else if (this.state.tab == 2 && this.state.macro_plansNext)
+            this.getMacros();
     },
 
     isSelected(tab) {
@@ -215,6 +221,7 @@ const TrainingPlan = React.createClass({
                         <ListView ref='content' removeClippedSubviews={(Platform.OS !== 'ios')}
                                   renderHeader={this.renderCreateBar}
                                   style={styles.listContainer} enableEmptySections={true} dataSource={dataSource}
+                                  onEndReached={this._onEndReached} onEndReachedThreshold={250}
                                   renderRow={(object) => {
                                       if (this.state.tab == 1) {
                                           return <QuestionnaireBox questionnaire={object}
