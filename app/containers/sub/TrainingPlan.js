@@ -11,7 +11,7 @@ import {
 
 import GlobalStyle from '../globalStyle';
 
-import {API_ENDPOINT, fetchData} from '../../actions/utils';
+import {API_ENDPOINT, fetchData, getFontSize} from '../../actions/utils';
 
 
 import Loading from '../../components/Loading';
@@ -61,10 +61,12 @@ const TrainingPlan = React.createClass({
             fetchData('POST', jsondata, this.props.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
-                this.setState({macro_plans: [
-                    responseJson,
-                    ...this.state.macro_plans
-                ]});
+                this.setState({
+                    macro_plans: [
+                        responseJson,
+                        ...this.state.macro_plans
+                    ]
+                });
                 console.log(responseJson);
             })
             .catch((error) => {
@@ -161,10 +163,15 @@ const TrainingPlan = React.createClass({
             return <QuestionnaireBox selectQuestionnaire={this.selectQuestionnaire}
                                      _redirect={this.props._redirect}/>
         } else if (this.state.tab == 2) {
-            return <MacroBox selectMacroPlan={this.selectMacroPlan}
-                             createMacroPlan={this.createMacroPlan}
-                             training_plan={this.props.training_plan}
-                             _redirect={this.props._redirect}/>
+            return (
+                <View>
+                    <MacroBox selectMacroPlan={this.selectMacroPlan}
+                              createMacroPlan={this.createMacroPlan}
+                              training_plan={this.props.training_plan}
+                              _redirect={this.props._redirect}/>
+                    <Text style={styles.helpText}>Press and Hold to make active</Text>
+                </View>
+            )
         }
         return ''
     },
@@ -257,6 +264,16 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         flex: 1
+    },
+    helpText: {
+        textAlign: 'center',
+        fontSize: getFontSize(12),
+        lineHeight: getFontSize(12),
+        textDecorationLine: 'underline',
+        textDecorationColor: '#4d4d4e',
+        backgroundColor: 'transparent',
+        color: '#4d4d4e',
+        fontFamily: 'OpenSans-Semibold'
     }
 });
 

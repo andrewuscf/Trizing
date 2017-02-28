@@ -29,7 +29,8 @@ const MacroBox = React.createClass({
             carbs: this.props.plan ? this.props.plan.carbs : null,
             fats: this.props.plan ? this.props.plan.fats : null,
             calories: null,
-            showForm: false
+            showForm: false,
+            showDetails: false,
         }
     },
 
@@ -69,13 +70,18 @@ const MacroBox = React.createClass({
     _onPress() {
         if (this.props.plan) {
             // this.props.selectMacroPlan(this.props.questionnaire.id)
+            this.setState({showDetails: !this.state.showDetails})
         } else {
             this.setState({showForm: true})
         }
     },
 
-    _onEdit() {
+    _onDelete() {
         console.log('edit hit')
+    },
+
+    _onLongPress() {
+        console.log('long press')
     },
 
 
@@ -139,6 +145,8 @@ const MacroBox = React.createClass({
         }
         return (
             <TouchableOpacity style={[styles.container, (this.props.selected) ? styles.selectedBox : null]}
+                              onLongPress={this._onLongPress}
+                              activeOpacity={0.8}
                               onPress={this._onPress}>
                 {!plan ?
 
@@ -153,12 +161,32 @@ const MacroBox = React.createClass({
                         <Icon name="cutlery" size={30} color='#1352e2'/>
                         <View style={styles.details}>
                             <Text style={styles.mainText}>{plan.name}</Text>
-                            <Text style={styles.date}>Created: {created_at.format('MMM DD, YY')}</Text>
+                            <Text style={styles.date}><Icon name="clock-o" size={12} color='#4d4d4e'/> {created_at.format('MMM DD, YY')}</Text>
                         </View>
-                        <TouchableOpacity onPress={this._onEdit}>
-                            <Icon style={styles.edit} name="ellipsis-v" size={30} color='#4d4d4e'/>
+                        <TouchableOpacity style={styles.edit}  onPress={this._onDelete}>
+                            <Icon name="trash-o" size={20} color='#4d4d4e'/>
                         </TouchableOpacity>
                     </View>
+                }
+                {plan && this.state.showDetails ?
+                    <View style={[styles.center, {borderTopWidth: .5, borderColor: '#e1e3df', paddingTop: 5}]}>
+                        <View style={{flexDirection: 'column'}}>
+                            <Text style={styles.smallText}>Protein (g)</Text>
+                            <Text style={styles.smallText}>{plan.protein}</Text>
+                        </View>
+                        <View style={styles.details}>
+                            <Text style={styles.smallText}>Carbs (g)</Text>
+                            <Text style={styles.smallText}>{plan.carbs}</Text>
+                        </View>
+                        <View style={styles.details}>
+                            <Text style={styles.smallText}>Fats (g)</Text>
+                            <Text style={styles.smallText}>{plan.protein}</Text>
+                        </View>
+                        <View style={styles.details}>
+                            <Text style={styles.smallText}>Calories</Text>
+                            <Text style={styles.smallText}>{this.calculateCalories() ? this.calculateCalories(): 0}</Text>
+                        </View>
+                    </View>: null
                 }
             </TouchableOpacity>
         );
@@ -169,7 +197,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         margin: 10,
-        borderWidth: .5,
+        borderWidth: 1,
         borderColor: '#e1e3df',
         padding: 10
     },
@@ -179,7 +207,7 @@ const styles = StyleSheet.create({
     center: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginRight: 100
+        paddingBottom: 5
     },
     details: {
         flexDirection: 'column',
@@ -196,9 +224,17 @@ const styles = StyleSheet.create({
         color: '#4d4d4e',
         fontFamily: 'OpenSans-Semibold'
     },
+    smallText: {
+        fontSize: getFontSize(12),
+        lineHeight: getFontSize(26),
+        backgroundColor: 'transparent',
+        color: '#4d4d4e',
+        fontFamily: 'OpenSans-Semibold'
+    },
     edit: {
         position: 'absolute',
-        right: 0
+        right: 0,
+        top: 10
     },
     inputWrap: {
         marginBottom: 12,
