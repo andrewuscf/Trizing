@@ -1,7 +1,7 @@
 'use strict';
 
 import * as types from './actionTypes';
-import {fetchData, API_ENDPOINT, refreshPage} from './utils';
+import {fetchData, API_ENDPOINT, refreshPage, checkStatus} from './utils';
 
 
 // export function updateProfile(data, asyncActions) {

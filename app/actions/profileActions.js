@@ -1,7 +1,7 @@
 'use strict';
 
 import * as types from './actionTypes';
-import {fetchData, API_ENDPOINT, refreshPage} from './utils';
+import {fetchData, API_ENDPOINT, refreshPage, checkStatus} from './utils';
 
 
 export function updateProfile(data, asyncActions) {
@@ -12,7 +12,7 @@ export function updateProfile(data, asyncActions) {
     return (dispatch, getState) => {
         return fetch(`${API_ENDPOINT}user/profile/${getState().Global.RequestUser.id}/`,
             fetchData('PATCH', data, getState().Global.UserToken, headers))
-            .then((response) => response.json())
+            .then(checkStatus)
             .then((responseJson) => {
                 asyncActions(false);
                 return dispatch({type: types.UPDATE_PROFILE, profile: responseJson});
@@ -35,7 +35,7 @@ export function updateUser(data) {
     return (dispatch, getState) => {
         return fetch(`${API_ENDPOINT}user/${getState().Global.RequestUser.id}/`,
             fetchData('PATCH', jsondata, getState().Global.UserToken))
-            .then((response) => response.json())
+            .then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.UPDATE_USER, request_user: responseJson});
             })

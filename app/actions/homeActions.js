@@ -1,7 +1,7 @@
 'use strict';
 
 import * as types from './actionTypes';
-import {fetchData, API_ENDPOINT, refreshPage} from './utils';
+import {fetchData, API_ENDPOINT, refreshPage, checkStatus} from './utils';
 
 
 export function getClients(refresh = false) {
@@ -11,7 +11,7 @@ export function getClients(refresh = false) {
             dispatch(refreshPage());
         }
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
-            .then((response) => response.json())
+            .then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.LOAD_CLIENTS, response: responseJson, refresh: refresh});
             })
@@ -30,6 +30,7 @@ export function removeClient(clientId) {
     let url = `${API_ENDPOINT}client/${clientId}/`;
     return (dispatch, getState) => {
         return fetch(url, fetchData('DELETE', null, getState().Global.UserToken))
+            .then(checkStatus)
             .then((response) => {
                 return dispatch({type: types.DELETE_CLIENT, clientId: clientId});
             })
@@ -40,6 +41,7 @@ export function sendRequest(data) {
     let url = `${API_ENDPOINT}requests/`;
     return (dispatch, getState) => {
         return fetch(url, fetchData('POST', JSON.stringify(data), getState().Global.UserToken))
+            .then(checkStatus)
             .then((response) => {
                 return dispatch({type: types.SEND_REQUEST});
             })

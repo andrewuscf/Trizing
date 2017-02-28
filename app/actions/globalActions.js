@@ -1,6 +1,6 @@
 'use strict';
 import * as types from './actionTypes';
-import {fetchData, API_ENDPOINT, refreshPage, SITE} from './utils';
+import {fetchData, API_ENDPOINT, refreshPage, SITE, checkStatus} from './utils';
 import {AsyncStorage} from 'react-native';
 import {LoginManager} from 'react-native-fbsdk';
 
@@ -30,7 +30,7 @@ export function login(email, pass) {
     const body = JSON.stringify({username: email, password: pass});
     return dispatch => {
         return fetch(`${API_ENDPOINT}auth/token/`, fetchData('POST', body))
-            .then((response) => response.json())
+            .then(checkStatus)
             .then((responseJson) => {
                 if (responseJson.token) {
                     return dispatch(setTokenInRedux(responseJson.token, true));
@@ -59,14 +59,14 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
             dispatch(refreshPage());
         }
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
-            .then((response) => response.json())
+            .then(checkStatus)
             .then((responseJson) => {
                 if (responseJson.detail)
                     return dispatch(removeToken());
                 return dispatch({type: types.LOAD_REQUEST_USER, request_user: responseJson});
             })
             .catch((error) => {
-                console.log(error);
+                return dispatch(removeToken());
             });
     }
 }
@@ -100,7 +100,7 @@ export function register(data) {
     return (dispatch, getState) => {
         let JSONDATA = JSON.stringify(data);
         return fetch(`${API_ENDPOINT}auth/register/`, fetchData('POST', JSONDATA))
-            .then((response) => response.json())
+            .then(checkStatus)
             .then((responseJson) => {
                 let message;
                 if (responseJson.email) {
@@ -138,7 +138,7 @@ export function register(data) {
 export function socialAuth(access_token) {
     return (dispatch, getState) => {
         return fetch(`${SITE}social/register/facebook/?access_token=${access_token}`, fetchData('GET', null))
-            .then((response) => response.json())
+            .then(checkStatus)
             .then((responseJson) => {
                 if (responseJson.token)
                     return dispatch(setTokenInRedux(responseJson.token, true));
@@ -158,7 +158,7 @@ export function getNotifications(refresh=false) {
     let url = `${API_ENDPOINT}notifications/`;
     return (dispatch, getState) => {
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
-            .then((response) => response.json())
+            .then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.GET_NOTIFICATIONS, response: responseJson, refresh: refresh});
             })
@@ -170,7 +170,7 @@ export function readNotification(id) {
     return (dispatch, getState) => {
         const data = JSON.stringify({unread: false});
         return fetch(url, fetchData('PATCH', data, getState().Global.UserToken))
-            .then((response) => response.json())
+            .then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.READ_NOTIFICATION, noteId: id});
             })
@@ -190,7 +190,7 @@ export function getQuestionnaires(refresh = false) {
         let url = `${API_ENDPOINT}training/questionnaires/`;
         if (!refresh && getState().Global.QuestionnairesNext)
             url = getState().Global.QuestionnairesNext;
-        return fetch(url, fetchData('GET', null, getState().Global.UserToken)).then((response) => response.json())
+        return fetch(url, fetchData('GET', null, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.GET_QUESTIONNAIRES, response: responseJson, refresh: refresh});
             })
