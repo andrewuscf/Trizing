@@ -108,6 +108,7 @@ const App = React.createClass({
                             <Modal style={[styles.modal]} backdrop={false} ref={"questionnaire"}
                                    swipeToClose={false}>
                                 <CreateQuestionnaire closeModal={this.closeModal}
+                                                     createQuestionnaire={this.props.actions.createQuestionnaire}
                                                      RequestUser={this.props.RequestUser}/>
                             </Modal>
                         </View>

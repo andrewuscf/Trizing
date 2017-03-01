@@ -99,9 +99,6 @@ const TrainingPlan = React.createClass({
     updatePlan(data) {
         fetch(`${API_ENDPOINT}training/${this.props.training_plan.id}/`,
             fetchData('PATCH', JSON.stringify(data), this.props.UserToken)).then(checkStatus)
-            .then((responseJson) => {
-                console.log(responseJson);
-            })
             .catch((error) => {
                 console.log(error);
             });

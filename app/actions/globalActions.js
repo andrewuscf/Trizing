@@ -48,7 +48,7 @@ export function login(email, pass) {
                 return dispatch(
                     removeToken()
                 );
-            });
+            }).done();
     }
 }
 
@@ -67,7 +67,7 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
             })
             .catch((error) => {
                 return dispatch(removeToken());
-            });
+            }).done();
     }
 }
 
@@ -92,7 +92,7 @@ export function resetPassword(email) {
                         })
                     });
                 }
-            })
+            }).done();
     }
 }
 
@@ -131,7 +131,7 @@ export function register(data) {
                         text: 'Please try again later.'
                     })
                 });
-            });
+            }).done();
     }
 }
 
@@ -150,7 +150,7 @@ export function socialAuth(access_token) {
                         text: 'Please try again later.'
                     })
                 });
-            });
+            }).done();
     }
 }
 
@@ -161,7 +161,7 @@ export function getNotifications(refresh=false) {
             .then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.GET_NOTIFICATIONS, response: responseJson, refresh: refresh});
-            })
+            }).done();
     }
 }
 
@@ -176,7 +176,7 @@ export function readNotification(id) {
             })
             .catch((error) => {
                 console.log(error);
-            });
+            }).done();
     }
 }
 
@@ -196,6 +196,23 @@ export function getQuestionnaires(refresh = false) {
             })
             .catch((error) => {
                 console.log(error);
-            });
+            }).done();
+    }
+}
+
+export function createQuestionnaire(data, asyncActions) {
+    asyncActions(true);
+    let JSONDATA = JSON.stringify(data);
+    return (dispatch, getState) => {
+        return fetch(`${API_ENDPOINT}training/questionnaires/`,
+            fetchData('POST', JSONDATA, getState().Global.UserToken)).then(checkStatus)
+            .then((responseJson) => {
+                asyncActions(false);
+                return dispatch({type: types.CREATE_QUESTIONNAIRE, response: responseJson});
+            })
+            .catch((error) => {
+                asyncActions(false);
+                console.log(error);
+            }).done();
     }
 }

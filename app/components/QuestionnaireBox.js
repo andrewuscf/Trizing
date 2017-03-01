@@ -5,15 +5,13 @@ import {
     StyleSheet,
     Image,
     TouchableOpacity,
-    Dimensions
+    Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
 import {getFontSize} from '../actions/utils';
 import {getRoute} from '../routes';
-
-var {height, width} = Dimensions.get('window');
 
 const QuestionnaireBox = React.createClass({
     propTypes: {
@@ -24,11 +22,26 @@ const QuestionnaireBox = React.createClass({
     },
 
     _onPress() {
-        if (this.props.questionnaire) {
-            this.props.selectQuestionnaire(this.props.questionnaire.id)
-        } else {
+        if (!this.props.questionnaire) {
             this.props.openModal();
         }
+    },
+
+    _onLongPress() {
+        if (this.props.questionnaire) {
+            this.props.selectQuestionnaire(this.props.questionnaire.id)
+        }
+    },
+
+    _onDelete() {
+        Alert.alert(
+            'Delete Questionnaire',
+            `Are you sure you want delete ${this.props.questionnaire.name}?`,
+            [
+                {text: 'Cancel', null, style: 'cancel'},
+                {text: 'Delete', onPress: () => console.log(this.props.questionnaire.name)},
+            ]
+        );
     },
 
 
@@ -39,8 +52,8 @@ const QuestionnaireBox = React.createClass({
             created_at = moment.utc(questionnaire.created_at)
         }
         return (
-            <TouchableOpacity style={[styles.container, (this.props.selected) ? styles.selectedBox : null]}
-                              onPress={this._onPress}>
+            <TouchableOpacity style={[styles.container]}
+                              onPress={this._onPress} onLongPress={this._onLongPress}>
                 {!questionnaire ?
 
                     <View style={styles.center}>
@@ -51,28 +64,37 @@ const QuestionnaireBox = React.createClass({
                     </View>
                     :
                     <View style={styles.center}>
-                        <Icon name="list-ol" size={30} color='black' style={{marginLeft: -2}}/>
+                        {this.props.selected ? <Icon name="check-circle" size={30} color={greenCircle}/> :
+                            <Icon name="circle-thin" size={30} color='#bfbfbf'/>}
                         <View style={styles.details}>
                             <Text style={styles.mainText}>{questionnaire.name}</Text>
-                            <Text style={styles.date}>Created: {created_at.format('MMM DD, YY')}</Text>
+                            <Text style={styles.date}>
+                                <Icon name="clock-o" size={12} color='#4d4d4e'
+                                /> {created_at.format('MMM DD, YY')} at {created_at.format('h:mma')}
+                            </Text>
                         </View>
                     </View>
+                }
+                {questionnaire? <TouchableOpacity style={styles.edit} onPress={this._onDelete}>
+                    <Icon name="trash-o" size={20} color='#4d4d4e'/>
+                </TouchableOpacity>
+                    : null
                 }
             </TouchableOpacity>
         );
     }
 });
 
+const greenCircle = '#22c064';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         margin: 10,
-        borderWidth: .5,
+        borderBottomWidth: 1,
         borderColor: '#e1e3df',
-        padding: 10
-    },
-    selectedBox: {
-        borderColor: '#1352e2'
+        paddingTop: 10,
+        paddingBottom: 10,
     },
     center: {
         flexDirection: 'row',
@@ -96,7 +118,8 @@ const styles = StyleSheet.create({
     },
     edit: {
         position: 'absolute',
-        right: 0
+        right: 0,
+        top: 10
     }
 });
 

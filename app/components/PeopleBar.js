@@ -20,7 +20,7 @@ const PeopleBar = React.createClass({
     },
 
     render() {
-        let list = this.props.people.map((user, i) => {
+        const list = this.props.people.map((user, i) => {
             let image = user.profile.thumbnail ? user.profile.thumbnail : user.profile.avatar;
             return (
                 <View style={{alignItems: 'center'}}  key={i}>
@@ -31,11 +31,8 @@ const PeopleBar = React.createClass({
             )
         });
 
-        // add messages if no clients
-        if (this.props.people.length == 0) {
-            list = <Text key={0} style={styles.peopleEmpty}>You have no active clients!</Text>;
-        } else {
-            list = (
+        return (
+            <View style={styles.container}>
                 <ScrollView style={styles.peopleList} contentContainerStyle={styles.checkContentContainer}
                             showsHorizontalScrollIndicator={false} horizontal={true}>
 
@@ -43,17 +40,11 @@ const PeopleBar = React.createClass({
                         <TouchableOpacity onPress={this.props.manageClients} style={styles.manageClients}>
                             <Icon name="user-plus" color='#bfbfbf' size={22}/>
                         </TouchableOpacity>
-                        <Text style={{fontSize: 10, marginLeft: -8, marginTop: 5}}>Manage</Text>
+                        <Text style={{fontSize: 8, marginLeft: -8, marginTop: 5}}>Manage Clients</Text>
                     </View>
 
                     {list}
                 </ScrollView>
-            )
-        }
-
-        return (
-            <View style={styles.container}>
-                {list}
             </View>
         );
     }
@@ -67,13 +58,6 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         flexDirection: 'row',
         alignItems: 'center',
-    },
-    peopleEmpty: {
-        color: '#b1aea5',
-        fontSize: 16,
-        fontFamily: 'OpenSans-Semibold',
-        textAlign: 'center',
-        flex: 1
     },
     peopleList: {
         flex: 1
@@ -92,8 +76,8 @@ const styles = StyleSheet.create({
     },
     manageClients: {
         marginRight: 12,
-        height: 49,
-        width: 49,
+        height: 50,
+        width: 50,
         borderRadius: 25,
         borderColor: '#bfbfbf',
         borderWidth: .5,

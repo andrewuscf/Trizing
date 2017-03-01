@@ -3,9 +3,9 @@ import {
     View,
     Text,
     StyleSheet,
-    Image,
     TouchableOpacity,
-    TextInput
+    TextInput,
+    Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
@@ -85,7 +85,14 @@ const MacroBox = React.createClass({
     },
 
     _onDelete() {
-        console.log('edit hit')
+        Alert.alert(
+            'Delete Macro Plan',
+            `Are you sure you want delete ${this.props.plan.name}?`,
+            [
+                {text: 'Cancel', null, style: 'cancel'},
+                {text: 'Delete', onPress: () => console.log(this.props.plan.name)},
+            ]
+        );
     },
 
     _onLongPress() {
@@ -170,9 +177,10 @@ const MacroBox = React.createClass({
                             <Icon name="circle-thin" size={30} color='#bfbfbf'/>}
                         <View style={styles.details}>
                             <Text style={styles.mainText}>{plan.name}</Text>
-                            <Text style={styles.date}><Icon name="clock-o" size={12}
-                                                            color='#4d4d4e'/> {created_at.format('MMM DD, YY')}
-                                at {created_at.format('h:mma')}</Text>
+                            <Text style={styles.date}>
+                                <Icon name="clock-o" size={12} color='#4d4d4e'
+                                /> {created_at.format('MMM DD, YY')} at {created_at.format('h:mma')}
+                            </Text>
                         </View>
                         <TouchableOpacity style={styles.edit} onPress={this._onDelete}>
                             <Icon name="trash-o" size={20} color='#4d4d4e'/>

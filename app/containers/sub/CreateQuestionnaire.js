@@ -22,12 +22,14 @@ var {width: deviceWidth} = Dimensions.get('window');
 
 var CheckInModal = React.createClass({
     propTypes: {
-        closeModal: React.PropTypes.func.isRequired
+        closeModal: React.PropTypes.func.isRequired,
+        createQuestionnaire: React.PropTypes.func.isRequired
     },
 
     getInitialState() {
         return {
             Error: null,
+            name: null,
             numberOfQuestions: 1,
             questions: [],
         }
@@ -55,13 +57,18 @@ var CheckInModal = React.createClass({
     },
 
     isValid() {
-
+        return this.state.name && this.state.questions[0] && this.state.questions[0].text
     },
 
 
     _onSubmit() {
         if (this.isValid()) {
+            var data = {
+                name: this.state.name,
+                questions: this.state.questions,
 
+            };
+            this.props.createQuestionnaire(data, this.asyncActions)
         }
     },
 
@@ -86,16 +93,16 @@ var CheckInModal = React.createClass({
                 <View key={x}>
                     <Text style={styles.inputLabel}>Question {x + 1}</Text>
                     <View
-                        style={[styles.inputWrap, {height: this.state.questions[x] ? this.state.questions[x].height: 30}]}>
-                        <TextInput
-                            style={[styles.textInput, {height: this.state.questions[x] ? this.state.questions[x].height: 30}]}
-                            multiline={true}
-                            underlineColorAndroid='transparent'
-                            autoCapitalize='sentences'
-                            placeholderTextColor='#4d4d4d'
-                            onChange={this.questionChange.bind(null, x)}
-                            value={this.state.questions[x] ? this.state.questions[x].text : null}
-                            placeholder="Add Question"/>
+                        style={[styles.inputWrap, {height: this.state.questions[x] ? this.state.questions[x].height : 30}]}>
+                        <TextInput ref={`question${x}`}
+                                   style={[styles.textInput, {height: this.state.questions[x] ? this.state.questions[x].height : 30}]}
+                                   multiline={true}
+                                   underlineColorAndroid='transparent'
+                                   autoCapitalize='sentences'
+                                   placeholderTextColor='#4d4d4d'
+                                   onChange={this.questionChange.bind(null, x)}
+                                   value={this.state.questions[x] ? this.state.questions[x].text : null}
+                                   placeholder="Add Question"/>
                     </View>
                 </View>
             )
@@ -117,7 +124,9 @@ var CheckInModal = React.createClass({
                                    autoCorrect={false}
                                    onChangeText={(text)=>this.setState({name: text})}
                                    value={this.state.name}
-                                   onSubmitEditing={(event) => {this.refs.question.focus();}}
+                                   onSubmitEditing={(event) => {
+                                       this.refs.question0.focus();
+                                   }}
                                    placeholderTextColor="#4d4d4d"
                                    placeholder="Required"/>
                     </View>

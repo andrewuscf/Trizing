@@ -78,6 +78,15 @@ export default function AppReducers(state = initialState, action = null) {
                 QuestionnairesNext: action.response.next
             };
 
+        case constants.CREATE_QUESTIONNAIRE:
+            return {
+                ...state,
+                Questionnaires: [
+                    action.response,
+                    ...state.Questionnaires
+                ]
+            };
+
         default:
             return state
     }
