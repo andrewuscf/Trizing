@@ -71,13 +71,8 @@ const Home = React.createClass({
         let content = null;
         if (isTrainer) {
             content = (
-                <View>
-                    <PeopleBar navigator={this.props.navigator} people={this.props.Clients}/>
-                    <TouchableOpacity onPress={this._redirect.bind(null, 'ManageClients', null)}
-                                      style={[styles.addClientSection, GlobalStyle.simpleBottomBorder]}>
-                        <Text style={styles.addClientsText}>Manage Clients</Text>
-                    </TouchableOpacity>
-                </View>
+                <PeopleBar navigator={this.props.navigator} people={this.props.Clients}
+                           manageClients={this._redirect.bind(null, 'ManageClients', null)}/>
             )
         } else {
             content = <Text>Client</Text>;

@@ -1,15 +1,18 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native';
 import _ from 'lodash';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {getRoute} from '../routes';
+import {trunc} from '../actions/utils';
 
 import AvatarImage from './AvatarImage';
 
 const PeopleBar = React.createClass({
     propTypes: {
         people: React.PropTypes.array.isRequired,
-        navigator: React.PropTypes.object.isRequired
+        navigator: React.PropTypes.object.isRequired,
+        manageClients: React.PropTypes.func.isRequired
     },
 
     goToProfile(userId) {
@@ -20,8 +23,11 @@ const PeopleBar = React.createClass({
         let list = this.props.people.map((user, i) => {
             let image = user.profile.thumbnail ? user.profile.thumbnail : user.profile.avatar;
             return (
-                <AvatarImage key={i} style={styles.avatar} image={image}
-                             redirect={this.goToProfile.bind(null, user.id)}/>
+                <View style={{alignItems: 'center'}}  key={i}>
+                    <AvatarImage style={styles.avatar} image={image}
+                                 redirect={this.goToProfile.bind(null, user.id)}/>
+                    <Text style={{fontSize: 10, marginLeft: -5, marginTop: 5}}>{trunc(user.username, 6)}</Text>
+                </View>
             )
         });
 
@@ -32,6 +38,14 @@ const PeopleBar = React.createClass({
             list = (
                 <ScrollView style={styles.peopleList} contentContainerStyle={styles.checkContentContainer}
                             showsHorizontalScrollIndicator={false} horizontal={true}>
+
+                    <View  style={{alignItems: 'center'}}>
+                        <TouchableOpacity onPress={this.props.manageClients} style={styles.manageClients}>
+                            <Icon name="user-plus" color='#bfbfbf' size={22}/>
+                        </TouchableOpacity>
+                        <Text style={{fontSize: 10, marginLeft: -8, marginTop: 5}}>Manage</Text>
+                    </View>
+
                     {list}
                 </ScrollView>
             )
@@ -48,13 +62,11 @@ const PeopleBar = React.createClass({
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        paddingTop: 13,
         borderColor: '#e1e3df',
         borderBottomWidth: 1,
         borderTopWidth: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingBottom: 13
     },
     peopleEmpty: {
         color: '#b1aea5',
@@ -73,10 +85,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingLeft: 6,
         paddingRight: 6,
-        height: 50,
+        height: 80,
     },
     avatar: {
         marginRight: 12
+    },
+    manageClients: {
+        marginRight: 12,
+        height: 49,
+        width: 49,
+        borderRadius: 25,
+        borderColor: '#bfbfbf',
+        borderWidth: .5,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 

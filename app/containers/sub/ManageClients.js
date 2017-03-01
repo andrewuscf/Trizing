@@ -133,7 +133,7 @@ const ManageClients = React.createClass({
                         onChangeText={this.textChange}
                         onFocus={this.onFocus}
                         value={this.state.filterText}
-                        placeholder="Search Clients or Send Invite with username"
+                        placeholder="Search"
                     />
                     {this._renderCancel()}
                 </View>
@@ -183,15 +183,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 8,
+        // borderRadius: 8,
         height: 40,
-        marginTop: 10,
-        marginBottom: 10,
+        // marginTop: 10,
+        // marginBottom: 10,
         marginLeft: 10,
         marginRight: 10,
-        paddingLeft: 15,
-        paddingRight: 15,
-        borderWidth: 1,
+        // paddingLeft: 15,
+        // paddingRight: 15,
+        borderBottomWidth: 1,
         borderColor: '#e1e3df',
     },
     button: {

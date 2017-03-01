@@ -71,7 +71,7 @@ const MacroBox = React.createClass({
     _onPress() {
         if (this.props.plan) {
             var delta = new Date().getTime() - this.state.lastPress;
-            if(delta < 200) {
+            if (delta < 200) {
                 console.log('Double tap')
             } else {
                 this.setState({showDetails: !this.state.showDetails});
@@ -99,7 +99,7 @@ const MacroBox = React.createClass({
         const plan = this.props.plan;
         let created_at = null;
         if (plan) {
-            created_at = moment.utc(plan.created_at)
+            created_at = moment.utc(plan.created_at).local()
         }
         if (this.state.showForm) {
             return (
@@ -144,17 +144,15 @@ const MacroBox = React.createClass({
                                    placeholder="Fat (g)"/>
                     </View>
 
-                    <View>
-                        <Text>Total Calories: {this.calculateCalories() ? this.calculateCalories() : null}</Text>
-                    </View>
+                    <Text style={styles.formCalories}>CALORIES: {this.calculateCalories() ? this.calculateCalories() : null}</Text>
                     <TouchableOpacity style={styles.createButton} onPress={this._onCreate}>
-                        <Icon name="check-circle" size={30} color='#1352e2'/>
+                        <Icon name="plus-circle" size={30} color={greenCircle}/>
                     </TouchableOpacity>
                 </View>
             )
         }
         return (
-            <TouchableOpacity style={[styles.container, (this.props.selected) ? styles.selectedBox : null]}
+            <TouchableOpacity style={[styles.container]}
                               onLongPress={this._onLongPress}
                               activeOpacity={0.8}
                               onPress={this._onPress}>
@@ -168,18 +166,21 @@ const MacroBox = React.createClass({
                     </View>
                     :
                     <View style={styles.center}>
-                        <Icon name="cutlery" size={30} color='#1352e2'/>
+                        {this.props.selected ? <Icon name="check-circle" size={30} color={greenCircle}/> :
+                            <Icon name="circle-thin" size={30} color='#bfbfbf'/>}
                         <View style={styles.details}>
                             <Text style={styles.mainText}>{plan.name}</Text>
-                            <Text style={styles.date}><Icon name="clock-o" size={12} color='#4d4d4e'/> {created_at.format('MMM DD, YY')}</Text>
+                            <Text style={styles.date}><Icon name="clock-o" size={12}
+                                                            color='#4d4d4e'/> {created_at.format('MMM DD, YY')}
+                                at {created_at.format('h:mma')}</Text>
                         </View>
-                        <TouchableOpacity style={styles.edit}  onPress={this._onDelete}>
+                        <TouchableOpacity style={styles.edit} onPress={this._onDelete}>
                             <Icon name="trash-o" size={20} color='#4d4d4e'/>
                         </TouchableOpacity>
                     </View>
                 }
                 {plan && this.state.showDetails ?
-                    <View style={[styles.center, {borderTopWidth: .5, borderColor: '#e1e3df', paddingTop: 5}]}>
+                    <View style={[styles.center, {borderTopWidth: 1, borderColor: '#e1e3df', paddingTop: 10}]}>
                         <View style={{flexDirection: 'column'}}>
                             <Text style={styles.smallText}>Protein (g)</Text>
                             <Text style={styles.smallText}>{plan.protein}</Text>
@@ -194,25 +195,26 @@ const MacroBox = React.createClass({
                         </View>
                         <View style={styles.details}>
                             <Text style={styles.smallText}>Calories</Text>
-                            <Text style={styles.smallText}>{this.calculateCalories() ? this.calculateCalories(): 0}</Text>
+                            <Text
+                                style={styles.smallText}>{this.calculateCalories() ? this.calculateCalories() : 0}</Text>
                         </View>
-                    </View>: null
+                    </View> : null
                 }
             </TouchableOpacity>
         );
     }
 });
 
+const greenCircle = '#22c064';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         margin: 10,
-        borderWidth: 1,
+        borderBottomWidth: 1,
         borderColor: '#e1e3df',
-        padding: 10
-    },
-    selectedBox: {
-        borderColor: '#1352e2'
+        paddingTop: 10,
+        paddingBottom: 10,
     },
     center: {
         flexDirection: 'row',
@@ -266,6 +268,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 10,
         top: 10
+    },
+    formCalories: {
+        fontFamily: 'OpenSans-Bold'
     }
 });
 

@@ -190,19 +190,19 @@ const TrainingPlan = React.createClass({
         return (
             <View style={GlobalStyle.container}>
                 <View style={[styles.tabbarView, GlobalStyle.simpleBottomBorder]}>
-                    <TouchableOpacity style={[styles.tabView, (this.isSelected(1)) ? styles.selectedText : null]}
+                    <TouchableOpacity style={[styles.tabView, (this.isSelected(1)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 1)}>
                         <Text>Survey</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.tabView, (this.isSelected(2)) ? styles.selectedText : null]}
+                    <TouchableOpacity style={[styles.tabView, (this.isSelected(2)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 2)}>
                         <Text>Macro Plan</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.tabView, (this.isSelected(3)) ? styles.selectedText : null]}
+                    <TouchableOpacity style={[styles.tabView, (this.isSelected(3)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 3)}>
                         <Text>Workouts</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.tabView, (this.isSelected(4)) ? styles.selectedText : null]}
+                    <TouchableOpacity style={[styles.tabView, (this.isSelected(4)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 4)}>
                         <Text>Progress</Text>
                     </TouchableOpacity>
@@ -254,9 +254,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    selectedText: {
+    selectedTab: {
         borderBottomWidth: 2,
         borderBottomColor: '#1352e2',
+        marginLeft: 5,
+        marginRight: 5,
     },
     singleColumn: {
         flex: 1,

@@ -58,14 +58,13 @@ const PersonBox = React.createClass({
                 {!this.state.invited ?
                     person.id != trainer.id ?
                         trainer.id == person.profile.trainer ?
-                            <TouchableOpacity activeOpacity={1} onPress={this._removeClient}>
-                                <Icon name="trash" size={28} color='red'/>
+                            <TouchableOpacity activeOpacity={1} onPress={this._removeClient} style={styles.addUser}>
+                                <Icon name="minus-circle" size={30} color='red'/>
                             </TouchableOpacity> :
                             <TouchableOpacity activeOpacity={1} onPress={this._action} style={styles.addUser}>
-                                <Icon name="plus" size={20} color='green'/>
-                                <Text style={styles.addText}>Add</Text>
+                                <Icon name="plus-circle" size={30} color='#22c064'/>
                             </TouchableOpacity>
-                        : <Icon name="check" size={20} color='green'/>
+                        : <Icon name="check" size={30} color='green'/>
                     : null
                 }
 
@@ -77,13 +76,15 @@ const PersonBox = React.createClass({
 const styles = StyleSheet.create({
     container: {
         // borderRadius: 8,
-        borderWidth: 1,
+        borderBottomWidth: 1,
         borderColor: '#e1e3df',
         flexDirection: 'row',
         alignItems: 'center',
         padding: 10,
         backgroundColor: 'white',
-        marginBottom: 4
+        marginLeft: 10,
+        marginRight: 10,
+        // marginBottom: 4
     },
     text: {
         paddingLeft: 18,
@@ -110,10 +111,7 @@ const styles = StyleSheet.create({
     },
     touchable: {},
     addUser: {
-        borderColor: 'green',
-        borderWidth: .5,
         flexDirection: 'row',
-        borderRadius: 8,
         padding: 10,
         justifyContent: 'center',
         alignItems: 'center'
