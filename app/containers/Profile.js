@@ -41,7 +41,8 @@ moment.updateLocale('en', {
 
 const Profile = React.createClass({
     propTypes: {
-        id: React.PropTypes.number.isRequired
+        id: React.PropTypes.number.isRequired,
+        openModal: React.PropTypes.func.isRequired
     },
 
     getInitialState() {
@@ -136,6 +137,7 @@ const Profile = React.createClass({
                     </View>
                     {this.props.RequestUser.id == user.profile.trainer ?
                         <TrainingPlan clientId={user.id} UserToken={this.props.UserToken}
+                                      openModal={this.props.openModal}
                                       Questionnaires={this.props.Questionnaires}
                                       QuestionnairesNext={this.props.QuestionnairesNext}
                                       getQuestionnaires={this.props.getQuestionnaires}

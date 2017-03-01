@@ -25,6 +25,7 @@ const TrainingPlan = React.createClass({
         training_plan: React.PropTypes.object.isRequired,
         _redirect: React.PropTypes.func.isRequired,
         getQuestionnaires: React.PropTypes.func.isRequired,
+        openModal: React.PropTypes.func.isRequired,
         Questionnaires: React.PropTypes.array.isRequired,
         QuestionnairesNext: React.PropTypes.string,
         tab: React.PropTypes.number
@@ -158,6 +159,7 @@ const TrainingPlan = React.createClass({
             return (
                 <View>
                     <QuestionnaireBox selectQuestionnaire={this.selectQuestionnaire}
+                                      openModal={this.props.openModal}
                                       _redirect={this.props._redirect}/>
                     <Text style={styles.helpText}>PRESS AND HOLD TO MAKE ACTIVE</Text>
                 </View>

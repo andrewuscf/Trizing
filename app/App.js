@@ -11,12 +11,15 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import Modal from 'react-native-modalbox';
 
 import * as GlobalActions from './actions/globalActions';
 
 import Login from './containers/Login';
 import Home from './containers/Home';
 import EditProfile from './containers/edit/EditProfile';
+
+import CreateQuestionnaire from './containers/sub/CreateQuestionnaire';
 
 import NavBar from './components/Navbar';
 import Loading from './components/Loading';
@@ -44,9 +47,9 @@ const App = React.createClass({
     _renderScene: function (route, nav) {
         var SceneComponent = route.component;
         switch (route.name) {
-            // case 'Home':
-            //     return <SceneComponent navigator={ nav } route={route} {...route.passProps}
-            //                            openModal={this.openSearchModal}/>;
+            case 'Profile':
+                return <SceneComponent navigator={ nav } route={route} {...route.passProps}
+                                       openModal={this.openModal}/>;
             default :
                 return <SceneComponent navigator={ nav } route={route} {...route.passProps}/>;
 
@@ -77,21 +80,13 @@ const App = React.createClass({
         });
     },
 
-    // openSearchModal() {
-    //     this.refs.search_modal.open();
-    // },
-    //
-    // closeSearchModal() {
-    //     this.refs.search_modal.close();
-    // },
+    openModal() {
+        this.refs.questionnaire.open();
+    },
 
-// <Modal style={[styles.modal]} backdrop={false} ref={"search_modal"}
-//        swipeToClose={false}>
-//     <SearchModal closeModal={this.closeSearchModal}
-//                  RequestUser={this.props.RequestUser}
-//                  updateAvailability={this.props.actions.updateAvailability}
-//                  createRequest={this.props.actions.createRequest}/>
-// </Modal>
+    closeModal() {
+        this.refs.questionnaire.close();
+    },
 
     render() {
         if (!this.state.splashArt) {
@@ -110,6 +105,11 @@ const App = React.createClass({
                                        renderScene={ this._renderScene }
                                        navigationBar={navbar}
                             />
+                            <Modal style={[styles.modal]} backdrop={false} ref={"questionnaire"}
+                                   swipeToClose={false}>
+                                <CreateQuestionnaire closeModal={this.closeModal}
+                                                     RequestUser={this.props.RequestUser}/>
+                            </Modal>
                         </View>
                     );
                 }

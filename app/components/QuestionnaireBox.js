@@ -27,7 +27,7 @@ const QuestionnaireBox = React.createClass({
         if (this.props.questionnaire) {
             this.props.selectQuestionnaire(this.props.questionnaire.id)
         } else {
-            console.log('no questionnaire')
+            this.props.openModal();
         }
     },
 
