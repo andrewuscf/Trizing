@@ -26,6 +26,9 @@ import PeopleBar from '../components/PeopleBar';
 
 
 const Home = React.createClass({
+    propTypes: {
+        openWorkoutModal: React.PropTypes.func.isRequired
+    },
 
     componentDidMount() {
         if (!this.props.Clients.length) {
@@ -71,8 +74,14 @@ const Home = React.createClass({
         let content = null;
         if (isTrainer) {
             content = (
-                <PeopleBar navigator={this.props.navigator} people={this.props.Clients}
-                           manageClients={this._redirect.bind(null, 'ManageClients', null)}/>
+                <View>
+                    <PeopleBar navigator={this.props.navigator} people={this.props.Clients}
+                               manageClients={this._redirect.bind(null, 'ManageClients', null)}/>
+                    <TouchableOpacity onPress={this.props.openWorkoutModal}
+                                      style={[styles.addClientSection, GlobalStyle.simpleBottomBorder]}>
+                        <Text style={styles.addClientsText}>Create Workout Template</Text>
+                    </TouchableOpacity>
+                </View>
             )
         } else {
             content = <Text>Client</Text>;

@@ -11,7 +11,9 @@ const initialState = {
     Refreshing: false,
     Error: null,
     Questionnaires: [],
-    QuestionnairesNext: null
+    QuestionnairesNext: null,
+    Workouts: [],
+    WorkoutsNext: null,
 };
 
 export default function AppReducers(state = initialState, action = null) {
@@ -84,6 +86,22 @@ export default function AppReducers(state = initialState, action = null) {
                 Questionnaires: [
                     action.response,
                     ...state.Questionnaires
+                ]
+            };
+
+        case constants.GET_WORKOUTS:
+            return {
+                ...state,
+                Workouts: action.refresh ? action.response.results : state.Workouts.concat(action.response.results),
+                WorkoutsNext: action.response.next
+            };
+
+        case constants.CREATE_WORKOUT:
+            return {
+                ...state,
+                Workouts: [
+                    action.response,
+                    ...state.Workouts
                 ]
             };
 

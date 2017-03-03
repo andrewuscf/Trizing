@@ -16,22 +16,24 @@ import {getFontSize} from '../../actions/utils';
 import BackBar from '../../components/BackBar';
 import SubmitButton from '../../components/SubmitButton';
 
+import WorkoutDay from '../../components/WorkoutDay';
+
 
 var {width: deviceWidth} = Dimensions.get('window');
 
 
-var CheckInModal = React.createClass({
+var CreateWorkout = React.createClass({
     propTypes: {
-        closeQuestionnaireModal: React.PropTypes.func.isRequired,
-        createQuestionnaire: React.PropTypes.func.isRequired
+        closeWorkoutModal: React.PropTypes.func.isRequired,
+        createWorkout: React.PropTypes.func.isRequired
     },
 
     getInitialState() {
         return {
             Error: null,
             name: null,
-            numberOfQuestions: 1,
-            questions: [],
+            numberofDays: 1,
+            days: [],
         }
     },
 
@@ -40,7 +42,7 @@ var CheckInModal = React.createClass({
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            this.props.closeQuestionnaireModal();
+            this.props.closeWorkoutModal();
         }
     },
 
@@ -57,7 +59,7 @@ var CheckInModal = React.createClass({
     },
 
     isValid() {
-        return this.state.name && this.state.questions[0] && this.state.questions[0].text
+        return this.state.name && this.state.days[0] && this.state.days[0].name
     },
 
 
@@ -72,44 +74,19 @@ var CheckInModal = React.createClass({
         }
     },
 
-    questionChange(index, event) {
-        const text = event.nativeEvent.text;
-        let questions = this.state.questions;
-        questions[index] = {text: text, height: event.nativeEvent.contentSize.height};
-        this.setState({
-            questions: questions
-        });
-    },
-
-    addQuestion() {
-        this.setState({numberOfQuestions: this.state.numberOfQuestions + 1});
+    addDay() {
+        this.setState({numberofDays: this.state.numberofDays + 1});
     },
 
 
     render: function () {
-        const questions = [];
-        for (var x = 0; x < this.state.numberOfQuestions; x++) {
-            questions.push(
-                <View key={x}>
-                    <Text style={styles.inputLabel}>Question {x + 1}</Text>
-                    <View
-                        style={[styles.inputWrap, {height: this.state.questions[x] ? this.state.questions[x].height : 30}]}>
-                        <TextInput ref={`question${x}`}
-                                   style={[styles.textInput, {height: this.state.questions[x] ? this.state.questions[x].height : 30}]}
-                                   multiline={true}
-                                   underlineColorAndroid='transparent'
-                                   autoCapitalize='sentences'
-                                   placeholderTextColor='#4d4d4d'
-                                   onChange={this.questionChange.bind(null, x)}
-                                   value={this.state.questions[x] ? this.state.questions[x].text : null}
-                                   placeholder="Add Question"/>
-                    </View>
-                </View>
-            )
+        const days = [];
+        for (var x = 0; x < this.state.numberofDays; x++) {
+            days.push(<WorkoutDay key={x} />)
         }
         return (
             <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}>
-                <BackBar back={this.props.closeQuestionnaireModal} backText="Cancel" navStyle={{height: 40}}>
+                <BackBar back={this.props.closeWorkoutModal} backText="Cancel" navStyle={{height: 40}}>
                     <SubmitButton buttonStyle={[styles.submitButton]}
                                   textStyle={[styles.cancel, this.isValid() ? styles.blueText : null]}
                                   onPress={this._onSubmit} ref='postbutton'
@@ -117,7 +94,7 @@ var CheckInModal = React.createClass({
                 </BackBar>
 
                 <View style={styles.formContainer}>
-                    <Text style={styles.inputLabel}>Survey Name</Text>
+                    <Text style={styles.inputLabel}>Workout Name</Text>
                     <View style={styles.inputWrap}>
                         <TextInput ref="name" style={styles.textInput} autoCapitalize='sentences'
                                    underlineColorAndroid='transparent'
@@ -130,9 +107,9 @@ var CheckInModal = React.createClass({
                                    placeholderTextColor="#4d4d4d"
                                    placeholder="Required"/>
                     </View>
-                    {questions}
-                    <TouchableHighlight onPress={this.addQuestion} underlayColor='transparent'>
-                        <Text style={styles.addQuestion}>Add a Question</Text>
+                    {days}
+                    <TouchableHighlight onPress={this.addDay} underlayColor='transparent'>
+                        <Text style={styles.addDay}>Add Workout Day</Text>
                     </TouchableHighlight>
                 </View>
 
@@ -181,7 +158,7 @@ var styles = StyleSheet.create({
         fontSize: 18,
         fontFamily: 'OpenSans-Semibold',
     },
-    addQuestion: {
+    addDay: {
         height: 35,
         marginTop: 5,
         marginBottom: 8,
@@ -197,4 +174,4 @@ var styles = StyleSheet.create({
 });
 
 
-export default CheckInModal;
+export default CreateWorkout;

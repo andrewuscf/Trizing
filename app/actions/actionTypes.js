@@ -12,6 +12,10 @@ export const CLEAR_API_ERROR = 'CLEAR_API_ERROR';
 export const API_ERROR = 'API_ERROR';
 
 
+export const CREATE_WORKOUT = 'CREATE_WORKOUT';
+export const GET_WORKOUTS = 'GET_WORKOUTS';
+
+
 // Home Constants
 export const LOAD_CLIENTS = 'LOAD_CLIENTS';
 export const DELETE_CLIENT = 'DELETE_CLIENT';

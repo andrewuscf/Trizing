@@ -20,6 +20,7 @@ import Home from './containers/Home';
 import EditProfile from './containers/edit/EditProfile';
 
 import CreateQuestionnaire from './containers/sub/CreateQuestionnaire';
+import CreateWorkout from './containers/sub/CreateWorkout';
 
 import NavBar from './components/Navbar';
 import Loading from './components/Loading';
@@ -47,9 +48,12 @@ const App = React.createClass({
     _renderScene: function (route, nav) {
         var SceneComponent = route.component;
         switch (route.name) {
+            case 'Home':
+                return <SceneComponent navigator={ nav } route={route} {...route.passProps}
+                                       openWorkoutModal={this.openWorkoutModal}/>;
             case 'Profile':
                 return <SceneComponent navigator={ nav } route={route} {...route.passProps}
-                                       openModal={this.openModal}/>;
+                                       openQuestionnaireModal={this.openQuestionnaireModal}/>;
             default :
                 return <SceneComponent navigator={ nav } route={route} {...route.passProps}/>;
 
@@ -80,12 +84,20 @@ const App = React.createClass({
         });
     },
 
-    openModal() {
+    openQuestionnaireModal() {
         this.refs.questionnaire.open();
     },
 
-    closeModal() {
+    closeQuestionnaireModal() {
         this.refs.questionnaire.close();
+    },
+
+    openWorkoutModal() {
+        this.refs.workout.open();
+    },
+
+    closeWorkoutModal() {
+        this.refs.workout.close();
     },
 
     render() {
@@ -93,7 +105,7 @@ const App = React.createClass({
             if (this.props.UserToken) {
                 let navbar = null;
                 if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
-                    navbar = <NavBar route={this.state.Route} // openModal={this.openSearchModal}
+                    navbar = <NavBar route={this.state.Route}
                                      RequestUser={this.props.RequestUser}
                                      checkInColor="red"/>;
                     return (
@@ -107,9 +119,13 @@ const App = React.createClass({
                             />
                             <Modal style={[styles.modal]} backdrop={false} ref={"questionnaire"}
                                    swipeToClose={false}>
-                                <CreateQuestionnaire closeModal={this.closeModal}
-                                                     createQuestionnaire={this.props.actions.createQuestionnaire}
-                                                     RequestUser={this.props.RequestUser}/>
+                                <CreateQuestionnaire closeQuestionnaireModal={this.closeQuestionnaireModal}
+                                                     createQuestionnaire={this.props.actions.createQuestionnaire} />
+                            </Modal>
+                            <Modal style={[styles.modal]} backdrop={false} ref={"workout"}
+                                   swipeToClose={false}>
+                                <CreateWorkout closeWorkoutModal={this.closeWorkoutModal}
+                                               createWorkout={this.props.actions.createWorkout} />
                             </Modal>
                         </View>
                     );
