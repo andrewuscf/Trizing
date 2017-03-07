@@ -26,18 +26,30 @@ const MacroBox = React.createClass({
         return {
             name: this.props.plan ? this.props.plan.name : null,
             protein: this.props.plan ? this.props.plan.protein : null,
-            macro_days: [],
-            carbs: this.props.plan ? this.props.plan.carbs : null,
-            fats: this.props.plan ? this.props.plan.fats : null,
-            calories: null,
+            macro_plan_days: this.props.plan ? this.props.plan.macro_plan_days : [],
+            numberOfDays: this.props.plan ? this.props.plan.macro_plan_days.length : 1,
             showForm: false,
             showDetails: false,
             lastPress: 0
         }
     },
 
+    dayChange(index, text, type) {
+        console.log(index, text, type)
+        let macro_plan_days = this.state.macro_plan_days;
+        macro_plan_days[index] = {text: text};
+        this.setState({
+            macro_plan_days: macro_plan_days
+        });
+    },
+
+    addDay() {
+        this.setState({numberOfDays: this.state.numberOfDays + 1});
+    },
+
     verify() {
-        return (this.state.protein && this.state.carbs && this.state.fats && this.state.name);
+        return (this.state.name && this.state.macro_plan_days[0] && this.state.macro_plan_days[0].protein
+        && this.state.macro_plan_days[0].carbs && this.state.macro_plan_days[0].fats)
 
     },
 
@@ -109,6 +121,66 @@ const MacroBox = React.createClass({
         if (plan) {
             created_at = moment.utc(plan.created_at).local()
         }
+
+        const macro_plan_days = [];
+        for (var x = 0; x < this.state.numberOfDays; x++) {
+            macro_plan_days.push(
+                <View key={x}>
+                    <View style={[styles.inputWrap, {flexDirection: 'row', height: 50, justifyContent: 'space-between'}]}>
+                        <TouchableOpacity style={styles.dayOfWeek}><Text>Sun</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.dayOfWeek}><Text>Mon</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.dayOfWeek}><Text>Tue</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.dayOfWeek}><Text>Wed</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.dayOfWeek}><Text>Thu</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.dayOfWeek}><Text>Fri</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.dayOfWeek}><Text>Sat</Text></TouchableOpacity>
+                    </View>
+                    <View style={[styles.inputWrap, {flexDirection: 'row'}]}>
+                        <TextInput ref={`protein_${x}`} style={[styles.textInput, {flex: 1}]} autoCapitalize='none'
+                                   keyboardType="numeric"
+                                   underlineColorAndroid='transparent'
+                                   autoCorrect={false}
+                                   onChange={(text) => this.dayChange(x, text, 'protein')}
+                                   value={this.state.macro_plan_days[x]
+                                       ? this.state.macro_plan_days[x].protein.toString() : null}
+                                   onSubmitEditing={(event) => {
+                                       this.refs[`carbs_${x}`].focus();
+                                   }}
+                                   placeholderTextColor="#4d4d4d"
+                                   placeholder="Protein (g)"/>
+                        <TextInput ref={`carbs_${x}`} style={[styles.textInput, {flex: 1}]} autoCapitalize='none'
+                                   keyboardType="numeric"
+                                   underlineColorAndroid='transparent'
+                                   autoCorrect={false}
+                                   onChange={(text) => this.dayChange(x, text, 'carbs')}
+                                   value={this.state.macro_plan_days[x]
+                                       ? this.state.macro_plan_days[x].carbs.toString() : null}
+                                   onSubmitEditing={(event) => {
+                                       this.refs[`fats_${x}`].focus();
+                                   }}
+                                   placeholderTextColor="#4d4d4d"
+                                   placeholder="Carbs (g)"/>
+                        <TextInput ref={`fats_${x}`} style={[styles.textInput, {flex: 1}]} autoCapitalize='none'
+                                   keyboardType="numeric"
+                                   underlineColorAndroid='transparent'
+                                   autoCorrect={false}
+                                   onChange={(text) => this.dayChange(x, text, 'fats')}
+                                   value={this.state.macro_plan_days[x]
+                                       ? this.state.macro_plan_days[x].fats.toString() : null}
+                                   onSubmitEditing={(event) => {
+                                       this.refs[`protein_${x + 1}`].focus();
+                                   }}
+                                   placeholderTextColor="#4d4d4d"
+                                   placeholder="Fat (g)"/>
+                    </View>
+
+                    <Text style={styles.formCalories}>CALORIES: </Text>
+                    <TouchableOpacity style={styles.createButton} onPress={this._onCreate}>
+                        <Icon name="plus-circle" size={30} color={greenCircle}/>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
         if (this.state.showForm) {
             return (
                 <View style={styles.container}>
@@ -119,52 +191,12 @@ const MacroBox = React.createClass({
                                    autoCorrect={false}
                                    onChangeText={(text)=>this.setState({name: text})}
                                    value={this.state.name}
-                                   onSubmitEditing={(event) => {this.refs.protein.focus();}}
+                                   onSubmitEditing={(event) => {
+                                       this.refs.protein.focus();
+                                   }}
                                    placeholderTextColor="#4d4d4d"/>
                     </View>
-                    <View style={[styles.inputWrap, {flexDirection: 'row'}]}>
-                        <TextInput ref="protein" style={[styles.textInput, {flex:1}]} autoCapitalize='none'
-                                   keyboardType="numeric"
-                                   underlineColorAndroid='transparent'
-                                   autoCorrect={false}
-                                   onChangeText={(text)=>this.setState({protein: text})}
-                                   value={this.state.protein}
-                                   onSubmitEditing={(event) => {this.refs.carbs.focus();}}
-                                   placeholderTextColor="#4d4d4d"
-                                   placeholder="Protein (g)"/>
-                        <TextInput ref="carbs" style={[styles.textInput, {flex:1}]} autoCapitalize='none'
-                                   keyboardType="numeric"
-                                   underlineColorAndroid='transparent'
-                                   autoCorrect={false}
-                                   onChangeText={(text)=>this.setState({carbs: text})}
-                                   value={this.state.carbs}
-                                   onSubmitEditing={(event) => {this.refs.fats.focus();}}
-                                   placeholderTextColor="#4d4d4d"
-                                   placeholder="Carbs (g)"/>
-                        <TextInput ref="fats" style={[styles.textInput, {flex:1}]} autoCapitalize='none'
-                                   keyboardType="numeric"
-                                   underlineColorAndroid='transparent'
-                                   autoCorrect={false}
-                                   onChangeText={(text)=>this.setState({fats: text})}
-                                   value={this.state.fats}
-                                   onSubmitEditing={(event) => {this._onCreate();}}
-                                   placeholderTextColor="#4d4d4d"
-                                   placeholder="Fat (g)"/>
-                    </View>
-                    <View style={[styles.inputWrap, {flexDirection: 'row', height: 50,justifyContent: 'space-between'}]}>
-                        <TouchableOpacity style={styles.dayOfWeek}><Text>Sun</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.dayOfWeek}><Text>Mon</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.dayOfWeek}><Text>Tue</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.dayOfWeek}><Text>Wed</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.dayOfWeek}><Text>Thu</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.dayOfWeek}><Text>Fri</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.dayOfWeek}><Text>Sat</Text></TouchableOpacity>
-                    </View>
-
-                    <Text style={styles.formCalories}>CALORIES: {this.calculateCalories() ? this.calculateCalories() : null}</Text>
-                    <TouchableOpacity style={styles.createButton} onPress={this._onCreate}>
-                        <Icon name="plus-circle" size={30} color={greenCircle}/>
-                    </TouchableOpacity>
+                    {macro_plan_days}
                 </View>
             )
         }
@@ -285,7 +317,7 @@ const styles = StyleSheet.create({
     createButton: {
         position: 'absolute',
         right: 10,
-        top: 10
+        bottom: 0
     },
     formCalories: {
         fontFamily: 'OpenSans-Bold'
