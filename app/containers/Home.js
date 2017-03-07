@@ -95,7 +95,7 @@ const Home = React.createClass({
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
 
                     {content}
-                    {this.props.Notifications.length ?
+                    {this.props.Notifications.length > 0 ?
                         <View style={styles.section}>
                             <ListView ref='notification_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                                       style={styles.container} enableEmptySections={true} dataSource={dataSource}

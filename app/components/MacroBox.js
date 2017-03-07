@@ -26,6 +26,7 @@ const MacroBox = React.createClass({
         return {
             name: this.props.plan ? this.props.plan.name : null,
             protein: this.props.plan ? this.props.plan.protein : null,
+            macro_days: [],
             carbs: this.props.plan ? this.props.plan.carbs : null,
             fats: this.props.plan ? this.props.plan.fats : null,
             calories: null,
@@ -149,6 +150,15 @@ const MacroBox = React.createClass({
                                    onSubmitEditing={(event) => {this._onCreate();}}
                                    placeholderTextColor="#4d4d4d"
                                    placeholder="Fat (g)"/>
+                    </View>
+                    <View style={[styles.inputWrap, {flexDirection: 'row', height: 50,justifyContent: 'space-between'}]}>
+                        <TouchableOpacity style={styles.dayOfWeek}><Text>Sun</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.dayOfWeek}><Text>Mon</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.dayOfWeek}><Text>Tue</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.dayOfWeek}><Text>Wed</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.dayOfWeek}><Text>Thu</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.dayOfWeek}><Text>Fri</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.dayOfWeek}><Text>Sat</Text></TouchableOpacity>
                     </View>
 
                     <Text style={styles.formCalories}>CALORIES: {this.calculateCalories() ? this.calculateCalories() : null}</Text>
@@ -279,6 +289,21 @@ const styles = StyleSheet.create({
     },
     formCalories: {
         fontFamily: 'OpenSans-Bold'
+    },
+    dayOfWeek: {
+        borderWidth: .5,
+        borderRadius: 20,
+        height: 40,
+        width: 40,
+        borderColor: 'black',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    selectedDay: {
+        backgroundColor: '#1352e2',
+    },
+    selectedDayText: {
+        color: 'white'
     }
 });
 

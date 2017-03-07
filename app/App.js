@@ -53,7 +53,7 @@ const App = React.createClass({
                                        openWorkoutModal={this.openWorkoutModal}/>;
             case 'Profile':
                 return <SceneComponent navigator={ nav } route={route} {...route.passProps}
-                                       openQuestionnaireModal={this.openQuestionnaireModal}/>;
+                                       openModal={this.openQuestionnaireModal}/>;
             default :
                 return <SceneComponent navigator={ nav } route={route} {...route.passProps}/>;
 
