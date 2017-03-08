@@ -135,7 +135,7 @@ const Profile = React.createClass({
                             : null
                         }
                     </View>
-                    {this.props.RequestUser.id == user.profile.trainer ?
+                    {this.props.RequestUser.id == user.profile.trainer && this.props.Questionnaires ?
                         <TrainingPlan clientId={user.id} UserToken={this.props.UserToken}
                                       openModal={this.props.openModal}
                                       Questionnaires={this.props.Questionnaires}

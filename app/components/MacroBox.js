@@ -13,6 +13,8 @@ import moment from 'moment';
 import {getFontSize} from '../actions/utils';
 import {getRoute} from '../routes';
 
+import MacroBoxDay from './MacroBoxDay';
+
 const MacroBox = React.createClass({
     propTypes: {
         plan: React.PropTypes.object,
@@ -30,21 +32,9 @@ const MacroBox = React.createClass({
             numberOfDays: this.props.plan ? this.props.plan.macro_plan_days.length : 1,
             showForm: false,
             showDetails: false,
-            lastPress: 0
+            lastPress: 0,
+            selectedDays: []
         }
-    },
-
-    dayChange(index, text, type) {
-        console.log(index, text, type)
-        let macro_plan_days = this.state.macro_plan_days;
-        macro_plan_days[index] = {text: text};
-        this.setState({
-            macro_plan_days: macro_plan_days
-        });
-    },
-
-    addDay() {
-        this.setState({numberOfDays: this.state.numberOfDays + 1});
     },
 
     verify() {
@@ -53,7 +43,12 @@ const MacroBox = React.createClass({
 
     },
 
+    addDay() {
+        this.setState({numberOfDays: this.state.numberOfDays + 1})
+    },
+
     _onCreate() {
+        console.log(this.state)
         if (this.verify()) {
             const data = {
                 name: this.state.name,
@@ -75,10 +70,6 @@ const MacroBox = React.createClass({
                 this.refs.fats.focus();
             }
         }
-    },
-
-    calculateCalories() {
-        return (9 * this.state.fats) + (4 * this.state.protein) + (4 * this.state.carbs)
     },
 
     _onPress() {
@@ -114,6 +105,20 @@ const MacroBox = React.createClass({
         }
     },
 
+    getDayState(planDayIndex, state) {
+        let macro_plan_days = this.state.macro_plan_days;
+        macro_plan_days[planDayIndex] = state;
+
+        let selectedDays = [];
+        this.state.macro_plan_days.forEach((macro_plan_day) => {
+            selectedDays = selectedDays.concat(macro_plan_day.days);
+        });
+        this.setState({
+            macro_plan_days: macro_plan_days,
+            selectedDays: selectedDays
+        });
+    },
+
 
     render() {
         const plan = this.props.plan;
@@ -121,67 +126,12 @@ const MacroBox = React.createClass({
         if (plan) {
             created_at = moment.utc(plan.created_at).local()
         }
-
-        const macro_plan_days = [];
-        for (var x = 0; x < this.state.numberOfDays; x++) {
-            macro_plan_days.push(
-                <View key={x}>
-                    <View style={[styles.inputWrap, {flexDirection: 'row', height: 50, justifyContent: 'space-between'}]}>
-                        <TouchableOpacity style={styles.dayOfWeek}><Text>Sun</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.dayOfWeek}><Text>Mon</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.dayOfWeek}><Text>Tue</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.dayOfWeek}><Text>Wed</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.dayOfWeek}><Text>Thu</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.dayOfWeek}><Text>Fri</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.dayOfWeek}><Text>Sat</Text></TouchableOpacity>
-                    </View>
-                    <View style={[styles.inputWrap, {flexDirection: 'row'}]}>
-                        <TextInput ref={`protein_${x}`} style={[styles.textInput, {flex: 1}]} autoCapitalize='none'
-                                   keyboardType="numeric"
-                                   underlineColorAndroid='transparent'
-                                   autoCorrect={false}
-                                   onChange={(text) => this.dayChange(x, text, 'protein')}
-                                   value={this.state.macro_plan_days[x]
-                                       ? this.state.macro_plan_days[x].protein.toString() : null}
-                                   onSubmitEditing={(event) => {
-                                       this.refs[`carbs_${x}`].focus();
-                                   }}
-                                   placeholderTextColor="#4d4d4d"
-                                   placeholder="Protein (g)"/>
-                        <TextInput ref={`carbs_${x}`} style={[styles.textInput, {flex: 1}]} autoCapitalize='none'
-                                   keyboardType="numeric"
-                                   underlineColorAndroid='transparent'
-                                   autoCorrect={false}
-                                   onChange={(text) => this.dayChange(x, text, 'carbs')}
-                                   value={this.state.macro_plan_days[x]
-                                       ? this.state.macro_plan_days[x].carbs.toString() : null}
-                                   onSubmitEditing={(event) => {
-                                       this.refs[`fats_${x}`].focus();
-                                   }}
-                                   placeholderTextColor="#4d4d4d"
-                                   placeholder="Carbs (g)"/>
-                        <TextInput ref={`fats_${x}`} style={[styles.textInput, {flex: 1}]} autoCapitalize='none'
-                                   keyboardType="numeric"
-                                   underlineColorAndroid='transparent'
-                                   autoCorrect={false}
-                                   onChange={(text) => this.dayChange(x, text, 'fats')}
-                                   value={this.state.macro_plan_days[x]
-                                       ? this.state.macro_plan_days[x].fats.toString() : null}
-                                   onSubmitEditing={(event) => {
-                                       this.refs[`protein_${x + 1}`].focus();
-                                   }}
-                                   placeholderTextColor="#4d4d4d"
-                                   placeholder="Fat (g)"/>
-                    </View>
-
-                    <Text style={styles.formCalories}>CALORIES: </Text>
-                    <TouchableOpacity style={styles.createButton} onPress={this._onCreate}>
-                        <Icon name="plus-circle" size={30} color={greenCircle}/>
-                    </TouchableOpacity>
-                </View>
-            )
-        }
         if (this.state.showForm) {
+            const macro_plan_days = [];
+            for (var x = 0; x < this.state.numberOfDays; x++) {
+                macro_plan_days.push(<MacroBoxDay key={x} getDayState={this.getDayState} planDayIndex={x} 
+                                                  selectedDays={x !=0 ? this.state.selectedDays: []}/>)
+            }
             return (
                 <View style={styles.container}>
                     <Text>Name</Text>
@@ -197,6 +147,8 @@ const MacroBox = React.createClass({
                                    placeholderTextColor="#4d4d4d"/>
                     </View>
                     {macro_plan_days}
+                    <TouchableOpacity onPress={this.addDay}><Text>Add Days</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={this._onCreate}><Text>Create Nutrition Plan</Text></TouchableOpacity>
                 </View>
             )
         }
@@ -228,27 +180,6 @@ const MacroBox = React.createClass({
                             <Icon name="trash-o" size={20} color='#4d4d4e'/>
                         </TouchableOpacity>
                     </View>
-                }
-                {plan && this.state.showDetails ?
-                    <View style={[styles.center, {borderTopWidth: 1, borderColor: '#e1e3df', paddingTop: 10}]}>
-                        <View style={{flexDirection: 'column'}}>
-                            <Text style={styles.smallText}>Protein (g)</Text>
-                            <Text style={styles.smallText}>{plan.protein}</Text>
-                        </View>
-                        <View style={styles.details}>
-                            <Text style={styles.smallText}>Carbs (g)</Text>
-                            <Text style={styles.smallText}>{plan.carbs}</Text>
-                        </View>
-                        <View style={styles.details}>
-                            <Text style={styles.smallText}>Fats (g)</Text>
-                            <Text style={styles.smallText}>{plan.protein}</Text>
-                        </View>
-                        <View style={styles.details}>
-                            <Text style={styles.smallText}>Calories</Text>
-                            <Text
-                                style={styles.smallText}>{this.calculateCalories() ? this.calculateCalories() : 0}</Text>
-                        </View>
-                    </View> : null
                 }
             </TouchableOpacity>
         );
@@ -313,29 +244,6 @@ const styles = StyleSheet.create({
         paddingTop: 3,
         paddingBottom: 3,
         height: 30
-    },
-    createButton: {
-        position: 'absolute',
-        right: 10,
-        bottom: 0
-    },
-    formCalories: {
-        fontFamily: 'OpenSans-Bold'
-    },
-    dayOfWeek: {
-        borderWidth: .5,
-        borderRadius: 20,
-        height: 40,
-        width: 40,
-        borderColor: 'black',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    selectedDay: {
-        backgroundColor: '#1352e2',
-    },
-    selectedDayText: {
-        color: 'white'
     }
 });
 

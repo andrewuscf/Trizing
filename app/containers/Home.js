@@ -27,7 +27,8 @@ import PeopleBar from '../components/PeopleBar';
 
 const Home = React.createClass({
     propTypes: {
-        openWorkoutModal: React.PropTypes.func.isRequired
+        openWorkoutModal: React.PropTypes.func.isRequired,
+        Refreshing: React.PropTypes.bool.isRequired
     },
 
     componentDidMount() {
