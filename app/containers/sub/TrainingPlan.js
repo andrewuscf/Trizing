@@ -8,6 +8,7 @@ import {
     ListView,
     Platform
 } from 'react-native';
+import _ from 'lodash';
 
 import GlobalStyle from '../globalStyle';
 
@@ -59,20 +60,31 @@ const TrainingPlan = React.createClass({
             fetchData('POST', jsondata, this.props.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
-                this.setState({
-                    macro_plans: [
-                        responseJson,
-                        ...this.state.macro_plans
-                    ]
-                });
-            })
-            .catch((error) => {
-                return dispatch({
-                    type: types.API_ERROR, error: JSON.stringify({
-                        title: 'Request could not be performed.',
-                        text: 'Please try again later.'
-                    })
-                });
+                if (responseJson.id) {
+                    this.setState({
+                        macro_plans: [
+                            responseJson,
+                            ...this.state.macro_plans
+                        ]
+                    });
+                }
+            }).catch((error) => {
+            console.log(error)
+        });
+    },
+
+    deleteMacroPlan(id) {
+        fetch(`${API_ENDPOINT}training/macro/${id}/`, fetchData('DELETE', null, this.props.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+                if (responseJson.deleted) {
+                    let macro_plans = this.state.macro_plans;
+                    const macroIndex = _.findIndex(macro_plans, {id: id});
+                    this.setState({
+                        macro_plans: (macroIndex != -1) ?
+                            macro_plans.slice(0, macroIndex).concat(macro_plans.slice(macroIndex + 1)) : macro_plans
+                    });
+                }
             });
     },
 
@@ -221,9 +233,11 @@ const TrainingPlan = React.createClass({
                                                                    selected={object.id == this.state.training_plan.questionnaire}
                                                                    selectQuestionnaire={this.selectQuestionnaire}/>
                                       } else if (this.state.tab == 2) {
-                                          return <MacroBox plan={object} selectMacroPlan={this.selectMacroPlan}
+                                          return <MacroBox plan={object}
                                                            selected={object.id == this.state.training_plan.macro_plan}
                                                            training_plan={this.props.training_plan.id}
+                                                           selectMacroPlan={this.selectMacroPlan}
+                                                           deleteMacroPlan={this.deleteMacroPlan}
                                                            _redirect={this.props._redirect}/>
                                       }
                                   }}
@@ -274,7 +288,8 @@ const styles = StyleSheet.create({
         textDecorationColor: '#4d4d4e',
         backgroundColor: 'transparent',
         color: '#4d4d4e',
-        fontFamily: 'OpenSans-Semibold'
+        fontFamily: 'OpenSans-Semibold',
+        padding: 5
     }
 });
 

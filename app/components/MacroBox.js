@@ -5,15 +5,19 @@ import {
     StyleSheet,
     TouchableOpacity,
     TextInput,
-    Alert
+    Alert,
+    Dimensions
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
 import {getFontSize} from '../actions/utils';
-import {getRoute} from '../routes';
 
 import MacroBoxDay from './MacroBoxDay';
+import SubmitButton from './SubmitButton';
+
+
+var {width: deviceWidth} = Dimensions.get('window');
 
 const MacroBox = React.createClass({
     propTypes: {
@@ -30,6 +34,7 @@ const MacroBox = React.createClass({
             protein: this.props.plan ? this.props.plan.protein : null,
             macro_plan_days: this.props.plan ? this.props.plan.macro_plan_days : [],
             numberOfDays: this.props.plan ? this.props.plan.macro_plan_days.length : 1,
+            training_plan: this.props.training_plan,
             showForm: false,
             showDetails: false,
             lastPress: 0,
@@ -38,8 +43,9 @@ const MacroBox = React.createClass({
     },
 
     verify() {
-        return (this.state.name && this.state.macro_plan_days[0] && this.state.macro_plan_days[0].protein
-        && this.state.macro_plan_days[0].carbs && this.state.macro_plan_days[0].fats)
+        return !!(this.state.name && this.state.macro_plan_days[0] && this.state.macro_plan_days[0].protein
+        && this.state.macro_plan_days[0].carbs && this.state.macro_plan_days[0].fats
+        && this.state.macro_plan_days[0].days.length > 0)
 
     },
 
@@ -48,26 +54,12 @@ const MacroBox = React.createClass({
     },
 
     _onCreate() {
-        console.log(this.state)
         if (this.verify()) {
-            const data = {
-                name: this.state.name,
-                protein: this.state.protein,
-                carbs: this.state.carbs,
-                fats: this.state.fats,
-                training_plan: this.props.training_plan
-            };
-            this.props.createMacroPlan(data);
+            this.props.createMacroPlan(this.state);
             this.setState(this.getInitialState());
         } else {
             if (!this.state.name) {
                 this.refs.name.focus();
-            } else if (!this.state.protein) {
-                this.refs.protein.focus();
-            } else if (!this.state.carbs) {
-                this.refs.carbs.focus();
-            } else if (!this.state.fats) {
-                this.refs.fats.focus();
             }
         }
     },
@@ -84,7 +76,7 @@ const MacroBox = React.createClass({
                 lastPress: new Date().getTime()
             })
         } else {
-            this.setState({showForm: true})
+            this.setState({showForm: true});
         }
     },
 
@@ -94,7 +86,7 @@ const MacroBox = React.createClass({
             `Are you sure you want delete ${this.props.plan.name}?`,
             [
                 {text: 'Cancel', null, style: 'cancel'},
-                {text: 'Delete', onPress: () => console.log(this.props.plan.name)},
+                {text: 'Delete', onPress: () => this.props.deleteMacroPlan(this.props.plan.id)},
             ]
         );
     },
@@ -129,29 +121,35 @@ const MacroBox = React.createClass({
         if (this.state.showForm) {
             const macro_plan_days = [];
             for (var x = 0; x < this.state.numberOfDays; x++) {
-                macro_plan_days.push(<MacroBoxDay key={x} getDayState={this.getDayState} planDayIndex={x} 
-                                                  selectedDays={x !=0 ? this.state.selectedDays: []}/>)
+                macro_plan_days.push(<MacroBoxDay key={x} getDayState={this.getDayState} planDayIndex={x}
+                                                  selectedDays={x != 0 ? this.state.selectedDays : []}/>)
             }
             return (
                 <View style={styles.container}>
-                    <Text>Name</Text>
                     <View style={styles.inputWrap}>
                         <TextInput ref="name" style={styles.textInput} autoCapitalize='none'
                                    underlineColorAndroid='transparent'
                                    autoCorrect={false}
                                    onChangeText={(text)=>this.setState({name: text})}
                                    value={this.state.name}
-                                   onSubmitEditing={(event) => {
-                                       this.refs.protein.focus();
-                                   }}
-                                   placeholderTextColor="#4d4d4d"/>
+                                   placeholderTextColor="#4d4d4d"
+                                   placeholder="Nutrition Plan Name"/>
                     </View>
                     {macro_plan_days}
-                    <TouchableOpacity onPress={this.addDay}><Text>Add Days</Text></TouchableOpacity>
-                    <TouchableOpacity onPress={this._onCreate}><Text>Create Nutrition Plan</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={this.addDay} style={{position: 'absolute', right: 0, bottom:50}}>
+                        <Icon name="plus-circle" size={20} color={greenCircle} />
+                    </TouchableOpacity>
+                    <SubmitButton buttonStyle={styles.createButton}
+                                  textStyle={styles.submitText} onPress={this._onCreate}  ref='postbutton'
+                                  text='Create Nutrition Plan'/>
                 </View>
             )
         }
+        let planDays = null;
+        if (plan)
+            planDays = plan.macro_plan_days.map((day_plan, x) => <MacroBoxDay key={x} getDayState={this.getDayState}
+                                                                              day_plan={day_plan}
+                                                                              selectedDays={day_plan.days}/>);
         return (
             <TouchableOpacity style={[styles.container]}
                               onLongPress={this._onLongPress}
@@ -181,6 +179,7 @@ const MacroBox = React.createClass({
                         </TouchableOpacity>
                     </View>
                 }
+                {this.state.showDetails ? planDays : null}
             </TouchableOpacity>
         );
     }
@@ -191,7 +190,6 @@ const greenCircle = '#22c064';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 10,
         borderBottomWidth: 1,
         borderColor: '#e1e3df',
         paddingTop: 10,
@@ -200,7 +198,7 @@ const styles = StyleSheet.create({
     center: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingBottom: 5
+        margin: 10,
     },
     details: {
         flexDirection: 'column',
@@ -243,8 +241,19 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         paddingTop: 3,
         paddingBottom: 3,
-        height: 30
-    }
+        height: 30,
+        textAlign: 'center'
+    },
+    createButton: {
+        backgroundColor: '#00BFFF',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 30,
+        paddingRight: 30,
+        bottom: 0,
+    },
 });
 
 export default MacroBox;

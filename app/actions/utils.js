@@ -32,6 +32,9 @@ export function fetchData(method, body = null, token = null, headers = null, get
 }
 
 export function checkStatus(response) {
+    if (response.status == 204){
+        return {deleted: true}
+    }
     return response.json();
 }
 
