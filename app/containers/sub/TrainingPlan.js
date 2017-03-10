@@ -60,6 +60,7 @@ const TrainingPlan = React.createClass({
             fetchData('POST', jsondata, this.props.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
+                console.log(responseJson)
                 if (responseJson.id) {
                     this.setState({
                         macro_plans: [
@@ -154,36 +155,37 @@ const TrainingPlan = React.createClass({
     },
 
     selectMacroPlan(id) {
-        this.updatePlan({macro_plan: id});
-        this.setState({
-            training_plan: {
-                ...this.state.training_plan,
-                macro_plan: id
-            }
-        });
+        fetch(`${API_ENDPOINT}training/macro/${id}/`,
+            fetchData('PATCH', JSON.stringify({active: true}), this.props.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+                this.setState({
+                    training_plan: {
+                        ...this.state.training_plan,
+                        macro_plan: id
+                    }
+                });
+            });
+
     },
 
     renderCreateBar(){
-        if (this.state.tab == 1) {
+        if (this.state.tab == 2 || this.state.tab == 1) {
             return (
                 <View>
-                    <QuestionnaireBox selectQuestionnaire={this.selectQuestionnaire}
-                                      openModal={this.props.openModal}
-                                      _redirect={this.props._redirect}/>
-                    <Text style={styles.helpText}>PRESS AND HOLD TO MAKE ACTIVE</Text>
-                </View>
-            )
-        } else if (this.state.tab == 2) {
-            return (
-                <View>
-                    <MacroBox createMacroPlan={this.createMacroPlan}
-                              training_plan={this.props.training_plan.id}
-                              _redirect={this.props._redirect}/>
+                    {this.state.tab == 1 ?
+                        <QuestionnaireBox selectQuestionnaire={this.selectQuestionnaire}
+                                          openModal={this.props.openModal}
+                                          _redirect={this.props._redirect}/> :
+                        <MacroBox createMacroPlan={this.createMacroPlan}
+                                  training_plan={this.props.training_plan.id}
+                                  _redirect={this.props._redirect}/>
+                    }
                     <Text style={styles.helpText}>PRESS AND HOLD TO MAKE ACTIVE</Text>
                 </View>
             )
         }
-        return ''
+        return '';
     },
 
     render() {

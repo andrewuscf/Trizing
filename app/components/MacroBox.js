@@ -136,9 +136,12 @@ const MacroBox = React.createClass({
                                    placeholder="Nutrition Plan Name"/>
                     </View>
                     {macro_plan_days}
-                    <TouchableOpacity onPress={this.addDay} style={{position: 'absolute', right: 0, bottom:50}}>
-                        <Icon name="plus-circle" size={20} color={greenCircle} />
-                    </TouchableOpacity>
+                    {this.state.selectedDays.length < 7 ?
+                        <TouchableOpacity onPress={this.addDay} style={{position: 'absolute', right: 0, bottom:40}}>
+                            <Icon name="plus-circle" size={20} color={greenCircle}/>
+                        </TouchableOpacity>
+                        : null
+                    }
                     <SubmitButton buttonStyle={styles.createButton}
                                   textStyle={styles.submitText} onPress={this._onCreate}  ref='postbutton'
                                   text='Create Nutrition Plan'/>
@@ -160,7 +163,7 @@ const MacroBox = React.createClass({
                     <View style={styles.center}>
                         <Icon name="plus" size={30} color='#1352e2'/>
                         <View style={styles.details}>
-                            <Text style={styles.mainText}>Create Macro New</Text>
+                            <Text style={styles.mainText}>Create New</Text>
                         </View>
                     </View>
                     :
@@ -193,16 +196,16 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: '#e1e3df',
         paddingTop: 10,
-        paddingBottom: 10,
+        // paddingBottom: 10,
     },
     center: {
         flexDirection: 'row',
         alignItems: 'center',
-        margin: 10,
+        margin: 10
     },
     details: {
         flexDirection: 'column',
-        paddingLeft: 18,
+        paddingLeft: 18
     },
     date: {
         fontSize: getFontSize(15),

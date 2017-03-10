@@ -57,7 +57,7 @@ const QuestionnaireBox = React.createClass({
                 {!questionnaire ?
 
                     <View style={styles.center}>
-                        <Icon name="plus" size={30} color='black'/>
+                        <Icon name="plus" size={30} color='#1352e2' />
                         <View style={styles.details}>
                             <Text style={styles.mainText}>Create New</Text>
                         </View>
