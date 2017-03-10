@@ -4,7 +4,8 @@ import * as constants from '../actions/actionTypes';
 
 const initialState = {
     Clients: [],
-    Notifications: []
+    Notifications: [],
+    Workouts: [],
 };
 
 export default function homeReducers(state = initialState, action = null) {
@@ -41,6 +42,13 @@ export default function homeReducers(state = initialState, action = null) {
                         notification
                 )
             };
+
+        case constants.LOAD_WORKOUTS:
+            return {
+                ...state,
+                Workouts: (action.refresh) ? action.response.results : state.Workouts.concat(action.response.results)
+            };
+
         //
         // case constants.SEND_REQUEST:
         //     const index = _.findIndex(state.Clients, {'user': action.clientId });

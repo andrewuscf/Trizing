@@ -33,7 +33,7 @@ const Home = React.createClass({
 
     componentDidMount() {
         if (!this.props.Clients.length) {
-            this.getNeeded();
+            this.getNeeded(true);
         }
         // this.getToken();
     },
@@ -41,6 +41,7 @@ const Home = React.createClass({
     getNeeded(refresh = false) {
         if (this.props.RequestUser.type == 1) {
             this.props.actions.getClients(refresh);
+            this.props.actions.getWorkouts('?template=true', refresh)
         }
         if (refresh) {
             this.props.getNotifications(refresh);
@@ -71,6 +72,7 @@ const Home = React.createClass({
 
     render() {
         const user = this.props.RequestUser;
+        console.log(this.props.Workouts)
         const isTrainer = user.type == 1;
         let content = null;
         if (isTrainer) {

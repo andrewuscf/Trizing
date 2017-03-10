@@ -18,6 +18,7 @@ export const GET_WORKOUTS = 'GET_WORKOUTS';
 
 // Home Constants
 export const LOAD_CLIENTS = 'LOAD_CLIENTS';
+export const LOAD_WORKOUTS = 'LOAD_WORKOUTS';
 export const DELETE_CLIENT = 'DELETE_CLIENT';
 export const SEND_REQUEST = 'SEND_REQUEST';
 export const GET_NOTIFICATIONS = 'GET_NOTIFICATIONS';
