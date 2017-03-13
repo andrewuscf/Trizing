@@ -3,18 +3,20 @@ import * as constants from '../actions/actionTypes';
 
 
 const initialState = {
-    Posts: []
+    Posts: [],
+    PostsNext: null,
+    Refreshing: false,
 };
 
 export default function feedReducers(state = initialState, action = null) {
     switch (action.type) {
-        //
-        // case constants.SEND_REQUEST:
-        //     const index = _.findIndex(state.Clients, {'user': action.clientId });
-        //     return {
-        //         ...state,
-        //         Clients: state.Clients.slice(0, index).concat(state.Clients.slice(index + 1))
-        //     };
+        case constants.GET_FEED:
+            return {
+                ...state,
+                Posts: action.refresh ? action.response.results : state.Posts.concat(action.response.results),
+                PostsNext: action.response.next,
+                Refreshing: false
+            };
 
 
         default:

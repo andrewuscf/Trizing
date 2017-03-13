@@ -5,8 +5,6 @@ import {
     View,
     ListView,
     RefreshControl,
-    ScrollView,
-    TouchableOpacity,
     Platform
 } from 'react-native';
 import {bindActionCreators} from 'redux';
@@ -18,20 +16,18 @@ import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
+import PostBox from '../components/PostBox';
+
 const Feed = React.createClass({
 
     componentDidMount() {
         if (!this.props.Posts.length) {
-            this.getNeeded();
+            this.props.actions.getFeed(true);
         }
-        // this.getToken();
-    },
-
-    getNeeded(refresh = false) {
     },
 
     _refresh() {
-        this.getNeeded(true);
+        this.props.actions.getFeed(true);
     },
 
     onEndReached() {
@@ -44,21 +40,26 @@ const Feed = React.createClass({
 
 
     render() {
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        const dataSource = ds.cloneWithRows(this.props.Posts);
         return (
-            <View><Text>Feed</Text></View>
+            <ListView ref='posts_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                      refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
+                      style={GlobalStyle.container} enableEmptySections={true} dataSource={dataSource}
+                      onEndReached={this.onEndReached}
+                      renderRow={(post) => <PostBox post={post} navigator={this.props.navigator}/>}
+            />
         )
     }
 });
 
 
 const styles = StyleSheet.create({
-
 });
 
 const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
-        Refreshing: state.Global.Refreshing,
         ...state.Feed
     };
 };

@@ -29,3 +29,7 @@ export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const UPDATE_USER = 'UPDATE_USER';
 export const GET_QUESTIONNAIRES = 'GET_QUESTIONNAIRES';
 export const CREATE_QUESTIONNAIRE = 'CREATE_QUESTIONNAIRE';
+
+
+// Feed Constants
+export const GET_FEED = 'GET_FEED';

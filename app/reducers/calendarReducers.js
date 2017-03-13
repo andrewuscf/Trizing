@@ -3,7 +3,8 @@ import * as constants from '../actions/actionTypes';
 
 
 const initialState = {
-    CheckIns: []
+    CheckIns: [],
+    Refreshing: false,
 };
 
 export default function calendarReducers(state = initialState, action = null) {

@@ -72,7 +72,6 @@ const Home = React.createClass({
 
     render() {
         const user = this.props.RequestUser;
-        console.log(this.props.Workouts)
         const isTrainer = user.type == 1;
         let content = null;
         if (isTrainer) {
@@ -157,7 +156,6 @@ const styles = StyleSheet.create({
 const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
-        Refreshing: state.Global.Refreshing,
         ...state.Home
     };
 };

@@ -77,7 +77,8 @@ export default function AppReducers(state = initialState, action = null) {
             return {
                 ...state,
                 Questionnaires: action.refresh ? action.response.results : state.Questionnaires.concat(action.response.results),
-                QuestionnairesNext: action.response.next
+                QuestionnairesNext: action.response.next,
+                Refreshing: false
             };
 
         case constants.CREATE_QUESTIONNAIRE:
@@ -93,7 +94,8 @@ export default function AppReducers(state = initialState, action = null) {
             return {
                 ...state,
                 Workouts: action.refresh ? action.response.results : state.Workouts.concat(action.response.results),
-                WorkoutsNext: action.response.next
+                WorkoutsNext: action.response.next,
+                Refreshing: false
             };
 
         case constants.CREATE_WORKOUT:

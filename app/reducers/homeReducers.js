@@ -6,6 +6,7 @@ const initialState = {
     Clients: [],
     Notifications: [],
     Workouts: [],
+    Refreshing: false,
 };
 
 export default function homeReducers(state = initialState, action = null) {
@@ -27,7 +28,8 @@ export default function homeReducers(state = initialState, action = null) {
         case constants.GET_NOTIFICATIONS:
             return {
                 ...state,
-                Notifications: (action.refresh) ? action.response.results : state.Notifications.concat(action.response.results)
+                Notifications: (action.refresh) ? action.response.results : state.Notifications.concat(action.response.results),
+                Refreshing: false
             };
 
         case constants.READ_NOTIFICATION:
@@ -46,7 +48,8 @@ export default function homeReducers(state = initialState, action = null) {
         case constants.LOAD_WORKOUTS:
             return {
                 ...state,
-                Workouts: (action.refresh) ? action.response.results : state.Workouts.concat(action.response.results)
+                Workouts: (action.refresh) ? action.response.results : state.Workouts.concat(action.response.results),
+                Refreshing: false
             };
 
         //

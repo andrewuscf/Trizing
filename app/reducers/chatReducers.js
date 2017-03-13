@@ -3,7 +3,8 @@ import * as constants from '../actions/actionTypes';
 
 
 const initialState = {
-    ChatRooms: []
+    ChatRooms: [],
+    Refreshing: false,
 };
 
 export default function chatReducers(state = initialState, action = null) {
