@@ -25,3 +25,22 @@ export function getFeed(refresh= false) {
             });
     }
 }
+
+export function createPost(data) {
+    return (dispatch, getState) => {
+        return fetch(`${API_ENDPOINT}social/posts/`,
+            fetchData('POST', JSON.stringify(data), getState().Global.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+                return dispatch({type: types.CREATE_POST, response: responseJson});
+            })
+            .catch((error) => {
+                return dispatch({
+                    type: types.API_ERROR, error: JSON.stringify({
+                        title: 'Request could not be performed.',
+                        text: 'Please try again later.'
+                    })
+                });
+            });
+    }
+}

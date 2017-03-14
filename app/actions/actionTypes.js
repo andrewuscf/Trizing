@@ -33,3 +33,4 @@ export const CREATE_QUESTIONNAIRE = 'CREATE_QUESTIONNAIRE';
 
 // Feed Constants
 export const GET_FEED = 'GET_FEED';
+export const CREATE_POST = 'CREATE_POST';

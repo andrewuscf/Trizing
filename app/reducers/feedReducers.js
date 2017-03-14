@@ -18,6 +18,16 @@ export default function feedReducers(state = initialState, action = null) {
                 Refreshing: false
             };
 
+        case constants.CREATE_POST:
+            return {
+                ...state,
+                Posts: [
+                    action.response,
+                    ...state.Posts
+                ],
+                Refreshing: false
+            };
+
 
         default:
             return state

@@ -29,11 +29,13 @@ const PostBox = React.createClass({
         const post = this.props.post;
         let image = post.user.profile.thumbnail ? post.user.profile.thumbnail : post.user.profile.avatar;
         let comments = null;
-        if (post.comments.length) {
-            comments = post.comments.map((comment, index) => {return <CommentBox key={index} comment={comment}/>})
+        if (post.comments.count > 0) {
+            comments = post.comments.comments.map((comment, index) => {
+                return <CommentBox key={index} comment={comment}/>
+            })
         }
         return (
-            <View>
+            <View style={styles.postBox}>
                 <View style={[styles.container]}>
                     <AvatarImage redirect={this.goToProfile} image={image} style={styles.postAvatar}/>
                     <View style={styles.noteInfo}>
@@ -47,16 +49,24 @@ const PostBox = React.createClass({
                         </View>
                     </View>
                 </View>
-                <View style={GlobalStyle.simpleBottomBorder}>
-                    <View style={styles.noteInfo}>
-                        <Text style={styles.postText}>
-                            test
-                        </Text>
+                <View style={styles.noteInfo}>
+                    <Text style={styles.postText}>
+                        {post.text}
+                    </Text>
+                </View>
+                {comments ?
+                    <View style={styles.commentSection}>
+                        <View style={[GlobalStyle.simpleTopBorderMedium]}/>
+                        {comments}
                     </View>
-                </View>
-                <View style={styles.commentSection}>
-                    {comments}
-                </View>
+                    : null
+                }
+                {(post.comments.count > 4) ?
+                    <TouchableOpacity style={styles.viewAllComments}>
+                        <Text style={styles.viewAllCommentsText}>View all {post.comments.count} comments</Text>
+                    </TouchableOpacity>
+                    : null
+                }
             </View>
         );
     }
@@ -64,13 +74,17 @@ const PostBox = React.createClass({
 
 
 const styles = StyleSheet.create({
+    postBox: {
+        backgroundColor: 'white',
+        marginBottom: 5,
+    },
     container: {
         flex: 1,
         flexDirection: 'row',
         padding: 5,
     },
     commentSection: {
-        padding: 5,
+        // padding: 5,
     },
     notifText: {
         fontFamily: 'OpenSans-Semibold',
@@ -107,7 +121,19 @@ const styles = StyleSheet.create({
         flex: 1,
         fontFamily: 'OpenSans-Bold',
         fontSize: 15,
-        color: '#393839'
+        color: '#393839',
+        alignSelf: 'center',
+        paddingBottom: 10
+    },
+    viewAllComments: {
+        alignSelf: 'center',
+        padding: 5
+        // height
+    },
+    viewAllCommentsText: {
+        fontFamily: 'OpenSans-Semibold',
+        fontSize: getFontSize(11),
+
     }
 });
 
