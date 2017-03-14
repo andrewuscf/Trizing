@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     ScrollView,
     TextInput,
-    Dimensions
+    Dimensions,
+    Alert
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -16,6 +17,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {fetchData, API_ENDPOINT} from '../../actions/utils';
 
 import * as ProfileActions from '../../actions/profileActions';
+import {removeToken} from '../../actions/globalActions';
 
 import AvatarImage from '../../components/AvatarImage';
 import {EMPTY_AVATAR} from '../../assets/constants';
@@ -41,7 +43,8 @@ const EditProfile = React.createClass({
                 username: this.props.RequestUser.username,
                 first_name: this.props.RequestUser.profile.first_name,
                 last_name: this.props.RequestUser.profile.last_name,
-                phone_number: this.props.RequestUser.profile.phone_number
+                phone_number: this.props.RequestUser.profile.phone_number,
+                type: this.props.RequestUser.type
             }
         }
         return initData;
@@ -103,7 +106,6 @@ const EditProfile = React.createClass({
                 username: this.state.username,
                 type: this.state.type
             };
-            this.props.actions.updateUser(data);
 
             let profileData = new FormData();
             if (this.state.previewImage) {
@@ -117,8 +119,20 @@ const EditProfile = React.createClass({
             profileData.append("first_name", this.state.first_name);
             profileData.append("last_name", this.state.last_name);
             profileData.append("phone_number", this.state.phone_number);
-            this.props.actions.updateProfile(profileData, this.asyncActions);
+            this.props.actions.updateUser(data, profileData, this.asyncActions);
+            // this.props.actions.updateProfile(profileData, this.asyncActions);
         }
+    },
+
+    _logOut() {
+        Alert.alert(
+            'Log out',
+            'Are you sure you want to log out?',
+            [
+                {text: 'Cancel', null, style: 'cancel'},
+                {text: 'Yes', onPress: () => this.props.removeToken()},
+            ]
+        );
     },
 
     render() {
@@ -141,11 +155,19 @@ const EditProfile = React.createClass({
                     }
                     <ScrollView ref='_scrollView' keyboardDismissMode='interactive'
                                 style={styles.mainContainer}>
-                        {this.props.RequestUser.profile.completed ? <View style={styles.backNav}>
-                            <TouchableOpacity onPress={this._back} style={styles.backNavButton}>
-                                <Icon name="angle-left" size={28} color='#d4d4d4'/>
-                            </TouchableOpacity>
-                        </View> : null}
+                        <View style={styles.backNav}>
+                            {this.props.RequestUser.profile.completed ?
+                                <TouchableOpacity onPress={this._back} style={styles.backNavButton}>
+                                    <Icon name="angle-left" size={30} color='#333333'/>
+                                </TouchableOpacity>
+                                : null
+                            }
+
+                                <TouchableOpacity style={styles.logOut} onPress={this._logOut}>
+                                    <Icon name="power-off" size={30} color='red'/>
+                                </TouchableOpacity>
+
+                        </View>
                         <View style={styles.mainContent}>
                             <AvatarImage image={userImage} style={styles.avatar} redirect={this.toggleRoll}/>
 
@@ -239,13 +261,15 @@ const styles = StyleSheet.create({
         flex: 1
     },
     backNav: {
+        minHeight:50,
         borderBottomWidth: .5,
         borderBottomColor: 'rgba(0,0,0,.15)'
     },
     backNavButton: {
-        padding: 5,
-        paddingTop: 2,
-        paddingLeft: 12,
+        // zIndex: 999,
+        // position: 'absolute',
+        left: 10,
+        top: 10,
     },
     mainContent: {
         margin: 10
@@ -337,19 +361,22 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 14,
         fontFamily: 'OpenSans-Bold',
-        // textDecorationLine: 'none'
     },
     notSelectedText: {
         color: '#1352e2',
         fontSize: 14,
         fontFamily: 'OpenSans-Bold',
-        // textDecorationLine: 'none'
     },
     buttonText: {
         color: '#1352e2',
         fontSize: 15,
         fontFamily: 'OpenSans-Bold',
     },
+    logOut: {
+        position: 'absolute',
+        top: 10,
+        right: 10
+    }
 });
 
 const stateToProps = (state) => {
@@ -360,7 +387,8 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
     return {
-        actions: bindActionCreators(ProfileActions, dispatch)
+        actions: bindActionCreators(ProfileActions, dispatch),
+        removeToken: bindActionCreators(removeToken, dispatch),
     }
 };
 

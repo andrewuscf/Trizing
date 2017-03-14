@@ -6,36 +6,35 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {getRoute} from '../routes';
 
 var NavBar = React.createClass({
-    getInitialState() {
-        return {
-            route: this.props.route
-        }
+    propTypes: {
+        route: React.PropTypes.string.isRequired,
     },
 
     _onPress(routeName) {
-        this.setState({route: routeName});
-        let index;
-        if (routeName == 'Profile') {
-            index = _.findIndex(this.props.navigator.state.routeStack, {
-                name: routeName,
-                passProps: {user: this.props.RequestUser.id}
-            });
-        } else {
-            index = _.findIndex(this.props.navigator.state.routeStack, {name: routeName});
-        }
-        if (index != -1) {
-            this.props.navigator.jumpTo(this.props.navigator.state.routeStack[index]);
-        } else {
+        if (this.props.route != routeName) {
+            let index;
             if (routeName == 'Profile') {
-                this.props.navigator.push(getRoute(routeName, {id: this.props.RequestUser.id}));
-                return;
+                index = _.findIndex(this.props.navigator.state.routeStack, {
+                    name: routeName,
+                    passProps: {user: this.props.RequestUser.id}
+                });
+            } else {
+                index = _.findIndex(this.props.navigator.state.routeStack, {name: routeName});
             }
-            this.props.navigator.push(getRoute(routeName));
+            if (index != -1) {
+                this.props.navigator.popToRoute(this.props.navigator.state.routeStack[index]);
+            } else {
+                if (routeName == 'Profile') {
+                    this.props.navigator.push(getRoute(routeName, {id: this.props.RequestUser.id}));
+                    return;
+                }
+                this.props.navigator.push(getRoute(routeName));
+            }
         }
     },
 
     isActiveRoute(routeName){
-        return routeName == this.state.route;
+        return routeName == this.props.route;
     },
 
 
@@ -60,7 +59,8 @@ var NavBar = React.createClass({
 
                 <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Feed', null)}>
                     <View style={styles.createButton}>
-                        <Icon name="fire" size={20} color={ (!this.isActiveRoute('Feed')) ? iconColor : iconColorActive }/>
+                        <Icon name="fire" size={20}
+                              color={ (!this.isActiveRoute('Feed')) ? iconColor : iconColorActive }/>
                     </View>
                 </TouchableOpacity>
 

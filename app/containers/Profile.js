@@ -114,7 +114,7 @@ const Profile = React.createClass({
                         <Text style={styles.userNameTop}>{trunc(user.username, 26)}</Text>
                         {isRequestUser ?
                             <TouchableOpacity style={styles.logOut} onPress={this._logOut}>
-                                <Icon name="power-off" size={20} color='red'/>
+                                <Icon name="power-off" size={30} color='red'/>
                             </TouchableOpacity>
                             : null
                         }

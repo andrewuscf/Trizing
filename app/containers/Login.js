@@ -12,7 +12,8 @@ import {
 } from 'react-native';
 import {
     LoginButton,
-    AccessToken
+    AccessToken,
+    LoginManager
 } from 'react-native-fbsdk';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Hr from '../components/HR';
@@ -121,8 +122,9 @@ const Login = React.createClass({
                                 (error, result) => {
                                     if (error) {
                                         console.log(error)
+                                        LoginManager.logOut();
                                     } else if (result.isCancelled) {
-                                        alert("login is cancelled.");
+                                        LoginManager.logOut();
                                     } else {
                                         AccessToken.getCurrentAccessToken().then(
                                             (data) => {
@@ -227,22 +229,15 @@ const styles = StyleSheet.create({
         flex: .3,
         justifyContent: 'center',
         alignItems: 'center',
-        // paddingBottom: 10
     },
     contentContainer: {
         flex: .8,
         justifyContent: 'center',
         alignItems: 'center',
-        // paddingLeft: 40,
-        // paddingRight: 40,
-        // alignSelf: 'stretch'
     },
     logo: {
-        // width: 154,
         height: 70,
         alignSelf: 'center'
-        // marginTop: 100,
-        // marginBottom: 100,
     },
     inputWrap: {
         alignSelf: 'center',
@@ -285,7 +280,6 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 30,
         paddingRight: 30,
-        // borderRadius: 21
     },
 });
 

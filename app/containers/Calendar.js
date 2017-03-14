@@ -21,21 +21,10 @@ import GlobalStyle from './globalStyle';
 const Calendar = React.createClass({
 
     componentDidMount() {
-        if (!this.props.CheckIns.length) {
-            this.getNeeded();
-        }
-        // this.getToken();
-    },
 
-    getNeeded(refresh = false) {
-        // If request user is a trainer.
-        if (this.props.RequestUser.type == 1) {
-            // this.props.actions.getClients(refresh);
-        }
     },
 
     _refresh() {
-        this.getNeeded(true);
     },
 
     onEndReached() {

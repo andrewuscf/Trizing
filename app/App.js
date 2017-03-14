@@ -14,9 +14,9 @@ import {connect} from 'react-redux';
 import Modal from 'react-native-modalbox';
 
 import * as GlobalActions from './actions/globalActions';
+import {getRoute} from './routes';
 
 import Login from './containers/Login';
-import Home from './containers/Home';
 import EditProfile from './containers/edit/EditProfile';
 
 import CreateQuestionnaire from './containers/sub/CreateQuestionnaire';
@@ -41,7 +41,7 @@ const App = React.createClass({
     getInitialState: function () {
         return {
             splashArt: true,
-            Route: 'Home'
+            route: 'Home'
         };
     },
 
@@ -84,6 +84,10 @@ const App = React.createClass({
         });
     },
 
+    itemChangedFocus(route) {
+        this.setState({route: route.name})
+    },
+
     openQuestionnaireModal() {
         this.refs.questionnaire.open();
     },
@@ -100,52 +104,71 @@ const App = React.createClass({
         this.refs.workout.close();
     },
 
+    configureScene(route, routeStack) {
+        switch (route.name) {
+            case 'Home':
+                return Navigator.SceneConfigs.PushFromRight;
+            case 'Profile':
+                return Navigator.SceneConfigs.PushFromRight;
+            case 'Feed':
+                if (routeStack[routeStack.length - 2].name == "Home" || routeStack[routeStack.length - 2].name == "Calendar")
+                    return Navigator.SceneConfigs.PushFromRight;
+                return Navigator.SceneConfigs.PushFromLeft;
+            case 'Calendar':
+                if (routeStack[routeStack.length - 2].name == "Home")
+                    return Navigator.SceneConfigs.PushFromRight;
+                return Navigator.SceneConfigs.PushFromLeft;
+            case 'Chat':
+                if (routeStack[routeStack.length - 2].name == "Profile")
+                    return Navigator.SceneConfigs.PushFromLeft;
+                return Navigator.SceneConfigs.PushFromRight;
+            default :
+                return Navigator.SceneConfigs.FloatFromRight
+
+        }
+    },
+
     render() {
         if (!this.state.splashArt) {
             if (this.props.UserToken) {
-                let navbar = null;
-                if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
-                    navbar = <NavBar route={this.state.Route}
-                                     RequestUser={this.props.RequestUser}
-                                     checkInColor="red"/>;
+                if (!this.props.RequestUser) {
+                    return <Loading />;
+                }
+                if (!this.props.RequestUser.profile.completed) {
+                    return <EditProfile />;
+                } else {
                     return (
                         <View style={styles.container}>
-                            <Navigator initialRoute={{component: Home, name: 'Home'}}
+                            <Navigator initialRoute={getRoute('Home')}
                                        ref={(nav) => {
-                                       navigator = nav
-                                   }}
+                                           navigator = nav
+                                       }}
+                                       configureScene={this.configureScene}
+                                       onDidFocus={this.itemChangedFocus}
                                        renderScene={ this._renderScene }
-                                       navigationBar={navbar}
+                                       navigationBar={<NavBar RequestUser={this.props.RequestUser}
+                                                              route={this.state.route}/>}
                             />
                             <Modal style={[styles.modal]} backdrop={false} ref={"questionnaire"}
                                    swipeToClose={false}>
                                 <CreateQuestionnaire closeQuestionnaireModal={this.closeQuestionnaireModal}
-                                                     createQuestionnaire={this.props.actions.createQuestionnaire} />
+                                                     createQuestionnaire={this.props.actions.createQuestionnaire}/>
                             </Modal>
                             <Modal style={[styles.modal]} backdrop={false} ref={"workout"}
                                    swipeToClose={false}>
                                 <CreateWorkout closeWorkoutModal={this.closeWorkoutModal}
-                                               createWorkout={this.props.actions.createWorkout} />
+                                               createWorkout={this.props.actions.createWorkout}/>
                             </Modal>
                         </View>
                     );
                 }
-                return (
-                    <View style={styles.container}>
-                        <EditProfile />
-                    </View>
-                );
 
             }
-            return (
-                <View style={styles.container}>
-                    <Login login={this.props.actions.login}
-                           resetPassword={this.props.actions.resetPassword}
-                           register={this.props.actions.register}
-                           error={this.props.Error}
-                           socialAuth={this.props.actions.socialAuth}/>
-                </View>
-            );
+            return <Login login={this.props.actions.login}
+                          resetPassword={this.props.actions.resetPassword}
+                          register={this.props.actions.register}
+                          error={this.props.Error}
+                          socialAuth={this.props.actions.socialAuth}/>;
         }
         // Should replace this with a splash art.
         return <Loading />;

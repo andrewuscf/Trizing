@@ -7,7 +7,8 @@ import {
     RefreshControl,
     Platform,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    Keyboard
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -97,8 +98,9 @@ const Feed = React.createClass({
 
     _createPost() {
         if (this.state.text) {
-            this.props.actions.createPost(this.state)
-            this.setState(this.getInitialState())
+            this.props.actions.createPost(this.state);
+            this.setState(this.getInitialState());
+            Keyboard.dismiss();
         }
     },
 
@@ -118,6 +120,7 @@ const Feed = React.createClass({
         return (
             <ListView ref='posts_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                       renderHeader={this.renderCreatePost}
+                      keyboardShouldPersistTaps="handled"
                       refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
                       style={[GlobalStyle.container,styles.feedContainer]} enableEmptySections={true} dataSource={dataSource}
                       onEndReached={this.onEndReached}
@@ -130,7 +133,7 @@ const Feed = React.createClass({
 
 const styles = StyleSheet.create({
     feedContainer: {
-        backgroundColor: '#e9ebee'
+        backgroundColor: '#f1f1f1'
     },
     createPost: {
         minHeight: 50,
@@ -155,7 +158,8 @@ const styles = StyleSheet.create({
         height: 30,
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'stretch',
+        paddingTop: 5
     },
     textInput: {
         color: 'black',
@@ -164,7 +168,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         paddingTop: 3,
         paddingBottom: 3,
-        height: 30
+        height: 30,
     },
     postSubmit: {
         alignSelf: 'center'

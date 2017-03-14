@@ -121,10 +121,10 @@ const Home = React.createClass({
 
 const styles = StyleSheet.create({
     scrollView: {
-        backgroundColor: '#e9ebee'
+        backgroundColor: '#f1f1f1'
     },
     contentContainerStyle: {
-        backgroundColor: '#e9ebee'
+        backgroundColor: '#f1f1f1'
     },
     addClientSection: {
         justifyContent: 'center',
