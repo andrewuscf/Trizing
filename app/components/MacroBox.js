@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
+import _ from 'lodash';
 
 import {getFontSize} from '../actions/utils';
 
@@ -30,8 +31,9 @@ const MacroBox = React.createClass({
         return {
             name: this.props.plan ? this.props.plan.name : null,
             protein: this.props.plan ? this.props.plan.protein : null,
-            macro_plan_days: this.props.plan ? this.props.plan.macro_plan_days : [],
-            numberOfDays: this.props.plan ? this.props.plan.macro_plan_days.length : 1,
+            macro_plan_days: this.props.plan ? this.props.plan.macro_plan_days : [
+                {weight: null, fats: null, carbs: null, days: []}
+            ],
             training_plan: this.props.training_plan,
             showForm: false,
             showDetails: false,
@@ -49,13 +51,29 @@ const MacroBox = React.createClass({
 
     addDay() {
         Keyboard.dismiss();
-        this.setState({numberOfDays: this.state.numberOfDays + 1})
+        // {weight: null, fats: null, carbs: null, days: []}
+        this.setState({
+            macro_plan_days: [
+                ...this.state.macro_plan_days,
+                {weight: null, fats: null, carbs: null, days: []}
+            ]
+        });
     },
 
     _onCreate() {
         Keyboard.dismiss();
         if (this.verify()) {
-            this.props.createMacroPlan(this.state);
+            // const data = this.state
+            const validPlanDays = _.filter(this.state.macro_plan_days, (day)=> {
+                if (day.protein && day.carbs && day.fats && day.days.length > 0)
+                    return day
+            });
+            console.log(validPlanDays)
+
+            this.props.createMacroPlan({
+                ...this.state,
+                macro_plan_days: validPlanDays
+            });
             this.setState(this.getInitialState());
         } else {
             if (!this.state.name) {
@@ -114,6 +132,18 @@ const MacroBox = React.createClass({
         });
     },
 
+    _removeDay(index) {
+        Keyboard.dismiss();
+        console.log(index)
+        if (this.state.macro_plan_days.length > 1) {
+            console.log(this.state.macro_plan_days)
+            console.log(this.state.macro_plan_days[index])
+            this.setState({
+                macro_plan_days: this.state.macro_plan_days.slice(0, index).concat(this.state.macro_plan_days.slice(index + 1))
+            })
+        }
+    },
+
 
     render() {
         const plan = this.props.plan;
@@ -122,11 +152,13 @@ const MacroBox = React.createClass({
             created_at = moment.utc(plan.created_at).local()
         }
         if (this.state.showForm) {
-            const macro_plan_days = [];
-            for (var x = 0; x < this.state.numberOfDays; x++) {
-                macro_plan_days.push(<MacroBoxDay key={x} getDayState={this.getDayState} planDayIndex={x}
-                                                  selectedDays={x != 0 ? this.state.selectedDays : []}/>)
-            }
+            const macro_plan_days = this.state.macro_plan_days.map((question, x)=> {
+                return <MacroBoxDay key={x} getDayState={this.getDayState} planDayIndex={x}
+                                    canDelete={this.state.macro_plan_days.length > 1}
+                                    _removeDay={this._removeDay}
+                                    selectedDays={x != 0 ? this.state.selectedDays : []}/>;
+            });
+
             return (
                 <View style={styles.container}>
                     <View style={styles.inputWrap}>
@@ -140,22 +172,25 @@ const MacroBox = React.createClass({
                     </View>
                     {macro_plan_days}
                     {this.state.selectedDays.length < 7 ?
-                        <TouchableOpacity onPress={this.addDay} style={{position: 'absolute', right: 0, bottom:40}}>
-                            <Icon name="plus-circle" size={20} color={greenCircle}/>
+                        <TouchableOpacity onPress={this.addDay}>
+                            <Text style={styles.addAnotherDay}>Add another day</Text>
                         </TouchableOpacity>
                         : null
                     }
                     <SubmitButton buttonStyle={styles.createButton}
                                   textStyle={styles.submitText} onPress={this._onCreate} ref='postbutton'
-                                  text='Create Nutrition Plan'/>
+                                  text='Create'/>
                 </View>
             )
         }
         let planDays = null;
         if (plan)
-            planDays = plan.macro_plan_days.map((day_plan, x) => <MacroBoxDay key={x} getDayState={this.getDayState}
-                                                                              day_plan={day_plan}
-                                                                              selectedDays={day_plan.days}/>);
+            planDays = _.orderBy(plan.macro_plan_days, ['id']).map((day_plan, x) => {
+                return <MacroBoxDay key={x}
+                             getDayState={this.getDayState}
+                             day_plan={day_plan}
+                             selectedDays={day_plan.days}/>
+            });
         return (
             <TouchableOpacity style={[styles.container]}
                               onLongPress={this._onLongPress}
@@ -259,6 +294,19 @@ const styles = StyleSheet.create({
         paddingLeft: 30,
         paddingRight: 30,
         bottom: 0,
+    },
+    addAnotherDay: {
+        height: 35,
+        marginTop: 5,
+        marginBottom: 8,
+        color: '#b1aea5',
+        fontSize: getFontSize(22),
+        lineHeight: getFontSize(26),
+        backgroundColor: 'transparent',
+        fontFamily: 'OpenSans-Semibold',
+        alignSelf: 'center',
+        textDecorationLine: 'underline',
+        textDecorationColor: '#b1aea5'
     },
 });
 

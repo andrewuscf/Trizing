@@ -4,10 +4,10 @@ import {
     View,
     Text,
     StyleSheet,
-    Dimensions,
     Alert,
     TextInput,
-    TouchableHighlight
+    TouchableHighlight,
+    Keyboard
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -15,9 +15,6 @@ import {getFontSize} from '../../actions/utils';
 
 import BackBar from '../../components/BackBar';
 import SubmitButton from '../../components/SubmitButton';
-
-
-var {width: deviceWidth} = Dimensions.get('window');
 
 
 var CheckInModal = React.createClass({
@@ -30,8 +27,9 @@ var CheckInModal = React.createClass({
         return {
             Error: null,
             name: null,
-            numberOfQuestions: 1,
-            questions: [],
+            questions: [
+                {text: null, height: 30}
+            ]
         }
     },
 
@@ -63,6 +61,7 @@ var CheckInModal = React.createClass({
 
     _onSubmit() {
         if (this.isValid()) {
+            Keyboard.dismiss();
             var data = {
                 name: this.state.name,
                 questions: this.state.questions,
@@ -82,33 +81,54 @@ var CheckInModal = React.createClass({
     },
 
     addQuestion() {
-        this.setState({numberOfQuestions: this.state.numberOfQuestions + 1});
+        Keyboard.dismiss();
+        this.setState({
+            questions: [
+                ...this.state.questions,
+                {text: null, height: 30}
+            ]
+        });
+    },
+
+    removeQuestion(index) {
+        Keyboard.dismiss();
+        if (this.state.questions.length > 1) {
+            this.setState({
+                questions: this.state.questions.slice(0, index).concat(this.state.questions.slice(index + 1))
+            })
+        }
     },
 
 
     render: function () {
-        const questions = [];
-        for (var x = 0; x < this.state.numberOfQuestions; x++) {
-            questions.push(
+        const questions = this.state.questions.map((question, x)=> {
+            return (
                 <View key={x}>
                     <Text style={styles.inputLabel}>Question {x + 1}</Text>
-                    <View
-                        style={[styles.inputWrap, {height: this.state.questions[x] ? this.state.questions[x].height : 30}]}>
+                    <View style={[styles.inputWrap, {height: this.state.questions[x].height}]}>
                         <TextInput ref={`question${x}`}
-                                   style={[styles.textInput, {height: this.state.questions[x] ? this.state.questions[x].height : 30}]}
+                                   style={[styles.textInput, {height: this.state.questions[x].height}]}
                                    multiline={true}
                                    underlineColorAndroid='transparent'
                                    autoCapitalize='sentences'
                                    placeholderTextColor='#4d4d4d'
                                    onChange={this.questionChange.bind(null, x)}
-                                   value={this.state.questions[x] ? this.state.questions[x].text : null}
-                                   placeholder="Add Question"/>
+                                   value={this.state.questions[x].text}
+                                   placeholder="Ex: What is your goal?"/>
                     </View>
+                    {this.state.questions.length > 1 ?
+                        < TouchableHighlight style={styles.removeQuestion}
+                                             onPress={this.removeQuestion.bind(null, x)} underlayColor='transparent'>
+                            <Icon name="times" size={30} color='red'/>
+                        </TouchableHighlight>
+                        : null
+                    }
                 </View>
             )
-        }
+        });
         return (
-            <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}>
+            <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}
+                        keyboardShouldPersistTaps="never">
                 <BackBar back={this.props.closeQuestionnaireModal} backText="Cancel" navStyle={{height: 40}}>
                     <SubmitButton buttonStyle={[styles.submitButton]}
                                   textStyle={[styles.cancel, this.isValid() ? styles.blueText : null]}
@@ -126,9 +146,7 @@ var CheckInModal = React.createClass({
                                    value={this.state.name}
                                    onSubmitEditing={(event) => {
                                        this.refs.question0.focus();
-                                   }}
-                                   placeholderTextColor="#4d4d4d"
-                                   placeholder="Required"/>
+                                   }}/>
                     </View>
                     {questions}
                     <TouchableHighlight onPress={this.addQuestion} underlayColor='transparent'>
@@ -144,29 +162,33 @@ var CheckInModal = React.createClass({
 
 var styles = StyleSheet.create({
     flexCenter: {
-        flex: 1,
-        width: deviceWidth
+        flex: 1
     },
     submitButton: {
+        zIndex: 999,
         position: 'absolute',
-        top: 10,
-        right: 10
+        right: 10,
+        top: 15,
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     cancel: {
-        color: '#d4d4d4',
+        color: '#d4d4d4'
     },
     blueText: {
         color: '#00BFFF'
     },
     formContainer: {
-        margin: 10,
+        margin: 10
     },
     inputWrap: {
+        flex: 1,
         marginBottom: 12,
         height: 30,
         borderBottomWidth: .5,
         borderColor: '#aaaaaa',
-        alignItems: 'center'
+        justifyContent: 'center',
+        alignItems: 'stretch'
     },
     textInput: {
         color: 'black',
@@ -175,11 +197,13 @@ var styles = StyleSheet.create({
         backgroundColor: 'transparent',
         paddingTop: 3,
         paddingBottom: 3,
-        height: 30
+        height: 30,
+        textAlign: 'center'
     },
     inputLabel: {
         fontSize: 18,
         fontFamily: 'OpenSans-Semibold',
+        textAlign: 'center'
     },
     addQuestion: {
         height: 35,
@@ -192,7 +216,12 @@ var styles = StyleSheet.create({
         fontFamily: 'OpenSans-Semibold',
         alignSelf: 'center',
         textDecorationLine: 'underline',
-        textDecorationColor: '#b1aea5',
+        textDecorationColor: '#b1aea5'
+    },
+    removeQuestion: {
+        right: 0,
+        top: 10,
+        position: 'absolute'
     }
 });
 

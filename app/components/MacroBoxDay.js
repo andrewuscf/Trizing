@@ -92,7 +92,7 @@ const MacroBoxDay = React.createClass({
             });
         }
         return (
-            <View>
+            <View style={[GlobalStyle.simpleBottomBorder, {paddingBottom: 10}]}>
                 <View style={[styles.inputWrap, {height: 50}, styles.row]}>
                     {days}
                 </View>
@@ -148,8 +148,6 @@ const MacroBoxDay = React.createClass({
                                    placeholder="Fat (g)"/>
                     </View>
                 }
-
-
                 <Text style={styles.formCalories}>
                     Total Calories: {this.calculateCalories() ? this.calculateCalories() : 0}
                 </Text>
@@ -170,8 +168,9 @@ const styles = StyleSheet.create({
     },
     inputWrap: {
         marginBottom: 12,
-        height: 30,
-        alignItems: 'center'
+        minHeight: 50,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     textInput: {
         flex: 1,
@@ -181,7 +180,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         paddingTop: 3,
         paddingBottom: 3,
-        height: 30,
+        minHeight: 50,
         borderWidth: .5,
         borderColor: '#aaaaaa',
         textAlign: 'center'
@@ -219,6 +218,19 @@ const styles = StyleSheet.create({
         borderWidth: .5,
         borderColor: '#aaaaaa',
         alignItems: 'center'
+    },
+    removeDay: {
+        height: 35,
+        marginTop: 5,
+        marginBottom: 8,
+        color: 'red',
+        fontSize: getFontSize(22),
+        lineHeight: getFontSize(26),
+        backgroundColor: 'transparent',
+        fontFamily: 'OpenSans-Semibold',
+        alignSelf: 'center',
+        textDecorationLine: 'underline',
+        textDecorationColor: '#b1aea5'
     },
 });
 

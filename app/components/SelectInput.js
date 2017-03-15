@@ -9,10 +9,7 @@ const SelectInput = React.createClass({
     getInitialState: function () {
         let index = -1;
         if (this.props.selectedId) {
-            console.log(this.props.selectedId)
-            console.log(this.props.options)
             index = _.findIndex(this.props.options, {id: this.props.selectedId});
-            console.log(index)
         }
         return {
             showOverlay: false, // show overlay for selecting value

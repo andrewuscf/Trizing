@@ -60,7 +60,6 @@ const TrainingPlan = React.createClass({
             fetchData('POST', jsondata, this.props.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
-                console.log(responseJson)
                 if (responseJson.id) {
                     this.setState({
                         macro_plans: [
@@ -225,7 +224,7 @@ const TrainingPlan = React.createClass({
                     {dataSource ?
                         <ListView ref='content' removeClippedSubviews={(Platform.OS !== 'ios')}
                                   renderHeader={this.renderCreateBar}
-                                  keyboardShouldPersistTaps="handled"
+                                  keyboardShouldPersistTaps="never"
                                   style={styles.listContainer} enableEmptySections={true} dataSource={dataSource}
                                   onEndReached={this._onEndReached} onEndReachedThreshold={250}
                                   renderRow={(object) => {

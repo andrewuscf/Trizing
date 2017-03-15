@@ -45,13 +45,15 @@ const styles = StyleSheet.create({
         left: 10,
         top: 10,
         flexDirection: 'row',
+        // justifyContent: 'center',
+        alignItems: 'center',
     },
     cancel: {
+        textAlign: 'center',
         marginLeft: 5,
         color: '#d4d4d4',
         fontSize: 15,
         fontWeight: 'bold',
-        textAlign: 'center'
     },
     textColor: {
         color: '#333333',
