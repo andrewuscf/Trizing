@@ -42,7 +42,6 @@ const App = React.createClass({
     getInitialState: function () {
         return {
             splashArt: true,
-            route: 'Home'
         };
     },
 
@@ -87,7 +86,7 @@ const App = React.createClass({
     },
 
     itemChangedFocus(route) {
-        this.setState({route: route.name})
+        this.props.actions.setActiveRoute(route.name);
     },
 
     openQuestionnaireModal() {
@@ -130,7 +129,7 @@ const App = React.createClass({
                                        renderScene={ this._renderScene }
                                        navigationBar={<NavBar RequestUser={this.props.RequestUser}
                                                               scrollToTopEvent={this.scrollToTopEvent}
-                                                              route={this.state.route}/>}
+                                                              route={this.props.Route}/>}
                             />
                             <Modal style={[styles.modal]} backdrop={false} ref={"questionnaire"}
                                    swipeToClose={false}>

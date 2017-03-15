@@ -7,7 +7,6 @@ import {getRoute} from '../routes';
 
 var NavBar = React.createClass({
     propTypes: {
-        route: React.PropTypes.string.isRequired,
         scrollToTopEvent: React.PropTypes.func.isRequired
     },
 

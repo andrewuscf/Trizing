@@ -15,6 +15,8 @@ export const API_ERROR = 'API_ERROR';
 export const CREATE_WORKOUT = 'CREATE_WORKOUT';
 export const GET_WORKOUTS = 'GET_WORKOUTS';
 
+export const SET_ACTIVE_ROUTE = 'SET_ACTIVE_ROUTE';
+
 
 // Home Constants
 export const LOAD_CLIENTS = 'LOAD_CLIENTS';

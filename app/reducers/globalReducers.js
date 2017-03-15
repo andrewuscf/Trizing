@@ -27,6 +27,12 @@ export default function AppReducers(state = initialState, action = null) {
 
         case constants.REMOVE_TOKEN:
             return {};
+        
+        case constants.SET_ACTIVE_ROUTE:
+            return {
+                ...state,
+                Route: action.routeName
+            };
 
         case constants.LOAD_REQUEST_USER:
             return {

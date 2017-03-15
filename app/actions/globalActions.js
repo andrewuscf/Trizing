@@ -26,12 +26,17 @@ export function removeToken(token) {
     };
 }
 
+export function setActiveRoute(routeName) {
+    return {type: types.SET_ACTIVE_ROUTE, routeName: routeName}
+}
+
 export function login(email, pass) {
     const body = JSON.stringify({username: email, password: pass});
     return dispatch => {
         return fetch(`${API_ENDPOINT}auth/token/`, fetchData('POST', body))
             .then(checkStatus)
             .then((responseJson) => {
+                console.log(responseJson)
                 if (responseJson.token) {
                     return dispatch(setTokenInRedux(responseJson.token, true));
                 }
@@ -44,7 +49,7 @@ export function login(email, pass) {
                     });
                 }
             })
-            .catch((error) => {
+            .catch((error) => {console.log(error)
                 // return dispatch(
                 //     removeToken()
                 // );

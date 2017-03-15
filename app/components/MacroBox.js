@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     TextInput,
     Alert,
-    Dimensions
+    Keyboard
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
@@ -16,8 +16,6 @@ import {getFontSize} from '../actions/utils';
 import MacroBoxDay from './MacroBoxDay';
 import SubmitButton from './SubmitButton';
 
-
-var {width: deviceWidth} = Dimensions.get('window');
 
 const MacroBox = React.createClass({
     propTypes: {
@@ -50,10 +48,12 @@ const MacroBox = React.createClass({
     },
 
     addDay() {
+        Keyboard.dismiss();
         this.setState({numberOfDays: this.state.numberOfDays + 1})
     },
 
     _onCreate() {
+        Keyboard.dismiss();
         if (this.verify()) {
             this.props.createMacroPlan(this.state);
             this.setState(this.getInitialState());
@@ -65,6 +65,7 @@ const MacroBox = React.createClass({
     },
 
     _onPress() {
+        Keyboard.dismiss();
         if (this.props.plan) {
             var delta = new Date().getTime() - this.state.lastPress;
             if (delta < 200) {
@@ -81,6 +82,7 @@ const MacroBox = React.createClass({
     },
 
     _onDelete() {
+        Keyboard.dismiss();
         Alert.alert(
             'Delete Macro Plan',
             `Are you sure you want delete ${this.props.plan.name}?`,
@@ -92,6 +94,7 @@ const MacroBox = React.createClass({
     },
 
     _onLongPress() {
+        Keyboard.dismiss();
         if (this.props.plan) {
             this.props.selectMacroPlan(this.props.plan.id);
         }
@@ -127,7 +130,7 @@ const MacroBox = React.createClass({
             return (
                 <View style={styles.container}>
                     <View style={styles.inputWrap}>
-                        <TextInput ref="name" style={styles.textInput} autoCapitalize='none'
+                        <TextInput ref="name" style={styles.textInput} autoCapitalize='sentences'
                                    underlineColorAndroid='transparent'
                                    autoCorrect={false}
                                    onChangeText={(text)=>this.setState({name: text})}
@@ -143,7 +146,7 @@ const MacroBox = React.createClass({
                         : null
                     }
                     <SubmitButton buttonStyle={styles.createButton}
-                                  textStyle={styles.submitText} onPress={this._onCreate}  ref='postbutton'
+                                  textStyle={styles.submitText} onPress={this._onCreate} ref='postbutton'
                                   text='Create Nutrition Plan'/>
                 </View>
             )
@@ -235,7 +238,7 @@ const styles = StyleSheet.create({
         height: 30,
         borderBottomWidth: .5,
         borderColor: '#aaaaaa',
-        alignItems: 'center'
+        flex: 1
     },
     textInput: {
         color: 'black',
@@ -245,7 +248,7 @@ const styles = StyleSheet.create({
         paddingTop: 3,
         paddingBottom: 3,
         height: 30,
-        textAlign: 'center'
+        textAlign: 'center',
     },
     createButton: {
         backgroundColor: '#00BFFF',
