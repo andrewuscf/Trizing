@@ -1,4 +1,5 @@
 import React from 'react';
+import Subscribable from 'Subscribable';
 import {
     StyleSheet,
     Text,
@@ -19,8 +20,14 @@ import {getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
 const Chat = React.createClass({
+    mixins: [Subscribable.Mixin],
+
+    scrollToTopEvent(args) {
+        if (args.routeName == 'Chat') this.refs.todayscroll.scrollTo({y: 0, true});
+    },
 
     componentDidMount() {
+        // this.addListenerOn(this.props.events, 'scrollToTopEvent', this.scrollToTopEvent);
         if (!this.props.ChatRooms.length) {
             this.getNeeded();
         }

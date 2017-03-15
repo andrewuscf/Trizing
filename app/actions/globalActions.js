@@ -45,9 +45,9 @@ export function login(email, pass) {
                 }
             })
             .catch((error) => {
-                return dispatch(
-                    removeToken()
-                );
+                // return dispatch(
+                //     removeToken()
+                // );
             }).done();
     }
 }
@@ -66,6 +66,7 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
                 return dispatch({type: types.LOAD_REQUEST_USER, request_user: responseJson});
             })
             .catch((error) => {
+                console.log(error)
                 return dispatch(removeToken());
             }).done();
     }

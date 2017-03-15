@@ -1,4 +1,5 @@
 import React from 'react';
+import Subscribable from 'Subscribable';
 import {
     StyleSheet,
     Text,
@@ -26,12 +27,18 @@ import PeopleBar from '../components/PeopleBar';
 
 
 const Home = React.createClass({
+    mixins: [Subscribable.Mixin],
     propTypes: {
         openWorkoutModal: React.PropTypes.func.isRequired,
         Refreshing: React.PropTypes.bool.isRequired
     },
 
+    scrollToTopEvent(args) {
+        if (args.routeName == 'Home') this.refs.home_scroll.scrollTo({y: 0, true});
+    },
+
     componentDidMount() {
+        this.addListenerOn(this.props.events, 'scrollToTopEvent', this.scrollToTopEvent);
         if (!this.props.Clients.length) {
             this.getNeeded(true);
         }

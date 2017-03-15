@@ -8,10 +8,13 @@ import {getRoute} from '../routes';
 var NavBar = React.createClass({
     propTypes: {
         route: React.PropTypes.string.isRequired,
+        scrollToTopEvent: React.PropTypes.func.isRequired
     },
 
     _onPress(routeName) {
-        if (this.props.route != routeName) {
+        if (this.isActiveRoute(routeName)) {
+            this.props.scrollToTopEvent(routeName)
+        } else {
             let index;
             if (routeName == 'Profile') {
                 index = _.findIndex(this.props.navigator.state.routeStack, {

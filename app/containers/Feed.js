@@ -1,4 +1,5 @@
 import React from 'react';
+import Subscribable from 'Subscribable';
 import {
     StyleSheet,
     Text,
@@ -25,6 +26,7 @@ import AvatarImage from '../components/AvatarImage';
 import PostBox from '../components/PostBox';
 
 const Feed = React.createClass({
+    mixins: [Subscribable.Mixin],
 
     getInitialState() {
         return {
@@ -34,7 +36,12 @@ const Feed = React.createClass({
         }
     },
 
+    scrollToTopEvent(args) {
+        if (args.routeName == 'Feed') this.refs.posts_list.scrollTo({y: 0, true});
+    },
+
     componentDidMount() {
+        this.addListenerOn(this.props.events, 'scrollToTopEvent', this.scrollToTopEvent);
         if (!this.props.Posts.length) {
             this.props.actions.getFeed(true);
         }

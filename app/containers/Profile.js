@@ -1,4 +1,5 @@
 import React from 'react';
+import Subscribable from 'Subscribable';
 import {
     StyleSheet,
     Text,
@@ -40,6 +41,8 @@ moment.updateLocale('en', {
 
 
 const Profile = React.createClass({
+    mixins: [Subscribable.Mixin],
+
     propTypes: {
         id: React.PropTypes.number.isRequired,
         openModal: React.PropTypes.func.isRequired
@@ -52,8 +55,13 @@ const Profile = React.createClass({
         }
     },
 
+    scrollToTopEvent(args) {
+        if (args.routeName == 'Profile') this.refs.todayscroll.scrollTo({y: 0, true});
+    },
+
 
     componentDidMount() {
+        // this.addListenerOn(this.props.events, 'scrollToTopEvent', this.scrollToTopEvent);
         this.getUser();
     },
 

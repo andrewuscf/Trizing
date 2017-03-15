@@ -1,4 +1,5 @@
 import React from 'react';
+import EventEmitter from 'EventEmitter';
 import {
     StyleSheet,
     Text,
@@ -49,13 +50,13 @@ const App = React.createClass({
         var SceneComponent = route.component;
         switch (route.name) {
             case 'Home':
-                return <SceneComponent navigator={ nav } route={route} {...route.passProps}
+                return <SceneComponent navigator={ nav } route={route} {...route.passProps} events={this.eventEmitter}
                                        openWorkoutModal={this.openWorkoutModal}/>;
             case 'Profile':
-                return <SceneComponent navigator={ nav } route={route} {...route.passProps}
+                return <SceneComponent navigator={ nav } route={route} {...route.passProps} events={this.eventEmitter}
                                        openModal={this.openQuestionnaireModal}/>;
             default :
-                return <SceneComponent navigator={ nav } route={route} {...route.passProps}/>;
+                return <SceneComponent navigator={ nav } route={route} {...route.passProps} events={this.eventEmitter}/>;
 
         }
 
@@ -82,6 +83,7 @@ const App = React.createClass({
             }
             this.setState({splashArt: false});
         });
+        this.eventEmitter = new EventEmitter();
     },
 
     itemChangedFocus(route) {
@@ -104,29 +106,10 @@ const App = React.createClass({
         this.refs.workout.close();
     },
 
-    configureScene(route, routeStack) {
-        switch (route.name) {
-            case 'Home':
-                return Navigator.SceneConfigs.PushFromRight;
-            case 'Profile':
-                return Navigator.SceneConfigs.PushFromRight;
-            case 'Feed':
-                if (routeStack[routeStack.length - 2].name == "Home" || routeStack[routeStack.length - 2].name == "Calendar")
-                    return Navigator.SceneConfigs.PushFromRight;
-                return Navigator.SceneConfigs.PushFromLeft;
-            case 'Calendar':
-                if (routeStack[routeStack.length - 2].name == "Home")
-                    return Navigator.SceneConfigs.PushFromRight;
-                return Navigator.SceneConfigs.PushFromLeft;
-            case 'Chat':
-                if (routeStack[routeStack.length - 2].name == "Profile")
-                    return Navigator.SceneConfigs.PushFromLeft;
-                return Navigator.SceneConfigs.PushFromRight;
-            default :
-                return Navigator.SceneConfigs.FloatFromRight
-
-        }
+    scrollToTopEvent(routeName) {
+        this.eventEmitter.emit('scrollToTopEvent', {routeName: routeName});
     },
+
 
     render() {
         if (!this.state.splashArt) {
@@ -143,10 +126,10 @@ const App = React.createClass({
                                        ref={(nav) => {
                                            navigator = nav
                                        }}
-                                       configureScene={this.configureScene}
                                        onDidFocus={this.itemChangedFocus}
                                        renderScene={ this._renderScene }
                                        navigationBar={<NavBar RequestUser={this.props.RequestUser}
+                                                              scrollToTopEvent={this.scrollToTopEvent}
                                                               route={this.state.route}/>}
                             />
                             <Modal style={[styles.modal]} backdrop={false} ref={"questionnaire"}
