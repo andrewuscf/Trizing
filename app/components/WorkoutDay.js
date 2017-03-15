@@ -10,29 +10,33 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {getFontSize} from '../actions/utils';
 
+import DaysOfWeek from './DaysOfWeek';
+
 
 var WorkoutDay = React.createClass({
     propTypes: {
-        // closeWorkoutModal: React.PropTypes.func.isRequired,
+        workout_day: React.PropTypes.object.isRequired,
+        dayIndex: React.PropTypes.number.isRequired
         // createWorkout: React.PropTypes.func.isRequired
     },
 
     getInitialState() {
         return {
-            name: null,
-            numberOfExercises: 1,
-            exercises: []
+            // exercises: [],
+            // sets: [
+            //
+            // ]
         }
     },
 
-    // _onDayChange(index, event) {
-    //     const text = event.nativeEvent.text;
-    //     let days = this.state.days;
-    //     days[index] = {text: text};
-    //     this.setState({
-    //         days: days
-    //     });
-    // },
+    _onDayNameChange(text) {
+        this.props.getDayState(this.props.dayIndex, {name:text})
+    },
+
+    getDayState(days) {
+        console.log(days)
+        this.props.getDayState(this.props.dayIndex, {days:days})
+    },
 
 
     render: function () {
@@ -47,10 +51,12 @@ var WorkoutDay = React.createClass({
                                underlineColorAndroid='transparent'
                                autoCapitalize='sentences'
                                placeholderTextColor='#4d4d4d'
-                               onChangeText={(text) =>this.setState({last_name: text})}
-                               value={this.state.name}
+                               onChangeText={this._onDayNameChange}
+                               value={this.props.name}
                                placeholder="'Pull day, 'Monday' or 'Day One'"/>
                 </View>
+                <Text style={styles.inputLabel}>On what days?</Text>
+                <DaysOfWeek getDayState={this.getDayState} days={this.props.workout_day.days}/>
             </View>
         )
     }
@@ -59,11 +65,13 @@ var WorkoutDay = React.createClass({
 
 var styles = StyleSheet.create({
     inputWrap: {
+        flex: 1,
         marginBottom: 12,
         height: 30,
         borderBottomWidth: .5,
         borderColor: '#aaaaaa',
-        alignItems: 'center'
+        justifyContent: 'center',
+        alignItems: 'stretch'
     },
     textInput: {
         color: 'black',
@@ -72,11 +80,13 @@ var styles = StyleSheet.create({
         backgroundColor: 'transparent',
         paddingTop: 3,
         paddingBottom: 3,
-        height: 30
+        height: 30,
+        textAlign: 'center'
     },
     inputLabel: {
         fontSize: 18,
-        fontFamily: 'OpenSans-Semibold'
+        fontFamily: 'OpenSans-Semibold',
+        textAlign: 'center'
     }
 });
 

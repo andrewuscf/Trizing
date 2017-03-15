@@ -4,10 +4,10 @@ import {
     View,
     Text,
     StyleSheet,
-    Dimensions,
     Alert,
     TextInput,
-    TouchableHighlight
+    TouchableHighlight,
+    Keyboard
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -17,9 +17,6 @@ import BackBar from '../../components/BackBar';
 import SubmitButton from '../../components/SubmitButton';
 
 import WorkoutDay from '../../components/WorkoutDay';
-
-
-var {width: deviceWidth} = Dimensions.get('window');
 
 
 var CreateWorkout = React.createClass({
@@ -32,8 +29,10 @@ var CreateWorkout = React.createClass({
         return {
             Error: null,
             name: null,
-            numberofDays: 1,
-            days: [],
+            tab: 1,
+            workout_days: [
+                {name: null, days: []}
+            ],
         }
     },
 
@@ -59,7 +58,10 @@ var CreateWorkout = React.createClass({
     },
 
     isValid() {
-        return this.state.name && this.state.days[0] && this.state.days[0].name
+        if (this.state.tab == 1) {
+            return !!this.state.name
+        }
+        return this.state.name && this.state.workout_days[0] && this.state.workout_days[0].name
     },
 
 
@@ -67,49 +69,108 @@ var CreateWorkout = React.createClass({
         if (this.isValid()) {
             var data = {
                 name: this.state.name,
-                questions: this.state.questions,
+                workout_days: this.state.workout_days,
 
             };
-            this.props.createQuestionnaire(data, this.asyncActions)
+            this.props.createWorkout(data, this.asyncActions)
         }
     },
 
+    getDayState(dayIndex, state) {
+        let workout_days = this.state.workout_days;
+        workout_days[dayIndex] = {
+            ...workout_days[dayIndex],
+            ...state
+        };
+        this.setState({workout_days: workout_days});
+    },
+
     addDay() {
-        this.setState({numberofDays: this.state.numberofDays + 1});
+        Keyboard.dismiss();
+        this.setState({
+            workout_days: [
+                ...this.state.workout_days,
+                {name: null, days: []}
+            ]
+        });
+    },
+
+    removeDay(index) {
+        Keyboard.dismiss();
+        if (this.state.workout_days.length > 1) {
+            this.setState({
+                workout_days: this.state.workout_days.slice(0, index).concat(this.state.workout_days.slice(index + 1))
+            })
+        }
+    },
+
+    _cancel() {
+        // this.props.closeWorkoutModa
+        Alert.alert(
+            'Are you sure you want to cancel?',
+            'Your current step will not be saved',
+            [
+                {text: 'No', null, style: 'cancel'},
+                {text: 'Yes', onPress: () => this.props.closeWorkoutModal()},
+            ]
+        );
+    },
+
+    _nextStep() {
+        if (this.isValid())
+            this.setState({tab: this.state.tab + 1});
+    },
+
+    _prevStep() {
+        if (this.state.tab != 1)
+            this.setState({tab: this.state.tab - 1});
+    },
+
+    renderContent() {
+        switch (this.state.tab) {
+            case 1:
+                return (
+                    <View style={styles.formContainer}>
+                        <Text style={styles.inputLabel}>Workout Name</Text>
+                        <View style={styles.inputWrap}>
+                            <TextInput ref="name" style={styles.textInput} autoCapitalize='sentences'
+                                       underlineColorAndroid='transparent'
+                                       autoCorrect={false}
+                                       onChangeText={(text)=>this.setState({name: text})}
+                                       value={this.state.name}
+                                       placeholderTextColor="#4d4d4d"
+                                       placeholder="Cutting"/>
+                        </View>
+                    </View>
+                );
+            case 2:
+                return (
+                    <View style={styles.formContainer}>
+                        {this.state.workout_days.map((workout_day, index)=> {
+                            return <WorkoutDay key={index} dayIndex={index} workout_day={workout_day}
+                                               getDayState={this.getDayState}/>
+                        })}
+                    </View>
+
+                )
+        }
     },
 
 
     render: function () {
-        const days = [];
-        for (var x = 0; x < this.state.numberofDays; x++) {
-            days.push(<WorkoutDay key={x} />)
-        }
         return (
-            <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}>
-                <BackBar back={this.props.closeWorkoutModal} backText="Cancel" navStyle={{height: 40}}>
-                    <SubmitButton buttonStyle={[styles.submitButton]}
-                                  textStyle={[styles.cancel, this.isValid() ? styles.blueText : null]}
-                                  onPress={this._onSubmit} ref='postbutton'
-                                  text='Submit'/>
-                </BackBar>
+            <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="never"
+                        contentContainerStyle={styles.contentContainerStyle}>
+                <BackBar back={this._cancel} backText="Cancel" navStyle={{height: 40}}/>
 
-                <View style={styles.formContainer}>
-                    <Text style={styles.inputLabel}>Workout Name</Text>
-                    <View style={styles.inputWrap}>
-                        <TextInput ref="name" style={styles.textInput} autoCapitalize='sentences'
-                                   underlineColorAndroid='transparent'
-                                   autoCorrect={false}
-                                   onChangeText={(text)=>this.setState({name: text})}
-                                   value={this.state.name}
-                                   onSubmitEditing={(event) => {
-                                       this.refs.question0.focus();
-                                   }}
-                                   placeholderTextColor="#4d4d4d"
-                                   placeholder="Required"/>
-                    </View>
-                    {days}
-                    <TouchableHighlight onPress={this.addDay} underlayColor='transparent'>
-                        <Text style={styles.addDay}>Add Workout Day</Text>
+                {this.renderContent()}
+
+                <View style={{flexDirection: 'row'}}>
+                    <TouchableHighlight style={{flex:1}} onPress={this._prevStep} underlayColor='transparent'>
+                        <Text style={styles.addDay}>Prev Step</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight style={{flex:1}} onPress={this._nextStep} underlayColor='transparent'>
+                        <Text style={styles.addDay}>Next Step</Text>
                     </TouchableHighlight>
                 </View>
 
@@ -117,12 +178,26 @@ var CreateWorkout = React.createClass({
         )
     }
 });
+{/*<SubmitButton buttonStyle={[styles.submitButton]}*/
+}
+{/*textStyle={[styles.cancel, this.isValid() ? styles.blueText : null]}*/
+}
+{/*onPress={this._onSubmit} ref='postbutton'*/
+}
+{/*text='Submit'/>*/
+}
+
+{/*<TouchableHighlight onPress={this.addDay} underlayColor='transparent'>*/
+}
+{/*<Text style={styles.addDay}>Add Workout Day</Text>*/
+}
+{/*</TouchableHighlight>*/
+}
 
 
 var styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
-        width: deviceWidth
     },
     submitButton: {
         position: 'absolute',
@@ -139,11 +214,13 @@ var styles = StyleSheet.create({
         margin: 10,
     },
     inputWrap: {
+        flex: 1,
         marginBottom: 12,
         height: 30,
         borderBottomWidth: .5,
         borderColor: '#aaaaaa',
-        alignItems: 'center'
+        justifyContent: 'center',
+        alignItems: 'stretch'
     },
     textInput: {
         color: 'black',
@@ -152,11 +229,13 @@ var styles = StyleSheet.create({
         backgroundColor: 'transparent',
         paddingTop: 3,
         paddingBottom: 3,
-        height: 30
+        height: 30,
+        textAlign: 'center'
     },
     inputLabel: {
         fontSize: 18,
         fontFamily: 'OpenSans-Semibold',
+        textAlign: 'center'
     },
     addDay: {
         height: 35,

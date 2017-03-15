@@ -225,12 +225,14 @@ export function createQuestionnaire(data, asyncActions) {
 
 export function createWorkout(data, asyncActions) {
     asyncActions(true);
+    console.log(data)
     let JSONDATA = JSON.stringify(data);
     return (dispatch, getState) => {
         return fetch(`${API_ENDPOINT}training/workouts/`,
             fetchData('POST', JSONDATA, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
                 asyncActions(false);
+                console.log(responseJson)
                 return dispatch({type: types.CREATE_WORKOUT, response: responseJson});
             })
             .catch((error) => {
