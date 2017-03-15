@@ -55,7 +55,7 @@ var WorkoutDay = React.createClass({
                                value={this.props.name}
                                placeholder="'Pull day, 'Monday' or 'Day One'"/>
                 </View>
-                <Text style={styles.inputLabel}>On what days?</Text>
+                <Text style={styles.inputLabel}>What days?</Text>
                 <DaysOfWeek getDayState={this.getDayState} days={this.props.workout_day.days}/>
             </View>
         )
