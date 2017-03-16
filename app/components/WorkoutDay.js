@@ -99,6 +99,12 @@ const WorkoutDay = React.createClass({
     },
 
     render: function () {
+        if (this.props.workout_day.name)
+            return (
+                <View>
+                    <Text style={styles.inputLabel}>{this.props.workout_day.name}</Text>
+                </View>
+            )
         const exercises = this.state.exercises.map((exercise, index) => {
             if (this.state.exercises.length > 1)
                 return <ExerciseBox key={index} exercise={exercise} exerciseIndex={index}

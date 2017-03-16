@@ -146,6 +146,7 @@ const CreateWorkout = React.createClass({
                                        placeholderTextColor="#4d4d4d"
                                        placeholder="Cutting"/>
                         </View>
+                        <Text style={styles.inputLabel}>Workouts</Text>
                         {this.state.workout_days.map((workout_day, index) => {
                             if (workout_day.name && workout_day.days && workout_day.days.length > 0)
                                 return <WorkoutDay key={index} dayIndex={index} workout_day={workout_day}/>
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
     inputWrap: {
         flex: 1,
         marginBottom: 12,
-        height: 30,
+        // minHeight: 100,
         borderBottomWidth: .5,
         borderColor: '#aaaaaa',
         justifyContent: 'center',
@@ -193,11 +194,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         paddingTop: 3,
         paddingBottom: 3,
-        height: 30,
-        textAlign: 'center'
+        minHeight: 50,
+        textAlign: 'center',
+        flex: 1
     },
     inputLabel: {
-        fontSize: 18,
+        fontSize: getFontSize(25),
+        lineHeight: getFontSize(26),
         fontFamily: 'OpenSans-Semibold',
         textAlign: 'center'
     },
