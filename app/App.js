@@ -27,7 +27,7 @@ import NavBar from './components/Navbar';
 import Loading from './components/Loading';
 
 
-var navigator;
+let navigator;
 
 BackAndroid.addEventListener('hardwareBackPress', () => {
     if (navigator && navigator.getCurrentRoutes().length > 1) {
@@ -46,7 +46,7 @@ const App = React.createClass({
     },
 
     _renderScene: function (route, nav) {
-        var SceneComponent = route.component;
+        const SceneComponent = route.component;
         switch (route.name) {
             case 'Home':
                 return <SceneComponent navigator={ nav } route={route} {...route.passProps} events={this.eventEmitter}

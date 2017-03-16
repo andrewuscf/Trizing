@@ -14,7 +14,7 @@ import GlobalStyle from '../containers/globalStyle';
 
 const DaysOfWeek = React.createClass({
     propTypes: {
-        getDayState: React.PropTypes.func.isRequired,
+        daySelectedState: React.PropTypes.func.isRequired,
         days: React.PropTypes.array.isRequired,
         selectedDays: React.PropTypes.array
     },
@@ -37,7 +37,7 @@ const DaysOfWeek = React.createClass({
                 updated = updated.concat(dayId);
             }
         }
-        this.props.getDayState(updated)
+        this.props.daySelectedState(updated)
     },
 
     render() {

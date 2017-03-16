@@ -19,7 +19,7 @@ import SubmitButton from '../../components/SubmitButton';
 import WorkoutDay from '../../components/WorkoutDay';
 
 
-var CreateWorkout = React.createClass({
+const CreateWorkout = React.createClass({
     propTypes: {
         closeWorkoutModal: React.PropTypes.func.isRequired,
         createWorkout: React.PropTypes.func.isRequired
@@ -195,7 +195,7 @@ var CreateWorkout = React.createClass({
 }
 
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
     },
