@@ -5,33 +5,44 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {getRoute} from '../routes';
 
-var NavBar = React.createClass({
+const NavBar = React.createClass({
     propTypes: {
         scrollToTopEvent: React.PropTypes.func.isRequired
     },
 
+    navigate(routeName) {
+        let index;
+        if (routeName == 'Profile') {
+            index = _.findIndex(this.props.navigator.state.routeStack, {
+                name: routeName,
+                passProps: {user: this.props.RequestUser.id}
+            });
+        } else {
+            index = _.findIndex(this.props.navigator.state.routeStack, {name: routeName});
+        }
+
+        if (index != -1) {
+            this.props.navigator.popToRoute(this.props.navigator.state.routeStack[index]);
+        } else {
+            if (routeName == 'Profile') {
+                this.props.navigator.push(getRoute(routeName, {id: this.props.RequestUser.id}));
+                return;
+            }
+            this.props.navigator.push(getRoute(routeName));
+        }
+    },
+
     _onPress(routeName) {
         if (this.isActiveRoute(routeName)) {
+            if (routeName == 'Profile') {
+                const userId =
+                    this.props.navigator.state.routeStack[this.props.navigator.state.routeStack.length - 1].passProps.id;
+                if (userId != this.props.RequestUser.id)
+                    this.navigate(routeName)
+            }
             this.props.scrollToTopEvent(routeName)
         } else {
-            let index;
-            if (routeName == 'Profile') {
-                index = _.findIndex(this.props.navigator.state.routeStack, {
-                    name: routeName,
-                    passProps: {user: this.props.RequestUser.id}
-                });
-            } else {
-                index = _.findIndex(this.props.navigator.state.routeStack, {name: routeName});
-            }
-            if (index != -1) {
-                this.props.navigator.popToRoute(this.props.navigator.state.routeStack[index]);
-            } else {
-                if (routeName == 'Profile') {
-                    this.props.navigator.push(getRoute(routeName, {id: this.props.RequestUser.id}));
-                    return;
-                }
-                this.props.navigator.push(getRoute(routeName));
-            }
+            this.navigate(routeName);
         }
     },
 
@@ -85,10 +96,10 @@ var NavBar = React.createClass({
     }
 });
 
-var iconColor = '#b1aea5';
-var iconColorActive = '#ffa272';
+const iconColor = '#b1aea5';
+const iconColorActive = '#ffa272';
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
     primaryBar: {
         flexDirection: 'row',
         justifyContent: 'space-between',
