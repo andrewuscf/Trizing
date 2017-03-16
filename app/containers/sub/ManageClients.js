@@ -29,7 +29,7 @@ import Loading from '../../components/Loading';
 import PersonBox from '../../components/PersonBox';
 import SubmitButton from '../../components/SubmitButton';
 
-var {width: deviceWidth} = Dimensions.get('window');
+const {width: deviceWidth} = Dimensions.get('window');
 
 
 const ManageClients = React.createClass({
@@ -37,7 +37,6 @@ const ManageClients = React.createClass({
     getInitialState() {
         return {
             filterText: null,
-            flex: null,
             showCancel: false,
             iconColor: '#a7a59f',
             fetchedUsers: []

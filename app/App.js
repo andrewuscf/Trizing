@@ -137,6 +137,7 @@ const App = React.createClass({
                                                      createQuestionnaire={this.props.actions.createQuestionnaire}/>
                             </Modal>
                             <Modal style={[styles.modal]} backdrop={false} ref={"workout"}
+                                   keyboardShouldPersistTaps="never"
                                    swipeToClose={false}>
                                 <CreateWorkout closeWorkoutModal={this.closeWorkoutModal}
                                                createWorkout={this.props.actions.createWorkout}/>

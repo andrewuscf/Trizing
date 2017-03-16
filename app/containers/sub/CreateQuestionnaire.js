@@ -17,7 +17,7 @@ import BackBar from '../../components/BackBar';
 import SubmitButton from '../../components/SubmitButton';
 
 
-var CheckInModal = React.createClass({
+const CheckInModal = React.createClass({
     propTypes: {
         closeQuestionnaireModal: React.PropTypes.func.isRequired,
         createQuestionnaire: React.PropTypes.func.isRequired
@@ -160,7 +160,7 @@ var CheckInModal = React.createClass({
 });
 
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
     flexCenter: {
         flex: 1
     },

@@ -18,6 +18,8 @@ import SubmitButton from '../../components/SubmitButton';
 
 import WorkoutDay from '../../components/WorkoutDay';
 
+const BlankWorkoutDay = {name: null, days: []};
+
 
 const CreateWorkout = React.createClass({
     propTypes: {
@@ -31,7 +33,7 @@ const CreateWorkout = React.createClass({
             name: null,
             tab: 1,
             workout_days: [
-                {name: null, days: []}
+                BlankWorkoutDay
             ],
         }
     },
@@ -67,7 +69,7 @@ const CreateWorkout = React.createClass({
 
     _onSubmit() {
         if (this.isValid()) {
-            var data = {
+            const data = {
                 name: this.state.name,
                 workout_days: this.state.workout_days,
 
@@ -90,7 +92,7 @@ const CreateWorkout = React.createClass({
         this.setState({
             workout_days: [
                 ...this.state.workout_days,
-                {name: null, days: []}
+                BlankWorkoutDay
             ]
         });
     },
@@ -105,7 +107,6 @@ const CreateWorkout = React.createClass({
     },
 
     _cancel() {
-        // this.props.closeWorkoutModa
         Alert.alert(
             'Are you sure you want to cancel?',
             'Your current step will not be saved',
@@ -117,8 +118,8 @@ const CreateWorkout = React.createClass({
     },
 
     _nextStep() {
-        if (this.isValid())
-            this.setState({tab: this.state.tab + 1});
+        // if (this.isValid())
+        this.setState({tab: this.state.tab + 1});
     },
 
     _prevStep() {
@@ -146,12 +147,19 @@ const CreateWorkout = React.createClass({
             case 2:
                 return (
                     <View style={styles.formContainer}>
+                        <WorkoutDay dayIndex={this.state.workout_days.length} workout_day={BlankWorkoutDay} />
+                    </View>
+
+                );
+            default:
+                return (
+                    <View style={styles.formContainer}>
+                        <Text style={styles.inputLabel}>{this.state.name}</Text>
                         {this.state.workout_days.map((workout_day, index)=> {
                             return <WorkoutDay key={index} dayIndex={index} workout_day={workout_day}
                                                getDayState={this.getDayState}/>
                         })}
                     </View>
-
                 )
         }
     },

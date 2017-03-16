@@ -216,7 +216,7 @@ const MacroBox = React.createClass({
                             </Text>
                         </View>
                         <TouchableOpacity style={styles.edit} onPress={this._onDelete}>
-                            <Icon name="trash-o" size={20} color='#4d4d4e'/>
+                            <Icon name="times" size={20} color="red"/>
                         </TouchableOpacity>
                     </View>
                 }

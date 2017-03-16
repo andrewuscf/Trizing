@@ -14,7 +14,7 @@ import {getFontSize} from '../actions/utils';
 import DaysOfWeek from './DaysOfWeek';
 import ExerciseBox from './ExerciseBox';
 
-const BlankSet = {reps: 10, weight: null};
+const BlankSet = {reps: null, weight: null};
 const BlankExercise = {
     name: null,
     sets: [
@@ -82,8 +82,7 @@ const WorkoutDay = React.createClass({
         return (
             <View>
                 <Text style={styles.inputLabel}>Name of Day</Text>
-                <View
-                    style={[styles.inputWrap]}>
+                <View style={[styles.inputWrap]}>
                     <TextInput ref={`day`}
                                style={[styles.textInput]}
                                multiline={true}
