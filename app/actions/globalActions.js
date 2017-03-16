@@ -72,7 +72,7 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
             })
             .catch((error) => {
                 console.log(error)
-                return dispatch(removeToken());
+                // return dispatch(removeToken());
             }).done();
     }
 }

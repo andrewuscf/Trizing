@@ -49,7 +49,7 @@ const App = React.createClass({
         switch (route.name) {
             case 'Home':
                 return <SceneComponent navigator={ nav } route={route} {...route.passProps}
-                                       events={this.eventEmitter}/>;
+                                       events={this.eventEmitter} openModal={this.openQuestionnaireModal}/>;
             case 'Profile':
                 return <SceneComponent navigator={ nav } route={route} {...route.passProps} events={this.eventEmitter}
                                        openModal={this.openQuestionnaireModal}/>;
@@ -114,9 +114,7 @@ const App = React.createClass({
                     return (
                         <View style={styles.container}>
                             <Navigator initialRoute={getRoute('Home')}
-                                       ref={(nav) => {
-                                           navigator = nav
-                                       }}
+                                       ref={(nav) => {navigator = nav}}
                                        onDidFocus={this.itemChangedFocus}
                                        renderScene={ this._renderScene }
                                        navigationBar={<NavBar RequestUser={this.props.RequestUser}

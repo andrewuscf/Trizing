@@ -4,7 +4,7 @@ import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {getRoute} from '../routes';
-import {trunc} from '../actions/utils';
+import {trunc, getFontSize} from '../actions/utils';
 
 import AvatarImage from './AvatarImage';
 
@@ -26,7 +26,7 @@ const PeopleBar = React.createClass({
                 <View style={{alignItems: 'center'}}  key={i}>
                     <AvatarImage style={styles.avatar} image={image}
                                  redirect={this.goToProfile.bind(null, user.id)}/>
-                    <Text style={{fontSize: 10, marginLeft: -5, marginTop: 5}}>{trunc(user.username, 6)}</Text>
+                    <Text style={styles.userText}>{trunc(user.username, 6)}</Text>
                 </View>
             )
         });
@@ -40,7 +40,7 @@ const PeopleBar = React.createClass({
                         <TouchableOpacity onPress={this.props.manageClients} style={styles.manageClients}>
                             <Icon name="user-plus" color='#bfbfbf' size={22}/>
                         </TouchableOpacity>
-                        <Text style={{fontSize: 8, marginLeft: -8, marginTop: 5}}>Manage Clients</Text>
+                        <Text style={styles.userText}>Manage Clients</Text>
                     </View>
 
                     {list}
@@ -69,20 +69,29 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingLeft: 6,
         paddingRight: 6,
-        height: 80,
+        height: 90,
     },
     avatar: {
-        marginRight: 12
+        marginRight: 12,
+        height: 60,
+        width: 60,
+        borderRadius: 30
     },
     manageClients: {
         marginRight: 12,
-        height: 50,
-        width: 50,
-        borderRadius: 25,
+        height: 59,
+        width: 59,
+        borderRadius: 30,
         borderColor: '#bfbfbf',
         borderWidth: .5,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    userText: {
+        fontSize: getFontSize(12),
+        color: '#b1aea5',
+        marginLeft: -5,
+        marginTop: 5
     }
 });
 

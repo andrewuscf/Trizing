@@ -13,7 +13,7 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 // import FCM from 'react-native-fcm';
-// import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as HomeActions from '../actions/homeActions';
 import * as GlobalActions from '../actions/globalActions';
@@ -29,7 +29,8 @@ import PeopleBar from '../components/PeopleBar';
 const Home = React.createClass({
     mixins: [Subscribable.Mixin],
     propTypes: {
-        Refreshing: React.PropTypes.bool.isRequired
+        Refreshing: React.PropTypes.bool.isRequired,
+        openModal: React.PropTypes.func.isRequired
     },
 
     scrollToTopEvent(args) {
@@ -47,7 +48,8 @@ const Home = React.createClass({
     getNeeded(refresh = false) {
         if (this.props.RequestUser.type == 1) {
             this.props.actions.getClients(refresh);
-            this.props.actions.getWorkouts('?template=true', refresh)
+            this.props.actions.getWorkouts('?template=true', refresh);
+            this.props.getQuestionnaires();
         }
         if (refresh) {
             this.props.getNotifications(refresh);
@@ -81,14 +83,38 @@ const Home = React.createClass({
         const isTrainer = user.type == 1;
         let content = null;
         if (isTrainer) {
+            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            console.log(this.props.Questionnaires)
+            const QuestionnaireDS = ds.cloneWithRows(this.props.Questionnaires);
             content = (
                 <View>
                     <PeopleBar navigator={this.props.navigator} people={this.props.Clients}
                                manageClients={this._redirect.bind(null, 'ManageClients', null)}/>
-                    <TouchableOpacity onPress={this._redirect.bind(null, 'CreateWorkout', null)}
-                                      style={[styles.addClientSection, GlobalStyle.simpleBottomBorder]}>
-                        <Text style={styles.addClientsText}>Create Workout Template</Text>
-                    </TouchableOpacity>
+
+                    <View style={[styles.box]}>
+                        <Text style={styles.textTitle}>Workouts</Text>
+                        <TouchableOpacity onPress={this._redirect.bind(null, 'CreateWorkout', null)}
+                                          style={styles.link}>
+                            <Text style={styles.simpleTitle}>Create Workout Template</Text>
+                            <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={[styles.box]}>
+                        <Text style={styles.textTitle}>Surveys</Text>
+                        <ListView ref='survey_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                                  style={styles.container} enableEmptySections={true} dataSource={QuestionnaireDS}
+                                  renderRow={(survey) =>
+                                      <TouchableOpacity style={styles.link}>
+                                          <Text  style={styles.simpleTitle}>{survey.name}</Text>
+                                      </TouchableOpacity>
+                                  }
+                        />
+                        <TouchableOpacity onPress={this.props.openModal} style={styles.link}>
+                            <Text style={styles.simpleTitle}>Create Survey</Text>
+                            <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             )
         } else {
@@ -99,25 +125,26 @@ const Home = React.createClass({
         return (
             <View style={GlobalStyle.container}>
                 <ScrollView ref='home_scroll'
-                            refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
+                            refreshControl={<RefreshControl refreshing={this.props.Refreshing}
+                                                            onRefresh={this._refresh}/>}
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
-
-                    {content}
                     {this.props.Notifications.length > 0 ?
-                        <View style={styles.section}>
+                        <View style={styles.box}>
                             <ListView ref='notification_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                                       style={styles.container} enableEmptySections={true} dataSource={dataSource}
                                       renderRow={(notification) => <NotificationBox
-                                        navigator={this.props.navigator} notification={notification}
-                                        readNotification={this.props.readNotification}/>}
+                                          navigator={this.props.navigator} notification={notification}
+                                          readNotification={this.props.readNotification}/>}
                             />
                             <TouchableOpacity onPress={this._redirect.bind(null, 'Notifications', null)}
-                                              style={[styles.addClientSection, GlobalStyle.simpleBottomBorder]}>
-                                <Text style={styles.addClientsText}>View All Notifications</Text>
+                                              style={[styles.box, GlobalStyle.simpleBottomBorder]}>
+                                <Text style={styles.simpleTitle}>View All Notifications</Text>
                             </TouchableOpacity>
                         </View>
                         : null
                     }
+
+                    {content}
                 </ScrollView>
             </View>
         )
@@ -132,36 +159,52 @@ const styles = StyleSheet.create({
     contentContainerStyle: {
         backgroundColor: '#f1f1f1'
     },
-    addClientSection: {
+    box: {
+        marginTop: 10,
         justifyContent: 'center',
-        alignItems: 'center',
-        borderBottomLeftRadius: 8,
-        borderBottomRightRadius: 8,
         backgroundColor: 'white',
         borderBottomWidth: 0.5,
         borderRightWidth: 0.5,
-        borderLeftWidth: 0.5
+        borderLeftWidth: 0.5,
+        borderColor: '#e1e3df',
     },
-    addClientsText: {
+    textTitle: {
+        fontSize: getFontSize(20),
+        fontFamily: 'OpenSans-Semibold',
+        margin: 10,
+        alignSelf: 'center'
+    },
+    simpleTitle: {
         fontSize: getFontSize(18),
         color: '#b1aea5',
         fontFamily: 'OpenSans-Semibold',
-        margin: 10
+        margin: 10,
+        flex: 17
     },
-    section: {
-        backgroundColor: 'white',
-        marginTop: 13,
+    link: {
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
+        borderTopWidth: 0.5,
         borderColor: '#e1e3df',
-        borderTopWidth: 1,
-        // flexDirection: 'row',
-        // alignItems: 'center',
-        // paddingBottom: 13
+    },
+    linkArrow: {
+        flex: 1
+    },
+    listItemText: {
+        color: '#4d4d4e',
+        fontSize: getFontSize(22),
+        lineHeight: getFontSize(26),
+        backgroundColor: 'transparent',
+        fontFamily: 'OpenSans-Semibold',
+        textDecorationLine: 'underline'
     }
 });
 
 const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
+        Questionnaires: state.Global.Questionnaires,
         ...state.Home
     };
 };
@@ -170,7 +213,8 @@ const dispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(HomeActions, dispatch),
         getNotifications: bindActionCreators(GlobalActions.getNotifications, dispatch),
-        readNotification: bindActionCreators(GlobalActions.readNotification, dispatch)
+        readNotification: bindActionCreators(GlobalActions.readNotification, dispatch),
+        getQuestionnaires: bindActionCreators(GlobalActions.getQuestionnaires, dispatch)
     }
 };
 
