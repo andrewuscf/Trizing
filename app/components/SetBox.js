@@ -19,6 +19,7 @@ const SetBox = React.createClass({
         set: React.PropTypes.object.isRequired,
         setIndex: React.PropTypes.number.isRequired,
         setSetState: React.PropTypes.func.isRequired,
+        _deleteSet: React.PropTypes.func
     },
 
     _repChange(text) {
@@ -29,52 +30,34 @@ const SetBox = React.createClass({
         this.props.setSetState(this.props.setIndex, {weight: text})
     },
 
-    _onDelete() {
+    _deleteSet() {
         Keyboard.dismiss();
         Alert.alert(
             'Delete Set',
             `Are you sure you want delete this set?`,
             [
                 {text: 'Cancel', null, style: 'cancel'},
-                {text: 'Delete', onPress: () => console.log('ldjskl')},
+                {text: 'Delete', onPress: () => this.props._deleteSet(this.props.setIndex)},
             ]
         );
     },
 
 
-    // addDay() {
-    //     Keyboard.dismiss();
-    //     this.setState({
-    //         sets: [
-    //             ...this.state.sets,
-    //             BlankSet
-    //         ]
-    //     });
-    // },
-    //
-    // removeDay(index) {
-    //     Keyboard.dismiss();
-    //     if (this.state.sets.length > 1) {
-    //         this.setState({
-    //             sets: this.state.sets.slice(0, index).concat(this.state.sets.slice(index + 1))
-    //         })
-    //     }
-    // },
-
-
     render: function () {
-        console.log(this.props.set)
         return (
             <View style={styles.setContainer}>
                 <View style={styles.setTitleView}>
                     <Text style={styles.setTitle}>Set {this.props.setIndex + 1}</Text>
-                    <TouchableOpacity style={styles.edit} onPress={this._onDelete}>
-                        <Icon name="times" size={20} color="red"/>
-                    </TouchableOpacity>
+                    {typeof this.props._deleteSet === "function" ?
+                        <TouchableOpacity style={styles.edit} onPress={this._deleteSet}>
+                            <Icon name="times" size={20} color="red"/>
+                        </TouchableOpacity>
+                        : null
+                    }
                 </View>
                 <View style={[styles.inputWrap, GlobalStyle.simpleBottomBorder]}>
                     <Text style={styles.inputLabel}>Weight <Text style={{color: '#4d4d4d'}}> lb</Text></Text>
-                    <TextInput ref='reps'
+                    <TextInput ref='weight'
                                style={[styles.textInput]}
                                underlineColorAndroid='transparent'
                                keyboardType="numeric"
@@ -83,7 +66,7 @@ const SetBox = React.createClass({
                                onChangeText={this._weightChange}
                                value={this.props.set.weight}
                                onSubmitEditing={(event) => {
-                                   this.refs.weight.focus()
+                                   this.refs.reps.focus()
                                }}
                                placeholder="Weight"/>
                 </View>
@@ -98,7 +81,7 @@ const SetBox = React.createClass({
                                onChangeText={this._repChange}
                                value={this.props.set.reps}
                                onSubmitEditing={(event) => {
-                                   this.refs.weight.focus()
+                                   Keyboard.dismiss();
                                }}
                                placeholder="Reps"/>
                 </View>
@@ -134,7 +117,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10
     },
     inputLabel: {
-      flex: 2
+        flex: 2
     },
     textInput: {
         flex: 1,

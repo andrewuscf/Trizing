@@ -29,7 +29,6 @@ import PeopleBar from '../components/PeopleBar';
 const Home = React.createClass({
     mixins: [Subscribable.Mixin],
     propTypes: {
-        openWorkoutModal: React.PropTypes.func.isRequired,
         Refreshing: React.PropTypes.bool.isRequired
     },
 
@@ -86,7 +85,7 @@ const Home = React.createClass({
                 <View>
                     <PeopleBar navigator={this.props.navigator} people={this.props.Clients}
                                manageClients={this._redirect.bind(null, 'ManageClients', null)}/>
-                    <TouchableOpacity onPress={this.props.openWorkoutModal}
+                    <TouchableOpacity onPress={this._redirect.bind(null, 'CreateWorkout', null)}
                                       style={[styles.addClientSection, GlobalStyle.simpleBottomBorder]}>
                         <Text style={styles.addClientsText}>Create Workout Template</Text>
                     </TouchableOpacity>

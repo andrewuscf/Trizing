@@ -12,6 +12,7 @@ import Profile from './containers/Profile';
 import Notifications from './containers/sub/Notifications';
 import TrainingPlan from './containers/sub/TrainingPlan';
 import ManageClients from './containers/sub/ManageClients';
+import CreateWorkout from './containers/sub/CreateWorkout';
 
 // Edit Pages
 import EditProfile from './containers/edit/EditProfile';
@@ -28,6 +29,7 @@ var MAIN_ROUTES = [
     {component: ManageClients, name: 'ManageClients'},
     {component: Notifications, name: 'Notifications'},
     {component: TrainingPlan, name: 'TrainingPlan'},
+    {component: CreateWorkout, name: 'CreateWorkout'},
 ];
 
 export function getRoute(routeName, props) {

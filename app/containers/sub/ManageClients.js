@@ -147,6 +147,7 @@ const ManageClients = React.createClass({
         const dataSource = ds.cloneWithRows(this.filterPeople());
         return (
             <ListView ref='peoplelist' removeClippedSubviews={(Platform.OS !== 'ios')}
+                      keyboardShouldPersistTaps="handled"
                       refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
                       renderHeader={this.renderSearchBar}
                       style={styles.container} enableEmptySections={true}

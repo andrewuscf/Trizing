@@ -127,7 +127,7 @@ const Feed = React.createClass({
         return (
             <ListView ref='posts_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                       renderHeader={this.renderCreatePost}
-                      keyboardShouldPersistTaps="never"
+                      keyboardShouldPersistTaps="handled"
                       refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
                       style={[GlobalStyle.container,styles.feedContainer]} enableEmptySections={true} dataSource={dataSource}
                       onEndReached={this.onEndReached}

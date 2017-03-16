@@ -128,7 +128,7 @@ const CheckInModal = React.createClass({
         });
         return (
             <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}
-                        keyboardShouldPersistTaps="never">
+                        keyboardShouldPersistTaps="handled">
                 <BackBar back={this.props.closeQuestionnaireModal} backText="Cancel" navStyle={{height: 40}}>
                     <SubmitButton buttonStyle={[styles.submitButton]}
                                   textStyle={[styles.cancel, this.isValid() ? styles.blueText : null]}

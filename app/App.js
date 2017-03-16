@@ -21,7 +21,6 @@ import Login from './containers/Login';
 import EditProfile from './containers/edit/EditProfile';
 
 import CreateQuestionnaire from './containers/sub/CreateQuestionnaire';
-import CreateWorkout from './containers/sub/CreateWorkout';
 
 import NavBar from './components/Navbar';
 import Loading from './components/Loading';
@@ -49,13 +48,14 @@ const App = React.createClass({
         const SceneComponent = route.component;
         switch (route.name) {
             case 'Home':
-                return <SceneComponent navigator={ nav } route={route} {...route.passProps} events={this.eventEmitter}
-                                       openWorkoutModal={this.openWorkoutModal}/>;
+                return <SceneComponent navigator={ nav } route={route} {...route.passProps}
+                                       events={this.eventEmitter}/>;
             case 'Profile':
                 return <SceneComponent navigator={ nav } route={route} {...route.passProps} events={this.eventEmitter}
                                        openModal={this.openQuestionnaireModal}/>;
             default :
-                return <SceneComponent navigator={ nav } route={route} {...route.passProps} events={this.eventEmitter}/>;
+                return <SceneComponent navigator={ nav } route={route} {...route.passProps}
+                                       events={this.eventEmitter}/>;
 
         }
 
@@ -97,14 +97,6 @@ const App = React.createClass({
         this.refs.questionnaire.close();
     },
 
-    openWorkoutModal() {
-        this.refs.workout.open();
-    },
-
-    closeWorkoutModal() {
-        this.refs.workout.close();
-    },
-
     scrollToTopEvent(routeName) {
         this.eventEmitter.emit('scrollToTopEvent', {routeName: routeName});
     },
@@ -135,12 +127,6 @@ const App = React.createClass({
                                    swipeToClose={false}>
                                 <CreateQuestionnaire closeQuestionnaireModal={this.closeQuestionnaireModal}
                                                      createQuestionnaire={this.props.actions.createQuestionnaire}/>
-                            </Modal>
-                            <Modal style={[styles.modal]} backdrop={false} ref={"workout"}
-                                   keyboardShouldPersistTaps="never"
-                                   swipeToClose={false}>
-                                <CreateWorkout closeWorkoutModal={this.closeWorkoutModal}
-                                               createWorkout={this.props.actions.createWorkout}/>
                             </Modal>
                         </View>
                     );

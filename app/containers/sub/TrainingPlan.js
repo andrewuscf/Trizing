@@ -224,7 +224,7 @@ const TrainingPlan = React.createClass({
                     {dataSource ?
                         <ListView ref='content' removeClippedSubviews={(Platform.OS !== 'ios')}
                                   renderHeader={this.renderCreateBar}
-                                  keyboardShouldPersistTaps="never"
+                                  keyboardShouldPersistTaps="handled"
                                   style={styles.listContainer} enableEmptySections={true} dataSource={dataSource}
                                   onEndReached={this._onEndReached} onEndReachedThreshold={250}
                                   renderRow={(object) => {
