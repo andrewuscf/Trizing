@@ -16,14 +16,16 @@ import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
+import GlobalStyle from '../globalStyle';
 
 import BackBar from '../../components/BackBar';
 import SubmitButton from '../../components/SubmitButton';
 
-import WorkoutDay from '../../components/WorkoutDay';
+import CreateWorkoutDay from '../../components/CreateWorkoutDay';
+import DisplayWorkoutDay from '../../components/DisplayWorkoutDay';
 
 
-const BlankWorkoutDay = {
+const BlankWorkout = {
     name: null,
     days: [],
     exercises: [],
@@ -87,8 +89,7 @@ const CreateWorkout = React.createClass({
             ...workout_days[dayIndex],
             ...state
         };
-        this.setState({workout_days: workout_days});
-        this.setState({showCreate: !this.state.showCreate})
+        this.setState({workout_days: workout_days, showCreate: !this.state.showCreate});
     },
 
     removeDay(index) {
@@ -117,7 +118,7 @@ const CreateWorkout = React.createClass({
             if (workout_day.name && workout_day.days && workout_day.days.length > 0)
                 return workout_day
         });
-        this.setState({tab: 1, workout_days: workout_days.concat(BlankWorkoutDay)});
+        this.setState({tab: 1, workout_days: workout_days.concat(BlankWorkout)});
     },
 
     _toggleShow() {
@@ -132,8 +133,8 @@ const CreateWorkout = React.createClass({
                 <BackBar back={this._cancel} backText="Cancel" navStyle={{height: 40}}/>
 
                 {this.state.showCreate ?
-                    <WorkoutDay dayIndex={this.state.workout_days.length} workout_day={BlankWorkoutDay}
-                                getDayState={this.getDayState}/>
+                    <CreateWorkoutDay dayIndex={this.state.workout_days.length} workout_day={BlankWorkout}
+                                      getDayState={this.getDayState}/>
                     :
                     <View>
                         <Text style={styles.inputLabel}>Program Name</Text>
@@ -147,10 +148,12 @@ const CreateWorkout = React.createClass({
                                        placeholder="Cutting"/>
                         </View>
                         <Text style={styles.inputLabel}>Workouts</Text>
-                        {this.state.workout_days.map((workout_day, index) => {
-                            if (workout_day.name && workout_day.days && workout_day.days.length > 0)
-                                return <WorkoutDay key={index} dayIndex={index} workout_day={workout_day}/>
-                        })}
+                        <View style={GlobalStyle.simpleBottomBorder}>
+                            {this.state.workout_days.map((workout_day, index) => {
+                                if (workout_day.name && workout_day.days && workout_day.days.length > 0)
+                                    return <DisplayWorkoutDay key={index} dayIndex={index} workout_day={workout_day}/>
+                            })}
+                        </View>
                         <TouchableHighlight style={{flex: 1}} onPress={this._toggleShow} underlayColor='transparent'>
                             <Text style={styles.addDay}>Create workout</Text>
                         </TouchableHighlight>
@@ -218,7 +221,6 @@ const styles = StyleSheet.create({
         textDecorationColor: '#b1aea5',
     }
 });
-
 
 
 const stateToProps = (state) => {

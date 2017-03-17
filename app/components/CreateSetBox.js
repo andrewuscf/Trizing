@@ -14,7 +14,7 @@ import {getFontSize} from '../actions/utils';
 import GlobalStyle from '../containers/globalStyle';
 
 
-const SetBox = React.createClass({
+const CreateSetBox = React.createClass({
     propTypes: {
         set: React.PropTypes.object.isRequired,
         setIndex: React.PropTypes.number.isRequired,
@@ -136,4 +136,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default SetBox;
+export default CreateSetBox;

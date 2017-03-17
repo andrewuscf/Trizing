@@ -12,37 +12,51 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {getFontSize} from '../actions/utils';
 
-import SetBox from './SetBox';
+import CreateSetBox from './CreateSetBox';
 
-const ExerciseBox = React.createClass({
+const BlankSet = {reps: null, weight: null};
+
+const CreateExerciseBox = React.createClass({
     propTypes: {
         exercise: React.PropTypes.object.isRequired,
         exerciseIndex: React.PropTypes.number.isRequired,
         getExerciseState: React.PropTypes.func.isRequired,
-        _addSet: React.PropTypes.func,
-        _deleteSet: React.PropTypes.func,
         _deleteExercise: React.PropTypes.func
     },
 
     getInitialState() {
         return {
-            showSets: false,
-            iconColor: '#a7a59f',
-            fetchedUsers: []
+            showSets: true,
+            fetchedExercises: [],
+            name: this.props.exercise.name ? this.props.exercise.name : null,
+            sets: this.props.exercise.sets ? this.props.exercise.sets : [BlankSet],
         }
     },
 
+    _addSet() {
+        Keyboard.dismiss();
+        this.setState({sets:  [
+            ...this.state.sets,
+            BlankSet
+        ]});
+    },
+
+    _deleteSet(setIndex) {
+        Keyboard.dismiss();
+        this.setState({sets: this.state.sets.slice(0, setIndex).concat(this.state.sets.slice(setIndex + 1))});
+    },
+
     _exerciseNameChange(text) {
-        this.props.getExerciseState(this.props.exerciseIndex, {name: text})
+        this.setState({name: text});
     },
 
     setSetState(index, state) {
-        let sets = this.props.exercise.sets;
+        let sets = this.state.sets;
         sets[index] = {
             ...sets[index],
             ...state
         };
-        this.props.getExerciseState(this.props.exerciseIndex, {sets: sets})
+        this.setState({sets: sets});
     },
 
     _deleteExercise() {
@@ -58,32 +72,31 @@ const ExerciseBox = React.createClass({
     },
 
 
-    onFocus() {
-        this.setState({
-            iconColor: '#797979'
-        });
-    },
-
-    clickCancel: function () {
-        this.setState({
-            iconColor: '#a7a59f',
-        });
-    },
-
     _toggleShow: function () {
         this.setState({
             showSets: !this.state.showSets,
         });
     },
 
+    _save() {
+        this.props.getExerciseState(this.props.exerciseIndex, this.state)
+    },
+
 
     render: function () {
-        const sets = this.props.exercise.sets.map((set, index) => {
-            if (this.props.exercise.sets.length > 1)
-                return <SetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}
-                               _deleteSet={this.props._deleteSet.bind(null, this.props.exerciseIndex, index)}/>
+        console.log(this.state)
+        if (this.props.exercise.name)
+            return (
+                <View>
+                    <Text style={styles.inputLabel}>{this.props.exercise.name}</Text>
+                </View>
+            );
+        const sets = this.state.sets.map((set, index) => {
+            if (this.state.sets.length > 1)
+                return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}
+                               _deleteSet={this._deleteSet.bind(null, index)}/>
             else
-                return <SetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}/>
+                return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}/>
         });
         return (
             <View style={styles.exerciseContainer}>
@@ -102,8 +115,7 @@ const ExerciseBox = React.createClass({
                         autoCorrect={false}
                         placeholderTextColor='#a7a59f'
                         onChangeText={this._exerciseNameChange}
-                        value={this.props.exercise.name}
-                        onFocus={this.onFocus}
+                        value={this.state.name}
                         placeholder="Enter exercise name"
                     />
                     {typeof this.props._deleteExercise === "function" ?
@@ -116,8 +128,8 @@ const ExerciseBox = React.createClass({
                 {this.state.showSets ?
                     <View>
                         {sets}
-                        {typeof this.props._addSet === "function" ?
-                            <TouchableOpacity onPress={this.props._addSet.bind(null, this.props.exerciseIndex)}>
+                        {!this.props.exercise.name ?
+                            <TouchableOpacity onPress={this._addSet}>
                                 <Text style={styles.addSetStyle}>Add Set</Text>
                             </TouchableOpacity>
                             : null
@@ -125,6 +137,9 @@ const ExerciseBox = React.createClass({
                     </View>
                     : null
                 }
+                <TouchableOpacity onPress={this._save}>
+                    <Text style={styles.addSetStyle}>Save</Text>
+                </TouchableOpacity>
             </View>
         )
     }
@@ -175,8 +190,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         textDecorationLine: 'underline',
         textDecorationColor: '#b1aea5'
-    },
+    }
 });
 
 
-export default ExerciseBox;
+export default CreateExerciseBox;
