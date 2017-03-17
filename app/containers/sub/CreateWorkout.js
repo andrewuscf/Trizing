@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
-import {getFontSize} from '../../actions/utils';
+import {getFontSize, fetchData, API_ENDPOINT, checkStatus} from '../../actions/utils';
 import GlobalStyle from '../globalStyle';
 
 import BackBar from '../../components/BackBar';
@@ -36,6 +36,7 @@ const CreateWorkout = React.createClass({
     getInitialState() {
         return {
             Error: null,
+            id: null,
             name: null,
             tab: 0,
             workout_days: [],
@@ -43,13 +44,25 @@ const CreateWorkout = React.createClass({
         }
     },
 
-    asyncActions(start){
-        if (start) {
-            this.refs.postbutton.setState({busy: true});
-        } else {
-            this.refs.postbutton.setState({busy: false});
-            this.props.navigator.pop();
+    createWorkout() {
+        let method = 'POST';
+        let url = `${API_ENDPOINT}training/workouts/`;
+        if (this.state.id) {
+            method = 'PATCH';
+            url = `${API_ENDPOINT}training/workout/${this.state.id}/`;
         }
+        fetch(url, fetchData(method, JSON.stringify(this.state), this.props.UserToken)).then(checkStatus)
+            .then((responseJson) => {
+                console.log(responseJson)
+                this.setState({
+                    prevState: this.state,
+                    ...this.state,
+                    ...responseJson,
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+            }).done();
     },
 
     componentDidUpdate(prevProps, prevState) {
@@ -79,7 +92,7 @@ const CreateWorkout = React.createClass({
                 workout_days: this.state.workout_days,
 
             };
-            this.props.actions.createWorkout(data, this.asyncActions)
+            this.createWorkout();
         }
     },
 
@@ -122,7 +135,11 @@ const CreateWorkout = React.createClass({
     },
 
     _toggleShow() {
-        this.setState({showCreate: !this.state.showCreate})
+        if (this.state.name) {
+            this.setState({showCreate: !this.state.showCreate});
+            if (this.prevState != this.state)
+                this.createWorkout();
+        }
     },
 
 
