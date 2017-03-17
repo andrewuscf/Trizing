@@ -96,11 +96,10 @@ export default function AppReducers(state = initialState, action = null) {
                 ]
             };
 
-        case constants.GET_WORKOUTS:
+        case constants.LOAD_WORKOUTS:
             return {
                 ...state,
-                Workouts: action.refresh ? action.response.results : state.Workouts.concat(action.response.results),
-                WorkoutsNext: action.response.next,
+                Workouts: (action.refresh) ? action.response.results : state.Workouts.concat(action.response.results),
                 Refreshing: false
             };
 

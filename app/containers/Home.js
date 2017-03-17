@@ -48,7 +48,7 @@ const Home = React.createClass({
     getNeeded(refresh = false) {
         if (this.props.RequestUser.type == 1) {
             this.props.actions.getClients(refresh);
-            this.props.actions.getWorkouts('?template=true', refresh);
+            this.props.getWorkouts('?template=true', refresh);
             this.props.getQuestionnaires();
         }
         if (refresh) {
@@ -84,8 +84,8 @@ const Home = React.createClass({
         let content = null;
         if (isTrainer) {
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-            console.log(this.props.Questionnaires)
             const QuestionnaireDS = ds.cloneWithRows(this.props.Questionnaires);
+            const WorkoutDs = ds.cloneWithRows(this.props.Workouts);
             content = (
                 <View>
                     <PeopleBar navigator={this.props.navigator} people={this.props.Clients}
@@ -93,6 +93,14 @@ const Home = React.createClass({
 
                     <View style={[styles.box]}>
                         <Text style={styles.textTitle}>Workouts</Text>
+                        <ListView ref='workout_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                                  style={styles.container} enableEmptySections={true} dataSource={WorkoutDs}
+                                  renderRow={(workout) =>
+                                      <TouchableOpacity style={styles.link} onPress={this._redirect.bind(null, 'EditWorkout', {workoutId: workout.id})}>
+                                          <Text  style={styles.simpleTitle}>{workout.name}</Text>
+                                      </TouchableOpacity>
+                                  }
+                        />
                         <TouchableOpacity onPress={this._redirect.bind(null, 'CreateWorkout', null)}
                                           style={styles.link}>
                             <Text style={styles.simpleTitle}>Create Workout Template</Text>
@@ -205,6 +213,7 @@ const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
         Questionnaires: state.Global.Questionnaires,
+        Workouts: state.Global.Workouts,
         ...state.Home
     };
 };
@@ -214,7 +223,8 @@ const dispatchToProps = (dispatch) => {
         actions: bindActionCreators(HomeActions, dispatch),
         getNotifications: bindActionCreators(GlobalActions.getNotifications, dispatch),
         readNotification: bindActionCreators(GlobalActions.readNotification, dispatch),
-        getQuestionnaires: bindActionCreators(GlobalActions.getQuestionnaires, dispatch)
+        getQuestionnaires: bindActionCreators(GlobalActions.getQuestionnaires, dispatch),
+        getWorkouts: bindActionCreators(GlobalActions.getWorkouts, dispatch)
     }
 };
 

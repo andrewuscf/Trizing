@@ -223,16 +223,36 @@ export function createQuestionnaire(data, asyncActions) {
     }
 }
 
+export function getWorkouts(param = '' , refresh = false) {
+    let url = `${API_ENDPOINT}training/workouts/${param}`;
+    return (dispatch, getState) => {
+        if (refresh) {
+            dispatch(refreshPage());
+        }
+        return fetch(url, fetchData('GET', null, getState().Global.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+                return dispatch({type: types.LOAD_WORKOUTS, response: responseJson, refresh: refresh});
+            })
+            .catch((error) => {
+                return dispatch({
+                    type: types.API_ERROR, error: JSON.stringify({
+                        title: 'Request could not be performed.',
+                        text: 'Please try again later.'
+                    })
+                });
+            });
+    }
+}
+
 export function createWorkout(data, asyncActions) {
     asyncActions(true);
-    console.log(data)
     let JSONDATA = JSON.stringify(data);
     return (dispatch, getState) => {
         return fetch(`${API_ENDPOINT}training/workouts/`,
             fetchData('POST', JSONDATA, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                asyncActions(false);
-                console.log(responseJson)
+                asyncActions(false, {routeName: 'EditWorkout', props: {workoutId: responseJson.id}});
                 return dispatch({type: types.CREATE_WORKOUT, response: responseJson});
             })
             .catch((error) => {

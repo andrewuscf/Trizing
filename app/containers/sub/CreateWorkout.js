@@ -15,54 +15,20 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
-import {getFontSize, fetchData, API_ENDPOINT, checkStatus} from '../../actions/utils';
-import GlobalStyle from '../globalStyle';
+import {getFontSize} from '../../actions/utils';
+import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import SubmitButton from '../../components/SubmitButton';
 
-import CreateWorkoutDay from '../../components/CreateWorkoutDay';
-import DisplayWorkoutDay from '../../components/DisplayWorkoutDay';
-
-
-const BlankWorkout = {
-    name: null,
-    days: [],
-    exercises: [],
-};
 
 const CreateWorkout = React.createClass({
 
     getInitialState() {
         return {
             Error: null,
-            id: null,
             name: null,
-            tab: 0,
-            workout_days: [],
-            showCreate: false
         }
-    },
-
-    createWorkout() {
-        let method = 'POST';
-        let url = `${API_ENDPOINT}training/workouts/`;
-        if (this.state.id) {
-            method = 'PATCH';
-            url = `${API_ENDPOINT}training/workout/${this.state.id}/`;
-        }
-        fetch(url, fetchData(method, JSON.stringify(this.state), this.props.UserToken)).then(checkStatus)
-            .then((responseJson) => {
-                console.log(responseJson)
-                this.setState({
-                    prevState: this.state,
-                    ...this.state,
-                    ...responseJson,
-                });
-            })
-            .catch((error) => {
-                console.log(error);
-            }).done();
     },
 
     componentDidUpdate(prevProps, prevState) {
@@ -77,11 +43,19 @@ const CreateWorkout = React.createClass({
         }
     },
 
-    isValid() {
-        if (this.state.tab == 1) {
-            return !!this.state.name
+    asyncActions(start, data={}){
+        if (start) {
+            this.refs.postbutton.setState({busy: true});
+        } else {
+            this.refs.postbutton.setState({busy: false});
+            if (data.routeName){
+                this.props.navigator.replace(getRoute(data.routeName, data.props))
+            }
         }
-        return this.state.name && this.state.workout_days[0] && this.state.workout_days[0].name
+    },
+
+    isValid() {
+        return this.state.name
     },
 
 
@@ -89,28 +63,8 @@ const CreateWorkout = React.createClass({
         if (this.isValid()) {
             const data = {
                 name: this.state.name,
-                workout_days: this.state.workout_days,
-
             };
-            this.createWorkout();
-        }
-    },
-
-    getDayState(dayIndex, state) {
-        let workout_days = this.state.workout_days;
-        workout_days[dayIndex] = {
-            ...workout_days[dayIndex],
-            ...state
-        };
-        this.setState({workout_days: workout_days, showCreate: !this.state.showCreate});
-    },
-
-    removeDay(index) {
-        Keyboard.dismiss();
-        if (this.state.workout_days.length > 1) {
-            this.setState({
-                workout_days: this.state.workout_days.slice(0, index).concat(this.state.workout_days.slice(index + 1))
-            })
+            this.props.actions.createWorkout(data, this.asyncActions);
         }
     },
 
@@ -126,59 +80,27 @@ const CreateWorkout = React.createClass({
     },
 
 
-    _createDay() {
-        let workout_days = _.filter(this.state.workout_days, (workout_day) => {
-            if (workout_day.name && workout_day.days && workout_day.days.length > 0)
-                return workout_day
-        });
-        this.setState({tab: 1, workout_days: workout_days.concat(BlankWorkout)});
-    },
-
-    _toggleShow() {
-        if (this.state.name) {
-            this.setState({showCreate: !this.state.showCreate});
-            if (this.prevState != this.state)
-                this.createWorkout();
-        }
-    },
-
-
     render: function () {
         return (
-            <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
-                        contentContainerStyle={styles.contentContainerStyle}>
+            <View style={styles.flexCenter}>
                 <BackBar back={this._cancel} backText="Cancel" navStyle={{height: 40}}/>
 
-                {this.state.showCreate ?
-                    <CreateWorkoutDay dayIndex={this.state.workout_days.length} workout_day={BlankWorkout}
-                                      getDayState={this.getDayState}/>
-                    :
-                    <View>
-                        <Text style={styles.inputLabel}>Program Name</Text>
-                        <View style={styles.inputWrap}>
-                            <TextInput ref="name" style={styles.textInput} autoCapitalize='sentences'
-                                       underlineColorAndroid='transparent'
-                                       autoCorrect={false}
-                                       onChangeText={(text) => this.setState({name: text})}
-                                       value={this.state.name}
-                                       placeholderTextColor="#4d4d4d"
-                                       placeholder="Cutting"/>
-                        </View>
-                        <Text style={styles.inputLabel}>Workouts</Text>
-                        <View style={GlobalStyle.simpleBottomBorder}>
-                            {this.state.workout_days.map((workout_day, index) => {
-                                if (workout_day.name && workout_day.days && workout_day.days.length > 0)
-                                    return <DisplayWorkoutDay key={index} dayIndex={index} workout_day={workout_day}/>
-                            })}
-                        </View>
-                        <TouchableHighlight style={{flex: 1}} onPress={this._toggleShow} underlayColor='transparent'>
-                            <Text style={styles.addDay}>Create workout</Text>
-                        </TouchableHighlight>
+                <View style={{margin: 10}}>
+                    <Text style={styles.inputLabel}>Program Name</Text>
+                    <View style={styles.inputWrap}>
+                        <TextInput ref="name" style={styles.textInput} autoCapitalize='sentences'
+                                   underlineColorAndroid='transparent'
+                                   autoCorrect={false}
+                                   onChangeText={(text) => this.setState({name: text})}
+                                   value={this.state.name}
+                                   placeholderTextColor="#4d4d4d"
+                                   placeholder="'Cutting'"/>
                     </View>
-                }
-
-
-            </ScrollView>
+                </View>
+                <SubmitButton buttonStyle={styles.button}
+                              textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
+                              text='Create Program'/>
+            </View>
         )
     }
 });
@@ -187,21 +109,29 @@ const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
     },
-    submitButton: {
+    button: {
+        backgroundColor: '#00BFFF',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 15,
+        paddingBottom: 15,
+        paddingLeft: 30,
+        paddingRight: 30,
+        right: 0,
         position: 'absolute',
-        top: 10,
-        right: 10
+        bottom: 0,
+        left: 0,
+    },
+    submitText: {
+        color: 'white',
+        fontSize: 15,
+        fontFamily: 'OpenSans-Bold',
     },
     cancel: {
         color: '#d4d4d4',
     },
-    blueText: {
-        color: '#00BFFF'
-    },
     inputWrap: {
-        flex: 1,
         marginBottom: 12,
-        // minHeight: 100,
         borderBottomWidth: .5,
         borderColor: '#aaaaaa',
         justifyContent: 'center',
@@ -223,19 +153,6 @@ const styles = StyleSheet.create({
         lineHeight: getFontSize(26),
         fontFamily: 'OpenSans-Semibold',
         textAlign: 'center'
-    },
-    addDay: {
-        height: 35,
-        marginTop: 5,
-        marginBottom: 8,
-        color: '#b1aea5',
-        fontSize: getFontSize(22),
-        lineHeight: getFontSize(26),
-        backgroundColor: 'transparent',
-        fontFamily: 'OpenSans-Semibold',
-        alignSelf: 'center',
-        textDecorationLine: 'underline',
-        textDecorationColor: '#b1aea5',
     }
 });
 

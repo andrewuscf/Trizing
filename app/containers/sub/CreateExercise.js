@@ -6,39 +6,42 @@ import {
     TextInput,
     TouchableOpacity,
     Keyboard,
-    Alert
+    Alert,
+    ScrollView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {getFontSize} from '../actions/utils';
+import {getFontSize} from '../../actions/utils';
 
-import CreateSetBox from './CreateSetBox';
+import BackBar from '../../components/BackBar';
+import CreateSetBox from '../../components/CreateSetBox';
+import SubmitButton from '../../components/SubmitButton';
+
 
 const BlankSet = {reps: null, weight: null};
 
-const CreateExerciseBox = React.createClass({
+const CreateExercise = React.createClass({
     propTypes: {
-        exercise: React.PropTypes.object.isRequired,
-        exerciseIndex: React.PropTypes.number.isRequired,
-        getExerciseState: React.PropTypes.func.isRequired,
-        _deleteExercise: React.PropTypes.func
+        workout_day: React.PropTypes.object.isRequired,
     },
 
     getInitialState() {
         return {
             showSets: true,
             fetchedExercises: [],
-            name: this.props.exercise.name ? this.props.exercise.name : null,
-            sets: this.props.exercise.sets ? this.props.exercise.sets : [BlankSet],
+            name: null,
+            sets: [BlankSet],
         }
     },
 
     _addSet() {
         Keyboard.dismiss();
-        this.setState({sets:  [
-            ...this.state.sets,
-            BlankSet
-        ]});
+        this.setState({
+            sets: [
+                ...this.state.sets,
+                BlankSet
+            ]
+        });
     },
 
     _deleteSet(setIndex) {
@@ -79,27 +82,28 @@ const CreateExerciseBox = React.createClass({
     },
 
     _save() {
-        this.props.getExerciseState(this.props.exerciseIndex, this.state)
+        // this.props.getExerciseState(this.props.exerciseIndex, this.state)
     },
 
 
     render: function () {
-        console.log(this.state)
-        if (this.props.exercise.name)
-            return (
-                <View>
-                    <Text style={styles.inputLabel}>{this.props.exercise.name}</Text>
-                </View>
-            );
-        const sets = this.state.sets.map((set, index) => {
-            if (this.state.sets.length > 1)
-                return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}
-                               _deleteSet={this._deleteSet.bind(null, index)}/>
-            else
-                return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}/>
-        });
+        const sets = null;
+        // const sets = this.state.sets.map((set, index) => {
+        //     if (this.state.sets.length > 1)
+        //         return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}
+        //                        _deleteSet={this._deleteSet.bind(null, index)}/>
+        //     else
+        //         return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}/>
+        // });
         return (
-            <View style={styles.exerciseContainer}>
+            <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
+                        contentContainerStyle={styles.contentContainerStyle}>
+                <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}>
+                    <Text>{this.state.workout ? this.state.workout_day.name : null}</Text>
+                    <TouchableOpacity style={styles.save} onPress={this._save}>
+                        <Text>Save</Text>
+                    </TouchableOpacity>
+                </BackBar>
                 <View style={styles.subNav}>
                     <TouchableOpacity onPress={this._toggleShow}>
                         {!this.state.showSets ?
@@ -128,29 +132,21 @@ const CreateExerciseBox = React.createClass({
                 {this.state.showSets ?
                     <View>
                         {sets}
-                        {!this.props.exercise.name ?
-                            <TouchableOpacity onPress={this._addSet}>
-                                <Text style={styles.addSetStyle}>Add Set</Text>
-                            </TouchableOpacity>
-                            : null
-                        }
                     </View>
                     : null
                 }
-                <TouchableOpacity onPress={this._save}>
-                    <Text style={styles.addSetStyle}>Save</Text>
+                <TouchableOpacity onPress={this._addSet}>
+                    <Text style={styles.addSetStyle}>Add Set</Text>
                 </TouchableOpacity>
-            </View>
+            </ScrollView>
         )
     }
 });
 
 
 const styles = StyleSheet.create({
-    exerciseContainer: {
-        marginTop: 10,
-        borderColor: '#e1e3df',
-        borderWidth: 1,
+    flexCenter: {
+        flex: 1,
     },
     filterInput: {
         flex: 1,
@@ -190,8 +186,13 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         textDecorationLine: 'underline',
         textDecorationColor: '#b1aea5'
-    }
+    },
+    save: {
+        position: 'absolute',
+        top: 20,
+        right: 10
+    },
 });
 
 
-export default CreateExerciseBox;
+export default CreateExercise;

@@ -5,7 +5,6 @@ import * as constants from '../actions/actionTypes';
 const initialState = {
     Clients: [],
     Notifications: [],
-    Workouts: [],
     Refreshing: false,
 };
 
@@ -43,13 +42,6 @@ export default function homeReducers(state = initialState, action = null) {
                     } :
                         notification
                 )
-            };
-
-        case constants.LOAD_WORKOUTS:
-            return {
-                ...state,
-                Workouts: (action.refresh) ? action.response.results : state.Workouts.concat(action.response.results),
-                Refreshing: false
             };
 
         //
