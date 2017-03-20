@@ -268,15 +268,14 @@ export function updateWorkoutDay(data, asyncActions = null) {
     if (asyncActions) {
         asyncActions(true);
     }
-    let url = `${API_ENDPOINT}training/workouts/`;
+    let url = `${API_ENDPOINT}training/workout/day/`;
     let method = 'POST';
     if (data.id) {
-        url = `${API_ENDPOINT}training/workouts/${data.id}/`;
-        let method = 'PATCH';
+        url = `${API_ENDPOINT}training/workout/${data.id}/`;
+        method = 'PATCH';
     }
-    let JSONDATA = JSON.stringify(data);
     return (dispatch, getState) => {
-        return fetch(url, fetchData(method, JSONDATA, getState().Global.UserToken)).then(checkStatus)
+        return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
                 if (asyncActions) {
                     asyncActions(false, {
@@ -298,3 +297,37 @@ export function updateWorkoutDay(data, asyncActions = null) {
             }).done();
     }
 }
+
+// export function updateExercise(data, asyncActions = null) {
+//     if (asyncActions) {
+//         asyncActions(true);
+//     }
+//     let url = `${API_ENDPOINT}training/workout/day/`;
+//     let method = 'POST';
+//     if (data.id) {
+//         url = `${API_ENDPOINT}training/workout/${data.id}/`;
+//         method = 'PATCH';
+//     }
+//     return (dispatch, getState) => {
+//         return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
+//             .then((responseJson) => {
+//                 if (asyncActions) {
+//                     asyncActions(false, {
+//                         routeName: 'CreateExercise',
+//                         props: {workout_day: responseJson},
+//                         state: responseJson
+//                     });
+//                 }
+//                 if (method == 'POST')
+//                     return dispatch({type: types.CREATE_WORKOUT_DAY, response: responseJson});
+//                 else
+//                     return dispatch({type: types.UPDATE_WORKOUT_DAY, response: responseJson});
+//             })
+//             .catch((error) => {
+//                 if (asyncActions) {
+//                     asyncActions(false);
+//                 }
+//                 console.log(error);
+//             }).done();
+//     }
+// }

@@ -64,7 +64,6 @@ const EditWorkout = React.createClass({
             );
         }
         if (this.props.Workouts != prevProps.Workouts) {
-            console.log('hit')
             const index = _.findIndex(this.props.Workouts, {id: this.props.workoutId})
             const workout = this.props.Workouts[index];
             this.setState({workout: workout});
@@ -81,7 +80,6 @@ const EditWorkout = React.createClass({
     render: function () {
         let workout_days = <Text>No workout days</Text>;
         if (this.state.workout) {
-            console.log(this.state.workout)
             workout_days = this.state.workout.workout_days.map((workout_day, index) => {
                 return <DisplayWorkoutDay key={index} workout_day={workout_day} dayIndex={index} />
             });

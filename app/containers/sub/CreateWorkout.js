@@ -28,6 +28,7 @@ const CreateWorkout = React.createClass({
         return {
             Error: null,
             name: null,
+            template: !!this.props.template
         }
     },
 
@@ -43,12 +44,12 @@ const CreateWorkout = React.createClass({
         }
     },
 
-    asyncActions(start, data={}){
+    asyncActions(start, data = {}){
         if (start) {
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            if (data.routeName){
+            if (data.routeName) {
                 this.props.navigator.replace(getRoute(data.routeName, data.props))
             }
         }
@@ -61,10 +62,7 @@ const CreateWorkout = React.createClass({
 
     _onSubmit() {
         if (this.isValid()) {
-            const data = {
-                name: this.state.name,
-            };
-            this.props.actions.createWorkout(data, this.asyncActions);
+            this.props.actions.createWorkout(this.state, this.asyncActions);
         }
     },
 

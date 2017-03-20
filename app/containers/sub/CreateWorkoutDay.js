@@ -32,7 +32,8 @@ const CreateWorkoutDay = React.createClass({
             name: null,
             days: [],
             exercises: [],
-            id: null
+            workout: this.props.workout.id
+            // id: null
         }
     },
 
@@ -41,7 +42,7 @@ const CreateWorkoutDay = React.createClass({
             this.refs.day_name.focus()
     },
 
-    asyncActions(start, data={}){
+    asyncActions(start, data = {}){
         if (start) {
             this.refs.postbutton.setState({busy: true});
         } else {
@@ -49,7 +50,7 @@ const CreateWorkoutDay = React.createClass({
             if (data.state) {
                 this.setState({...data.state})
             }
-            if (data.routeName){
+            if (data.routeName) {
                 this.props.navigator.replace(getRoute(data.routeName, data.props))
             }
         }
@@ -68,7 +69,6 @@ const CreateWorkoutDay = React.createClass({
 
     _addExercise() {
         if (this.state.name) {
-            console.log(this.state)
             this.props.actions.updateWorkoutDay(this.state, this.asyncActions)
         }
     },
@@ -80,7 +80,7 @@ const CreateWorkoutDay = React.createClass({
 
     render: function () {
         const exercises = this.state.exercises.map((exercise, index) => {
-            return <DisplayExerciseBox key={index} exercise={exercise} exerciseIndex={index} />
+            return <DisplayExerciseBox key={index} exercise={exercise} exerciseIndex={index}/>
         });
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
@@ -91,6 +91,7 @@ const CreateWorkoutDay = React.createClass({
                         <Text>Save</Text>
                     </TouchableOpacity>
                 </BackBar>
+
 
                 <Text style={styles.inputLabel}>Name of Day</Text>
                 <View style={[styles.inputWrap]}>
@@ -108,9 +109,6 @@ const CreateWorkoutDay = React.createClass({
                 <DaysOfWeek daySelectedState={(days) => this.setState({days: days})} days={this.state.days}/>
                 <Text style={styles.inputLabel}>Exercises</Text>
                 {exercises}
-                <TouchableOpacity onPress={this._addExercise}>
-                    <Text style={styles.addExerciseStyle}>Add Exercise</Text>
-                </TouchableOpacity>
 
                 <SubmitButton buttonStyle={styles.button}
                               textStyle={styles.submitText} onPress={this._addExercise} ref='postbutton'
@@ -124,6 +122,9 @@ const CreateWorkoutDay = React.createClass({
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
+    },
+    contentContainerStyle: {
+        // flex: 1
     },
     save: {
         position: 'absolute',
@@ -175,10 +176,6 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 30,
         paddingRight: 30,
-        right: 0,
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
     },
     submitText: {
         color: 'white',

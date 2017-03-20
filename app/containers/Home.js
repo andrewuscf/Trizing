@@ -101,7 +101,7 @@ const Home = React.createClass({
                                       </TouchableOpacity>
                                   }
                         />
-                        <TouchableOpacity onPress={this._redirect.bind(null, 'CreateWorkout', null)}
+                        <TouchableOpacity onPress={this._redirect.bind(null, 'CreateWorkout', {template: true})}
                                           style={styles.link}>
                             <Text style={styles.simpleTitle}>Create Workout Template</Text>
                             <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
