@@ -121,7 +121,7 @@ const Profile = React.createClass({
                         <Text style={styles.userNameTop}>{trunc(user.username, 26)}</Text>
                         {isRequestUser ?
                             <TouchableOpacity style={styles.logOut} onPress={this._logOut}>
-                                <Icon name="power-off" size={30} color='red'/>
+                                <Icon name="power-off" size={20} color='red'/>
                             </TouchableOpacity>
                             : null
                         }
@@ -136,8 +136,9 @@ const Profile = React.createClass({
                             </Text>
                         </View>
                         {isRequestUser ?
-                            <TouchableOpacity onPress={this._redirect.bind(null, 'EditProfile', null)}>
-                                <Icon name="pencil" size={20} color='red'/>
+                            <TouchableOpacity onPress={this._redirect.bind(null, 'EditProfile', null)}
+                                              style={styles.editProfile}>
+                                <Icon name="ellipsis-v" size={20} color='#333333'/>
                             </TouchableOpacity>
                             : null
                         }
@@ -177,8 +178,13 @@ const styles = StyleSheet.create({
     },
     logOut: {
         position: 'absolute',
-        top: 10,
+        top: 15,
         right: 10
+    },
+    editProfile: {
+        position: 'absolute',
+        right: 20,
+        top: 35
     }
 });
 

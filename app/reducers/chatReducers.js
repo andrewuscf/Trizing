@@ -3,20 +3,33 @@ import * as constants from '../actions/actionTypes';
 
 
 const initialState = {
-    ChatRooms: [],
+    Rooms: [],
     Refreshing: false,
+    RoomsNext: null
 };
 
-export default function chatReducers(state = initialState, action = null) {
+export default function AppReducers(state = initialState, action = null) {
     switch (action.type) {
-        //
-        // case constants.SEND_REQUEST:
-        //     const index = _.findIndex(state.Clients, {'user': action.clientId });
-        //     return {
-        //         ...state,
-        //         Clients: state.Clients.slice(0, index).concat(state.Clients.slice(index + 1))
-        //     };
+        case constants.LOAD_ROOMS:
+            return {
+                ...state,
+                Rooms: (action.refresh) ? action.response.results :state.Rooms.concat(action.response.results),
+                RoomsNext: action.response.next,
+                Refreshing: false
+            };
 
+        case constants.SEND_MESSAGE:
+            return {
+                ...state,
+                Rooms: state.Rooms.map(room =>
+                    (parseInt(room.id) == action.response.room) ?
+                        {
+                            ...room,
+                            last_message: action.response
+                        } :
+                        room
+                )
+            };
 
         default:
             return state

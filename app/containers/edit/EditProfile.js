@@ -20,6 +20,7 @@ import * as ProfileActions from '../../actions/profileActions';
 import {removeToken} from '../../actions/globalActions';
 
 import AvatarImage from '../../components/AvatarImage';
+import BackBar from '../../components/BackBar';
 import {EMPTY_AVATAR} from '../../assets/constants';
 import Loading from '../../components/Loading';
 import SubmitButton from '../../components/SubmitButton';
@@ -164,7 +165,7 @@ const EditProfile = React.createClass({
                             }
 
                                 <TouchableOpacity style={styles.logOut} onPress={this._logOut}>
-                                    <Icon name="power-off" size={30} color='red'/>
+                                    <Icon name="power-off" size={20} color='red'/>
                                 </TouchableOpacity>
 
                         </View>
@@ -374,7 +375,7 @@ const styles = StyleSheet.create({
     },
     logOut: {
         position: 'absolute',
-        top: 10,
+        top: 15,
         right: 10
     }
 });
