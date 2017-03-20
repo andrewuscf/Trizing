@@ -9,13 +9,18 @@ import {
     Keyboard
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
-import {getFontSize} from '../../actions/utils';
+import * as GlobalActions from '../../actions/globalActions';
+
+import {getFontSize, API_ENDPOINT} from '../../actions/utils';
 import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
+import DisplayExerciseBox from '../../components/DisplayExerciseBox';
 import DaysOfWeek from '../../components/DaysOfWeek';
-// import CreateExerciseBox from './CreateExerciseBox';
+import SubmitButton from '../../components/SubmitButton';
 
 const CreateWorkoutDay = React.createClass({
     propTypes: {
@@ -27,7 +32,7 @@ const CreateWorkoutDay = React.createClass({
             name: null,
             days: [],
             exercises: [],
-            showCreate: false
+            id: null
         }
     },
 
@@ -36,14 +41,20 @@ const CreateWorkoutDay = React.createClass({
             this.refs.day_name.focus()
     },
 
-    getExerciseState(index, state) {
-        let exercises = this.state.exercises;
-        exercises[index] = {
-            ...exercises[index],
-            ...state
-        };
-        this.setState({exercises: exercises, showCreate: !this.state.showCreate})
+    asyncActions(start, data={}){
+        if (start) {
+            this.refs.postbutton.setState({busy: true});
+        } else {
+            this.refs.postbutton.setState({busy: false});
+            if (data.state) {
+                this.setState({...data.state})
+            }
+            if (data.routeName){
+                this.props.navigator.replace(getRoute(data.routeName, data.props))
+            }
+        }
     },
+
 
     _deleteExercise(index) {
         Keyboard.dismiss();
@@ -56,16 +67,21 @@ const CreateWorkoutDay = React.createClass({
 
 
     _addExercise() {
-        this.props.navigator.push(getRoute('CreateExercise', {workout_day: this.state}))
-        this.setState({showCreate: !this.state.showCreate})
+        if (this.state.name) {
+            console.log(this.state)
+            this.props.actions.updateWorkoutDay(this.state, this.asyncActions)
+        }
     },
 
     _save() {
-        // this.props.getDayState(this.props.dayIndex, this.state)
+        this.props.actions.updateWorkoutDay(this.state);
+        this.props.navigator.pop();
     },
 
     render: function () {
-        const exercises = null;
+        const exercises = this.state.exercises.map((exercise, index) => {
+            return <DisplayExerciseBox key={index} exercise={exercise} exerciseIndex={index} />
+        });
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                         contentContainerStyle={styles.contentContainerStyle}>
@@ -95,6 +111,10 @@ const CreateWorkoutDay = React.createClass({
                 <TouchableOpacity onPress={this._addExercise}>
                     <Text style={styles.addExerciseStyle}>Add Exercise</Text>
                 </TouchableOpacity>
+
+                <SubmitButton buttonStyle={styles.button}
+                              textStyle={styles.submitText} onPress={this._addExercise} ref='postbutton'
+                              text='Add Exercise'/>
             </ScrollView>
         )
     }
@@ -146,8 +166,36 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         textDecorationLine: 'underline',
         textDecorationColor: '#b1aea5'
-    }
+    },
+    button: {
+        backgroundColor: '#00BFFF',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 15,
+        paddingBottom: 15,
+        paddingLeft: 30,
+        paddingRight: 30,
+        right: 0,
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+    },
+    submitText: {
+        color: 'white',
+        fontSize: 15,
+        fontFamily: 'OpenSans-Bold',
+    },
 });
 
+const stateToProps = (state) => {
+    return state.Global;
+};
 
-export default CreateWorkoutDay;
+const dispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(GlobalActions, dispatch)
+    }
+};
+
+export default connect(stateToProps, dispatchToProps)(CreateWorkoutDay);
+

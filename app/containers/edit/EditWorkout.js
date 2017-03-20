@@ -19,6 +19,7 @@ import {getFontSize} from '../../actions/utils';
 import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
+import DisplayWorkoutDay from '../../components/DisplayWorkoutDay';
 import SubmitButton from '../../components/SubmitButton';
 
 import CreateWorkoutDay from '../sub/CreateWorkoutDay';
@@ -78,7 +79,13 @@ const EditWorkout = React.createClass({
 
 
     render: function () {
-        console.log(this.state.workout)
+        let workout_days = <Text>No workout days</Text>;
+        if (this.state.workout) {
+            console.log(this.state.workout)
+            workout_days = this.state.workout.workout_days.map((workout_day, index) => {
+                return <DisplayWorkoutDay key={index} workout_day={workout_day} dayIndex={index} />
+            });
+        }
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                         contentContainerStyle={styles.contentContainerStyle}>
@@ -87,7 +94,7 @@ const EditWorkout = React.createClass({
                 </BackBar>
 
                 <View style={{margin: 10}}>
-
+                    {workout_days}
                 </View>
 
                 <TouchableOpacity onPress={this._createWorkoutDay}>

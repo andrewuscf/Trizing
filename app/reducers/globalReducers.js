@@ -112,6 +112,41 @@ export default function AppReducers(state = initialState, action = null) {
                 ]
             };
 
+        case constants.CREATE_WORKOUT_DAY:
+            return {
+                ...state,
+                Workouts: state.Workouts.map(workout =>
+                    (workout.id === action.response.workout) ?
+                        {
+                            ...workout,
+                            workout_days: [
+                                ...workout.workout_days,
+                                action.response
+                            ]
+                        } :
+                        workout
+                )
+            };
+
+        case constants.UPDATE_WORKOUT_DAY:
+            return {
+                ...state,
+                Workouts: state.Workouts.map(workout =>
+                    (workout.id === action.response.workout) ?
+                        {
+                            ...workout,
+                            workout_days: workout.workout_days.map(workout_day =>
+                                (workout_day.id === action.response.id) ?
+                                    {
+                                        ...action.response
+                                    } :
+                                    workout_day
+                            )
+                        } :
+                        workout
+                )
+            };
+
         default:
             return state
     }

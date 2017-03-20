@@ -49,7 +49,8 @@ export function login(email, pass) {
                     });
                 }
             })
-            .catch((error) => {console.log(error)
+            .catch((error) => {
+                console.log(error)
                 // return dispatch(
                 //     removeToken()
                 // );
@@ -160,7 +161,7 @@ export function socialAuth(access_token) {
     }
 }
 
-export function getNotifications(refresh=false) {
+export function getNotifications(refresh = false) {
     let url = `${API_ENDPOINT}notifications/`;
     return (dispatch, getState) => {
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
@@ -223,7 +224,7 @@ export function createQuestionnaire(data, asyncActions) {
     }
 }
 
-export function getWorkouts(param = '' , refresh = false) {
+export function getWorkouts(param = '', refresh = false) {
     let url = `${API_ENDPOINT}training/workouts/${param}`;
     return (dispatch, getState) => {
         if (refresh) {
@@ -257,6 +258,42 @@ export function createWorkout(data, asyncActions) {
             })
             .catch((error) => {
                 asyncActions(false);
+                console.log(error);
+            }).done();
+    }
+}
+
+
+export function updateWorkoutDay(data, asyncActions = null) {
+    if (asyncActions) {
+        asyncActions(true);
+    }
+    let url = `${API_ENDPOINT}training/workouts/`;
+    let method = 'POST';
+    if (data.id) {
+        url = `${API_ENDPOINT}training/workouts/${data.id}/`;
+        let method = 'PATCH';
+    }
+    let JSONDATA = JSON.stringify(data);
+    return (dispatch, getState) => {
+        return fetch(url, fetchData(method, JSONDATA, getState().Global.UserToken)).then(checkStatus)
+            .then((responseJson) => {
+                if (asyncActions) {
+                    asyncActions(false, {
+                        routeName: 'CreateExercise',
+                        props: {workout_day: responseJson},
+                        state: responseJson
+                    });
+                }
+                if (method == 'POST')
+                    return dispatch({type: types.CREATE_WORKOUT_DAY, response: responseJson});
+                else
+                    return dispatch({type: types.UPDATE_WORKOUT_DAY, response: responseJson});
+            })
+            .catch((error) => {
+                if (asyncActions) {
+                    asyncActions(false);
+                }
                 console.log(error);
             }).done();
     }
