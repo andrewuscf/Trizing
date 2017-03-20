@@ -29,7 +29,7 @@ var {width: deviceWidth} = Dimensions.get('window');
 
 const EditProfile = React.createClass({
     getInitialState() {
-        var initData = {
+        let initData = {
             phone_number: null,
             showRoll: false,
             previewImage: null,

@@ -16,7 +16,8 @@ const DaysOfWeek = React.createClass({
     propTypes: {
         daySelectedState: React.PropTypes.func.isRequired,
         days: React.PropTypes.array.isRequired,
-        selectedDays: React.PropTypes.array
+        selectedDays: React.PropTypes.array,
+        cantEdit: React.PropTypes.bool
     },
 
     getInitialState() {
@@ -42,15 +43,24 @@ const DaysOfWeek = React.createClass({
 
     render() {
         const days = DAYS_OF_WEEK.map((day_of_week) => {
+            if (this.props.cantEdit) {
+                return (
+                    <View key={day_of_week.id}
+                          style={[styles.dayOfWeek, (_.includes(this.props.days, day_of_week.id)
+                              ? styles.selectedDay : null )]}>
+                        <Text
+                            style={[(_.includes(this.props.days, day_of_week.id) ? styles.selectedDayText : styles.defaultText)]}>
+                            {day_of_week.day}
+                        </Text>
+                    </View>
+                )
+            }
             return (
-                <TouchableOpacity key={day_of_week.id}
-                                  onPress={() => {
-                                      this._dayToggle(day_of_week.id)
-                                  }}
+                <TouchableOpacity key={day_of_week.id} onPress={() => {this._dayToggle(day_of_week.id)}}
                                   style={[styles.dayOfWeek, (_.includes(this.props.days, day_of_week.id)
                                       ? styles.selectedDay : null )]}>
                     <Text
-                        style={[(_.includes(this.props.days, day_of_week.id) ? styles.selectedDayText : null)]}>
+                        style={[(_.includes(this.props.days, day_of_week.id) ? styles.selectedDayText : styles.defaultText)]}>
                         {day_of_week.day}
                     </Text>
                 </TouchableOpacity>
@@ -83,13 +93,19 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         borderColor: 'black',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     selectedDay: {
         backgroundColor: '#1352e2',
+        borderWidth: 0,
+
+    },
+    defaultText: {
+        fontFamily: 'OpenSans-Semibold',
     },
     selectedDayText: {
-        color: 'white'
+        color: 'white',
+        fontFamily: 'OpenSans-Semibold',
     },
 });
 

@@ -62,7 +62,7 @@ const DisplayWorkoutDay = React.createClass({
         return (
             <TouchableOpacity onPress={this._toggleShow} style={styles.displayWorkoutBox}>
                 <Text style={styles.simpleTitle}>{this.props.workout_day.name}</Text>
-                    {exercises}
+                <DaysOfWeek daySelectedState={(days) => this.setState({days: days})} days={this.state.days} cantEdit={true}/>
             </TouchableOpacity>
         )
     }
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     displayWorkoutBox: {
         flex: 1,
         // alignItems: 'center',
-        borderTopWidth: 0.5,
+        borderBottomWidth: 0.5,
         borderColor: '#e1e3df',
     },
     simpleTitle: {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         // color: '#b1aea5',
         fontFamily: 'OpenSans-Semibold',
         margin: 10,
-        flex: 17
+        textAlign: 'center'
     },
 });
 

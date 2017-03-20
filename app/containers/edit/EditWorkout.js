@@ -91,7 +91,7 @@ const EditWorkout = React.createClass({
                     <Text>{this.state.workout ? this.state.workout.name : null}</Text>
                 </BackBar>
 
-                <View style={{marginTop: 10, marginBottom: 10}}>
+                <View style={{marginBottom: 10}}>
                     {workout_days}
                 </View>
 

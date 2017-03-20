@@ -92,19 +92,20 @@ const Home = React.createClass({
                                manageClients={this._redirect.bind(null, 'ManageClients', null)}/>
 
                     <View style={[styles.box]}>
-                        <Text style={styles.textTitle}>Workouts</Text>
+                        <Text style={styles.textTitle}>Workout Templates</Text>
                         <ListView ref='workout_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                                   style={styles.container} enableEmptySections={true} dataSource={WorkoutDs}
                                   renderRow={(workout) =>
                                       <TouchableOpacity style={styles.link} onPress={this._redirect.bind(null, 'EditWorkout', {workoutId: workout.id})}>
                                           <Text  style={styles.simpleTitle}>{workout.name}</Text>
+                                          <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
                                       </TouchableOpacity>
                                   }
                         />
                         <TouchableOpacity onPress={this._redirect.bind(null, 'CreateWorkout', {template: true})}
                                           style={styles.link}>
                             <Text style={styles.simpleTitle}>Create Workout Template</Text>
-                            <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
+                            <Icon name="plus" size={getFontSize(18)} style={styles.linkArrow}/>
                         </TouchableOpacity>
                     </View>
 
@@ -115,12 +116,13 @@ const Home = React.createClass({
                                   renderRow={(survey) =>
                                       <TouchableOpacity style={styles.link}>
                                           <Text  style={styles.simpleTitle}>{survey.name}</Text>
+                                          <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
                                       </TouchableOpacity>
                                   }
                         />
                         <TouchableOpacity onPress={this.props.openModal} style={styles.link}>
                             <Text style={styles.simpleTitle}>Create Survey</Text>
-                            <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
+                            <Icon name="plus" size={getFontSize(18)} style={styles.linkArrow}/>
                         </TouchableOpacity>
                     </View>
                 </View>
