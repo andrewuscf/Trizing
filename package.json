@@ -21,7 +21,8 @@
     "react-native-vector-icons": "^4.0.0",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "tcomb-form-native": "^0.6.7"
   },
   "devDependencies": {
     "babel-jest": "18.0.0",

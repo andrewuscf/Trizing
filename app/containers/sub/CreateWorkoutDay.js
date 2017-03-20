@@ -69,12 +69,12 @@ const CreateWorkoutDay = React.createClass({
 
     _addExercise() {
         if (this.state.name) {
-            this.props.actions.updateWorkoutDay(this.state, this.asyncActions)
+            this.props.actions.addEditWorkoutDay(this.state, this.asyncActions)
         }
     },
 
     _save() {
-        this.props.actions.updateWorkoutDay(this.state);
+        this.props.actions.addEditWorkoutDay(this.state);
         this.props.navigator.pop();
     },
 

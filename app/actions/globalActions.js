@@ -264,14 +264,14 @@ export function createWorkout(data, asyncActions) {
 }
 
 
-export function updateWorkoutDay(data, asyncActions = null) {
+export function addEditWorkoutDay(data, asyncActions = null) {
     if (asyncActions) {
         asyncActions(true);
     }
-    let url = `${API_ENDPOINT}training/workout/day/`;
+    let url = `${API_ENDPOINT}training/workout/days/`;
     let method = 'POST';
     if (data.id) {
-        url = `${API_ENDPOINT}training/workout/${data.id}/`;
+        url = `${API_ENDPOINT}training/workout/day/${data.id}/`;
         method = 'PATCH';
     }
     return (dispatch, getState) => {
@@ -298,36 +298,36 @@ export function updateWorkoutDay(data, asyncActions = null) {
     }
 }
 
-// export function updateExercise(data, asyncActions = null) {
-//     if (asyncActions) {
-//         asyncActions(true);
-//     }
-//     let url = `${API_ENDPOINT}training/workout/day/`;
-//     let method = 'POST';
-//     if (data.id) {
-//         url = `${API_ENDPOINT}training/workout/${data.id}/`;
-//         method = 'PATCH';
-//     }
-//     return (dispatch, getState) => {
-//         return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
-//             .then((responseJson) => {
-//                 if (asyncActions) {
-//                     asyncActions(false, {
-//                         routeName: 'CreateExercise',
-//                         props: {workout_day: responseJson},
-//                         state: responseJson
-//                     });
-//                 }
-//                 if (method == 'POST')
-//                     return dispatch({type: types.CREATE_WORKOUT_DAY, response: responseJson});
-//                 else
-//                     return dispatch({type: types.UPDATE_WORKOUT_DAY, response: responseJson});
-//             })
-//             .catch((error) => {
-//                 if (asyncActions) {
-//                     asyncActions(false);
-//                 }
-//                 console.log(error);
-//             }).done();
-//     }
-// }
+export function addEditExercise(data, asyncActions = null) {
+    if (asyncActions) {
+        asyncActions(true);
+    }
+    let url = `${API_ENDPOINT}training/workout/sets/`;
+    let method = 'POST';
+    if (data.id) {
+        url = `${API_ENDPOINT}training/workout/set/${data.id}/`;
+        method = 'PATCH';
+    }
+    return (dispatch, getState) => {
+        return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
+            .then((responseJson) => {
+                // if (asyncActions) {
+                //     asyncActions(false, {
+                //         routeName: 'CreateExercise',
+                //         props: {workout_day: responseJson},
+                //         state: responseJson
+                //     });
+                // }
+                if (method == 'POST')
+                    return dispatch({type: types.ADD_EXERCISE, response: responseJson});
+                else
+                    return dispatch({type: types.EDIT_EXERCISE, response: responseJson});
+            })
+            .catch((error) => {
+                if (asyncActions) {
+                    asyncActions(false);
+                }
+                console.log(error);
+            }).done();
+    }
+}

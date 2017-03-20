@@ -10,6 +10,10 @@ import {
     ScrollView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+
+import * as GlobalActions from '../../actions/globalActions';
 
 import {getFontSize} from '../../actions/utils';
 
@@ -87,14 +91,13 @@ const CreateExercise = React.createClass({
 
 
     render: function () {
-        const sets = null;
-        // const sets = this.state.sets.map((set, index) => {
-        //     if (this.state.sets.length > 1)
-        //         return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}
-        //                        _deleteSet={this._deleteSet.bind(null, index)}/>
-        //     else
-        //         return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}/>
-        // });
+        const sets = this.state.sets.map((set, index) => {
+            if (this.state.sets.length > 1)
+                return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}
+                               _deleteSet={this._deleteSet.bind(null, index)}/>
+            else
+                return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}/>
+        });
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                         contentContainerStyle={styles.contentContainerStyle}>
@@ -194,5 +197,15 @@ const styles = StyleSheet.create({
     },
 });
 
+const stateToProps = (state) => {
+    return state.Global;
+};
 
-export default CreateExercise;
+const dispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(GlobalActions, dispatch)
+    }
+};
+
+export default connect(stateToProps, dispatchToProps)(CreateExercise);
+
