@@ -27,7 +27,7 @@ export default function AppReducers(state = initialState, action = null) {
 
         case constants.REMOVE_TOKEN:
             return {};
-        
+
         case constants.SET_ACTIVE_ROUTE:
             return {
                 ...state,
@@ -146,6 +146,22 @@ export default function AppReducers(state = initialState, action = null) {
                         workout
                 )
             };
+
+        case constants.ADD_EXERCISE:
+            console.log(action.response)
+            return {
+                ...state,
+                Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response: workout
+                )
+            };
+
+        case constants.EDIT_EXERCISE:
+            return state
+            // return {
+            //     ...state,
+            //     Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response: workout
+            //     )
+            // };
 
         default:
             return state

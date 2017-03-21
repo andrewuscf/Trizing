@@ -86,6 +86,22 @@ const CreateExercise = React.createClass({
     },
 
     _save() {
+        this.state.sets.forEach((set, index)=>{
+            if (set.reps && this.state.name) {
+                const data = {
+                    day: this.props.workout_day.id,
+                    exercise: {
+                        name: this.state.name,
+                    },
+                    reps: set.reps,
+                    order: index
+                };
+                if (set.weight)
+                    data['weight'] = set.weight;
+                this.props.actions.addEditExercise(data);
+            }
+        });
+        this.props.navigator.pop()
         // this.props.getExerciseState(this.props.exerciseIndex, this.state)
     },
 
@@ -93,10 +109,10 @@ const CreateExercise = React.createClass({
     render: function () {
         const sets = this.state.sets.map((set, index) => {
             if (this.state.sets.length > 1)
-                return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}
+                return <CreateSetBox key={index} setIndex={index} setSetState={this.setSetState}
                                _deleteSet={this._deleteSet.bind(null, index)}/>
             else
-                return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}/>
+                return <CreateSetBox key={index} setIndex={index} setSetState={this.setSetState}/>
         });
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"

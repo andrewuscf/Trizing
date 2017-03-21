@@ -311,13 +311,6 @@ export function addEditExercise(data, asyncActions = null) {
     return (dispatch, getState) => {
         return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                // if (asyncActions) {
-                //     asyncActions(false, {
-                //         routeName: 'CreateExercise',
-                //         props: {workout_day: responseJson},
-                //         state: responseJson
-                //     });
-                // }
                 if (method == 'POST')
                     return dispatch({type: types.ADD_EXERCISE, response: responseJson});
                 else

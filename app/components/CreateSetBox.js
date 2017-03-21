@@ -17,7 +17,6 @@ import GlobalStyle from '../containers/globalStyle';
 
 const CreateSetBox = React.createClass({
     propTypes: {
-        set: React.PropTypes.object.isRequired,
         setIndex: React.PropTypes.number.isRequired,
         setSetState: React.PropTypes.func.isRequired,
         _deleteSet: React.PropTypes.func
@@ -33,24 +32,12 @@ const CreateSetBox = React.createClass({
     },
 
     onChange(value) {
-        console.log(value)
+        const formValues = this.refs.form.getValue();
+        if (formValues) {
+            this.props.setSetState(this.props.setIndex, formValues)
+        }
         this.setState({value});
     },
-
-    onPress: function () {
-        const value = this.refs.form.getValue();
-        if (value) {
-            console.log(value);
-        }
-    },
-
-    // _repChange(text) {
-    //     this.props.setSetState(this.props.setIndex, {reps: text})
-    // },
-    //
-    // _weightChange(text) {
-    //     this.props.setSetState(this.props.setIndex, {weight: text})
-    // },
 
     _deleteSet() {
         Keyboard.dismiss();
@@ -66,6 +53,21 @@ const CreateSetBox = React.createClass({
 
 
     render: function () {
+        let options = {
+            i18n: {
+                optional: '',
+                required: '*',
+            },
+            stylesheet: stylesheet,
+            fields: {
+                reps: {
+                    onSubmitEditing: () => this.refs.form.getComponent('weight').refs.input.focus()
+                },
+                weight: {
+                    label: 'Weight (lb)'
+                }
+            }
+        };
         return (
             <View style={styles.setContainer}>
                 <View style={styles.setTitleView}>
@@ -81,6 +83,7 @@ const CreateSetBox = React.createClass({
                     ref="form"
                     type={Set}
                     options={options}
+                    onChange={this.onChange}
                     value={this.state.value}
                 />
             </View>
@@ -115,8 +118,6 @@ const styles = StyleSheet.create({
 
 
 // T FORM SETUP
-
-
 const Form = t.form.Form;
 
 const Set = t.struct({
@@ -130,7 +131,6 @@ stylesheet.formGroup = {
     ...stylesheet.formGroup,
     normal: {
         ...stylesheet.formGroup.normal,
-        // flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
@@ -190,27 +190,12 @@ stylesheet.controlLabel = {
     ...stylesheet.controlLabel,
     normal: {
         ...stylesheet.controlLabel.normal,
-        flex:2
+        flex: 2
     },
     error: {
         ...stylesheet.controlLabel.error,
-        flex:2
+        flex: 2
     }
-};
-
-
-let options = {
-    i18n: {
-        optional: '',
-        required: '*',
-    },
-    stylesheet: stylesheet,
-    fields: {
-        weight: {
-            label: 'Weight (lb)'
-        }
-    }
-    // auto: 'placeholders'
 };
 
 

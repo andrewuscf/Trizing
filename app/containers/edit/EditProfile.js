@@ -264,13 +264,13 @@ const styles = StyleSheet.create({
     backNav: {
         minHeight:50,
         borderBottomWidth: .5,
-        borderBottomColor: 'rgba(0,0,0,.15)'
+        borderBottomColor: 'rgba(0,0,0,.15)',
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     backNavButton: {
-        // zIndex: 999,
-        // position: 'absolute',
-        left: 10,
-        top: 10,
+        paddingLeft: 10
     },
     mainContent: {
         margin: 10
@@ -374,9 +374,7 @@ const styles = StyleSheet.create({
         fontFamily: 'OpenSans-Bold',
     },
     logOut: {
-        position: 'absolute',
-        top: 15,
-        right: 10
+        paddingRight: 10
     }
 });
 
