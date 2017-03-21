@@ -36,14 +36,9 @@ const CreateWorkoutDay = React.createClass({
             days: [],
             workout: workout,
             saved: false
-            // id: null
         }
     },
 
-    // componentDidMount() {
-    //     if (this.refs.day_name)
-    //         this.refs.day_name.focus()
-    // },
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.Workouts != prevProps.Workouts) {
@@ -101,11 +96,6 @@ const CreateWorkoutDay = React.createClass({
     },
 
     render: function () {
-        console.log(this.state.workout)
-        const exercises = null;
-        // const exercises = this.state.exercises.map((exercise, index) => {
-        //     return <DisplayExerciseBox key={index} exercise={exercise} exerciseIndex={index}/>
-        // });
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                         contentContainerStyle={styles.contentContainerStyle}>
@@ -131,12 +121,10 @@ const CreateWorkoutDay = React.createClass({
                 </View>
                 <Text style={styles.inputLabel}>What days?</Text>
                 <DaysOfWeek daySelectedState={(days) => this.setState({days: days})} days={this.state.days}/>
-                <Text style={styles.inputLabel}>Exercises</Text>
-                {exercises}
 
                 <SubmitButton buttonStyle={styles.button}
                               textStyle={styles.submitText} onPress={this._addExercise} ref='postbutton'
-                              text='Add Exercise'/>
+                              text='Next Step'/>
             </ScrollView>
         )
     }

@@ -67,7 +67,7 @@ const WorkoutDayDetail = React.createClass({
     },
 
     _addExercise() {
-        this.props.navigator.replace(getRoute('CreateExercise', {workout_day: this.state.workout_day}))
+        this.props.navigator.push(getRoute('CreateExercise', {workout_day: this.state.workout_day}))
     },
 
     renderFooter() {

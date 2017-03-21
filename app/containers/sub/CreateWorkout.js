@@ -1,17 +1,14 @@
 import React, {Component} from 'react';
 import {
-    ScrollView,
     View,
     Text,
     StyleSheet,
     Alert,
-    TextInput,
-    TouchableHighlight,
-    Keyboard
+    TouchableHighlight
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import t from 'tcomb-form-native';
 import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
@@ -55,49 +52,49 @@ const CreateWorkout = React.createClass({
         }
     },
 
-    isValid() {
-        return this.state.name
-    },
 
 
     _onSubmit() {
-        if (this.isValid()) {
-            this.props.actions.createWorkout(this.state, this.asyncActions);
+        const values = this.refs.form.getValue();
+        if (values) {
+            this.props.actions.createWorkout(values, this.asyncActions);
         }
     },
 
     _cancel() {
-        Alert.alert(
-            'Are you sure you want to cancel?',
-            'Your current step will not be saved',
-            [
-                {text: 'No', null, style: 'cancel'},
-                {text: 'Yes', onPress: () => this.props.navigator.pop()},
-            ]
-        );
+        this.props.navigator.pop();
     },
 
 
     render: function () {
+        let options = {
+            i18n: {
+                optional: '',
+                required: '*',
+            },
+            stylesheet: stylesheet,
+            fields: {
+                name: {
+                    label: 'Workout Name',
+                    onSubmitEditing: () => this._onSubmit()
+                },
+            }
+        };
         return (
             <View style={styles.flexCenter}>
                 <BackBar back={this._cancel} backText="Cancel" navStyle={{height: 40}}/>
-
                 <View style={{margin: 10}}>
-                    <Text style={styles.inputLabel}>Program Name</Text>
-                    <View style={styles.inputWrap}>
-                        <TextInput ref="name" style={styles.textInput} autoCapitalize='sentences'
-                                   underlineColorAndroid='transparent'
-                                   autoCorrect={false}
-                                   onChangeText={(text) => this.setState({name: text})}
-                                   value={this.state.name}
-                                   placeholderTextColor="#4d4d4d"
-                                   placeholder="'Cutting'"/>
-                    </View>
+                    <Form
+                        ref="form"
+                        type={Workout}
+                        options={options}
+                        onChange={this.onChange}
+                        value={this.state.value}
+                    />
                 </View>
                 <SubmitButton buttonStyle={styles.button}
                               textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
-                              text='Create Program'/>
+                              text='Next Step'/>
             </View>
         )
     }
@@ -124,35 +121,68 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 15,
         fontFamily: 'OpenSans-Bold',
-    },
-    cancel: {
-        color: '#d4d4d4',
-    },
-    inputWrap: {
+    }
+});
+
+// T FORM SETUP
+const Form = t.form.Form;
+
+const Workout = t.struct({
+    name: t.String,
+});
+const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
+
+stylesheet.formGroup = {
+    ...stylesheet.formGroup,
+    normal: {
+        ...stylesheet.formGroup.normal,
         marginBottom: 12,
         borderBottomWidth: .5,
         borderColor: '#aaaaaa',
         justifyContent: 'center',
         alignItems: 'stretch'
     },
-    textInput: {
-        color: 'black',
-        fontSize: 17,
-        fontFamily: 'OpenSans-Light',
-        backgroundColor: 'transparent',
-        paddingTop: 3,
-        paddingBottom: 3,
-        minHeight: 50,
-        textAlign: 'center',
-        flex: 1
+    error: {
+        ...stylesheet.formGroup.error,
+        marginBottom: 12,
+        borderBottomWidth: .5,
+        borderColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'stretch'
+    }
+};
+stylesheet.textbox = {
+    ...stylesheet.textbox,
+    normal: {
+        ...stylesheet.textbox.normal,
+        borderWidth: 0,
+        marginBottom: 0,
+        textAlign: 'center'
     },
-    inputLabel: {
+    error: {
+        ...stylesheet.textbox.error,
+        borderWidth: 0,
+        marginBottom: 0,
+        textAlign: 'center'
+    }
+};
+stylesheet.controlLabel = {
+    ...stylesheet.controlLabel,
+    normal: {
+        ...stylesheet.controlLabel.normal,
+        fontSize: getFontSize(25),
+        lineHeight: getFontSize(26),
+        fontFamily: 'OpenSans-Semibold',
+        textAlign: 'center'
+    },
+    error: {
+        ...stylesheet.controlLabel.error,
         fontSize: getFontSize(25),
         lineHeight: getFontSize(26),
         fontFamily: 'OpenSans-Semibold',
         textAlign: 'center'
     }
-});
+};
 
 
 const stateToProps = (state) => {

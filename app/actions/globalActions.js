@@ -279,8 +279,8 @@ export function addEditWorkoutDay(data, asyncActions = null) {
             .then((responseJson) => {
                 if (asyncActions) {
                     asyncActions(false, {
-                        routeName: 'CreateExercise',
-                        props: {workout_day: responseJson},
+                        routeName: 'WorkoutDayDetail',
+                        props: {workout_day_id: responseJson.id},
                         state: responseJson
                     });
                 }

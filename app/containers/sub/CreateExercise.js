@@ -16,7 +16,6 @@ import {connect} from 'react-redux';
 import * as GlobalActions from '../../actions/globalActions';
 
 import {getFontSize} from '../../actions/utils';
-import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import CreateSetBox from '../../components/CreateSetBox';
@@ -41,10 +40,14 @@ const CreateExercise = React.createClass({
 
     _addSet() {
         Keyboard.dismiss();
+        let addSet = BlankSet;
+        if (this.state.sets && this.state.sets[this.state.sets.length - 1]) {
+            addSet = this.state.sets[this.state.sets.length - 1]
+        }
         this.setState({
             sets: [
                 ...this.state.sets,
-                BlankSet
+                addSet
             ]
         });
     },
@@ -104,17 +107,17 @@ const CreateExercise = React.createClass({
             }
         });
         this.props.actions.addEditExercise(sets);
-        this.props.navigator.replace(getRoute('WorkoutDayDetail', {workout_day_id: this.props.workout_day.id} ));
+        this.props.navigator.pop();
     },
 
 
     render: function () {
         const sets = this.state.sets.map((set, index) => {
             if (this.state.sets.length > 1)
-                return <CreateSetBox key={index} setIndex={index} setSetState={this.setSetState}
+                return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}
                                _deleteSet={this._deleteSet.bind(null, index)}/>
             else
-                return <CreateSetBox key={index} setIndex={index} setSetState={this.setSetState}/>
+                return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}/>
         });
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"

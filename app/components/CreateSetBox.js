@@ -17,6 +17,7 @@ import GlobalStyle from '../containers/globalStyle';
 
 const CreateSetBox = React.createClass({
     propTypes: {
+        set: React.PropTypes.object.isRequired,
         setIndex: React.PropTypes.number.isRequired,
         setSetState: React.PropTypes.func.isRequired,
         _deleteSet: React.PropTypes.func
@@ -25,8 +26,8 @@ const CreateSetBox = React.createClass({
     getInitialState() {
         return {
             value: {
-                reps: null,
-                weight: null
+                reps: this.props.set.reps,
+                weight: this.props.set.weight
             }
         };
     },
@@ -145,7 +146,7 @@ stylesheet.formGroup = {
         alignItems: 'center',
         flexDirection: 'row',
         paddingLeft: 10,
-        borderColor: '#e1e3df',
+        borderColor: 'red',
         borderBottomWidth: 1,
     }
 };
