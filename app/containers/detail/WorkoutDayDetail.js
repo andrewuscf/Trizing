@@ -16,10 +16,12 @@ import _ from 'lodash';
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 import GlobalStyle from '../globalStyle';
+import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import DaysOfWeek from '../../components/DaysOfWeek';
 import DisplayExerciseBox from '../../components/DisplayExerciseBox';
+import SubmitButton from '../../components/SubmitButton';
 
 const WorkoutDayDetail = React.createClass({
     propTypes: {
@@ -55,14 +57,23 @@ const WorkoutDayDetail = React.createClass({
     renderSearchBar(){
         return (
             <View>
-                <BackBar back={this.props.navigator.pop} navStyle={{height: 50}}/>
-                <View sytyle={GlobalStyle.simpleBottomBorder}>
+                <BackBar back={this.props.navigator.pop} navStyle={{height: 50}}>
                     <Text style={[styles.dayTitle]}>{this.state.workout_day.name}</Text>
-                </View>
+                </BackBar>
                 <DaysOfWeek days={this.state.workout_day.days}/>
             </View>
         )
 
+    },
+
+    _addExercise() {
+        this.props.navigator.replace(getRoute('CreateExercise', {workout_day: this.state.workout_day}))
+    },
+
+    renderFooter() {
+        return <SubmitButton buttonStyle={styles.button}
+                             textStyle={styles.submitText} onPress={this._addExercise} ref='postbutton'
+                             text='Add Exercise'/>
     },
 
 
@@ -78,10 +89,11 @@ const WorkoutDayDetail = React.createClass({
                       keyboardShouldPersistTaps="handled"
                       refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
                       renderHeader={this.renderSearchBar}
+                      renderFooter={this.renderFooter}
                       style={styles.container} enableEmptySections={true}
                       dataSource={dataSource}
-                      renderRow={(exercise) =>
-                          <DisplayExerciseBox exercise={exercise} showSets={exercise.id == 0}/>
+                      renderRow={(exercise, sectionID, rowID) =>
+                          <DisplayExerciseBox exercise={exercise} showSets={rowID== 0}/>
                       }
             />
         );
@@ -94,6 +106,20 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(30),
         fontFamily: 'OpenSans-Semibold',
         textAlign: 'center'
+    },
+    button: {
+        backgroundColor: '#00BFFF',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 15,
+        paddingBottom: 15,
+        paddingLeft: 30,
+        paddingRight: 30,
+    },
+    submitText: {
+        color: 'white',
+        fontSize: 15,
+        fontFamily: 'OpenSans-Bold',
     },
 });
 

@@ -87,6 +87,7 @@ const CreateExercise = React.createClass({
     },
 
     _save() {
+        const sets = [];
         this.state.sets.forEach((set, index)=>{
             if (set.reps && this.state.name) {
                 const data = {
@@ -99,9 +100,10 @@ const CreateExercise = React.createClass({
                 };
                 if (set.weight)
                     data['weight'] = set.weight;
-                this.props.actions.addEditExercise(data);
+                sets.push(data);
             }
         });
+        this.props.actions.addEditExercise(sets);
         this.props.navigator.replace(getRoute('WorkoutDayDetail', {workout_day_id: this.props.workout_day.id} ));
     },
 
