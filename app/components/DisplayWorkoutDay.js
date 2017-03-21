@@ -43,6 +43,8 @@ const styles = StyleSheet.create({
         flex: 1,
         borderBottomWidth: 0.5,
         borderColor: '#e1e3df',
+        backgroundColor: 'white',
+        marginTop:10
     },
     simpleTitle: {
         fontSize: getFontSize(22),

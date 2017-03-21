@@ -193,13 +193,13 @@ const TrainingPlan = React.createClass({
         return (
             <View style={GlobalStyle.container}>
                 {this.props.Questionnaires.length ?
-                    <View style={styles.pickersView}>
+                    <View style={[styles.pickersView, GlobalStyle.simpleBottomBorder]}>
                         <Text style={styles.pickersText}>Survey: </Text>
                         <SelectInput ref='questionnaires' options={this.props.Questionnaires}
                                      selectedId={this.state.training_plan.questionnaire}
                                      submitChange={this.selectQuestionnaire}/>
                     </View> :
-                    <TouchableOpacity style={styles.pickersView} onPress={this.props.openModal}>
+                    <TouchableOpacity style={[styles.pickersView, GlobalStyle.simpleBottomBorder]} onPress={this.props.openModal}>
                         <Text>Create a Survey</Text>
                     </TouchableOpacity>
                 }
@@ -293,11 +293,12 @@ const styles = StyleSheet.create({
         padding: 5
     },
     pickersView: {
-        marginLeft: 15,
-        marginRight: 15,
-        marginTop: 10,
-        marginBottom: 19,
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingTop: 10,
+        paddingBottom: 19,
         flexDirection: 'row',
+        backgroundColor: 'white',
         // minHeight: 20
     },
     pickersText: {

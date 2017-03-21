@@ -168,7 +168,8 @@ const styles = StyleSheet.create({
     },
     userDetail: {
         padding: 20,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        backgroundColor: 'white'
     },
     userInfo: {
         paddingLeft: 20

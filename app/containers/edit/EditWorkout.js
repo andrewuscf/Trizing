@@ -102,9 +102,9 @@ const EditWorkout = React.createClass({
                     {workout_days}
                 </View>
 
-                <TouchableOpacity onPress={this._createWorkoutDay}>
-                    <Text style={styles.addExerciseStyle}>Create Workout Day</Text>
-                </TouchableOpacity>
+                <SubmitButton buttonStyle={styles.button}
+                              textStyle={styles.submitText} onPress={this._createWorkoutDay} ref='postbutton'
+                              text='Create workout Day'/>
 
 
             </ScrollView>
@@ -124,28 +124,11 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 30,
         paddingRight: 30,
-        right: 0,
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
     },
     submitText: {
         color: 'white',
         fontSize: 15,
         fontFamily: 'OpenSans-Bold',
-    },
-    addExerciseStyle: {
-        height: 35,
-        marginTop: 5,
-        marginBottom: 8,
-        color: '#b1aea5',
-        fontSize: getFontSize(22),
-        lineHeight: getFontSize(26),
-        backgroundColor: 'transparent',
-        fontFamily: 'OpenSans-Semibold',
-        alignSelf: 'center',
-        textDecorationLine: 'underline',
-        textDecorationColor: '#b1aea5'
     }
 });
 

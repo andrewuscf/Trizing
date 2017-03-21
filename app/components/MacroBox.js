@@ -68,8 +68,6 @@ const MacroBox = React.createClass({
                 if (day.protein && day.carbs && day.fats && day.days.length > 0)
                     return day
             });
-            console.log(validPlanDays)
-
             this.props.createMacroPlan({
                 ...this.state,
                 macro_plan_days: validPlanDays
@@ -85,7 +83,7 @@ const MacroBox = React.createClass({
     _onPress() {
         Keyboard.dismiss();
         if (this.props.plan) {
-            var delta = new Date().getTime() - this.state.lastPress;
+            let delta = new Date().getTime() - this.state.lastPress;
             if (delta < 200) {
                 console.log('Double tap')
             } else {
@@ -233,8 +231,8 @@ const styles = StyleSheet.create({
         flex: 1,
         borderBottomWidth: 1,
         borderColor: '#e1e3df',
-        paddingTop: 10,
-        // paddingBottom: 10,
+        marginTop:10,
+        backgroundColor: 'white'
     },
     center: {
         flexDirection: 'row',

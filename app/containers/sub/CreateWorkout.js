@@ -115,10 +115,6 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 30,
         paddingRight: 30,
-        // right: 0,
-        // position: 'absolute',
-        // bottom: 0,
-        // left: 0,
     },
     submitText: {
         color: 'white',
