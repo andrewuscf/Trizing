@@ -17,7 +17,6 @@ import DisplaySetBox from './DisplaySetBox';
 const DisplayExerciseBox = React.createClass({
     propTypes: {
         exercise: React.PropTypes.object.isRequired,
-        exerciseIndex: React.PropTypes.number.isRequired,
         showSets: React.PropTypes.bool
     },
 
@@ -40,9 +39,7 @@ const DisplayExerciseBox = React.createClass({
         console.log(this.state)
         return (
             <TouchableOpacity style={styles.displayWorkoutBox} onPress={this._toggleShow}>
-                <Text style={styles.simpleTitle}>
-                    {`Exercise ${this.props.exerciseIndex+1}: `}{this.props.exercise.name}
-                </Text>
+                <Text style={styles.simpleTitle}>{this.props.exercise.name}</Text>
                 {this.state.showSets ?
                     this.props.exercise.sets.map((set, index) => {
                         return <DisplaySetBox set={set} setIndex={index} key={index}/>

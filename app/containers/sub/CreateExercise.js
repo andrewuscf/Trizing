@@ -16,6 +16,7 @@ import {connect} from 'react-redux';
 import * as GlobalActions from '../../actions/globalActions';
 
 import {getFontSize} from '../../actions/utils';
+import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import CreateSetBox from '../../components/CreateSetBox';
@@ -101,8 +102,7 @@ const CreateExercise = React.createClass({
                 this.props.actions.addEditExercise(data);
             }
         });
-        this.props.navigator.pop()
-        // this.props.getExerciseState(this.props.exerciseIndex, this.state)
+        this.props.navigator.replace(getRoute('WorkoutDayDetail', {workout_day_id: this.props.workout_day.id} ));
     },
 
 

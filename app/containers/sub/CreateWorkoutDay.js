@@ -9,6 +9,7 @@ import {
     Keyboard
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import _ from 'lodash';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
@@ -24,22 +25,32 @@ import SubmitButton from '../../components/SubmitButton';
 
 const CreateWorkoutDay = React.createClass({
     propTypes: {
-        workout: React.PropTypes.object.isRequired,
+        workoutId: React.PropTypes.number.isRequired,
     },
 
     getInitialState() {
+        const index = _.findIndex(this.props.Workouts, {id: this.props.workoutId});
+        const workout = this.props.Workouts[index];
         return {
             name: null,
             days: [],
-            exercises: [],
-            workout: this.props.workout.id
+            workout: workout,
+            saved: false
             // id: null
         }
     },
 
-    componentDidMount() {
-        if (this.refs.day_name)
-            this.refs.day_name.focus()
+    // componentDidMount() {
+    //     if (this.refs.day_name)
+    //         this.refs.day_name.focus()
+    // },
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.Workouts != prevProps.Workouts) {
+            const index = _.findIndex(this.props.Workouts, {id: this.props.workoutId});
+            const workout = this.props.Workouts[index];
+            this.setState({workout: workout});
+        }
     },
 
     asyncActions(start, data = {}){
@@ -59,29 +70,42 @@ const CreateWorkoutDay = React.createClass({
 
     _deleteExercise(index) {
         Keyboard.dismiss();
-        if (this.state.exercises.length > 1) {
-            this.setState({
-                exercises: this.state.exercises.slice(0, index).concat(this.state.exercises.slice(index + 1))
-            })
-        }
+        // if (this.state.exercises.length > 1) {
+        //     this.setState({
+        //         exercises: this.state.exercises.slice(0, index).concat(this.state.exercises.slice(index + 1))
+        //     })
+        // }
+    },
+
+    getCurrentData() {
+        return {
+            name: this.state.name,
+            days: this.state.days,
+            workout: this.state.workout.id
+        };
     },
 
 
     _addExercise() {
-        if (this.state.name) {
-            this.props.actions.addEditWorkoutDay(this.state, this.asyncActions)
+        if (this.state.name && !this.state.saved) {
+            this.props.actions.addEditWorkoutDay(this.getCurrentData(), this.asyncActions)
+            this.setState({saved: true});
         }
     },
 
     _save() {
-        this.props.actions.addEditWorkoutDay(this.state);
+        if (!this.state.saved) {
+            this.props.actions.addEditWorkoutDay(this.getCurrentData());
+        }
         this.props.navigator.pop();
     },
 
     render: function () {
-        const exercises = this.state.exercises.map((exercise, index) => {
-            return <DisplayExerciseBox key={index} exercise={exercise} exerciseIndex={index}/>
-        });
+        console.log(this.state.workout)
+        const exercises = null;
+        // const exercises = this.state.exercises.map((exercise, index) => {
+        //     return <DisplayExerciseBox key={index} exercise={exercise} exerciseIndex={index}/>
+        // });
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                         contentContainerStyle={styles.contentContainerStyle}>

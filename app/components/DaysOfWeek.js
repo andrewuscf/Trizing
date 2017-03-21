@@ -14,10 +14,9 @@ import GlobalStyle from '../containers/globalStyle';
 
 const DaysOfWeek = React.createClass({
     propTypes: {
-        daySelectedState: React.PropTypes.func.isRequired,
+        daySelectedState: React.PropTypes.func,
         days: React.PropTypes.array.isRequired,
         selectedDays: React.PropTypes.array,
-        cantEdit: React.PropTypes.bool
     },
 
     getInitialState() {
@@ -43,7 +42,7 @@ const DaysOfWeek = React.createClass({
 
     render() {
         const days = DAYS_OF_WEEK.map((day_of_week) => {
-            if (this.props.cantEdit) {
+            if (!this.props.daySelectedState) {
                 return (
                     <View key={day_of_week.id}
                           style={[styles.dayOfWeek, (_.includes(this.props.days, day_of_week.id)

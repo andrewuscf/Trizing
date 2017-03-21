@@ -36,7 +36,7 @@ const EditWorkout = React.createClass({
     },
 
     getInitialState() {
-        const index = _.findIndex(this.props.Workouts, {id: this.props.workoutId})
+        const index = _.findIndex(this.props.Workouts, {id: this.props.workoutId});
         const workout = this.props.Workouts[index];
         return {
             Error: null,
@@ -71,8 +71,14 @@ const EditWorkout = React.createClass({
     },
 
     _createWorkoutDay() {
-        if (this.state.workout){
-            this.props.navigator.push(getRoute('CreateWorkoutDay', {workout: this.state.workout}))
+        if (this.state.workout) {
+            this.props.navigator.push(getRoute('CreateWorkoutDay', {workoutId: this.state.workout.id}))
+        }
+    },
+
+    _toWorkoutDay(workout_day_id) {
+        if (this.state.workout) {
+            this.props.navigator.push(getRoute('WorkoutDayDetail', {workout_day_id: workout_day_id}))
         }
     },
 
@@ -81,7 +87,8 @@ const EditWorkout = React.createClass({
         let workout_days = <Text>No workout days</Text>;
         if (this.state.workout) {
             workout_days = this.state.workout.workout_days.map((workout_day, index) => {
-                return <DisplayWorkoutDay key={index} workout_day={workout_day} dayIndex={index} />
+                return <DisplayWorkoutDay key={index} _toWorkoutDay={this._toWorkoutDay} workout_day={workout_day}
+                                          dayIndex={index}/>
             });
         }
         return (

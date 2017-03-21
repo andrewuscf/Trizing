@@ -148,7 +148,6 @@ export default function AppReducers(state = initialState, action = null) {
             };
 
         case constants.ADD_EXERCISE:
-            console.log(action.response)
             return {
                 ...state,
                 Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response: workout
@@ -156,7 +155,7 @@ export default function AppReducers(state = initialState, action = null) {
             };
 
         case constants.EDIT_EXERCISE:
-            return state
+            return state;
             // return {
             //     ...state,
             //     Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response: workout

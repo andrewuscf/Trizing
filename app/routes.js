@@ -20,6 +20,9 @@ import CreateExercise from './containers/sub/CreateExercise';
 // Edit Pages
 import EditProfile from './containers/edit/EditProfile';
 
+// Detail Pages
+import WorkoutDayDetail from './containers/detail/WorkoutDayDetail';
+
 // Create Pages
 
 var MAIN_ROUTES = [
@@ -36,6 +39,7 @@ var MAIN_ROUTES = [
     {component: EditWorkout, name: 'EditWorkout'},
     {component: CreateWorkoutDay, name: 'CreateWorkoutDay'},
     {component: CreateExercise, name: 'CreateExercise'},
+    {component: WorkoutDayDetail, name: 'WorkoutDayDetail'},
 ];
 
 export function getRoute(routeName, props) {
