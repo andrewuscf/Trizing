@@ -26,13 +26,13 @@ const DisplaySetBox = React.createClass({
             <View style={styles.setContainer}>
                 <View style={[styles.setInfoSection]}>
                     <Text style={styles.setTitle}>Set {this.props.setIndex + 1}</Text>
-                    <View style={{justifyContent: 'center'}}>
+                    <View>
                         <Text style={styles.inputLabel}>Weight</Text>
                         <Text style={styles.inputLabel}>
                             {this.props.set.weight} <Text style={{color: '#4d4d4d'}}>lb</Text>
                         </Text>
                     </View>
-                    <View style={{justifyContent: 'center'}}>
+                    <View>
                         <Text style={styles.inputLabel}>Reps</Text>
                         <Text style={styles.inputLabel}>
                             {this.props.set.reps}
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     inputLabel: {
         fontSize: getFontSize(22),
         lineHeight: getFontSize(26),
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     textInput: {
         flex: 1,

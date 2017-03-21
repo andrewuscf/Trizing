@@ -61,6 +61,7 @@ const WorkoutDayDetail = React.createClass({
                     <Text style={[styles.dayTitle]}>{this.state.workout_day.name}</Text>
                 </BackBar>
                 <DaysOfWeek days={this.state.workout_day.days}/>
+                <Text style={[styles.dayTitle]}>Exercises</Text>
             </View>
         )
 
@@ -102,6 +103,9 @@ const WorkoutDayDetail = React.createClass({
 
 
 const styles = StyleSheet.create({
+    container: {
+        // backgroundColor: 'white',
+    },
     dayTitle: {
         fontSize: getFontSize(30),
         fontFamily: 'OpenSans-Semibold',
@@ -115,6 +119,7 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 30,
         paddingRight: 30,
+        marginTop: 10
     },
     submitText: {
         color: 'white',

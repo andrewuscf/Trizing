@@ -144,6 +144,8 @@ const EditProfile = React.createClass({
             let userImage = EMPTY_AVATAR;
             if (this.state.previewImage) {
                 userImage = this.state.previewImage.uri
+            } else if (user.profile.thumbnail) {
+                userImage = user.profile.thumbnail;
             } else if (user.profile.avatar) {
                 userImage = user.profile.avatar;
             }
@@ -164,9 +166,11 @@ const EditProfile = React.createClass({
                                 : null
                             }
 
-                                <TouchableOpacity style={styles.logOut} onPress={this._logOut}>
-                                    <Icon name="power-off" size={20} color='red'/>
-                                </TouchableOpacity>
+                            <TouchableOpacity
+                                style={this.props.RequestUser.profile.completed ? styles.logOut : styles.logOutCreateProfile}
+                                onPress={this._logOut}>
+                                <Icon name="power-off" size={20} color='red'/>
+                            </TouchableOpacity>
 
                         </View>
                         <View style={styles.mainContent}>
@@ -178,7 +182,7 @@ const EditProfile = React.createClass({
                                            autoCapitalize='words'
                                            keyboardType='default'
                                            autoCorrect={false}
-                                           onChangeText={(text) =>this.setState({first_name: text})}
+                                           onChangeText={(text) => this.setState({first_name: text})}
                                            value={this.state.first_name}
                                            onSubmitEditing={(event) => {
                                                this.refs.last_name.focus();
@@ -194,7 +198,7 @@ const EditProfile = React.createClass({
                                            onSubmitEditing={(event) => {
                                                this.refs.username.focus();
                                            }}
-                                           onChangeText={(text) =>this.setState({last_name: text})}
+                                           onChangeText={(text) => this.setState({last_name: text})}
                                            value={this.state.last_name}
                                            placeholder="Last Name"/>
                             </View>
@@ -207,7 +211,7 @@ const EditProfile = React.createClass({
                                            onSubmitEditing={(event) => {
                                                this.refs.phone_number.focus();
                                            }}
-                                           nChangeText={(text) =>this.setState({username: text})}
+                                           nChangeText={(text) => this.setState({username: text})}
                                            value={this.state.username}
                                            placeholder="Username"/>
                             </View>
@@ -217,7 +221,7 @@ const EditProfile = React.createClass({
                                            underlineColorAndroid='transparent'
                                            keyboardType="phone-pad"
                                            maxLength={10}
-                                           onChangeText={(number) =>this.setState({phone_number: number})}
+                                           onChangeText={(number) => this.setState({phone_number: number})}
                                            value={this.state.phone_number}
                                            onSubmitEditing={(event) => {
                                                if (this.props.RequestUser.type)
@@ -262,7 +266,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     backNav: {
-        minHeight:50,
+        minHeight: 50,
         borderBottomWidth: .5,
         borderBottomColor: 'rgba(0,0,0,.15)',
         alignItems: 'center',
@@ -374,7 +378,12 @@ const styles = StyleSheet.create({
         fontFamily: 'OpenSans-Bold',
     },
     logOut: {
-        paddingRight: 10
+        paddingRight: 10,
+    },
+    logOutCreateProfile: {
+        right: 10,
+        top: 25,
+        position: 'absolute'
     }
 });
 

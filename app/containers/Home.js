@@ -138,6 +138,8 @@ const Home = React.createClass({
                             refreshControl={<RefreshControl refreshing={this.props.Refreshing}
                                                             onRefresh={this._refresh}/>}
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
+
+                    {content}
                     {this.props.Notifications.length > 0 ?
                         <View style={styles.box}>
                             <ListView ref='notification_list' removeClippedSubviews={(Platform.OS !== 'ios')}
@@ -146,15 +148,13 @@ const Home = React.createClass({
                                           navigator={this.props.navigator} notification={notification}
                                           readNotification={this.props.readNotification}/>}
                             />
-                            <TouchableOpacity onPress={this._redirect.bind(null, 'Notifications', null)}
-                                              style={[styles.box, GlobalStyle.simpleBottomBorder]}>
+                            <TouchableOpacity onPress={this._redirect.bind(null, 'Notifications', null)} style={styles.link}>
                                 <Text style={styles.simpleTitle}>View All Notifications</Text>
+                                <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
                             </TouchableOpacity>
                         </View>
                         : null
                     }
-
-                    {content}
                 </ScrollView>
             </View>
         )

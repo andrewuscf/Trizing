@@ -54,14 +54,20 @@ const DisplayExerciseBox = React.createClass({
 
 const styles = StyleSheet.create({
     displayWorkoutBox: {
-        borderTopWidth: 0.5,
+        marginTop: 10,
+        marginBottom: 0,
+        borderWidth: 0.5,
         borderColor: '#e1e3df',
+        borderRadius: 8,
+        backgroundColor: 'white',
+        minHeight: 50,
+        justifyContent: 'center',
+
     },
     simpleTitle: {
         fontSize: getFontSize(22),
         fontFamily: 'OpenSans-Semibold',
-        margin: 5,
-        alignSelf: 'center'
+        margin: 10,
     },
 });
 

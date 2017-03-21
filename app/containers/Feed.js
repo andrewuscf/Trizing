@@ -140,7 +140,6 @@ const Feed = React.createClass({
 
 const styles = StyleSheet.create({
     feedContainer: {
-        backgroundColor: '#f1f1f1'
     },
     createPost: {
         minHeight: 50,

@@ -37,7 +37,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingTop: 10,
         paddingBottom: 10,
-        minHeight:50
+        minHeight:50,
+        backgroundColor: 'white'
     },
     topNavButton: {
         zIndex: 999,

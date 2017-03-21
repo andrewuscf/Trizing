@@ -55,7 +55,9 @@ const DaysOfWeek = React.createClass({
                 )
             }
             return (
-                <TouchableOpacity key={day_of_week.id} onPress={() => {this._dayToggle(day_of_week.id)}}
+                <TouchableOpacity key={day_of_week.id} onPress={() => {
+                    this._dayToggle(day_of_week.id)
+                }}
                                   style={[styles.dayOfWeek, (_.includes(this.props.days, day_of_week.id)
                                       ? styles.selectedDay : null )]}>
                     <Text
@@ -66,7 +68,14 @@ const DaysOfWeek = React.createClass({
             )
         });
         return (
-            <View style={[styles.inputWrap, {height: 50}, styles.row]}>
+            <View style={[styles.inputWrap, {
+                height: 50,
+                backgroundColor: 'white',
+                marginTop: 10,
+                marginBottom: 10,
+                borderWidth: 0.5,
+                borderColor: '#e1e3df',
+            }, styles.row]}>
                 {days}
             </View>
         )

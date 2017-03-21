@@ -60,15 +60,15 @@ const NotificationBox = React.createClass({
                 <View style={[GlobalStyle.simpleBottomBorder, styles.container]}>
                     <AvatarImage goToProfile={this.goToProfile.bind(null, action.actor.id)} image={image}/>
                     <View style={styles.noteInfo}>
-                        <View style={styles.timeStamp}>
-                            <Text style={styles.timeStampText}>{moment(action.timestamp).fromNow(false)}</Text>
-                            {notification.unread ? <View style={styles.redDot}/> : null}
-                        </View>
                         <View style={styles.noteText}>
                             <Text style={styles.notifText}>
                                 <Text style={styles.firstName}>{action.actor.profile.first_name} </Text>
                                 <Text style={styles.noteAction}>{action.verb}</Text>
                             </Text>
+                        </View>
+                        <View style={styles.timeStamp}>
+                            <Text style={styles.timeStampText}>{moment(action.timestamp).fromNow(false)}</Text>
+                            {notification.unread ? <View style={styles.redDot}/> : null}
                         </View>
                     </View>
                 </View>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',
-        padding: 5,
+        padding: 10,
     },
     notifText: {
         fontFamily: 'OpenSans-Semibold',
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     noteInfo: {
         flexDirection: 'column',
         flex: 1,
-        paddingLeft: 10
+        paddingLeft: 15
     },
     redDot: {
         width: 7,

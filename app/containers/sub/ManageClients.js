@@ -4,7 +4,6 @@ import {
     Text,
     View,
     TextInput,
-    Dimensions,
     Platform,
     RefreshControl,
     TouchableOpacity,
@@ -28,8 +27,6 @@ import BackBar from '../../components/BackBar';
 import Loading from '../../components/Loading';
 import PersonBox from '../../components/PersonBox';
 import SubmitButton from '../../components/SubmitButton';
-
-const {width: deviceWidth} = Dimensions.get('window');
 
 
 const ManageClients = React.createClass({
@@ -79,8 +76,8 @@ const ManageClients = React.createClass({
             if (!this.state.filterText) {
                 return person
             }
-            var first_name = person.profile.first_name.toLowerCase();
-            var last_name = person.profile.last_name.toLowerCase();
+            const first_name = person.profile.first_name.toLowerCase();
+            const last_name = person.profile.last_name.toLowerCase();
             if (_.includes(first_name, this.state.filterText.toLowerCase())
                 || _.includes(last_name, this.state.filterText.toLowerCase())) {
                 return person;
@@ -166,7 +163,6 @@ const ManageClients = React.createClass({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: '#edebe6'
     },
     filterInput: {
         flex: 1,
@@ -183,35 +179,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        // borderRadius: 8,
         height: 40,
-        // marginTop: 10,
-        // marginBottom: 10,
         marginLeft: 10,
         marginRight: 10,
-        // paddingLeft: 15,
-        // paddingRight: 15,
         borderBottomWidth: 1,
         borderColor: '#e1e3df',
     },
-    button: {
-        backgroundColor: '#00BFFF',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 30,
-        paddingRight: 30,
-        width: deviceWidth,
-        position: 'absolute',
-        bottom: 0,
-        left: 0
-    },
-    submitText: {
-        color: 'white',
-        fontSize: 15,
-        fontFamily: 'OpenSans-Bold'
-    }
 });
 
 
