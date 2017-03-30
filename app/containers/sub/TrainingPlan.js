@@ -19,6 +19,7 @@ import Loading from '../../components/Loading';
 import MacroBox from '../../components/MacroBox';
 import QuestionnaireBox from '../../components/QuestionnaireBox';
 import SelectInput from '../../components/SelectInput';
+import WorkoutProgramBox from '../../components/WorkoutProgramBox';
 
 
 const TrainingPlan = React.createClass({
@@ -36,24 +37,21 @@ const TrainingPlan = React.createClass({
 
     getInitialState() {
         return {
-            workout_plans: null,
             macro_plansNext: null,
             macro_plans: null,
             tab: this.props.tab ? this.props.tab : 1,
             refreshing: false,
             training_plan: this.props.training_plan,
-            workouts: this.props.Workouts
+            workouts: [],
+            workouts_next: null
         }
     },
 
     componentDidMount() {
-        this.getNeeded(true);
-    },
-
-    getNeeded(refresh = false) {
-        this.props.getQuestionnaires(refresh);
         if (this.state.tab == 1)
-            this.getMacros(refresh);
+            this.getMacros(true);
+        else if (this.state.tab == 2)
+            this.getClientWorkouts(true);
     },
 
     createMacroPlan(data) {
@@ -110,50 +108,52 @@ const TrainingPlan = React.createClass({
             });
     },
 
-    getMacros(refresh = false) {
+    getClientWorkouts(refresh = false) {
         let url = `${API_ENDPOINT}training/workouts/?client=${this.props.clientId}`;
-        if (!refresh && this.state.macro_plansNext)
-            url = this.state.macro_plansNext;
+        if (!refresh && this.state.workouts_next)
+            url = this.state.workouts_next;
 
         fetch(url, fetchData('GET', null, this.props.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                if (!this.state.macro_plansNext || refresh)
-                    this.setState({macro_plans: responseJson.results, macro_plansNext: responseJson.next});
+                console.log(responseJson)
+                if (!this.state.workouts_next || refresh)
+                    this.setState({workouts: responseJson.results, workouts_next: responseJson.next});
                 else
                     this.setState({
-                        macro_plans: this.state.macro_plans.concat(responseJson.results),
-                        macro_plansNext: responseJson.next
+                        workouts: this.state.workouts.concat(responseJson.results),
+                        workouts_next: responseJson.next
                     });
             })
-            .catch((error) => {
-                console.log(error);
-            });
     },
 
     updatePlan(data) {
         fetch(`${API_ENDPOINT}training/${this.props.training_plan.id}/`,
             fetchData('PATCH', JSON.stringify(data), this.props.UserToken)).then(checkStatus)
-            .catch((error) => {
-                console.log(error);
-            });
     },
 
     _onTabPress(tab) {
         if (tab != this.state.tab) {
             if (tab == 1 && !this.state.macro_plans) {
                 this.getMacros();
+            } else if (tab == 2 && !this.state.workouts.length) {
+                this.getClientWorkouts();
             }
             this.setState({tab: tab});
         }
     },
 
     _refresh() {
-        this.getNeeded(true)
+        if (this.state.tab == 1)
+            this.getMacros(true);
+        else if (this.state.tab == 2)
+            this.getClientWorkouts(true);
     },
 
     _onEndReached() {
         if (this.state.tab == 1 && this.state.macro_plansNext)
             this.getMacros();
+        else if (this.state.tab == 2 && this.state.workouts_next)
+            this.getClientWorkouts();
     },
 
     isSelected(tab) {
@@ -186,31 +186,35 @@ const TrainingPlan = React.createClass({
     },
 
     renderCreateBar(){
-        if (this.state.tab == 1) {
+        if (this.state.tab == 1 || this.state.tab == 2) {
             return (
                 <View>
                     {this.state.tab == 1 ?
                         <MacroBox createMacroPlan={this.createMacroPlan}
                                   training_plan={this.props.training_plan.id}
                                   _redirect={this.props._redirect}/>
-                        : null
+                        :
+                        <TouchableOpacity style={styles.emptyContainer}>
+                            <Text style={styles.mainText}>Create New Program</Text>
+                            <Text style={styles.smallText}>(Template or Blank)</Text>
+                        </TouchableOpacity>
                     }
                     <Text style={styles.helpText}>PRESS AND HOLD TO MAKE ACTIVE</Text>
                 </View>
             )
         }
-        return '';
+        return null;
     },
 
     render() {
-        if (!this.props.Questionnaires && !this.state.workout_plans && !this.state.macro_plans)
+        if (!this.props.Questionnaires && !this.state.workouts.length && !this.state.macro_plans)
             return <Loading />;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = null;
         if (this.state.tab == 1 && this.state.macro_plans) {
             dataSource = ds.cloneWithRows(this.state.macro_plans);
-        } else if (this.state.tab == 2 && this.state.workout_plans) {
-            dataSource = ds.cloneWithRows(this.state.workout_plans);
+        } else if (this.state.tab == 2 && this.state.workouts) {
+            dataSource = ds.cloneWithRows(this.state.workouts);
         }
         return (
             <View style={GlobalStyle.container}>
@@ -221,7 +225,8 @@ const TrainingPlan = React.createClass({
                                      selectedId={this.state.training_plan.questionnaire}
                                      submitChange={this.selectQuestionnaire}/>
                     </View> :
-                    <TouchableOpacity style={[styles.pickersView, GlobalStyle.simpleBottomBorder]} onPress={this.props.openModal}>
+                    <TouchableOpacity style={[styles.pickersView, GlobalStyle.simpleBottomBorder]}
+                                      onPress={this.props.openModal}>
                         <Text>Create a Survey</Text>
                     </TouchableOpacity>
                 }
@@ -233,7 +238,7 @@ const TrainingPlan = React.createClass({
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(2)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 2)}>
-                        <Text>Workouts</Text>
+                        <Text>Programs</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(3)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 3)}>
@@ -257,6 +262,8 @@ const TrainingPlan = React.createClass({
                                                            selectMacroPlan={this.selectMacroPlan}
                                                            deleteMacroPlan={this.deleteMacroPlan}
                                                            _redirect={this.props._redirect}/>
+                                      } else if (this.state.tab == 2) {
+                                          return <WorkoutProgramBox workout={object} _redirect={this.props._redirect}/>
                                       }
                                   }}
                         />
@@ -323,6 +330,16 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         // minHeight: 20
     },
+    emptyContainer: {
+        flex: 1,
+        borderBottomWidth: 1,
+        borderColor: '#e1e3df',
+        marginTop: 10,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        // margin: 10,
+        padding: 10
+    },
     pickersText: {
         color: '#4d4d4e',
         fontSize: getFontSize(22),
@@ -330,6 +347,19 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         fontFamily: 'OpenSans-Semibold',
         marginRight: 8
+    },
+    mainText: {
+        fontSize: getFontSize(24),
+        lineHeight: getFontSize(26),
+        backgroundColor: 'transparent',
+        color: '#4d4d4e',
+        fontFamily: 'OpenSans-Semibold'
+    },
+    smallText: {
+        fontSize: getFontSize(12),
+        backgroundColor: 'transparent',
+        color: '#4d4d4e',
+        fontFamily: 'OpenSans-Semibold'
     }
 });
 

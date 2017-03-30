@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import _ from 'lodash';
 // import FCM from 'react-native-fcm';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -85,7 +86,7 @@ const Home = React.createClass({
         if (isTrainer) {
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             const QuestionnaireDS = ds.cloneWithRows(this.props.Questionnaires);
-            const WorkoutDs = ds.cloneWithRows(this.props.Workouts);
+            const WorkoutDs = ds.cloneWithRows(_.filter(this.props.Workouts, function(o) { return !o.training_plan; }));
             content = (
                 <View>
                     <PeopleBar navigator={this.props.navigator} people={this.props.Clients}
