@@ -71,10 +71,10 @@ const SelectInput = React.createClass({
 
     render() {
         return (
-            <View style={{flex:1}}>
+            <View style={this.props.style}>
                 <TouchableOpacity activeOpacity={1} onPress={this.toggleOverlay}>
                     <View style={styles.selectView}>
-                        <Text style={styles.selectText}>{this.state.selected? this.state.selected: 'Select One'}</Text>
+                        <Text style={styles.selectText}>{this.state.selected? this.state.selected: 'None'}</Text>
                     </View>
                 </TouchableOpacity>
                 {this._renderOverlay()}

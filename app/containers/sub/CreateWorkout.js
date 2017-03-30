@@ -16,15 +16,19 @@ import {getFontSize} from '../../actions/utils';
 import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
+import SelectInput from '../../components/SelectInput';
 import SubmitButton from '../../components/SubmitButton';
 
 
 const CreateWorkout = React.createClass({
+    propTypes: {
+        training_plan: React.PropTypes.number,
+    },
 
     getInitialState() {
         return {
             Error: null,
-            name: null
+            template: null
         }
     },
     componentDidMount() {
@@ -55,16 +59,32 @@ const CreateWorkout = React.createClass({
     },
 
 
-
     _onSubmit() {
-        const values = this.refs.form.getValue();
+        let values = this.refs.form.getValue();
         if (values) {
+            if (this.state.template)
+                values = {
+                    ...values,
+                    template: this.state.template
+                };
+            if (this.props.training_plan) {
+                values = {
+                    ...values,
+                    training_plan: this.props.training_plan
+                }
+            }
             this.props.actions.createWorkout(values, this.asyncActions);
         }
     },
 
     _cancel() {
         this.props.navigator.pop();
+    },
+
+    selectTemplate(id) {
+        this.setState({
+            template: id
+        });
     },
 
 
@@ -93,6 +113,13 @@ const CreateWorkout = React.createClass({
                         onChange={this.onChange}
                         value={this.state.value}
                     />
+                    <Text>Use Template:</Text>
+                    <SelectInput ref='workout_templates' options={[
+                        ..._.filter(this.props.Workouts, function (o) {
+                            return !o.training_plan;
+                        }),
+                        {id: null, name: 'None'}
+                    ]} selectedId={this.state.template} submitChange={this.selectTemplate}/>
                 </View>
                 <SubmitButton buttonStyle={styles.button}
                               textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
