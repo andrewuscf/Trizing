@@ -171,7 +171,7 @@ const MacroBox = React.createClass({
                     {macro_plan_days}
                     {this.state.selectedDays.length < 7 ?
                         <TouchableOpacity onPress={this.addDay}>
-                            <Text style={styles.addAnotherDay}>Add another day</Text>
+                            <Text style={styles.addAnotherDay}>Add Day</Text>
                         </TouchableOpacity>
                         : null
                     }

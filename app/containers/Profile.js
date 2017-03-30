@@ -146,6 +146,7 @@ const Profile = React.createClass({
                     {this.props.RequestUser.id == user.profile.trainer && this.props.Questionnaires ?
                         <TrainingPlan clientId={user.id} UserToken={this.props.UserToken}
                                       openModal={this.props.openModal}
+                                      Workouts={this.props.Workouts}
                                       Questionnaires={this.props.Questionnaires}
                                       QuestionnairesNext={this.props.QuestionnairesNext}
                                       getQuestionnaires={this.props.getQuestionnaires}
@@ -195,6 +196,7 @@ const stateToProps = (state) => {
         UserToken: state.Global.UserToken,
         Questionnaires: state.Global.Questionnaires,
         QuestionnairesNext: state.Global.QuestionnairesNext,
+        Workouts: state.Global.Workouts,
     };
 };
 

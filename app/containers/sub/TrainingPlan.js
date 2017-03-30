@@ -29,6 +29,7 @@ const TrainingPlan = React.createClass({
         getQuestionnaires: React.PropTypes.func.isRequired,
         openModal: React.PropTypes.func.isRequired,
         Questionnaires: React.PropTypes.array.isRequired,
+        Workouts: React.PropTypes.array.isRequired,
         QuestionnairesNext: React.PropTypes.string,
         tab: React.PropTypes.number
     },
@@ -41,6 +42,7 @@ const TrainingPlan = React.createClass({
             tab: this.props.tab ? this.props.tab : 1,
             refreshing: false,
             training_plan: this.props.training_plan,
+            workouts: this.props.Workouts
         }
     },
 
@@ -90,6 +92,26 @@ const TrainingPlan = React.createClass({
 
     getMacros(refresh = false) {
         let url = `${API_ENDPOINT}training/macros/?client=${this.props.clientId}`;
+        if (!refresh && this.state.macro_plansNext)
+            url = this.state.macro_plansNext;
+
+        fetch(url, fetchData('GET', null, this.props.UserToken)).then(checkStatus)
+            .then((responseJson) => {
+                if (!this.state.macro_plansNext || refresh)
+                    this.setState({macro_plans: responseJson.results, macro_plansNext: responseJson.next});
+                else
+                    this.setState({
+                        macro_plans: this.state.macro_plans.concat(responseJson.results),
+                        macro_plansNext: responseJson.next
+                    });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    },
+
+    getMacros(refresh = false) {
+        let url = `${API_ENDPOINT}training/workouts/?client=${this.props.clientId}`;
         if (!refresh && this.state.macro_plansNext)
             url = this.state.macro_plansNext;
 

@@ -24,8 +24,7 @@ const CreateWorkout = React.createClass({
     getInitialState() {
         return {
             Error: null,
-            name: null,
-            template: !!this.props.template
+            name: null
         }
     },
     componentDidMount() {

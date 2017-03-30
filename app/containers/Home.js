@@ -92,7 +92,7 @@ const Home = React.createClass({
                                manageClients={this._redirect.bind(null, 'ManageClients', null)}/>
 
                     <View style={[styles.box]}>
-                        <Text style={styles.textTitle}>Workout Templates</Text>
+                        <Text style={styles.textTitle}>Workout Program Templates</Text>
                         <ListView ref='workout_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                                   style={styles.container} enableEmptySections={true} dataSource={WorkoutDs}
                                   renderRow={(workout) =>
@@ -102,9 +102,9 @@ const Home = React.createClass({
                                       </TouchableOpacity>
                                   }
                         />
-                        <TouchableOpacity onPress={this._redirect.bind(null, 'CreateWorkout', {template: true})}
+                        <TouchableOpacity onPress={this._redirect.bind(null, 'CreateWorkout')}
                                           style={styles.link}>
-                            <Text style={styles.simpleTitle}>Create Workout Template</Text>
+                            <Text style={styles.simpleTitle}>Create Program Template</Text>
                             <Icon name="plus" size={getFontSize(18)} style={styles.linkArrow}/>
                         </TouchableOpacity>
                     </View>

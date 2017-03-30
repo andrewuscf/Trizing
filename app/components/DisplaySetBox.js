@@ -26,12 +26,15 @@ const DisplaySetBox = React.createClass({
             <View style={styles.setContainer}>
                 <View style={[styles.setInfoSection]}>
                     <Text style={styles.setTitle}>Set {this.props.setIndex + 1}</Text>
-                    <View>
-                        <Text style={styles.inputLabel}>Weight</Text>
-                        <Text style={styles.inputLabel}>
-                            {this.props.set.weight} <Text style={{color: '#4d4d4d'}}>lb</Text>
-                        </Text>
-                    </View>
+                    {this.props.set.weight ?
+                        <View>
+                            <Text style={styles.inputLabel}>Weight</Text>
+                            <Text style={styles.inputLabel}>
+                                {this.props.set.weight} <Text style={{color: '#4d4d4d'}}>lb</Text>
+                            </Text>
+                        </View>
+                        : null
+                    }
                     <View>
                         <Text style={styles.inputLabel}>Reps</Text>
                         <Text style={styles.inputLabel}>
