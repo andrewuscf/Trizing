@@ -4,7 +4,7 @@ import * as types from './actionTypes';
 import {fetchData, API_ENDPOINT, refreshPage, checkStatus} from './utils';
 
 
-export function getFeed(refresh= false) {
+export function getFeed(refresh = false) {
     return (dispatch, getState) => {
         let url = `${API_ENDPOINT}social/posts/`;
         if (!refresh && getState().Global.PostsNext)
@@ -42,5 +42,29 @@ export function createPost(data) {
                     })
                 });
             });
+    }
+}
+
+export function updateLike(post_id, method) {
+    return (dispatch, getState) => {
+        let url = `${API_ENDPOINT}social/likes/`;
+        let data = JSON.stringify({post: post_id});
+        if (method == 'DELETE') {
+            url =`${API_ENDPOINT}social/like/${post_id}/${getState().Global.RequestUser.id}/`;
+            data = null;
+        }
+
+        return fetch(url,
+            fetchData(method, data, getState().Global.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+                if (responseJson.deleted)
+                    return dispatch({type: types.UNLIKE, like: {post: post_id, user: getState().Global.RequestUser}});
+                else
+                    return dispatch({
+                        type: types.LIKE,
+                        like: responseJson
+                    });
+            })
     }
 }

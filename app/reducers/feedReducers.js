@@ -28,6 +28,38 @@ export default function feedReducers(state = initialState, action = null) {
                 Refreshing: false
             };
 
+        case constants.LIKE:
+            return {
+                ...state,
+                Posts: state.Posts.map(post =>
+                    (post.id == action.like.post) ?
+                        {
+                            ...post,
+                            liked_by: [...post.liked_by, action.like.user.id]
+                        } :
+                        post
+                ),
+            };
+
+        case constants.UNLIKE:
+            let newFeed = state.Posts;
+            if (state.Posts.length) {
+                const index = _.findIndex(state.Posts, {'id': action.like.post});
+                const userIndex = state.Posts[index].liked_by.indexOf(action.like.user.id);
+                newFeed = state.Posts.map(post =>
+                    (post.id === action.like.post) ?
+                        {
+                            ...post,
+                            liked_by: post.liked_by.slice(0, userIndex).concat(post.liked_by.slice(userIndex + 1))
+                        } :
+                        post
+                );
+            }
+            return {
+                ...state,
+                Posts: newFeed
+            };
+
 
         default:
             return state

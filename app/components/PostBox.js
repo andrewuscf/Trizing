@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import moment from 'moment';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
@@ -14,6 +15,8 @@ import CommentBox from './CommentBox';
 const PostBox = React.createClass({
     propTypes: {
         post: React.PropTypes.object.isRequired,
+        liked: React.PropTypes.bool.isRequired,
+        updateLike: React.PropTypes.func.isRequired,
     },
 
     goToProfile(userId) {
@@ -22,6 +25,14 @@ const PostBox = React.createClass({
 
     onPress() {
         console.log('log')
+    },
+
+    likePress() {
+        if (this.props.liked) {
+            this.props.updateLike(this.props.post.id, 'DELETE');
+        } else {
+            this.props.updateLike(this.props.post.id, 'POST');
+        }
     },
 
 
@@ -48,6 +59,13 @@ const PostBox = React.createClass({
                             </Text>
                         </View>
                     </View>
+                    <TouchableOpacity onPress={this.likePress}>
+                        {this.props.liked ?
+                            <Icon name="heart" size={20} color="black"/>
+                            :
+                            <Icon name="heart-o" size={20} color="black"/>
+                        }
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.noteInfo}>
                     <Text style={styles.postText}>

@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as FeedActions from '../actions/feedActions';
@@ -131,7 +132,10 @@ const Feed = React.createClass({
                       refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
                       style={[GlobalStyle.container,styles.feedContainer]} enableEmptySections={true} dataSource={dataSource}
                       onEndReached={this.onEndReached}
-                      renderRow={(post) => <PostBox post={post} navigator={this.props.navigator}/>}
+                      renderRow={(post) => <PostBox
+                          updateLike={this.props.actions.updateLike}
+                          liked={_.indexOf(post.liked_by, this.props.RequestUser.id) != -1}
+                          post={post} navigator={this.props.navigator}/>}
             />
         )
     }
