@@ -324,3 +324,19 @@ export function addEditExercise(data, asyncActions = null) {
             }).done();
     }
 }
+
+export function deleteSet(id) {
+    return (dispatch, getState) => {
+        return fetch(`${API_ENDPOINT}training/workout/set/${id}/`,
+            fetchData('DELETE', null, getState().Global.UserToken)).then(checkStatus)
+            .then((responseJson) => {
+                return dispatch({type: types.DELETE_SET, response: responseJson});
+            })
+            .catch((error) => {
+                if (asyncActions) {
+                    asyncActions(false);
+                }
+                console.log(error);
+            }).done();
+    }
+}

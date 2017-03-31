@@ -155,12 +155,18 @@ export default function AppReducers(state = initialState, action = null) {
             };
 
         case constants.EDIT_EXERCISE:
-            return state;
-            // return {
-            //     ...state,
-            //     Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response: workout
-            //     )
-            // };
+            return {
+                ...state,
+                Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response: workout
+                )
+            };
+
+        case constants.DELETE_SET:
+            return {
+                ...state,
+                Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response: workout
+                )
+            };
 
         default:
             return state

@@ -62,16 +62,6 @@ const CreateWorkoutDay = React.createClass({
         }
     },
 
-
-    _deleteExercise(index) {
-        Keyboard.dismiss();
-        // if (this.state.exercises.length > 1) {
-        //     this.setState({
-        //         exercises: this.state.exercises.slice(0, index).concat(this.state.exercises.slice(index + 1))
-        //     })
-        // }
-    },
-
     getCurrentData() {
         return {
             name: this.state.name,

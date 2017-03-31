@@ -71,6 +71,10 @@ const WorkoutDayDetail = React.createClass({
         this.props.navigator.push(getRoute('CreateExercise', {workout_day: this.state.workout_day}))
     },
 
+    _editExercise(exercise) {
+        this.props.navigator.push(getRoute('CreateExercise', {workout_day: this.state.workout_day, exercise:exercise}))
+    },
+
     renderFooter() {
         return <SubmitButton buttonStyle={styles.button}
                              textStyle={styles.submitText} onPress={this._addExercise} ref='postbutton'
@@ -80,7 +84,6 @@ const WorkoutDayDetail = React.createClass({
 
     render: function () {
         let exercises = null;
-        console.log(this.state.workout_day)
         if (!this.state.workout_day)
             return null;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -94,7 +97,7 @@ const WorkoutDayDetail = React.createClass({
                       style={styles.container} enableEmptySections={true}
                       dataSource={dataSource}
                       renderRow={(exercise, sectionID, rowID) =>
-                          <DisplayExerciseBox exercise={exercise} showSets={rowID== 0}/>
+                          <DisplayExerciseBox exercise={exercise} _editExercise={this._editExercise}/>
                       }
             />
         );

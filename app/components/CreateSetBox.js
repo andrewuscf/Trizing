@@ -17,19 +17,10 @@ import GlobalStyle from '../containers/globalStyle';
 
 const CreateSetBox = React.createClass({
     propTypes: {
-        set: React.PropTypes.object.isRequired,
+        value: React.PropTypes.object.isRequired,
         setIndex: React.PropTypes.number.isRequired,
         setSetState: React.PropTypes.func.isRequired,
         _deleteSet: React.PropTypes.func
-    },
-
-    getInitialState() {
-        return {
-            value: {
-                reps: this.props.set.reps,
-                weight: this.props.set.weight
-            }
-        };
     },
 
     onChange(value) {
@@ -37,7 +28,6 @@ const CreateSetBox = React.createClass({
         if (formValues) {
             this.props.setSetState(this.props.setIndex, formValues)
         }
-        this.setState({value});
     },
 
     _deleteSet() {
@@ -85,7 +75,7 @@ const CreateSetBox = React.createClass({
                     type={Set}
                     options={options}
                     onChange={this.onChange}
-                    value={this.state.value}
+                    value={this.props.value}
                 />
             </View>
         )

@@ -17,55 +17,55 @@ import DisplaySetBox from './DisplaySetBox';
 const DisplayExerciseBox = React.createClass({
     propTypes: {
         exercise: React.PropTypes.object.isRequired,
-        showSets: React.PropTypes.bool
+        _editExercise: React.PropTypes.func
     },
 
-    getInitialState() {
-        return {
-            showSets: this.props.showSets ? this.props.showSets : false
-        }
-    },
-
-
-    _toggleShow: function () {
+    _redirect: function () {
         Keyboard.dismiss();
-        this.setState({
-            showSets: !this.state.showSets,
-        });
+        if (this.props._editExercise)
+            this.props._editExercise(this.props.exercise);
     },
 
 
     render: function () {
-        console.log(this.state)
         return (
-            <TouchableOpacity style={styles.displayWorkoutBox} onPress={this._toggleShow}>
+            <TouchableOpacity style={styles.displayWorkoutBox} onPress={this._redirect}>
                 <Text style={styles.simpleTitle}>{this.props.exercise.name}</Text>
-                {this.state.showSets ?
-                    this.props.exercise.sets.map((set, index) => {
-                        return <DisplaySetBox set={set} setIndex={index} key={index}/>
-                    })
-                    : null
-                }
+                <Text style={styles.smallText}>Sets: {this.props.exercise.sets.length}</Text>
             </TouchableOpacity>
         )
     }
 });
 
+// {this.state.showSets ?
+//     this.props.exercise.sets.map((set, index) => {
+//         return <DisplaySetBox set={set} setIndex={index} key={index}/>
+//     })
+//     : null
+// }
+
 
 const styles = StyleSheet.create({
     displayWorkoutBox: {
-        marginTop: 10,
+        margin: 5,
         marginBottom: 0,
         borderWidth: 0.5,
         borderColor: '#e1e3df',
         borderRadius: 8,
         backgroundColor: 'white',
         minHeight: 50,
-        justifyContent: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        alignItems: 'center'
 
     },
     simpleTitle: {
         fontSize: getFontSize(22),
+        fontFamily: 'OpenSans-Semibold',
+        margin: 10,
+    },
+    smallText: {
+        fontSize: getFontSize(15),
         fontFamily: 'OpenSans-Semibold',
         margin: 10,
     },

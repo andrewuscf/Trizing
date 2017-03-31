@@ -9,9 +9,11 @@ import {
     Alert,
     ScrollView
 } from 'react-native';
+import update from 'react-addons-update';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
 
@@ -27,22 +29,33 @@ const BlankSet = {reps: null, weight: null};
 const CreateExercise = React.createClass({
     propTypes: {
         workout_day: React.PropTypes.object.isRequired,
+        exercise: React.PropTypes.object
     },
 
     getInitialState() {
+        let name = null;
+        let sets = [BlankSet];
+        if (this.props.exercise) {
+            name = this.props.exercise.name;
+            sets = [...this.props.exercise.sets];
+        }
         return {
             showSets: true,
             fetchedExercises: [],
-            name: null,
-            sets: [BlankSet],
+            name: name,
+            sets: sets,
         }
     },
+
 
     _addSet() {
         Keyboard.dismiss();
         let addSet = BlankSet;
         if (this.state.sets && this.state.sets[this.state.sets.length - 1]) {
-            addSet = this.state.sets[this.state.sets.length - 1]
+            addSet = {
+                ...this.state.sets[this.state.sets.length - 1],
+                id: null
+            };
         }
         this.setState({
             sets: [
@@ -54,7 +67,13 @@ const CreateExercise = React.createClass({
 
     _deleteSet(setIndex) {
         Keyboard.dismiss();
-        this.setState({sets: this.state.sets.slice(0, setIndex).concat(this.state.sets.slice(setIndex + 1))});
+        const setId = this.state.sets[setIndex].id;
+        this.setState({
+            sets: [...this.state.sets.slice(0, setIndex), ...this.state.sets.slice(setIndex + 1)]
+        });
+        if (setId) {
+            this.props.actions.deleteSet(setId);
+        }
     },
 
     _exerciseNameChange(text) {
@@ -70,18 +89,6 @@ const CreateExercise = React.createClass({
         this.setState({sets: sets});
     },
 
-    _deleteExercise() {
-        Keyboard.dismiss();
-        Alert.alert(
-            'Delete Exercise',
-            `Are you sure you want delete this exercise?`,
-            [
-                {text: 'Cancel', null, style: 'cancel'},
-                {text: 'Delete', onPress: () => this.props._deleteExercise(this.props.exerciseIndex)},
-            ]
-        );
-    },
-
 
     _toggleShow: function () {
         this.setState({
@@ -91,7 +98,7 @@ const CreateExercise = React.createClass({
 
     _save() {
         const sets = [];
-        this.state.sets.forEach((set, index)=>{
+        this.state.sets.forEach((set, index) => {
             if (set.reps && this.state.name) {
                 const data = {
                     day: this.props.workout_day.id,
@@ -103,21 +110,32 @@ const CreateExercise = React.createClass({
                 };
                 if (set.weight)
                     data['weight'] = set.weight;
-                sets.push(data);
+                if (!set.id) {
+                    sets.push(data);
+                } else {
+                    data['id'] = set.id;
+                    data['exercise'] = this.props.exercise.id;
+                    const old = _.find(this.props.exercise.sets, {id: set.id});
+                    if (old.reps != data.reps ||old.weight != data.weight ||old.order != data.order) {
+                        this.props.actions.addEditExercise(data);
+                    }
+                }
             }
         });
-        this.props.actions.addEditExercise(sets);
+        if (sets.length > 0)
+            this.props.actions.addEditExercise(sets);
         this.props.navigator.pop();
     },
 
 
     render: function () {
-        const sets = this.state.sets.map((set, index) => {
+        let sets = this.state.sets.map((set, index) => {
             if (this.state.sets.length > 1)
-                return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}
-                               _deleteSet={this._deleteSet.bind(null, index)}/>
+                return <CreateSetBox key={index} setIndex={index} setSetState={this.setSetState}
+                                     _deleteSet={this._deleteSet} value={{reps: set.reps, weight: set.weight}}/>;
             else
-                return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}/>
+                return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}
+                                     value={{reps: set.reps, weight: set.weight}}/>
         });
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
@@ -146,12 +164,6 @@ const CreateExercise = React.createClass({
                         value={this.state.name}
                         placeholder="Enter exercise name"
                     />
-                    {typeof this.props._deleteExercise === "function" ?
-                        <TouchableOpacity onPress={this._deleteExercise}>
-                            <Icon name="times" size={20} color="red"/>
-                        </TouchableOpacity>
-                        : null
-                    }
                 </View>
                 {this.state.showSets ?
                     <View>
