@@ -86,7 +86,9 @@ const Home = React.createClass({
         if (isTrainer) {
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             const QuestionnaireDS = ds.cloneWithRows(this.props.Questionnaires);
-            const WorkoutDs = ds.cloneWithRows(_.filter(this.props.Workouts, function(o) { return !o.training_plan; }));
+            const WorkoutDs = ds.cloneWithRows(_.filter(this.props.Workouts, function (o) {
+                return !o.training_plan;
+            }));
             content = (
                 <View>
                     <PeopleBar navigator={this.props.navigator} people={this.props.Clients}
@@ -97,8 +99,9 @@ const Home = React.createClass({
                         <ListView ref='workout_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                                   style={styles.container} enableEmptySections={true} dataSource={WorkoutDs}
                                   renderRow={(workout) =>
-                                      <TouchableOpacity style={styles.link} onPress={this._redirect.bind(null, 'EditWorkout', {workoutId: workout.id})}>
-                                          <Text  style={styles.simpleTitle}>{workout.name}</Text>
+                                      <TouchableOpacity style={styles.link}
+                                                        onPress={this._redirect.bind(null, 'EditWorkout', {workoutId: workout.id})}>
+                                          <Text style={styles.simpleTitle}>{workout.name}</Text>
                                           <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
                                       </TouchableOpacity>
                                   }
@@ -116,7 +119,7 @@ const Home = React.createClass({
                                   style={styles.container} enableEmptySections={true} dataSource={QuestionnaireDS}
                                   renderRow={(survey) =>
                                       <TouchableOpacity style={styles.link}>
-                                          <Text  style={styles.simpleTitle}>{survey.name}</Text>
+                                          <Text style={styles.simpleTitle}>{survey.name}</Text>
                                           <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
                                       </TouchableOpacity>
                                   }
@@ -149,7 +152,11 @@ const Home = React.createClass({
                                           navigator={this.props.navigator} notification={notification}
                                           readNotification={this.props.readNotification}/>}
                             />
-                            <TouchableOpacity onPress={this._redirect.bind(null, 'Notifications', null)} style={styles.link}>
+                            <TouchableOpacity onPress={this._redirect.bind(null, 'Notifications', null)} style={{
+                                flexDirection: 'row',
+                                flex: 1,
+                                alignItems: 'center'
+                            }}>
                                 <Text style={styles.simpleTitle}>View All Notifications</Text>
                                 <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
                             </TouchableOpacity>

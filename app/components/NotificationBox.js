@@ -79,6 +79,7 @@ const NotificationBox = React.createClass({
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: 'white',
         flex: 1,
         flexDirection: 'row',
         padding: 10,

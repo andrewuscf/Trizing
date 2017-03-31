@@ -164,6 +164,8 @@ export function socialAuth(access_token) {
 export function getNotifications(refresh = false) {
     let url = `${API_ENDPOINT}notifications/`;
     return (dispatch, getState) => {
+        if (!refresh && getState().Global.NotificationsNext)
+            url = getState().Global.NotificationsNext;
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
             .then(checkStatus)
             .then((responseJson) => {

@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     RefreshControl,
     ListView,
-    Platform
+    Platform,
+    Dimensions
 } from 'react-native';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -285,7 +286,7 @@ const TrainingPlan = React.createClass({
                                   renderHeader={this.renderCreateBar.bind(null, dataSource.getRowCount())}
                                   keyboardShouldPersistTaps="handled"
                                   style={styles.listContainer} enableEmptySections={true} dataSource={dataSource}
-                                  onEndReached={this._onEndReached} onEndReachedThreshold={250}
+                                  onEndReached={this._onEndReached} onEndReachedThreshold={Dimensions.get('window').height}
                                   renderRow={(object) => {
                                       if (this.state.tab == 1) {
                                           return <MacroBox plan={object}

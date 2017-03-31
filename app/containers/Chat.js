@@ -6,8 +6,8 @@ import {
     View,
     ListView,
     RefreshControl,
-    TouchableOpacity,
-    ScrollView
+    ScrollView,
+    Dimensions
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -47,10 +47,6 @@ const Chat = React.createClass({
         console.log('End reach')
     },
 
-    _redirect(routeName, props = null) {
-        this.props.navigator.push(getRoute(routeName, props));
-    },
-
 
     render() {
         if (this.props.Rooms.length) {
@@ -60,7 +56,7 @@ const Chat = React.createClass({
                 <ListView
                     refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
                     style={styles.container} enableEmptySections={true}
-                    dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
+                    dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={Dimensions.get('window').height}
                     renderRow={(room, i) => <ChatRoomBox key={i} room={room} RequestUser={this.props.RequestUser}
                                                          _redirect={this._redirect}/>}
                 />

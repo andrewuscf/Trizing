@@ -5,6 +5,7 @@ import * as constants from '../actions/actionTypes';
 const initialState = {
     Clients: [],
     Notifications: [],
+    NotificationsNext: null,
     Refreshing: false,
 };
 
@@ -28,6 +29,7 @@ export default function homeReducers(state = initialState, action = null) {
             return {
                 ...state,
                 Notifications: (action.refresh) ? action.response.results : state.Notifications.concat(action.response.results),
+                NotificationsNext: action.response.next,
                 Refreshing: false
             };
 
