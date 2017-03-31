@@ -9,12 +9,13 @@ import {
     Platform
 } from 'react-native';
 import _ from 'lodash';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import GlobalStyle from '../globalStyle';
 
 import {API_ENDPOINT, fetchData, getFontSize, checkStatus} from '../../actions/utils';
 
-
+import CustomIcon from '../../components/CustomIcon';
 import Loading from '../../components/Loading';
 import MacroBox from '../../components/MacroBox';
 import QuestionnaireBox from '../../components/QuestionnaireBox';
@@ -51,6 +52,11 @@ const TrainingPlan = React.createClass({
         if (this.state.tab == 1)
             this.getMacros(true);
         else if (this.state.tab == 2)
+            this.getClientWorkouts(true);
+    },
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.Workouts != this.props.Workouts)
             this.getClientWorkouts(true);
     },
 
@@ -115,7 +121,6 @@ const TrainingPlan = React.createClass({
 
         fetch(url, fetchData('GET', null, this.props.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                console.log(responseJson)
                 if (!this.state.workouts_next || refresh)
                     this.setState({workouts: responseJson.results, workouts_next: responseJson.next});
                 else
@@ -129,6 +134,19 @@ const TrainingPlan = React.createClass({
     updatePlan(data) {
         fetch(`${API_ENDPOINT}training/${this.props.training_plan.id}/`,
             fetchData('PATCH', JSON.stringify(data), this.props.UserToken)).then(checkStatus)
+    },
+
+    deleteWorkout(id) {
+        fetch(`${API_ENDPOINT}training/workout/${id}/`,
+            fetchData('DELETE', null, this.props.UserToken)).then(checkStatus)
+            .then((responseJson) => {
+                if (responseJson.deleted) {
+                    const index = _.findIndex(this.state.workouts, {id: id});
+                    this.setState({workouts:
+                        [...this.state.workouts.slice(0, index), ...this.state.workouts.slice(index + 1)]
+                    });
+                }
+            })
     },
 
     _onTabPress(tab) {
@@ -171,18 +189,23 @@ const TrainingPlan = React.createClass({
     },
 
     selectMacroPlan(id) {
-        fetch(`${API_ENDPOINT}training/macro/${id}/`,
-            fetchData('PATCH', JSON.stringify({active: true}), this.props.UserToken))
-            .then(checkStatus)
-            .then((responseJson) => {
-                this.setState({
-                    training_plan: {
-                        ...this.state.training_plan,
-                        macro_plan: id
-                    }
-                });
-            });
+        this.setState({
+            training_plan: {
+                ...this.state.training_plan,
+                macro_plan: id
+            }
+        });
+        this.updatePlan({macro_plan: id})
+    },
 
+    selectTrainingPlan(id) {
+        this.setState({
+            training_plan: {
+                ...this.state.training_plan,
+                workout: id
+            }
+        });
+        this.updatePlan({workout: id})
     },
 
     renderCreateBar(){
@@ -194,8 +217,10 @@ const TrainingPlan = React.createClass({
                                   training_plan={this.props.training_plan.id}
                                   _redirect={this.props._redirect}/>
                         :
-                        <TouchableOpacity style={styles.emptyContainer}>
-                            <Text style={styles.mainText}>Create New Program</Text>
+                        <TouchableOpacity style={styles.emptyContainer}
+                                          onPress={this.props._redirect.bind(null, 'CreateWorkout',
+                                              {training_plan: this.props.training_plan.id})}>
+                            <Text style={styles.mainText}>Create a workout program for client</Text>
                             <Text style={styles.smallText}>(Template or Blank)</Text>
                         </TouchableOpacity>
                     }
@@ -213,7 +238,7 @@ const TrainingPlan = React.createClass({
         let dataSource = null;
         if (this.state.tab == 1 && this.state.macro_plans) {
             dataSource = ds.cloneWithRows(this.state.macro_plans);
-        } else if (this.state.tab == 2 && this.state.workouts) {
+        } else if (this.state.tab == 2) {
             dataSource = ds.cloneWithRows(this.state.workouts);
         }
         return (
@@ -234,15 +259,15 @@ const TrainingPlan = React.createClass({
                 <View style={[styles.tabbarView, GlobalStyle.simpleBottomBorder]}>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(1)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 1)}>
-                        <Text>Macro Plan</Text>
+                        <CustomIcon name="food" size={30} color={this.isSelected(1) ? selectedIcon : defaultIcon}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(2)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 2)}>
-                        <Text>Programs</Text>
+                        <CustomIcon name="weight" size={30} color={this.isSelected(2) ? selectedIcon : defaultIcon}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(3)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 3)}>
-                        <Text>Progress</Text>
+                        <Icon name="bar-chart" size={25} color={this.isSelected(3) ? selectedIcon : defaultIcon}/>
                     </TouchableOpacity>
                 </View>
 
@@ -259,11 +284,15 @@ const TrainingPlan = React.createClass({
                                           return <MacroBox plan={object}
                                                            selected={object.id == this.state.training_plan.macro_plan}
                                                            training_plan={this.props.training_plan.id}
-                                                           selectMacroPlan={this.selectMacroPlan}
+                                                           select={this.selectMacroPlan}
                                                            deleteMacroPlan={this.deleteMacroPlan}
                                                            _redirect={this.props._redirect}/>
                                       } else if (this.state.tab == 2) {
-                                          return <WorkoutProgramBox workout={object} _redirect={this.props._redirect}/>
+                                          return <WorkoutProgramBox
+                                              selected={object.id == this.state.training_plan.workout}
+                                              select={this.selectTrainingPlan}
+                                              workout={object} _redirect={this.props._redirect}
+                                              deleteWorkout={this.deleteWorkout}/>
                                       }
                                   }}
                         />
@@ -276,6 +305,8 @@ const TrainingPlan = React.createClass({
     }
 });
 
+const selectedIcon = '#1352e2';
+const defaultIcon = 'black';
 // <QuestionnaireBox questionnaire={object}
 //                   _redirect={this.props._redirect}
 //                   selected={object.id == this.state.training_plan.questionnaire}

@@ -74,7 +74,7 @@ const SelectInput = React.createClass({
             <View style={this.props.style}>
                 <TouchableOpacity activeOpacity={1} onPress={this.toggleOverlay}>
                     <View style={styles.selectView}>
-                        <Text style={styles.selectText}>{this.state.selected? this.state.selected: 'None'}</Text>
+                        <Text style={styles.selectText}>{this.state.selected? this.state.selected: 'Select One'}</Text>
                     </View>
                 </TouchableOpacity>
                 {this._renderOverlay()}

@@ -43,10 +43,10 @@ const WorkoutProgramBox = React.createClass({
         Keyboard.dismiss();
         Alert.alert(
             'Delete Macro Plan',
-            `Are you sure you want delete ${this.props.plan.name}?`,
+            `Are you sure you want delete ${this.props.workout.name}?`,
             [
                 {text: 'Cancel', null, style: 'cancel'},
-                {text: 'Delete', onPress: () => this.props.deleteMacroPlan(this.props.plan.id)},
+                {text: 'Delete', onPress: () => this.props.deleteWorkout(this.props.workout.id)},
             ]
         );
     },
@@ -54,7 +54,6 @@ const WorkoutProgramBox = React.createClass({
 
     render() {
         const workout = this.props.workout;
-        console.log(workout)
         const created_at = moment.utc(workout.created_at).local();
         return (
             <TouchableOpacity style={[styles.container]}

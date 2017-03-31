@@ -73,6 +73,7 @@ const CreateWorkout = React.createClass({
                     training_plan: this.props.training_plan
                 }
             }
+            console.log(values)
             this.props.actions.createWorkout(values, this.asyncActions);
         }
     },

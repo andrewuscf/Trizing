@@ -23,7 +23,7 @@ const MacroBox = React.createClass({
         plan: React.PropTypes.object,
         training_plan: React.PropTypes.number.isRequired,
         _redirect: React.PropTypes.func.isRequired,
-        selectMacroPlan: React.PropTypes.func,
+        select: React.PropTypes.func,
         selected: React.PropTypes.bool
     },
 
@@ -112,7 +112,7 @@ const MacroBox = React.createClass({
     _onLongPress() {
         Keyboard.dismiss();
         if (this.props.plan) {
-            this.props.selectMacroPlan(this.props.plan.id);
+            this.props.select(this.props.plan.id);
         }
     },
 

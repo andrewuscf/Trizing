@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -67,6 +68,10 @@
 		493C44A11E5194F600A97577 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447E1E5194F600A97577 /* OpenSans-Semibold.ttf */; };
 		493C44A21E5194F600A97577 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447E1E5194F600A97577 /* OpenSans-Semibold.ttf */; };
 		493C44A31E5194F600A97577 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447E1E5194F600A97577 /* OpenSans-Semibold.ttf */; };
+		49CD9FBF1E8E21510032A949 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49CD9FBE1E8E21510032A949 /* icomoon.ttf */; };
+		49CD9FC01E8E21510032A949 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49CD9FBE1E8E21510032A949 /* icomoon.ttf */; };
+		49CD9FC11E8E21510032A949 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49CD9FBE1E8E21510032A949 /* icomoon.ttf */; };
+		49CD9FC21E8E21510032A949 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49CD9FBE1E8E21510032A949 /* icomoon.ttf */; };
 		4DE103561B9C4C5EA74215DC /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8922F3E8EB4D416EB646539C /* Octicons.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		6194325F03321AAB6ED13B9F /* libPods-Trizing-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6FBCA42C2E184906EAE148 /* libPods-Trizing-tvOSTests.a */; };
@@ -340,6 +345,7 @@
 		493C447A1E5194F600A97577 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Italic.ttf"; path = "../app/assets/fonts/OpenSans-Italic.ttf"; sourceTree = "<group>"; };
 		493C447B1E5194F600A97577 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Light.ttf"; path = "../app/assets/fonts/OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		493C447E1E5194F600A97577 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Semibold.ttf"; path = "../app/assets/fonts/OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
+		49CD9FBE1E8E21510032A949 /* icomoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = icomoon.ttf; path = ../app/assets/fonts/icomoon.ttf; sourceTree = "<group>"; };
 		4D040E6939A3394128C13CEE /* Pods-Trizing.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing/Pods-Trizing.debug.xcconfig"; sourceTree = "<group>"; };
 		4DE33148379349C5AFACDF35 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		4EC626B757C2DE173626DA1C /* libPods-TrizingTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TrizingTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -488,6 +494,7 @@
 		12DDA82037BA492C837D184A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				49CD9FBE1E8E21510032A949 /* icomoon.ttf */,
 				493C44761E5194F600A97577 /* OpenSans-Bold.ttf */,
 				493C44771E5194F600A97577 /* OpenSans-BoldItalic.ttf */,
 				493C44781E5194F600A97577 /* OpenSans-ExtraBold.ttf */,
@@ -1106,6 +1113,7 @@
 				493C44951E5194F600A97577 /* OpenSans-Light.ttf in Resources */,
 				493C44851E5194F600A97577 /* OpenSans-BoldItalic.ttf in Resources */,
 				493C44A11E5194F600A97577 /* OpenSans-Semibold.ttf in Resources */,
+				49CD9FC01E8E21510032A949 /* icomoon.ttf in Resources */,
 				493C44811E5194F600A97577 /* OpenSans-Bold.ttf in Resources */,
 				493C44891E5194F600A97577 /* OpenSans-ExtraBold.ttf in Resources */,
 				493C44911E5194F600A97577 /* OpenSans-Italic.ttf in Resources */,
@@ -1132,6 +1140,7 @@
 				4DE103561B9C4C5EA74215DC /* Octicons.ttf in Resources */,
 				493C44841E5194F600A97577 /* OpenSans-BoldItalic.ttf in Resources */,
 				493C44801E5194F600A97577 /* OpenSans-Bold.ttf in Resources */,
+				49CD9FBF1E8E21510032A949 /* icomoon.ttf in Resources */,
 				493C44901E5194F600A97577 /* OpenSans-Italic.ttf in Resources */,
 				864D3C1EB28F44BFB158F359 /* SimpleLineIcons.ttf in Resources */,
 				13E78AF08F614C98A12022BE /* Zocial.ttf in Resources */,
@@ -1146,6 +1155,7 @@
 				493C44861E5194F600A97577 /* OpenSans-BoldItalic.ttf in Resources */,
 				493C44821E5194F600A97577 /* OpenSans-Bold.ttf in Resources */,
 				493C44961E5194F600A97577 /* OpenSans-Light.ttf in Resources */,
+				49CD9FC11E8E21510032A949 /* icomoon.ttf in Resources */,
 				493C448E1E5194F600A97577 /* OpenSans-ExtraBoldItalic.ttf in Resources */,
 				493C44A21E5194F600A97577 /* OpenSans-Semibold.ttf in Resources */,
 				493C44921E5194F600A97577 /* OpenSans-Italic.ttf in Resources */,
@@ -1161,6 +1171,7 @@
 				493C44971E5194F600A97577 /* OpenSans-Light.ttf in Resources */,
 				493C44871E5194F600A97577 /* OpenSans-BoldItalic.ttf in Resources */,
 				493C44A31E5194F600A97577 /* OpenSans-Semibold.ttf in Resources */,
+				49CD9FC21E8E21510032A949 /* icomoon.ttf in Resources */,
 				493C44831E5194F600A97577 /* OpenSans-Bold.ttf in Resources */,
 				493C448B1E5194F600A97577 /* OpenSans-ExtraBold.ttf in Resources */,
 				493C44931E5194F600A97577 /* OpenSans-Italic.ttf in Resources */,
