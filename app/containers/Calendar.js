@@ -7,11 +7,12 @@ import {
     ListView,
     RefreshControl,
     ScrollView,
-    TouchableOpacity,
-    Platform
+    Dimensions,
+    TouchableOpacity
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as CalendarActions from '../actions/calendarActions';
 
@@ -19,39 +20,109 @@ import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
+
 const Calendar = React.createClass({
     mixins: [Subscribable.Mixin],
-
     scrollToTopEvent(args) {
         if (args.routeName == 'Calendar') this.refs.todayscroll.scrollTo({y: 0, true});
     },
 
     componentDidMount() {
-        // this.addListenerOn(this.props.events, 'scrollToTopEvent', this.scrollToTopEvent);
+        this.addListenerOn(this.props.events, 'scrollToTopEvent', this.scrollToTopEvent);
+        if (!this.props.Events.length) {
+            this.props.actions.getEvents();
+        }
     },
-
     _refresh() {
+        this.props.actions.getEvents(true);
     },
 
     onEndReached() {
-        console.log('End reach')
+        if (this.props.EventsNext)
+            this.props.actions.getEvents();
     },
 
-    _redirect(routeName, props = null) {
-        this.props.navigator.push(getRoute(routeName, props));
+    goToCreate() {
+        this.props.navigator.push(getRoute('CreateEvent'))
+    },
+
+    renderHeader() {
+        return (
+            <TouchableOpacity style={styles.header} onPress={this.goToCreate}>
+                <Icon name="calendar-plus-o" size={30}
+                      color='#b1aea5'/>
+                <Text style={styles.createEventText}>Create New Event</Text>
+            </TouchableOpacity>
+        )
     },
 
 
     render() {
+        if (this.props.Events.length) {
+            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            const dataSource = ds.cloneWithRows(this.props.Events);
+            return (
+                <ListView
+                    refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
+                    style={styles.container} enableEmptySections={true}
+                    renderHeader={this.renderHeader}
+                    dataSource={dataSource} onEndReached={this.onEndReached}
+                    onEndReachedThreshold={Dimensions.get('window').height}
+                    renderRow={(event, i) => <View><Text>test</Text></View>}
+                />
+            );
+        }
         return (
-            <View><Text>Calendar</Text></View>
-        )
+            <ScrollView contentContainerStyle={styles.scrollContainer}
+                        refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}>
+                {this.renderHeader()}
+                <View style={styles.noRequests}>
+                    <Icon name="calendar-o" size={60}
+                          color='#b1aea5'/>
+                    <Text style={styles.noRequestTitle}>
+                        You have no upcoming events.
+                    </Text>
+                </View>
+            </ScrollView>
+        );
     }
 });
 
 
 const styles = StyleSheet.create({
-
+    scrollContainer: {
+        flex: 1,
+    },
+    noRequests: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 20
+    },
+    noRequestTitle: {
+        fontSize: getFontSize(22),
+        color: '#b1aeb9',
+        textAlign: 'center',
+        paddingTop: 20,
+        fontFamily: 'OpenSans-Semibold'
+    },
+    header: {
+        backgroundColor: 'white',
+        height: 50,
+        padding: 10,
+        margin: 5,
+        borderColor: '#e1e3df',
+        borderTopWidth: .5,
+        borderBottomWidth: .5,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    createEventText: {
+        fontSize: getFontSize(22),
+        color: '#b1aeb9',
+        fontFamily: 'OpenSans-Semibold',
+        paddingLeft: 80
+    }
 });
 
 const stateToProps = (state) => {

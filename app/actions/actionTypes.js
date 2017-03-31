@@ -46,3 +46,6 @@ export const UNLIKE = 'UNLIKE';
 // Chat Constants
 export const LOAD_ROOMS = 'LOAD_ROOMS';
 export const SEND_MESSAGE = 'SEND_MESSAGE';
+
+// Calendar Constants
+export const GET_EVENTS = 'GET_EVENTS';

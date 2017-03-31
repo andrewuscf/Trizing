@@ -3,19 +3,21 @@ import * as constants from '../actions/actionTypes';
 
 
 const initialState = {
-    CheckIns: [],
+    Events: [],
+    EventsNext: null,
     Refreshing: false,
 };
 
 export default function calendarReducers(state = initialState, action = null) {
     switch (action.type) {
-        //
-        // case constants.SEND_REQUEST:
-        //     const index = _.findIndex(state.Clients, {'user': action.clientId });
-        //     return {
-        //         ...state,
-        //         Clients: state.Clients.slice(0, index).concat(state.Clients.slice(index + 1))
-        //     };
+
+        case constants.GET_EVENTS:
+            return {
+                ...state,
+                Events: (action.refresh) ? action.response.results : state.Events.concat(action.response.results),
+                EventsNext: action.response.next,
+                Refreshing: false
+            };
 
 
         default:

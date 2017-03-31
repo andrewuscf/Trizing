@@ -16,6 +16,7 @@ import CreateWorkout from './containers/sub/CreateWorkout';
 import EditWorkout from './containers/edit/EditWorkout';
 import CreateWorkoutDay from './containers/sub/CreateWorkoutDay';
 import CreateExercise from './containers/sub/CreateExercise';
+import CreateEvent from './containers/sub/CreateEvent';
 
 // Edit Pages
 import EditProfile from './containers/edit/EditProfile';
@@ -40,6 +41,7 @@ var MAIN_ROUTES = [
     {component: CreateWorkoutDay, name: 'CreateWorkoutDay'},
     {component: CreateExercise, name: 'CreateExercise'},
     {component: WorkoutDayDetail, name: 'WorkoutDayDetail'},
+    {component: CreateEvent, name: 'CreateEvent'},
 ];
 
 export function getRoute(routeName, props) {

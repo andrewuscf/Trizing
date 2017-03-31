@@ -40,10 +40,6 @@ const Notifications = React.createClass({
         this.props.actions.getNotifications(true);
     },
 
-    // _redirect(routeName, props = null) {
-    //     this.props.navigator.push(getRoute(routeName, props));
-    // },
-
     onEndReached() {
         if (this.props.NotificationsNext)
             this.props.actions.getNotifications();
