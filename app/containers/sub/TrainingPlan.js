@@ -208,7 +208,15 @@ const TrainingPlan = React.createClass({
         this.updatePlan({workout: id})
     },
 
-    renderCreateBar(){
+    renderCreateBar(rowCount){
+        let textSection =<Text style={styles.helpText}>PRESS AND HOLD TO MAKE ACTIVE</Text>;
+        if (rowCount < 1) {
+            if (this.state.tab == 1) {
+                textSection = <Text style={styles.emptyTitle}>Client has zero macro plans. Create One!</Text>;
+            } else if (this.state.tab == 2) {
+                textSection = <Text style={styles.emptyTitle}>Client has zero workout programs. Create one!</Text>;
+            }
+        }
         if (this.state.tab == 1 || this.state.tab == 2) {
             return (
                 <View>
@@ -224,7 +232,7 @@ const TrainingPlan = React.createClass({
                             <Text style={styles.smallText}>(Template or Blank)</Text>
                         </TouchableOpacity>
                     }
-                    <Text style={styles.helpText}>PRESS AND HOLD TO MAKE ACTIVE</Text>
+                    {textSection}
                 </View>
             )
         }
@@ -272,10 +280,9 @@ const TrainingPlan = React.createClass({
                 </View>
 
                 <View style={styles.singleColumn}>
-
                     {dataSource ?
                         <ListView ref='content' removeClippedSubviews={(Platform.OS !== 'ios')}
-                                  renderHeader={this.renderCreateBar}
+                                  renderHeader={this.renderCreateBar.bind(null, dataSource.getRowCount())}
                                   keyboardShouldPersistTaps="handled"
                                   style={styles.listContainer} enableEmptySections={true} dataSource={dataSource}
                                   onEndReached={this._onEndReached} onEndReachedThreshold={250}
@@ -390,6 +397,13 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(12),
         backgroundColor: 'transparent',
         color: '#4d4d4e',
+        fontFamily: 'OpenSans-Semibold'
+    },
+    emptyTitle: {
+        fontSize: getFontSize(22),
+        color: '#b1aeb9',
+        textAlign: 'center',
+        paddingTop: 20,
         fontFamily: 'OpenSans-Semibold'
     }
 });
