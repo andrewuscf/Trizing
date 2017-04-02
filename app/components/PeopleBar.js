@@ -12,20 +12,30 @@ const PeopleBar = React.createClass({
     propTypes: {
         people: React.PropTypes.array.isRequired,
         navigator: React.PropTypes.object.isRequired,
-        manageClients: React.PropTypes.func.isRequired
+        manageClients: React.PropTypes.func,
+        action: React.PropTypes.func,
+        selected: React.PropTypes.array
     },
 
     goToProfile(userId) {
-        this.props.navigator.push(getRoute('Profile', {id: userId}));
+        if (this.props.action) {
+            this.props.action(userId)
+        } else {
+            this.props.navigator.push(getRoute('Profile', {id: userId}));
+        }
     },
 
     render() {
         const list = this.props.people.map((user, i) => {
             let image = user.profile.thumbnail ? user.profile.thumbnail : user.profile.avatar;
+
             return (
-                <View style={{alignItems: 'center'}}  key={i}>
-                    <AvatarImage style={styles.avatar} image={image}
-                                 redirect={this.goToProfile.bind(null, user.id)}/>
+                <View style={{alignItems: 'center'}} key={i}>
+                    <AvatarImage
+                        style={[styles.avatar,
+                            (this.props.selected && _.includes(this.props.selected, user.id)) ? styles.selected : null]}
+                        image={image}
+                        redirect={this.goToProfile.bind(null, user.id)}/>
                     <Text style={styles.userText}>{trunc(user.username, 6)}</Text>
                 </View>
             )
@@ -36,12 +46,15 @@ const PeopleBar = React.createClass({
                 <ScrollView style={styles.peopleList} contentContainerStyle={styles.checkContentContainer}
                             showsHorizontalScrollIndicator={false} horizontal={true}>
 
-                    <View  style={{alignItems: 'center'}}>
-                        <TouchableOpacity onPress={this.props.manageClients} style={styles.manageClients}>
-                            <Icon name="user-plus" color='#bfbfbf' size={22}/>
-                        </TouchableOpacity>
-                        <Text style={styles.userText}>Manage Clients</Text>
-                    </View>
+                    {this.props.manageClients ?
+                        <View style={{alignItems: 'center'}}>
+                            <TouchableOpacity onPress={this.props.manageClients} style={styles.manageClients}>
+                                <Icon name="user-plus" color='#bfbfbf' size={22}/>
+                            </TouchableOpacity>
+                            <Text style={styles.userText}>Manage Clients</Text>
+                        </View>
+                        : null
+                    }
 
                     {list}
                 </ScrollView>
@@ -92,6 +105,10 @@ const styles = StyleSheet.create({
         color: '#b1aea5',
         marginLeft: -5,
         marginTop: 5
+    },
+    selected: {
+        borderWidth: 2,
+        borderColor: 'red',
     }
 });
 

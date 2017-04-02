@@ -20,6 +20,8 @@ import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
+import EventBox from '../components/EventBox';
+
 
 const Calendar = React.createClass({
     mixins: [Subscribable.Mixin],
@@ -68,7 +70,7 @@ const Calendar = React.createClass({
                     renderHeader={this.renderHeader}
                     dataSource={dataSource} onEndReached={this.onEndReached}
                     onEndReachedThreshold={Dimensions.get('window').height}
-                    renderRow={(event, i) => <View><Text>test</Text></View>}
+                    renderRow={(occurrence, i) => <EventBox occurrence={occurrence} navigator={this.props.navigator}/>}
                 />
             );
         }

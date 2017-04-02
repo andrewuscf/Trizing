@@ -16,3 +16,30 @@ export function getEvents(refresh = false) {
             }).done();
     }
 }
+
+export function addEditEvent(data, asyncActions = null) {
+    if (asyncActions) {
+        asyncActions(true);
+    }
+    let url = `${API_ENDPOINT}social/events/`;
+    let method = 'POST';
+    if (data.id) {
+        url = `${API_ENDPOINT}social/event/${data.id}/`;
+        method = 'PATCH';
+    }
+    return (dispatch, getState) => {
+        return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
+            .then((responseJson) => {
+                if (method == 'POST')
+                    return dispatch({type: types.ADD_EVENT, response: responseJson});
+                else
+                    return dispatch({type: types.EDIT_EVENT, response: responseJson});
+            })
+            .catch((error) => {
+                if (asyncActions) {
+                    asyncActions(false);
+                }
+                console.log(error);
+            }).done();
+    }
+}

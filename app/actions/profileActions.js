@@ -47,7 +47,7 @@ export function updateUser(data, profileData=false, asyncActions) {
                 return dispatch({type: types.UPDATE_USER, request_user: responseJson});
             }).then(()=> {
                 if (profileData) {
-                    dispatch(updateProfile(profileData, asyncActions))
+                    return dispatch(updateProfile(profileData, asyncActions))
                 }
                 else{
                     if (asyncActions) {

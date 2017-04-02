@@ -9,7 +9,6 @@ import {
     Alert,
     ScrollView
 } from 'react-native';
-import update from 'react-addons-update';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
