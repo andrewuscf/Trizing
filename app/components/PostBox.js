@@ -59,7 +59,7 @@ const PostBox = React.createClass({
                             </Text>
                         </View>
                     </View>
-                    <TouchableOpacity onPress={this.likePress}>
+                    <TouchableOpacity onPress={this.likePress} style={{alignSelf: 'center'}}>
                         {this.props.liked ?
                             <Icon name="heart" size={20} color="black"/>
                             :

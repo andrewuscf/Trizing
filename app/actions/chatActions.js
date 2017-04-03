@@ -7,9 +7,9 @@ import {fetchData, API_ENDPOINT, refreshPage, checkStatus} from './utils';
 export function getChatRooms(refresh = false) {
     let url = `${API_ENDPOINT}social/chats/`;
     return (dispatch, getState) => {
-        if (refresh) {
-            dispatch(refreshPage());
-        }
+        if (refresh) dispatch(refreshPage());
+        if (!refresh && getState().Chat.RoomsNext)
+            url = getState().Chat.RoomsNext;
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {

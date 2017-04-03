@@ -7,7 +7,8 @@ import {
     ListView,
     RefreshControl,
     ScrollView,
-    Dimensions
+    Dimensions,
+    TouchableOpacity
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -44,7 +45,21 @@ const Chat = React.createClass({
     },
 
     onEndReached() {
-        console.log('End reach')
+        if (this.props.RoomsNext)
+            this.props.actions.getChatRooms();
+    },
+
+    newChat() {
+        console.log('hit')
+    },
+
+    renderHeader() {
+        return (
+            <TouchableOpacity style={styles.header} onPress={this.newChat}>
+                <Icon name="plus" size={getFontSize(25)} color='#b1aea5' style={{marginTop: 2}}/>
+                <Text style={styles.newChatText}>New Message</Text>
+            </TouchableOpacity>
+        )
     },
 
 
@@ -56,6 +71,7 @@ const Chat = React.createClass({
                 <ListView
                     refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
                     style={styles.container} enableEmptySections={true}
+                    renderHeader={this.renderHeader}
                     dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={Dimensions.get('window').height}
                     renderRow={(room, i) => <ChatRoomBox key={i} room={room} RequestUser={this.props.RequestUser}
                                                          _redirect={this._redirect}/>}
@@ -65,6 +81,7 @@ const Chat = React.createClass({
         return (
             <ScrollView contentContainerStyle={styles.scrollContainer}
                         refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}>
+                {this.renderHeader()}
                 <View style={styles.noRequests}>
                     <Icon name="comment-o" size={60}
                           color='#b1aea5'/>
@@ -96,6 +113,23 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingTop: 20,
         fontFamily: 'OpenSans-Semibold'
+    },
+    header: {
+        backgroundColor: 'white',
+        height: 50,
+        margin: 5,
+        borderColor: '#e1e3df',
+        borderTopWidth: .5,
+        borderBottomWidth: .5,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    newChatText: {
+        fontSize: getFontSize(22),
+        color: '#b1aeb9',
+        fontFamily: 'OpenSans-Semibold',
+        paddingLeft: 10
     }
 });
 

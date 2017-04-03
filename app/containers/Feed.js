@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
         minHeight: 50,
         paddingLeft: 5,
         paddingRight: 5,
-        marginBottom: 5,
+        margin: 5,
         backgroundColor: 'white',
         justifyContent: 'center'
     },

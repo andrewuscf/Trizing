@@ -24,7 +24,6 @@ const MessageBox = React.createClass({
 
     render() {
         const message = this.props.message;
-        console.log(message)
         let image = message.user.profile.thumbnail ? message.user.profile.thumbnail : message.user.profile.avatar
         return (
             <View style={[styles[this.props.position].container]}>

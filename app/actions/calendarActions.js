@@ -7,6 +7,7 @@ import {fetchData, API_ENDPOINT, refreshPage, checkStatus} from './utils';
 export function getEvents(refresh = false) {
     let url = `${API_ENDPOINT}social/events/`;
     return (dispatch, getState) => {
+        if (refresh) dispatch(refreshPage());
         if (!refresh && getState().Calendar.EventsNext)
             url = getState().Calendar.EventsNext;
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
