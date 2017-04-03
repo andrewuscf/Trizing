@@ -56,7 +56,7 @@ const Chat = React.createClass({
     renderHeader() {
         return (
             <TouchableOpacity style={styles.header} onPress={this.newChat}>
-                <Icon name="plus" size={getFontSize(25)} color='#b1aea5' style={{marginTop: 2}}/>
+                <Icon name="send" size={30} color='#b1aea5' style={{marginTop: 2}}/>
                 <Text style={styles.newChatText}>New Message</Text>
             </TouchableOpacity>
         )
@@ -86,7 +86,7 @@ const Chat = React.createClass({
                     <Icon name="comment-o" size={60}
                           color='#b1aea5'/>
                     <Text style={styles.noRequestTitle}>
-                        You need active clients to message.
+                        You should chat.
                     </Text>
                 </View>
             </ScrollView>
@@ -98,8 +98,6 @@ const Chat = React.createClass({
 const styles = StyleSheet.create({
     scrollContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
     },
     noRequests: {
         flex: 1,

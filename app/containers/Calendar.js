@@ -117,13 +117,14 @@ const styles = StyleSheet.create({
         borderTopWidth: .5,
         borderBottomWidth: .5,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     createEventText: {
         fontSize: getFontSize(22),
         color: '#b1aeb9',
         fontFamily: 'OpenSans-Semibold',
-        paddingLeft: 80
+        paddingLeft: 10
     }
 });
 

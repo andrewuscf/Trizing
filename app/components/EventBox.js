@@ -4,7 +4,6 @@ import moment from 'moment';
 
 import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import GlobalStyle from '../containers/globalStyle';
 
@@ -67,9 +66,6 @@ const EventBox = React.createClass({
                     <Text style={styles.eventDateDay}>{end_time.date()}</Text>
                     <Text style={styles.eventDateTime}>{end_time.format('h:mma')}</Text>
                 </View>
-                <TouchableOpacity onPress={this._onActions} style={{alignSelf: 'center', width: 10}}>
-                    <Icon name="ellipsis-v" size={20} color="black"/>
-                </TouchableOpacity>
             </TouchableOpacity>
         );
     }
