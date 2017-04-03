@@ -49,5 +49,4 @@ export const SEND_MESSAGE = 'SEND_MESSAGE';
 
 // Calendar Constants
 export const GET_EVENTS = 'GET_EVENTS';
-export const ADD_EVENT = 'ADD_EVENT';
 export const EDIT_EVENT = 'EDIT_EVENT';

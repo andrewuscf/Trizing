@@ -4,7 +4,8 @@ import {
     Text,
     StyleSheet,
     Keyboard,
-    ScrollView
+    ScrollView,
+    Dimensions
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -14,12 +15,13 @@ import moment from 'moment';
 
 import * as CalendarActions from '../../actions/calendarActions';
 import {getFontSize, trunc} from '../../actions/utils';
-// import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import AvatarImage from '../../components/AvatarImage';
-import SelectInput from '../../components/SelectInput';
 import SubmitButton from '../../components/SubmitButton';
+
+
+const window = Dimensions.get('window');
 
 
 const CreateEvent = React.createClass({
@@ -36,7 +38,8 @@ const CreateEvent = React.createClass({
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            // this.props.navigator.pop();
+            this.props.actions.getEvents(true);
+            this.props.navigator.pop();
         }
     },
 
@@ -64,12 +67,15 @@ const CreateEvent = React.createClass({
             const data = {
                 title: values.title,
                 event_type: values.event_type,
-                start_time: eventDate.clone().utc().format("YYYY-MM-DD HH:mm:ssZ"),
-                end_time: endDate.clone().utc().format("YYYY-MM-DD HH:mm:ssZ"),
-                invited: this.state.selected
-            }
-            console.log(data)
-            // this.props.actions.addEditEvent()
+                invited: this.state.selected,
+                occurrences: [
+                    {
+                        start_time: eventDate.clone().utc().format("YYYY-MM-DD HH:mm:ssZ"),
+                        end_time: endDate.clone().utc().format("YYYY-MM-DD HH:mm:ssZ")
+                    }
+                ]
+            };
+            this.props.actions.addEditEvent(data, this.asyncActions)
 
         }
     },
@@ -144,8 +150,9 @@ const CreateEvent = React.createClass({
         return (
             <View style={styles.flexCenter}>
                 <BackBar back={this._cancel} backText={this.state.step == 1 ? 'Cancel' : null}>
-                    <Text
-                        style={{fontSize: getFontSize(24)}}>{this.state.step == 1 ? 'Create Event' : 'Invite Users'}</Text>
+                    <Text style={{fontSize: getFontSize(24)}}>
+                        {this.state.step == 1 ? 'Create Event' : 'Select Users to Invite'}
+                        </Text>
                 </BackBar>
                 {this.state.step == 1 ?
                     <ScrollView style={{margin: 10}}>
@@ -158,16 +165,19 @@ const CreateEvent = React.createClass({
                         />
                     </ScrollView>
                     :
-                    <ScrollView style={{padding: 50,flex: 1}} contentContainerStyle={{flexWrap: 'wrap', flexDirection: 'row'}}>
+                    <ScrollView style={{paddingTop: 20}}
+                                contentContainerStyle={{flexWrap: 'wrap', flexDirection: 'row'}}>
                         {this.props.Clients.map((client, i) => {
                             let image = client.profile.thumbnail ? client.profile.thumbnail : client.profile.avatar;
-                            return <View style={{ flex: 1, flexWrap: 'wrap'}} key={i}>
-                                <AvatarImage style={[styles.avatar,
-                                    (_.includes(this.state.selected, client.id)) ? styles.selected : null]}
-                                             image={image}
-                                             redirect={this.selectUser.bind(null, client.id)}/>
-                                <Text style={styles.userText}>{client.username}</Text>
-                            </View>
+                            return (
+                                <View style={styles.inviteBox} key={i}>
+                                    <AvatarImage style={[styles.avatar,
+                                        (_.includes(this.state.selected, client.id)) ? styles.selected : null]}
+                                                 image={image}
+                                                 redirect={this.selectUser.bind(null, client.id)}/>
+                                    <Text style={styles.userText}>{trunc(client.username, 13)}</Text>
+                                </View>
+                            )
                         })}
                     </ScrollView>
                 }
@@ -203,10 +213,19 @@ const styles = StyleSheet.create({
         borderColor: 'red',
     },
     avatar: {
-        marginRight: 12,
         height: 60,
         width: 60,
         borderRadius: 30
+    },
+    inviteBox: {
+        width: window.width / 3,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10
+    },
+    userText: {
+        fontSize: getFontSize(18),
+        marginTop: 5
     },
 });
 
@@ -220,19 +239,19 @@ const Event_types = t.enums({
     chk: 'Check In',
     eve: 'Group Event'
 });
-const Occurrences = t.enums({
-    0: 'One Time',
-    1: 'Each Day',
-    2: 'Each Week',
-    3: 'Each Month'
-});
+// const Occurrences = t.enums({
+//     0: 'One Time',
+//     1: 'Each Day',
+//     2: 'Each Week',
+//     3: 'Each Month'
+// });
 const Event = t.struct({
     title: t.String,
     event_type: Event_types,
     date: t.Date,
     start_time: t.Date,
     end_time: t.Date,
-    occurrence: Occurrences
+    // occurrence: Occurrences
 });
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
 

@@ -30,9 +30,10 @@ export function addEditEvent(data, asyncActions = null) {
     return (dispatch, getState) => {
         return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                if (method == 'POST')
-                    return dispatch({type: types.ADD_EVENT, response: responseJson});
-                else
+                if (asyncActions) {
+                    asyncActions(false);
+                }
+                if (method != 'POST')
                     return dispatch({type: types.EDIT_EVENT, response: responseJson});
             })
             .catch((error) => {
