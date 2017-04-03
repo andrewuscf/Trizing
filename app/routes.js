@@ -23,10 +23,11 @@ import EditProfile from './containers/edit/EditProfile';
 
 // Detail Pages
 import WorkoutDayDetail from './containers/detail/WorkoutDayDetail';
+import ChatRoom from './containers/detail/ChatRoom';
 
 // Create Pages
 
-var MAIN_ROUTES = [
+const MAIN_ROUTES = [
     {component: Home, name: 'Home'},
     {component: Calendar, name: 'Calendar'},
     {component: Feed, name: 'Feed'},
@@ -42,6 +43,7 @@ var MAIN_ROUTES = [
     {component: CreateExercise, name: 'CreateExercise'},
     {component: WorkoutDayDetail, name: 'WorkoutDayDetail'},
     {component: CreateEvent, name: 'CreateEvent'},
+    {component: ChatRoom, name: 'ChatRoom'},
 ];
 
 export function getRoute(routeName, props) {
