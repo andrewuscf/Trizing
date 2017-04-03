@@ -13,11 +13,11 @@ import _ from 'lodash';
 import moment from 'moment';
 
 import * as CalendarActions from '../../actions/calendarActions';
-import {getFontSize} from '../../actions/utils';
+import {getFontSize, trunc} from '../../actions/utils';
 // import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
-import PeopleBar from '../../components/PeopleBar';
+import AvatarImage from '../../components/AvatarImage';
 import SelectInput from '../../components/SelectInput';
 import SubmitButton from '../../components/SubmitButton';
 
@@ -25,7 +25,9 @@ import SubmitButton from '../../components/SubmitButton';
 const CreateEvent = React.createClass({
     getInitialState() {
         return {
-            selected: []
+            selected: [],
+            value: null,
+            step: 1
         }
     },
 
@@ -40,36 +42,44 @@ const CreateEvent = React.createClass({
 
 
     _onSubmit() {
-        let values = this.refs.form.getValue();
-        if (values) {
-            if (this.state.selected.length > 0) {
-                let eventDate = moment(values.date);
-                let startTime = moment(values.start_time);
-                let endTime = moment(values.end_time);
-
-                eventDate.set('hour', startTime.get('hour')).set('minute', startTime.get('minute')).set('second', 0);
-
-                let endDate = eventDate.clone();
-                if (startTime.get('hour') > 12 && endTime.get('hour') < 12) {
-                    endDate = endDate.add(1, 'days');
-                }
-                endDate.set('hour', endTime.get('hour')).set('minute', endTime.get('minute')).set('second', 0);
-                const data = {
-                    title: values.title,
-                    event_type: values.event_type,
-                    start_time: eventDate.clone().utc().format("YYYY-MM-DD HH:mm:ssZ"),
-                    end_time: endDate.clone().utc().format("YYYY-MM-DD HH:mm:ssZ"),
-                    invited: this.state.selected
-                }
-                console.log(data)
-                // this.props.actions.addEditEvent()
-
+        let values;
+        if (this.refs.form) {
+            values = this.refs.form.getValue();
+            if (values) {
+                this.setState({step: 2});
             }
+        } else if (this.state.selected.length > 0) {
+            values = this.state.value;
+            let eventDate = moment(values.date);
+            let startTime = moment(values.start_time);
+            let endTime = moment(values.end_time);
+
+            eventDate.set('hour', startTime.get('hour')).set('minute', startTime.get('minute')).set('second', 0);
+
+            let endDate = eventDate.clone();
+            if (startTime.get('hour') > 12 && endTime.get('hour') < 12) {
+                endDate = endDate.add(1, 'days');
+            }
+            endDate.set('hour', endTime.get('hour')).set('minute', endTime.get('minute')).set('second', 0);
+            const data = {
+                title: values.title,
+                event_type: values.event_type,
+                start_time: eventDate.clone().utc().format("YYYY-MM-DD HH:mm:ssZ"),
+                end_time: endDate.clone().utc().format("YYYY-MM-DD HH:mm:ssZ"),
+                invited: this.state.selected
+            }
+            console.log(data)
+            // this.props.actions.addEditEvent()
+
         }
     },
 
     _cancel() {
-        this.props.navigator.pop();
+        if (this.state.step == 1) {
+            this.props.navigator.pop();
+        } else {
+            this.setState({step: 1});
+        }
     },
 
     selectUser(userId) {
@@ -86,6 +96,10 @@ const CreateEvent = React.createClass({
                 ]
             })
         }
+    },
+
+    onChange(value) {
+        this.setState({value: value});
     },
 
     render: function () {
@@ -129,22 +143,38 @@ const CreateEvent = React.createClass({
         };
         return (
             <View style={styles.flexCenter}>
-                <BackBar back={this._cancel} backText="Cancel">
-                    <Text style={{fontSize: getFontSize(24)}}>Create Event</Text>
+                <BackBar back={this._cancel} backText={this.state.step == 1 ? 'Cancel' : null}>
+                    <Text
+                        style={{fontSize: getFontSize(24)}}>{this.state.step == 1 ? 'Create Event' : 'Invite Users'}</Text>
                 </BackBar>
-                <ScrollView style={{margin: 10}}>
-                    <Form
-                        ref="form"
-                        type={Event}
-                        options={options}
-                    />
-                    <Text style={stylesheet.controlLabel.normal}>Invite Clients*</Text>
-                    <PeopleBar navigator={this.props.navigator}
-                               people={this.props.Clients} action={this.selectUser} selected={this.state.selected}/>
-                    <SubmitButton buttonStyle={styles.button}
-                                  textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
-                                  text='Create'/>
-                </ScrollView>
+                {this.state.step == 1 ?
+                    <ScrollView style={{margin: 10}}>
+                        <Form
+                            ref="form"
+                            type={Event}
+                            options={options}
+                            onChange={this.onChange}
+                            value={this.state.value}
+                        />
+                    </ScrollView>
+                    :
+                    <ScrollView style={{padding: 50,flex: 1}} contentContainerStyle={{flexWrap: 'wrap', flexDirection: 'row'}}>
+                        {this.props.Clients.map((client, i) => {
+                            let image = client.profile.thumbnail ? client.profile.thumbnail : client.profile.avatar;
+                            return <View style={{ flex: 1, flexWrap: 'wrap'}} key={i}>
+                                <AvatarImage style={[styles.avatar,
+                                    (_.includes(this.state.selected, client.id)) ? styles.selected : null]}
+                                             image={image}
+                                             redirect={this.selectUser.bind(null, client.id)}/>
+                                <Text style={styles.userText}>{client.username}</Text>
+                            </View>
+                        })}
+                    </ScrollView>
+                }
+                <SubmitButton buttonStyle={styles.button}
+                              textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
+                              text={this.state.step == 2 ? 'Create Event' : 'Invite Users'}/>
+
             </View>
         )
     }
@@ -167,7 +197,17 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 15,
         fontFamily: 'OpenSans-Bold',
-    }
+    },
+    selected: {
+        borderWidth: 2,
+        borderColor: 'red',
+    },
+    avatar: {
+        marginRight: 12,
+        height: 60,
+        width: 60,
+        borderRadius: 30
+    },
 });
 
 let myFormatFunction = (format, date) => {
