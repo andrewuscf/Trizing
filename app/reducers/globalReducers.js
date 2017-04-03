@@ -26,7 +26,7 @@ export default function AppReducers(state = initialState, action = null) {
             };
 
         case constants.REMOVE_TOKEN:
-            return {};
+            return initialState;
 
         case constants.SET_ACTIVE_ROUTE:
             return {

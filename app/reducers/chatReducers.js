@@ -31,6 +31,9 @@ export default function AppReducers(state = initialState, action = null) {
                 )
             };
 
+        case constants.REMOVE_TOKEN:
+            return initialState;
+
         default:
             return state
     }

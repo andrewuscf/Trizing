@@ -135,7 +135,7 @@ const Home = React.createClass({
             content = <Text>Client</Text>;
         }
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        const dataSource = ds.cloneWithRows(this.props.Notifications.slice(0, 4));
+        const dataSource = ds.cloneWithRows(_.filter(this.props.Notifications, {unread: true}));
         return (
             <View style={GlobalStyle.container}>
                 <ScrollView ref='home_scroll'
@@ -152,11 +152,7 @@ const Home = React.createClass({
                                           navigator={this.props.navigator} notification={notification}
                                           readNotification={this.props.readNotification}/>}
                             />
-                            <TouchableOpacity onPress={this._redirect.bind(null, 'Notifications', null)} style={{
-                                flexDirection: 'row',
-                                flex: 1,
-                                alignItems: 'center'
-                            }}>
+                            <TouchableOpacity onPress={this._redirect.bind(null, 'Notifications', null)} style={styles.link}>
                                 <Text style={styles.simpleTitle}>View All Notifications</Text>
                                 <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
                             </TouchableOpacity>

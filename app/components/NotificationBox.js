@@ -48,6 +48,17 @@ const NotificationBox = React.createClass({
         if (this.props.notification.unread) {
             this.props.readNotification(this.props.notification.id);
         }
+        if (action.action_object) {
+            if (action.action_object.profile)
+                this.props.navigator.push(getRoute('Profile', {id: action.action_object.id}));
+            else if (action.action_object.room)
+                this.props.navigator.push(getRoute('ChatRoom', {roomId: action.action_object.room}));
+            else if (action.action_object.macro_plan || action.action_object.questionnaire || action.action_object.workout) {
+                this.props.navigator.push(getRoute('Profile', {id: action.action_object.client}));
+            } else if (action.action_object.liked_by) {
+                console.log('this is a post')
+            }
+        }
     },
 
 

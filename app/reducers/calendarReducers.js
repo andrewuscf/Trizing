@@ -19,6 +19,9 @@ export default function calendarReducers(state = initialState, action = null) {
                 Refreshing: false
             };
 
+        case constants.REMOVE_TOKEN:
+            return initialState;
+
 
         default:
             return state

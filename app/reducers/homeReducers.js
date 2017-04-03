@@ -46,6 +46,9 @@ export default function homeReducers(state = initialState, action = null) {
                 )
             };
 
+        case constants.REMOVE_TOKEN:
+            return initialState;
+
         //
         // case constants.SEND_REQUEST:
         //     const index = _.findIndex(state.Clients, {'user': action.clientId });
