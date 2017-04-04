@@ -14,6 +14,8 @@ const initialState = {
     QuestionnairesNext: null,
     Workouts: [],
     WorkoutsNext: null,
+    Schedules: [],
+    SchedulesNext: null
 };
 
 export default function AppReducers(state = initialState, action = null) {
@@ -95,6 +97,23 @@ export default function AppReducers(state = initialState, action = null) {
                     ...state.Questionnaires
                 ]
             };
+
+        case constants.LOAD_SCHEDULES:
+            return {
+                ...state,
+                Schedules: (action.refresh) ? action.response.results : state.Schedules.concat(action.response.results),
+                Refreshing: false
+            };
+
+        case constants.CREATE_SCHEDULE:
+            return {
+                ...state,
+                Schedules: [
+                    action.response,
+                    ...state.Schedules
+                ]
+            };
+
 
         case constants.LOAD_WORKOUTS:
             return {

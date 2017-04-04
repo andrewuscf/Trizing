@@ -8,6 +8,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
+import moment from 'moment';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
@@ -18,13 +19,20 @@ import SelectInput from '../../components/SelectInput';
 import SubmitButton from '../../components/SubmitButton';
 
 
-const CreateWorkout = React.createClass({
+const Form = t.form.Form;
+
+let myFormatFunction = (format, date) => {
+    return moment(date).format(format);
+};
+
+const CreateSchedule = React.createClass({
     propTypes: {
-        scheduleId: React.PropTypes.number.isRequired,
+        training_plan: React.PropTypes.number,
     },
 
     getInitialState() {
         return {
+            Error: null,
             template: null
         }
     },
@@ -54,9 +62,13 @@ const CreateWorkout = React.createClass({
                     ...values,
                     training_plan: this.props.training_plan
                 }
+            } else {
+                values = {
+                    ...values,
+                    start_date: moment().utc().format("YYYY-MM-DD")
+                }
             }
-            console.log(values)
-            this.props.actions.createWorkout(values, this.asyncActions);
+            this.props.actions.createSchedule(values, this.asyncActions);
         }
     },
 
@@ -80,31 +92,44 @@ const CreateWorkout = React.createClass({
             stylesheet: stylesheet,
             fields: {
                 name: {
-                    label: 'Workout Block Name',
-                    onSubmitEditing: () => this.refs.form.getComponent('duration').refs.input.focus(),
-                    placeholder: `'Block 1 of program xy'.`
+                    label: 'Workout Program Name',
+                    placeholder: `For example 'Program XY'`,
+                    onSubmitEditing: () => this._onSubmit()
                 },
-                duration: {
-                    label: 'Weeks',
-                    onSubmitEditing: () => this._onSubmit(),
-                    placeholder: `Number of weeks for this block`
+                date: {
+                    mode: 'date',
+                    minimumDate: moment().toDate(),
+                    config: {
+                        format: (date) => myFormatFunction("MMMM DD YYYY", date),
+                    }
                 }
             }
         };
+        let Schedule = t.struct({
+            name: t.String,
+        });
+        if (this.props.training_plan) {
+            Schedule = t.struct({
+                name: t.String,
+                startDate: t.Date,
+            });
+        }
         return (
             <View style={styles.flexCenter}>
-                <BackBar back={this._cancel} backText="Cancel"/>
+                <BackBar back={this._cancel} backText="Cancel" navStyle={{height: 40}}/>
                 <View style={{margin: 10}}>
                     <Form
                         ref="form"
-                        type={Workout}
+                        type={Schedule}
                         options={options}
                         onChange={this.onChange}
                         value={this.state.value}
                     />
                     <Text>Use Template:</Text>
-                    <SelectInput ref='workout_templates' options={[
-                        ..._.filter(this.props.Workouts, function (o) {return !o.training_plan;}),
+                    <SelectInput ref='schedule_templates' options={[
+                        ..._.filter(this.props.Schedules, function (o) {
+                            return !o.training_plan;
+                        }),
                         {id: null, name: 'None'}
                     ]} selectedId={this.state.template} submitChange={this.selectTemplate}/>
                 </View>
@@ -137,16 +162,6 @@ const styles = StyleSheet.create({
 });
 
 // T FORM SETUP
-const Form = t.form.Form;
-
-const Positive = t.refinement(t.Number, function (n) {
-    return n >= 0;
-});
-
-const Workout = t.struct({
-    name: t.String,
-    duration: Positive,
-});
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
 
 stylesheet.formGroup = {
@@ -212,4 +227,4 @@ const dispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(stateToProps, dispatchToProps)(CreateWorkout);
+export default connect(stateToProps, dispatchToProps)(CreateSchedule);

@@ -20,6 +20,10 @@ export const EDIT_EXERCISE = 'EDIT_EXERCISE';
 export const DELETE_SET = 'DELETE_SET';
 export const LOAD_WORKOUTS = 'LOAD_WORKOUTS';
 
+
+export const LOAD_SCHEDULES = 'LOAD_SCHEDULES';
+export const CREATE_SCHEDULE = 'CREATE_SCHEDULE';
+
 export const SET_ACTIVE_ROUTE = 'SET_ACTIVE_ROUTE';
 
 

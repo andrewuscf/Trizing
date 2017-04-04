@@ -226,6 +226,45 @@ export function createQuestionnaire(data, asyncActions) {
     }
 }
 
+export function getSchedules(param = '', refresh = false) {
+    let url = `${API_ENDPOINT}training/schedules/${param}`;
+    return (dispatch, getState) => {
+        if (refresh) {
+            dispatch(refreshPage());
+        }
+        return fetch(url, fetchData('GET', null, getState().Global.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+                return dispatch({type: types.LOAD_SCHEDULES, response: responseJson, refresh: refresh});
+            })
+            .catch((error) => {
+                return dispatch({
+                    type: types.API_ERROR, error: JSON.stringify({
+                        title: 'Request could not be performed.',
+                        text: 'Please try again later.'
+                    })
+                });
+            });
+    }
+}
+
+export function createSchedule(data, asyncActions) {
+    asyncActions(true);
+    let JSONDATA = JSON.stringify(data);
+    return (dispatch, getState) => {
+        return fetch(`${API_ENDPOINT}training/schedules/`,
+            fetchData('POST', JSONDATA, getState().Global.UserToken)).then(checkStatus)
+            .then((responseJson) => {
+                asyncActions(false, {routeName: 'EditSchedule', props: {scheduleId: responseJson.id}});
+                return dispatch({type: types.CREATE_SCHEDULE, response: responseJson});
+            })
+            .catch((error) => {
+                asyncActions(false);
+                console.log(error);
+            }).done();
+    }
+}
+
 export function getWorkouts(param = '', refresh = false) {
     let url = `${API_ENDPOINT}training/workouts/${param}`;
     return (dispatch, getState) => {

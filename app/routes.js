@@ -12,20 +12,22 @@ import Profile from './containers/Profile';
 import Notifications from './containers/sub/Notifications';
 import TrainingPlan from './containers/sub/TrainingPlan';
 import ManageClients from './containers/sub/ManageClients';
-import CreateWorkout from './containers/sub/CreateWorkout';
-import EditWorkout from './containers/edit/EditWorkout';
-import CreateWorkoutDay from './containers/sub/CreateWorkoutDay';
-import CreateExercise from './containers/sub/CreateExercise';
-import CreateEvent from './containers/sub/CreateEvent';
 
 // Edit Pages
 import EditProfile from './containers/edit/EditProfile';
+import EditSchedule from './containers/edit/EditSchedule';
+import EditWorkout from './containers/edit/EditWorkout';
 
 // Detail Pages
 import WorkoutDayDetail from './containers/detail/WorkoutDayDetail';
 import ChatRoom from './containers/detail/ChatRoom';
 
 // Create Pages
+import CreateWorkout from './containers/sub/CreateWorkout';
+import CreateSchedule from './containers/sub/CreateSchedule';
+import CreateWorkoutDay from './containers/sub/CreateWorkoutDay';
+import CreateExercise from './containers/sub/CreateExercise';
+import CreateEvent from './containers/sub/CreateEvent';
 
 const MAIN_ROUTES = [
     {component: Home, name: 'Home'},
@@ -44,6 +46,8 @@ const MAIN_ROUTES = [
     {component: WorkoutDayDetail, name: 'WorkoutDayDetail'},
     {component: CreateEvent, name: 'CreateEvent'},
     {component: ChatRoom, name: 'ChatRoom'},
+    {component: CreateSchedule, name: 'CreateSchedule'},
+    {component: EditSchedule, name: 'EditSchedule'},
 ];
 
 export function getRoute(routeName, props) {

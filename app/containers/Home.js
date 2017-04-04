@@ -49,7 +49,7 @@ const Home = React.createClass({
     getNeeded(refresh = false) {
         if (this.props.RequestUser.type == 1) {
             this.props.actions.getClients(refresh);
-            this.props.getWorkouts('?template=true', refresh);
+            this.props.getSchedules('?template=true', refresh);
             this.props.getQuestionnaires();
         }
         if (refresh) {
@@ -86,7 +86,7 @@ const Home = React.createClass({
         if (isTrainer) {
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             const QuestionnaireDS = ds.cloneWithRows(this.props.Questionnaires);
-            const WorkoutDs = ds.cloneWithRows(_.filter(this.props.Workouts, function (o) {
+            const SchedulesDs = ds.cloneWithRows(_.filter(this.props.Schedules, function (o) {
                 return !o.training_plan;
             }));
             content = (
@@ -95,18 +95,18 @@ const Home = React.createClass({
                                manageClients={this._redirect.bind(null, 'ManageClients', null)}/>
 
                     <View style={[styles.box]}>
-                        <Text style={styles.textTitle}>Workout Program Templates</Text>
-                        <ListView ref='workout_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                                  style={styles.container} enableEmptySections={true} dataSource={WorkoutDs}
-                                  renderRow={(workout) =>
+                        <Text style={styles.textTitle}>Program Templates</Text>
+                        <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                                  style={styles.container} enableEmptySections={true} dataSource={SchedulesDs}
+                                  renderRow={(schedule) =>
                                       <TouchableOpacity style={styles.link}
-                                                        onPress={this._redirect.bind(null, 'EditWorkout', {workoutId: workout.id})}>
-                                          <Text style={styles.simpleTitle}>{workout.name}</Text>
+                                                        onPress={this._redirect.bind(null, 'EditSchedule', {scheduleId: schedule.id})}>
+                                          <Text style={styles.simpleTitle}>{schedule.name}</Text>
                                           <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
                                       </TouchableOpacity>
                                   }
                         />
-                        <TouchableOpacity onPress={this._redirect.bind(null, 'CreateWorkout', null)}
+                        <TouchableOpacity onPress={this._redirect.bind(null, 'CreateSchedule', null)}
                                           style={styles.link}>
                             <Text style={styles.simpleTitle}>Create Program Template</Text>
                             <Icon name="plus" size={getFontSize(18)} style={styles.linkArrow}/>
@@ -219,7 +219,7 @@ const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
         Questionnaires: state.Global.Questionnaires,
-        Workouts: state.Global.Workouts,
+        Schedules: state.Global.Schedules,
         ...state.Home
     };
 };
@@ -230,7 +230,7 @@ const dispatchToProps = (dispatch) => {
         getNotifications: bindActionCreators(GlobalActions.getNotifications, dispatch),
         readNotification: bindActionCreators(GlobalActions.readNotification, dispatch),
         getQuestionnaires: bindActionCreators(GlobalActions.getQuestionnaires, dispatch),
-        getWorkouts: bindActionCreators(GlobalActions.getWorkouts, dispatch)
+        getSchedules: bindActionCreators(GlobalActions.getSchedules, dispatch)
     }
 };
 
