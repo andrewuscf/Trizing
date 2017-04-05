@@ -5,11 +5,13 @@ import {
     View,
     TouchableOpacity,
     ScrollView,
-    TextInput,
     Dimensions,
-    Alert
+    Alert,
+    Keyboard
 } from 'react-native';
 import {bindActionCreators} from 'redux';
+import t from 'tcomb-form-native';
+import _ from 'lodash';
 import {connect} from 'react-redux';
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -25,40 +27,51 @@ import {EMPTY_AVATAR} from '../../assets/constants';
 import Loading from '../../components/Loading';
 import SubmitButton from '../../components/SubmitButton';
 
-var {width: deviceWidth} = Dimensions.get('window');
+const {width: deviceWidth} = Dimensions.get('window');
 
 
 const EditProfile = React.createClass({
     getInitialState() {
         let initData = {
-            phone_number: null,
+            value: null,
             showRoll: false,
             previewImage: null,
-            first_name: null,
-            last_name: null,
-            type: null
         };
         if (this.props.RequestUser) {
             initData = {
-                ...initData,
-                username: this.props.RequestUser.username,
-                first_name: this.props.RequestUser.profile.first_name,
-                last_name: this.props.RequestUser.profile.last_name,
-                phone_number: this.props.RequestUser.profile.phone_number,
-                type: this.props.RequestUser.type
+                value: {
+                    username: this.props.RequestUser.username,
+                    first_name: this.props.RequestUser.profile.first_name,
+                    last_name: this.props.RequestUser.profile.last_name,
+                    phone_number: this.props.RequestUser.profile.phone_number,
+                    type: this.props.RequestUser.type
+                },
+                showRoll: false,
+                previewImage: null,
             }
         }
         return initData;
     },
 
+    onChange(value) {
+        this.setState({ value });
+    },
+
+    clearForm() {
+        this.setState({ value: null });
+    },
+
     componentDidUpdate(prevProps) {
         if (!prevProps.RequestUser && this.props.RequestUser) {
             this.setState({
-                username: this.props.RequestUser.username,
-                first_name: this.props.RequestUser.profile.first_name,
-                last_name: this.props.RequestUser.profile.last_name,
-                phone_number: this.props.RequestUser.profile.phone_number,
-                type: this.props.RequestUser.type ? this.props.RequestUser.type : null
+                value: {
+                    ...this.state.value,
+                    username: this.props.RequestUser.username,
+                    first_name: this.props.RequestUser.profile.first_name,
+                    last_name: this.props.RequestUser.profile.last_name,
+                    phone_number: this.props.RequestUser.profile.phone_number,
+                    type: this.props.RequestUser.type ? this.props.RequestUser.type : null
+                }
             })
         }
     },
@@ -89,25 +102,13 @@ const EditProfile = React.createClass({
         this.props.navigator.pop();
     },
 
-    checkAllRequired() {
-        return !!(this.state.phone_number &&
-        (this.state.previewImage || this.props.RequestUser.profile.avatar) &&
-        this.state.first_name && this.state.last_name && this.state.type);
-    },
-
-    selectType(num) {
-        this.setState({
-            type: num
-        });
-    },
-
     _onSubmit(){
-        if (this.checkAllRequired()) {
+        let values = this.refs.form.getValue();
+        if (values && (this.state.previewImage || this.props.RequestUser.profile.avatar)) {
             const data = {
-                username: this.state.username,
-                type: this.state.type
+                username: values.username,
+                type: values.type
             };
-
             let profileData = new FormData();
             if (this.state.previewImage) {
                 profileData.append("avatar", {
@@ -117,11 +118,11 @@ const EditProfile = React.createClass({
                     type: 'multipart/form-data'
                 });
             }
-            profileData.append("first_name", this.state.first_name);
-            profileData.append("last_name", this.state.last_name);
-            profileData.append("phone_number", this.state.phone_number);
+            profileData.append("first_name", values.first_name);
+            profileData.append("last_name", values.last_name);
+            profileData.append("phone_number", values.phone_number);
             this.props.actions.updateUser(data, profileData, this.asyncActions);
-            // this.props.actions.updateProfile(profileData, this.asyncActions);
+
         }
     },
 
@@ -139,6 +140,25 @@ const EditProfile = React.createClass({
     render() {
         const rollPickerWidth = deviceWidth - 20;
         const user = this.props.RequestUser;
+
+        let options = {
+            // stylesheet: stylesheet,
+            fields: {
+                username: {
+                    // label: 'Event title*',
+                    onSubmitEditing: () => this.refs.form.getComponent('first_name').refs.input.focus()
+                },
+                first_name: {
+                    onSubmitEditing: () => this.refs.form.getComponent('last_name').refs.input.focus()
+                },
+                last_name: {
+                    onSubmitEditing: () => this.refs.form.getComponent('phone_number').refs.input.focus()
+                },
+                phone_number: {
+                    onSubmitEditing: () => Keyboard.dismiss()
+                }
+            }
+        };
         // Hours available options
         if (user) {
             let userImage = EMPTY_AVATAR;
@@ -148,6 +168,22 @@ const EditProfile = React.createClass({
                 userImage = user.profile.thumbnail;
             } else if (user.profile.avatar) {
                 userImage = user.profile.avatar;
+            }
+
+            let Profile = t.struct({
+                username: t.String,
+                first_name: t.String,
+                last_name: t.String,
+                phone_number: t.Number
+            });
+            if (!this.props.RequestUser.type) {
+                Profile = t.struct({
+                    type: ACCOUNT_Type,
+                    username: t.String,
+                    first_name: t.String,
+                    last_name: t.String,
+                    phone_number: t.Number,
+                });
             }
             return (
                 <View style={styles.mainContainer}>
@@ -176,75 +212,13 @@ const EditProfile = React.createClass({
                         <View style={styles.mainContent}>
                             <AvatarImage image={userImage} style={styles.avatar} redirect={this.toggleRoll}/>
 
-                            <View style={[styles.section, styles.twoColumn]}>
-                                <TextInput style={[styles.textInput, styles.nameInput]}
-                                           underlineColorAndroid='transparent'
-                                           autoCapitalize='words'
-                                           keyboardType='default'
-                                           autoCorrect={false}
-                                           onChangeText={(text) => this.setState({first_name: text})}
-                                           value={this.state.first_name}
-                                           onSubmitEditing={(event) => {
-                                               this.refs.last_name.focus();
-                                           }}
-                                           placeholder="First Name"/>
-                                <View style={styles.divider}/>
-                                <TextInput style={[styles.textInput, styles.nameInput]}
-                                           underlineColorAndroid='transparent'
-                                           autoCapitalize='words'
-                                           keyboardType='default'
-                                           autoCorrect={false}
-                                           ref="last_name"
-                                           onSubmitEditing={(event) => {
-                                               this.refs.username.focus();
-                                           }}
-                                           onChangeText={(text) => this.setState({last_name: text})}
-                                           value={this.state.last_name}
-                                           placeholder="Last Name"/>
-                            </View>
-
-                            <View style={styles.section}>
-                                <TextInput ref="username" style={styles.textInput}
-                                           underlineColorAndroid='transparent'
-                                           autoCapitalize='none'
-                                           maxLength={150}
-                                           onSubmitEditing={(event) => {
-                                               this.refs.phone_number.focus();
-                                           }}
-                                           nChangeText={(text) => this.setState({username: text})}
-                                           value={this.state.username}
-                                           placeholder="Username"/>
-                            </View>
-
-                            <View style={styles.section}>
-                                <TextInput ref="phone_number" style={styles.textInput}
-                                           underlineColorAndroid='transparent'
-                                           keyboardType="phone-pad"
-                                           maxLength={10}
-                                           onChangeText={(number) => this.setState({phone_number: number})}
-                                           value={this.state.phone_number}
-                                           onSubmitEditing={(event) => {
-                                               if (this.props.RequestUser.type)
-                                                   this._onSubmit();
-                                           }}
-                                           placeholder="Phone Number"/>
-                            </View>
-
-                            {(!this.props.RequestUser.type) ?
-                                <View style={{flexDirection: 'row', paddingTop: 20}}>
-                                    <TouchableOpacity onPress={this.selectType.bind(null, 1)}
-                                                      style={[styles.typeButtons, this.state.type == 1 ? styles.selectedType : styles.notSelected]}>
-                                        <Text
-                                            style={this.state.type == 1 ? styles.selectedText : styles.notSelectedText}>Trainer</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={this.selectType.bind(null, 2)}
-                                                      style={[styles.typeButtons, this.state.type == 2 ? styles.selectedType : styles.notSelected]}>
-                                        <Text
-                                            style={this.state.type == 2 ? styles.selectedText : styles.notSelectedText}>Client</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                : null
-                            }
+                            <Form
+                                ref="form"
+                                type={Profile}
+                                options={options}
+                                value={this.state.value}
+                                onChange={this.onChange}
+                            />
 
 
                         </View>
@@ -263,7 +237,8 @@ const EditProfile = React.createClass({
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1
+        flex: 1,
+        backgroundColor: 'white'
     },
     backNav: {
         minHeight: 50,
@@ -285,43 +260,6 @@ const styles = StyleSheet.create({
         width: 100,
         borderRadius: 50
     },
-    section: {
-        marginTop: 20,
-        borderBottomWidth: 1,
-        borderColor: '#b1aea5'
-    },
-    userName: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    userNameEdit: {
-        alignSelf: 'flex-end',
-        justifyContent: 'center',
-        paddingLeft: 10,
-        paddingBottom: 5
-    },
-    userNameText: {
-        fontSize: 18,
-        fontWeight: "400",
-        paddingTop: 15
-    },
-    twoColumn: {
-        flexDirection: 'row',
-    },
-    nameInput: {
-        flex: 2
-    },
-    textInput: {
-        flex: 1,
-        height: 35,
-        color: 'black',
-        backgroundColor: 'transparent',
-        paddingTop: 2,
-        fontSize: 17,
-        textAlignVertical: 'top',
-    },
     button: {
         backgroundColor: '#00BFFF',
         justifyContent: 'center',
@@ -338,43 +276,6 @@ const styles = StyleSheet.create({
     submitText: {
         color: 'white',
         fontSize: 15,
-        // fontFamily: 'OpenSans-Bold',
-    },
-    divider: {
-        width: 1,
-        backgroundColor: '#C7C7CD',
-        marginBottom: 5,
-        marginTop: 5,
-        marginRight: 5
-    },
-    typeButtons: {
-        flex: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingBottom: 10,
-        paddingTop: 10
-    },
-    notSelected: {
-        borderWidth: 1,
-        borderColor: '#1352e2',
-        backgroundColor: 'transparent'
-    },
-    selectedType: {
-        backgroundColor: '#1352e2'
-    },
-    selectedText: {
-        color: 'white',
-        fontSize: 14,
-        fontFamily: 'OpenSans-Bold',
-    },
-    notSelectedText: {
-        color: '#1352e2',
-        fontSize: 14,
-        fontFamily: 'OpenSans-Bold',
-    },
-    buttonText: {
-        color: '#1352e2',
-        fontSize: 15,
         fontFamily: 'OpenSans-Bold',
     },
     logOut: {
@@ -385,6 +286,14 @@ const styles = StyleSheet.create({
         top: 25,
         position: 'absolute'
     }
+});
+
+
+// T FORM SETUP
+const Form = t.form.Form;
+const ACCOUNT_Type = t.enums({
+    1: 'Trainer',
+    2: 'Client'
 });
 
 const stateToProps = (state) => {

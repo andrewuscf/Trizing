@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
 import {
-    ScrollView,
     View,
     Image,
     Text,
     StyleSheet,
     TouchableOpacity,
-    TouchableHighlight,
     TextInput,
     Dimensions
 } from 'react-native';
@@ -101,11 +99,7 @@ const Login = React.createClass({
         return (
             <View style={styles.container}>
                 {this.state.forgotCreds || this.state.signUp ?
-                    <BackBar back={this.back} navStyle={{alignItems: 'center'}}>
-                        <Text style={{alignSelf: 'center', flex: 2}}>
-                            {this.state.signUp ? 'SIGN UP' : 'FORGOT PASSWORD'}
-                        </Text>
-                    </BackBar>
+                    <BackBar back={this.back} backText='Log In' />
                     : null
                 }
 

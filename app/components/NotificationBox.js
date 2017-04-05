@@ -57,6 +57,9 @@ const NotificationBox = React.createClass({
                 this.props.navigator.push(getRoute('Profile', {id: action.action_object.client}));
             } else if (action.action_object.liked_by) {
                 console.log('this is a post')
+            }  else if (action.action_object.from_user) {
+                console.log('need to create request action page')
+                this.props.navigator.push(getRoute('Profile', {id: action.action_object.from_user.id}));
             }
         }
     },
