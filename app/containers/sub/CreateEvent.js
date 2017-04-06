@@ -175,7 +175,9 @@ const CreateEvent = React.createClass({
                                         (_.includes(this.state.selected, client.id)) ? styles.selected : null]}
                                                  image={image}
                                                  redirect={this.selectUser.bind(null, client.id)}/>
-                                    <Text style={styles.userText}>{trunc(client.username, 13)}</Text>
+                                    <Text style={styles.userText}>
+                                        {trunc(`${client.profile.first_name} ${client.profile.last_name[0]}`.toUpperCase(), 13)}
+                                        </Text>
                                 </View>
                             )
                         })}
@@ -213,9 +215,9 @@ const styles = StyleSheet.create({
         borderColor: 'red',
     },
     avatar: {
-        height: 60,
-        width: 60,
-        borderRadius: 30
+        height: 80,
+        width: 80,
+        borderRadius: 40
     },
     inviteBox: {
         width: window.width / 3,
@@ -225,7 +227,8 @@ const styles = StyleSheet.create({
     },
     userText: {
         fontSize: getFontSize(18),
-        marginTop: 5
+        marginTop: 5,
+        fontFamily: 'OpenSans-SemiBold',
     },
 });
 

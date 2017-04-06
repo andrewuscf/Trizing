@@ -8,7 +8,6 @@ const BackBar = React.createClass({
     propTypes: {
         back: React.PropTypes.func.isRequired,
         backText: React.PropTypes.string,
-        navStyle: React.PropTypes.object,
     },
 
     render() {

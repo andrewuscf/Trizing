@@ -5,7 +5,8 @@ import {
     Text,
     View,
     Alert,
-    TouchableOpacity
+    TouchableOpacity,
+    ScrollView
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -13,9 +14,9 @@ import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as ProfileActions from '../actions/profileActions';
-import {getUser, removeToken, getQuestionnaires} from '../actions/globalActions';
+import {getUser, getQuestionnaires, getNotifications} from '../actions/globalActions';
 
-import {fetchData, API_ENDPOINT, trunc, checkStatus} from '../actions/utils';
+import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../actions/utils';
 import {getRoute} from '../routes';
 import GlobalStyle from './globalStyle';
 
@@ -44,13 +45,15 @@ const Profile = React.createClass({
 
     propTypes: {
         id: React.PropTypes.number.isRequired,
-        openModal: React.PropTypes.func.isRequired
+        openModal: React.PropTypes.func.isRequired,
+        request: React.PropTypes.object
     },
 
     getInitialState() {
         return {
             user: null,
-            refreshing: false
+            refreshing: false,
+            request: this.props.request
         }
     },
 
@@ -60,7 +63,7 @@ const Profile = React.createClass({
 
 
     componentDidMount() {
-        // this.addListenerOn(this.props.events, 'scrollToTopEvent', this.scrollToTopEvent);
+        this.addListenerOn(this.props.events, 'scrollToTopEvent', this.scrollToTopEvent);
         this.getUser();
     },
 
@@ -96,15 +99,23 @@ const Profile = React.createClass({
         this.props.navigator.pop();
     },
 
-    _logOut() {
-        Alert.alert(
-            'Log out',
-            'Are you sure you want to log out?',
-            [
-                {text: 'Cancel', null, style: 'cancel'},
-                {text: 'Yes', onPress: () => this.props.removeToken()},
-            ]
-        );
+    _respond(respond) {
+        if (this.state.request) {
+            let data = {accepted_at: moment().toISOString()};
+            if (!respond) data = {rejected_at: moment().toISOString()};
+
+            fetch(`${API_ENDPOINT}request/${this.state.request.id}/`,
+                fetchData('PATCH', JSON.stringify(data), this.props.UserToken))
+                .then(checkStatus)
+                .then((responseJson) => {
+                    this.setState({request: null});
+                    this.props.getNotifications(true);
+                    this.getUser(true);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     },
 
 
@@ -116,12 +127,12 @@ const Profile = React.createClass({
             if (user.profile.thumbnail)
                 userImage = user.profile.thumbnail;
             return (
-                <View style={GlobalStyle.container}>
-                    <BackBar back={this._back}>
-                        <Text style={styles.userNameTop}>{trunc(user.username, 26)}</Text>
+                <ScrollView style={GlobalStyle.container}>
+                    <BackBar back={this._back} navStyle={styles.customBack}>
                         {isRequestUser ?
-                            <TouchableOpacity style={styles.logOut} onPress={this._logOut}>
-                                <Icon name="power-off" size={20} color='red'/>
+                            <TouchableOpacity style={styles.logOut}
+                                              onPress={this._redirect.bind(null, 'EditProfile', null)}>
+                                <Icon name="gear" size={20} color='#333333'/>
                             </TouchableOpacity>
                             : null
                         }
@@ -129,17 +140,27 @@ const Profile = React.createClass({
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
                         <AvatarImage style={styles.avatar} image={userImage}/>
                         <View style={styles.userInfo}>
-                            <Text
-                                style={styles.name}>{trunc(`${user.profile.first_name} ${user.profile.last_name}`, 26)}</Text>
-                            <Text>Last Active:
-                                <Text> {moment(user.checked_notifications).fromNow(false)}</Text>
+                            <Text style={styles.name}>
+                                {trunc(`${user.profile.first_name} ${user.profile.last_name}`, 26)}
                             </Text>
                         </View>
-                        {isRequestUser ?
-                            <TouchableOpacity onPress={this._redirect.bind(null, 'EditProfile', null)}
-                                              style={styles.editProfile}>
-                                <Icon name="ellipsis-v" size={20} color='#333333'/>
-                            </TouchableOpacity>
+                        {(this.state.request && this.state.request.to_user == this.props.RequestUser.id) ?
+                            <View style={styles.requestSection}>
+                                {this.state.request.from_user.type == 1 ?
+                                    <Text style={styles.requestText}>Wants to be your trainer</Text> :
+                                    <Text style={styles.requestText}>Wants to be your client</Text>
+                                }
+                                <View style={styles.requestButtonSection}>
+                                    <TouchableOpacity style={[styles.requestButtons, styles.accept]}
+                                                      onPress={this._respond.bind(null, true)}>
+                                        <Icon name="check" size={20} color='white'/>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={[styles.requestButtons, styles.deny]}
+                                                      onPress={this._respond.bind(null, false)}>
+                                        <Icon name="times" size={20} color='red'/>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
                             : null
                         }
                     </View>
@@ -154,7 +175,7 @@ const Profile = React.createClass({
                                       _redirect={this._redirect}/>
                         : null
                     }
-                </View>
+                </ScrollView>
             )
         }
         return <Loading />
@@ -163,30 +184,71 @@ const Profile = React.createClass({
 
 
 const styles = StyleSheet.create({
-    userNameTop: {
-        fontSize: 15,
-        fontFamily: 'OpenSans-Bold',
+    customBack: {
+        position: 'absolute',
+        zIndex: 99,
+        right: 0,
+        top: 0,
+        left: 0,
+        backgroundColor: 'transparent',
+        borderBottomWidth: 0
+    },
+    avatar: {
+        height: 80,
+        width: 80,
+        borderRadius: 40,
     },
     userDetail: {
-        padding: 20,
-        flexDirection: 'row',
-        backgroundColor: 'white'
+        paddingTop: 20,
+        paddingBottom: 20,
+        // flexDirection: 'row',
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     userInfo: {
-        paddingLeft: 20
+        // paddingLeft: 20
     },
     name: {
+        paddingTop: 5,
         fontFamily: 'OpenSans-Bold',
+        fontSize: getFontSize(22)
     },
     logOut: {
         position: 'absolute',
         top: 15,
         right: 10
     },
-    editProfile: {
-        position: 'absolute',
-        right: 20,
-        top: 35
+    requestSection: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 10
+    },
+    requestText: {
+        fontSize: getFontSize(18),
+        fontFamily: 'OpenSans-SemiBold',
+    },
+    requestButtonSection: {
+        marginTop: 10,
+        flexDirection: 'row'
+    },
+    requestButtons: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 30,
+        paddingRight: 30,
+        bottom: 0,
+        borderRadius: 20
+    },
+    accept: {
+        backgroundColor: 'green',
+        marginRight: 5
+    },
+    deny: {
+        borderColor: 'red',
+        borderWidth: .5
     }
 });
 
@@ -204,8 +266,8 @@ const dispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(ProfileActions, dispatch),
         getUser: bindActionCreators(getUser, dispatch),
-        removeToken: bindActionCreators(removeToken, dispatch),
-        getQuestionnaires: bindActionCreators(getQuestionnaires, dispatch)
+        getQuestionnaires: bindActionCreators(getQuestionnaires, dispatch),
+        getNotifications: bindActionCreators(getNotifications, dispatch)
     }
 };
 

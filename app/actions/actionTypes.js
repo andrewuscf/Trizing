@@ -11,7 +11,7 @@ export const LOAD_REQUEST_USER = 'LOAD_REQUEST_USER';
 export const CLEAR_API_ERROR = 'CLEAR_API_ERROR';
 export const API_ERROR = 'API_ERROR';
 
-
+// Workout Constants
 export const CREATE_WORKOUT = 'CREATE_WORKOUT';
 export const CREATE_WORKOUT_DAY = 'CREATE_WORKOUT_DAY';
 export const UPDATE_WORKOUT_DAY = 'UPDATE_WORKOUT_DAY';
@@ -19,8 +19,6 @@ export const ADD_EXERCISE = 'ADD_EXERCISE';
 export const EDIT_EXERCISE = 'EDIT_EXERCISE';
 export const DELETE_SET = 'DELETE_SET';
 export const LOAD_WORKOUTS = 'LOAD_WORKOUTS';
-
-
 export const LOAD_SCHEDULES = 'LOAD_SCHEDULES';
 export const CREATE_SCHEDULE = 'CREATE_SCHEDULE';
 

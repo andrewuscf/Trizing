@@ -135,7 +135,7 @@ const Home = React.createClass({
             content = <Text>Client</Text>;
         }
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        const dataSource = ds.cloneWithRows(_.filter(this.props.Notifications, {unread: true}));
+        const dataSource = ds.cloneWithRows(this.props.Notifications.slice(0, 4));
         return (
             <View style={GlobalStyle.container}>
                 <ScrollView ref='home_scroll'
@@ -144,21 +144,19 @@ const Home = React.createClass({
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
 
                     {content}
-                    {this.props.Notifications.length > 0 ?
-                        <View style={styles.box}>
-                            <ListView ref='notification_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                                      style={styles.container} enableEmptySections={true} dataSource={dataSource}
-                                      renderRow={(notification) => <NotificationBox
-                                          navigator={this.props.navigator} notification={notification}
-                                          readNotification={this.props.readNotification}/>}
-                            />
-                            <TouchableOpacity onPress={this._redirect.bind(null, 'Notifications', null)} style={styles.link}>
-                                <Text style={styles.simpleTitle}>View All Notifications</Text>
-                                <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
-                            </TouchableOpacity>
-                        </View>
-                        : null
-                    }
+                    <View style={styles.box}>
+                        <ListView ref='notification_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                                  style={styles.container} enableEmptySections={true} dataSource={dataSource}
+                                  renderRow={(notification) => <NotificationBox
+                                      navigator={this.props.navigator} notification={notification}
+                                      readNotification={this.props.readNotification}/>}
+                        />
+                        <TouchableOpacity onPress={this._redirect.bind(null, 'Notifications', null)}
+                                          style={styles.link}>
+                            <Text style={styles.simpleTitle}>View All Notifications</Text>
+                            <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
+                        </TouchableOpacity>
+                    </View>
                 </ScrollView>
             </View>
         )
