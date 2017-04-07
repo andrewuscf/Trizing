@@ -26,7 +26,7 @@ import EventBox from '../components/EventBox';
 const Calendar = React.createClass({
     mixins: [Subscribable.Mixin],
     scrollToTopEvent(args) {
-        if (args.routeName == 'Calendar') this.refs.todayscroll.scrollTo({y: 0, true});
+        if (args.routeName == 'Calendar') this.refs.calendar_list.scrollTo({y: 0, true});
     },
 
     componentDidMount() {
@@ -64,7 +64,7 @@ const Calendar = React.createClass({
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             const dataSource = ds.cloneWithRows(this.props.Events);
             return (
-                <ListView
+                <ListView ref="calendar_list"
                     refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
                     style={styles.container} enableEmptySections={true}
                     renderHeader={this.renderHeader}
@@ -75,7 +75,7 @@ const Calendar = React.createClass({
             );
         }
         return (
-            <ScrollView contentContainerStyle={styles.scrollContainer}
+            <ScrollView contentContainerStyle={styles.scrollContainer} ref="calendar_list"
                         refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}>
                 {this.renderHeader()}
                 <View style={styles.noRequests}>

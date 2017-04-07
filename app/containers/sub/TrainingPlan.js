@@ -67,6 +67,7 @@ const TrainingPlan = React.createClass({
             fetchData('POST', jsondata, this.props.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
+            console.log(responseJson)
                 if (responseJson.id) {
                     this.setState({
                         macro_plans: [

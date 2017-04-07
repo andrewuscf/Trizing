@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import moment from 'moment';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
@@ -43,28 +44,28 @@ const EventBox = React.createClass({
         const event = this.props.occurrence.event;
         let image = event.user.profile.thumbnail ? event.user.profile.thumbnail : event.user.profile.avatar;
         let start_time = moment.utc(occurrence.start_time).local();
-        let end_time = moment.utc(occurrence.end_time).local();
+        const attending = event.invited.map((user, i) => {
+            return <Text key={i} style={styles.invitedUser}>{i == 0 ? `${user.username}` : `, ${user.username}`}</Text>
+        });
         return (
             <TouchableOpacity activeOpacity={1} onPress={this._onPress}
                               style={[GlobalStyle.simpleBottomBorder, styles.container]}>
-                <AvatarImage goToProfile={this.goToProfile} image={image}/>
-                <View style={styles.noteInfo}>
-                    <View style={styles.noteText}>
-                        <Text style={styles.notifText}>
-                            <Text style={styles.firstName}>{event.title}</Text>
-                        </Text>
-                    </View>
-                </View>
                 <View style={styles.eventDate}>
                     <Text style={styles.eventDateMonth}>{start_time.format("MMM").toUpperCase()}</Text>
                     <Text style={styles.eventDateDay}>{start_time.date()}</Text>
-                    <Text style={styles.eventDateTime}>{start_time.format('h:mma')}</Text>
                 </View>
-                <Text style={{alignSelf: 'center'}}>-</Text>
-                <View style={styles.eventDate}>
-                    <Text style={styles.eventDateMonth}>{end_time.format("MMM").toUpperCase()}</Text>
-                    <Text style={styles.eventDateDay}>{end_time.date()}</Text>
-                    <Text style={styles.eventDateTime}>{end_time.format('h:mma')}</Text>
+                <View style={styles.noteInfo}>
+                    <View style={styles.noteText}>
+                        <Text style={styles.notifText}>
+                            <Text style={styles.firstName}>{event.title}
+                                <Text style={styles.smallText}> @ {start_time.format('h:mma')}</Text>
+                            </Text>
+                        </Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <Icon name="users" size={12} style={styles.userIcon}/>
+                            {attending}
+                        </View>
+                    </View>
                 </View>
             </TouchableOpacity>
         );
@@ -87,12 +88,15 @@ const styles = StyleSheet.create({
     noteInfo: {
         flexDirection: 'column',
         flex: 1,
-        paddingLeft: 15,
         flexWrap: 'wrap'
     },
     firstName: {
         fontFamily: 'OpenSans-Bold',
         color: '#393839'
+    },
+    smallText: {
+        fontFamily: 'OpenSans-Light',
+        color: '#4d4d4e'
     },
     noteText: {
         flexWrap: 'wrap',
@@ -110,13 +114,12 @@ const styles = StyleSheet.create({
     },
     eventDateDay: {
         fontFamily: 'OpenSans-Bold',
-        fontSize: 22,
+        fontSize: getFontSize(26),
         color: '#4d4d4e'
     },
     eventDateMonth: {
         fontFamily: 'OpenSans-Bold',
-        fontSize: 11,
-        marginTop: -8,
+        fontSize: getFontSize(14),
         backgroundColor: 'transparent',
         color: '#4d4d4e'
     },
@@ -124,8 +127,17 @@ const styles = StyleSheet.create({
         width: 50,
         alignItems: 'center',
         justifyContent: 'center',
-        marginRight: 5,
     },
+    invitedUser: {
+        fontFamily: 'OpenSans-Light',
+        color: '#4d4d4e',
+        fontSize: getFontSize(16),
+    },
+    userIcon: {
+        color: 'black',
+        alignSelf: 'center',
+        marginRight: 5
+    }
 });
 
 export default EventBox;

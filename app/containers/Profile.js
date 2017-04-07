@@ -58,7 +58,7 @@ const Profile = React.createClass({
     },
 
     scrollToTopEvent(args) {
-        if (args.routeName == 'Profile') this.refs.todayscroll.scrollTo({y: 0, true});
+        if (args.routeName == 'Profile') this.refs.profile_list.scrollTo({y: 0, true});
     },
 
 
@@ -127,7 +127,7 @@ const Profile = React.createClass({
             if (user.profile.thumbnail)
                 userImage = user.profile.thumbnail;
             return (
-                <ScrollView style={GlobalStyle.container}>
+                <ScrollView style={GlobalStyle.container} ref="profile_list">
                     <BackBar back={this._back} navStyle={styles.customBack}>
                         {isRequestUser ?
                             <TouchableOpacity style={styles.logOut}
