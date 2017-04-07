@@ -265,27 +265,6 @@ export function createSchedule(data, asyncActions) {
     }
 }
 
-export function getWorkouts(param = '', refresh = false) {
-    let url = `${API_ENDPOINT}training/workouts/${param}`;
-    return (dispatch, getState) => {
-        if (refresh) {
-            dispatch(refreshPage());
-        }
-        return fetch(url, fetchData('GET', null, getState().Global.UserToken))
-            .then(checkStatus)
-            .then((responseJson) => {
-                return dispatch({type: types.LOAD_WORKOUTS, response: responseJson, refresh: refresh});
-            })
-            .catch((error) => {
-                return dispatch({
-                    type: types.API_ERROR, error: JSON.stringify({
-                        title: 'Request could not be performed.',
-                        text: 'Please try again later.'
-                    })
-                });
-            });
-    }
-}
 
 export function createWorkout(data, asyncActions) {
     asyncActions(true);
@@ -318,6 +297,7 @@ export function addEditWorkoutDay(data, asyncActions = null) {
     return (dispatch, getState) => {
         return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
+                console.log(responseJson)
                 if (asyncActions) {
                     asyncActions(false, {
                         routeName: 'WorkoutDayDetail',

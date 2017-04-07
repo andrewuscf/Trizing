@@ -115,20 +115,14 @@ export default function AppReducers(state = initialState, action = null) {
             };
 
 
-        case constants.LOAD_WORKOUTS:
-            return {
-                ...state,
-                Workouts: (action.refresh) ? action.response.results : state.Workouts.concat(action.response.results),
-                Refreshing: false
-            };
-
         case constants.CREATE_WORKOUT:
+            console.log(action.response)
             return {
                 ...state,
                 Workouts: [
                     action.response,
                     ...state.Workouts
-                ]
+                ],
             };
 
         case constants.CREATE_WORKOUT_DAY:
@@ -169,21 +163,21 @@ export default function AppReducers(state = initialState, action = null) {
         case constants.ADD_EXERCISE:
             return {
                 ...state,
-                Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response: workout
+                Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response : workout
                 )
             };
 
         case constants.EDIT_EXERCISE:
             return {
                 ...state,
-                Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response: workout
+                Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response : workout
                 )
             };
 
         case constants.DELETE_SET:
             return {
                 ...state,
-                Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response: workout
+                Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response : workout
                 )
             };
 

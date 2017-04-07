@@ -15,6 +15,7 @@ import _ from 'lodash';
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 import {getRoute} from '../../routes';
+import GlobalStyle from '../../containers/globalStyle';
 
 import BackBar from '../../components/BackBar';
 import SubmitButton from '../../components/SubmitButton';
@@ -57,9 +58,7 @@ const EditSchedule = React.createClass({
     },
 
     _toWorkoutDay(workoutId) {
-        if (this.state.workout) {
-            this.props.navigator.push(getRoute('EditWorkout', {workoutId: workoutId}))
-        }
+        this.props.navigator.push(getRoute('EditWorkout', {workoutId: workoutId}))
     },
 
 
@@ -67,7 +66,10 @@ const EditSchedule = React.createClass({
         let steps = <Text>No Program blocks</Text>;
         if (this.state.schedule) {
             steps = this.state.schedule.workouts.map((workout, index) => {
-                return <View key={index}><Text>{workout.name}</Text></View>
+                return <TouchableOpacity key={index} onPress={this._toWorkoutDay.bind(null, workout.id)}
+                                         style={[GlobalStyle.simpleBottomBorder, styles.workoutBox, (index == 0) ? {marginTop: 5} : null]}>
+                    <Text>{workout.name}</Text>
+                </TouchableOpacity>
             });
         }
         return (
@@ -108,6 +110,11 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 15,
         fontFamily: 'OpenSans-Bold',
+    },
+    workoutBox: {
+        backgroundColor: 'white',
+        marginBottom: 5,
+        padding: 10
     }
 });
 

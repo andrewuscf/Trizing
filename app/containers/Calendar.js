@@ -66,7 +66,7 @@ const Calendar = React.createClass({
             return (
                 <ListView ref="calendar_list"
                     refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
-                    style={styles.container} enableEmptySections={true}
+                    enableEmptySections={true}
                     renderHeader={this.renderHeader}
                     dataSource={dataSource} onEndReached={this.onEndReached}
                     onEndReachedThreshold={Dimensions.get('window').height}

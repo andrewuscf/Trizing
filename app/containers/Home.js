@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f1f1f1'
     },
     box: {
-        marginTop: 10,
+        marginTop: 5,
         justifyContent: 'center',
         backgroundColor: 'white',
         borderBottomWidth: 0.5,

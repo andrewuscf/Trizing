@@ -55,6 +55,10 @@ const CreateWorkout = React.createClass({
                     training_plan: this.props.training_plan
                 }
             }
+            values = {
+                ...values,
+                schedule: this.props.scheduleId
+            };
             console.log(values)
             this.props.actions.createWorkout(values, this.asyncActions);
         }

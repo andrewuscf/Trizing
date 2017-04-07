@@ -45,6 +45,7 @@ const PostBox = React.createClass({
                 return <CommentBox key={index} comment={comment}/>
             })
         }
+        console.log(post)
         return (
             <View style={styles.postBox}>
                 <View style={[styles.container]}>
@@ -52,18 +53,27 @@ const PostBox = React.createClass({
                     <View style={styles.noteInfo}>
                         <View style={styles.noteText}>
                             <Text style={styles.notifText}>
-                                <Text style={styles.firstName}>{post.user.profile.first_name}</Text>
+                                <Text
+                                    style={styles.firstName}>{post.user.profile.first_name} {post.user.profile.last_name}</Text>
                             </Text>
                             <Text style={styles.timeStampText}>
-                                {moment.utc(post.created_at).local().format('MMM DD, YY h:mma')}
+                                <Icon name="clock-o" size={12} color='#4d4d4e'
+                                /> {moment.utc(post.created_at).local().format('MMM DD, YY h:mma')}
                             </Text>
                         </View>
                     </View>
-                    <TouchableOpacity onPress={this.likePress} style={{alignSelf: 'center'}}>
+                    <TouchableOpacity onPress={this.likePress} style={{alignSelf: 'center', flexDirection: 'row'}}>
+
                         {this.props.liked ?
-                            <Icon name="heart" size={20} color="black"/>
+                            <Icon name="heart" size={20} color="black">
+                                {post.liked_by.length ?
+                                    <Text style={styles.likeText}>{post.liked_by.length}</Text> : null}
+                            </Icon>
                             :
-                            <Icon name="heart-o" size={20} color="black"/>
+                            <Icon name="heart-o" size={20} color="black">
+                                {post.liked_by.length ?
+                                    <Text style={styles.likeText}>{post.liked_by.length}</Text> : null}
+                            </Icon>
                         }
                     </TouchableOpacity>
                 </View>
@@ -72,13 +82,14 @@ const PostBox = React.createClass({
                         {post.text}
                     </Text>
                 </View>
-                {comments ?
-                    <View style={styles.commentSection}>
+                <View style={styles.commentSection}>
+                    <Text style={styles.commentCount}>Comment</Text>
+                    {comments ?
                         <View style={[GlobalStyle.simpleTopBorderMedium]}/>
-                        {comments}
-                    </View>
-                    : null
-                }
+                        : null
+                    }
+                    {comments}
+                </View>
                 {(post.comments.count > 4) ?
                     <TouchableOpacity style={styles.viewAllComments}>
                         <Text style={styles.viewAllCommentsText}>View all {post.comments.count} comments</Text>
@@ -102,7 +113,7 @@ const styles = StyleSheet.create({
         padding: 5,
     },
     commentSection: {
-        // padding: 5,
+        paddingBottom: 5,
     },
     notifText: {
         fontFamily: 'OpenSans-Semibold',
@@ -151,7 +162,17 @@ const styles = StyleSheet.create({
     viewAllCommentsText: {
         fontFamily: 'OpenSans-Semibold',
         fontSize: getFontSize(11),
-
+    },
+    likeText: {
+        paddingRight: 8,
+        color: '#999791',
+        fontSize: getFontSize(18)
+    },
+    commentCount: {
+        alignSelf: 'flex-end',
+        paddingRight: 5,
+        color: '#999791',
+        fontSize: getFontSize(22)
     }
 });
 

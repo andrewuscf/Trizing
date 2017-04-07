@@ -28,8 +28,8 @@ const EditWorkout = React.createClass({
     },
 
     getInitialState() {
-        const index = _.findIndex(this.props.Workouts, {id: this.props.workoutId});
-        const workout = this.props.Workouts[index];
+        const schedule = _.find(this.props.Schedules, {workouts: [{id: this.props.workoutId}]});
+        const workout = _.find(schedule.workouts, {id: this.props.workoutId});
         return {
             Error: null,
             workout: workout
@@ -46,9 +46,9 @@ const EditWorkout = React.createClass({
     },
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.Workouts != prevProps.Workouts) {
-            const index = _.findIndex(this.props.Workouts, {id: this.props.workoutId})
-            const workout = this.props.Workouts[index];
+        if (this.props.Schedules != prevProps.Schedules) {
+            const schedule = _.find(this.props.Schedules, {workouts: [{id: this.props.workoutId}]});
+            const workout = _.find(schedule.workouts, {id: this.props.workoutId});
             this.setState({workout: workout});
         }
     },

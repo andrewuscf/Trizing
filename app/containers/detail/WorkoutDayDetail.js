@@ -29,12 +29,9 @@ const WorkoutDayDetail = React.createClass({
     },
 
     getInitialState() {
-        let workout_day = null;
-        for (let workout of this.props.Workouts) {
-            workout_day = _.find(workout.workout_days, {id: this.props.workout_day_id})
-            if (workout_day)
-                break;
-        }
+        const schedule = _.find(this.props.Schedules, {workouts: [{workout_days: [{id: this.props.workout_day_id}]}]});
+        const workout = _.find(schedule.workouts, {workout_days: [{id: this.props.workout_day_id}]});
+        const workout_day = _.find(workout.workout_days, {id: this.props.workout_day_id});
         return {
             Error: null,
             workout_day: workout_day
@@ -42,13 +39,10 @@ const WorkoutDayDetail = React.createClass({
     },
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.Workouts != prevProps.Workouts) {
-            let workout_day = null;
-            for (let workout of this.props.Workouts) {
-                workout_day = _.find(workout.workout_days, {id: this.props.workout_day_id})
-                if (workout_day)
-                    break;
-            }
+        if (this.props.Schedules != prevProps.Schedules) {
+            const schedule = _.find(this.props.Schedules, {workouts: [{workout_days: [{id: this.props.workout_day_id}]}]});
+            const workout = _.find(schedule.workouts, {workout_days: [{id: this.props.workout_day_id}]});
+            const workout_day = _.find(workout.workout_days, {id: this.props.workout_day_id});
             if (workout_day)
                 this.setState({workout_day: workout_day})
         }
