@@ -31,7 +31,9 @@ const DisplayExerciseBox = React.createClass({
         return (
             <TouchableOpacity style={styles.displayWorkoutBox} onPress={this._redirect}>
                 <Text style={styles.simpleTitle}>{this.props.exercise.name}</Text>
-                <Text style={styles.smallText}>Sets: {this.props.exercise.sets.length}</Text>
+                <TouchableOpacity style={styles.edit}>
+                    <Icon name="pencil" size={20} color="black"/>
+                </TouchableOpacity>
             </TouchableOpacity>
         )
     }
@@ -64,9 +66,7 @@ const styles = StyleSheet.create({
         fontFamily: 'OpenSans-Semibold',
         margin: 10,
     },
-    smallText: {
-        fontSize: getFontSize(15),
-        fontFamily: 'OpenSans-Semibold',
+    edit: {
         margin: 10,
     },
 });

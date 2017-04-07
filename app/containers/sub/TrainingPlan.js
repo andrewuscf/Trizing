@@ -32,7 +32,6 @@ const TrainingPlan = React.createClass({
         getQuestionnaires: React.PropTypes.func.isRequired,
         openModal: React.PropTypes.func.isRequired,
         Questionnaires: React.PropTypes.array.isRequired,
-        Workouts: React.PropTypes.array.isRequired,
         QuestionnairesNext: React.PropTypes.string,
         tab: React.PropTypes.number
     },
@@ -44,8 +43,8 @@ const TrainingPlan = React.createClass({
             tab: this.props.tab ? this.props.tab : 1,
             refreshing: false,
             training_plan: this.props.training_plan,
-            workouts: [],
-            workouts_next: null
+            schedules: [],
+            schedule_next: null
         }
     },
 
@@ -53,12 +52,12 @@ const TrainingPlan = React.createClass({
         if (this.state.tab == 1)
             this.getMacros(true);
         else if (this.state.tab == 2)
-            this.getClientWorkouts(true);
+            this.getClientSchedules(true);
     },
 
     componentDidUpdate(prevProps) {
         if (prevProps.Workouts != this.props.Workouts)
-            this.getClientWorkouts(true);
+            this.getClientSchedules(true);
     },
 
     createMacroPlan(data) {
@@ -116,19 +115,19 @@ const TrainingPlan = React.createClass({
             });
     },
 
-    getClientWorkouts(refresh = false) {
-        let url = `${API_ENDPOINT}training/workouts/?client=${this.props.clientId}`;
-        if (!refresh && this.state.workouts_next)
-            url = this.state.workouts_next;
+    getClientSchedules(refresh = false) {
+        let url = `${API_ENDPOINT}training/schedules/?client=${this.props.clientId}`;
+        if (!refresh && this.state.schedule_next)
+            url = this.state.schedule_next;
 
         fetch(url, fetchData('GET', null, this.props.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                if (!this.state.workouts_next || refresh)
-                    this.setState({workouts: responseJson.results, workouts_next: responseJson.next});
+                if (!this.state.schedule_next || refresh)
+                    this.setState({schedules: responseJson.results, schedule_next: responseJson.next});
                 else
                     this.setState({
-                        workouts: this.state.workouts.concat(responseJson.results),
-                        workouts_next: responseJson.next
+                        schedules: this.state.schedules.concat(responseJson.results),
+                        schedule_next: responseJson.next
                     });
             })
     },
@@ -138,25 +137,25 @@ const TrainingPlan = React.createClass({
             fetchData('PATCH', JSON.stringify(data), this.props.UserToken)).then(checkStatus)
     },
 
-    deleteWorkout(id) {
-        fetch(`${API_ENDPOINT}training/workout/${id}/`,
-            fetchData('DELETE', null, this.props.UserToken)).then(checkStatus)
-            .then((responseJson) => {
-                if (responseJson.deleted) {
-                    const index = _.findIndex(this.state.workouts, {id: id});
-                    this.setState({workouts:
-                        [...this.state.workouts.slice(0, index), ...this.state.workouts.slice(index + 1)]
-                    });
-                }
-            })
+    deleteSchedule(id) {
+        // fetch(`${API_ENDPOINT}training/workout/${id}/`,
+        //     fetchData('DELETE', null, this.props.UserToken)).then(checkStatus)
+        //     .then((responseJson) => {
+        //         if (responseJson.deleted) {
+        //             const index = _.findIndex(this.state.schedules, {id: id});
+        //             this.setState({schedules:
+        //                 [...this.state.schedules.slice(0, index), ...this.state.schedules.slice(index + 1)]
+        //             });
+        //         }
+        //     })
     },
 
     _onTabPress(tab) {
         if (tab != this.state.tab) {
             if (tab == 1 && !this.state.macro_plans) {
                 this.getMacros();
-            } else if (tab == 2 && !this.state.workouts.length) {
-                this.getClientWorkouts();
+            } else if (tab == 2 && !this.state.schedules.length) {
+                this.getClientSchedules();
             }
             this.setState({tab: tab});
         }
@@ -166,14 +165,14 @@ const TrainingPlan = React.createClass({
         if (this.state.tab == 1)
             this.getMacros(true);
         else if (this.state.tab == 2)
-            this.getClientWorkouts(true);
+            this.getClientSchedules(true);
     },
 
     _onEndReached() {
         if (this.state.tab == 1 && this.state.macro_plansNext)
             this.getMacros();
-        else if (this.state.tab == 2 && this.state.workouts_next)
-            this.getClientWorkouts();
+        else if (this.state.tab == 2 && this.state.schedule_next)
+            this.getClientSchedules();
     },
 
     isSelected(tab) {
@@ -228,7 +227,7 @@ const TrainingPlan = React.createClass({
                                   _redirect={this.props._redirect}/>
                         :
                         <TouchableOpacity style={styles.emptyContainer}
-                                          onPress={this.props._redirect.bind(null, 'CreateWorkout',
+                                          onPress={this.props._redirect.bind(null, 'CreateSchedule',
                                               {training_plan: this.props.training_plan.id})}>
                             <Text style={styles.mainText}>Create a workout program for client</Text>
                             <Text style={styles.smallText}>(Template or Blank)</Text>
@@ -242,14 +241,14 @@ const TrainingPlan = React.createClass({
     },
 
     render() {
-        if (!this.props.Questionnaires && !this.state.workouts.length && !this.state.macro_plans)
+        if (!this.props.Questionnaires && !this.state.schedules.length && !this.state.macro_plans)
             return <Loading />;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = null;
         if (this.state.tab == 1 && this.state.macro_plans) {
             dataSource = ds.cloneWithRows(this.state.macro_plans);
         } else if (this.state.tab == 2) {
-            dataSource = ds.cloneWithRows(this.state.workouts);
+            dataSource = ds.cloneWithRows(this.state.schedules);
         }
         return (
             <View style={GlobalStyle.container}>
@@ -301,7 +300,7 @@ const TrainingPlan = React.createClass({
                                               selected={object.id == this.state.training_plan.workout}
                                               select={this.selectTrainingPlan}
                                               workout={object} _redirect={this.props._redirect}
-                                              deleteWorkout={this.deleteWorkout}/>
+                                              deleteSchedule={this.deleteSchedule}/>
                                       }
                                   }}
                         />

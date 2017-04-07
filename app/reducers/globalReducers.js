@@ -12,8 +12,6 @@ const initialState = {
     Error: null,
     Questionnaires: [],
     QuestionnairesNext: null,
-    Workouts: [],
-    WorkoutsNext: null,
     Schedules: [],
     SchedulesNext: null
 };
@@ -115,71 +113,77 @@ export default function AppReducers(state = initialState, action = null) {
             };
 
 
-        case constants.CREATE_WORKOUT:
-            console.log(action.response)
+        case constants.ADD_EXERCISE || constants.EDIT_EXERCISE:
             return {
                 ...state,
-                Workouts: [
-                    action.response,
-                    ...state.Workouts
-                ],
-            };
-
-        case constants.CREATE_WORKOUT_DAY:
-            return {
-                ...state,
-                Workouts: state.Workouts.map(workout =>
-                    (workout.id === action.response.workout) ?
-                        {
-                            ...workout,
-                            workout_days: [
-                                ...workout.workout_days,
-                                action.response
-                            ]
-                        } :
-                        workout
-                )
-            };
-
-        case constants.UPDATE_WORKOUT_DAY:
-            return {
-                ...state,
-                Workouts: state.Workouts.map(workout =>
-                    (workout.id === action.response.workout) ?
-                        {
-                            ...workout,
-                            workout_days: workout.workout_days.map(workout_day =>
-                                (workout_day.id === action.response.id) ?
-                                    {
-                                        ...action.response
-                                    } :
-                                    workout_day
-                            )
-                        } :
-                        workout
-                )
-            };
-
-        case constants.ADD_EXERCISE:
-            return {
-                ...state,
-                Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response : workout
-                )
-            };
-
-        case constants.EDIT_EXERCISE:
-            return {
-                ...state,
-                Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response : workout
+                Schedules: state.Schedules.map(schedule =>
+                    (schedule.id === action.response.id) ? action.response : schedule
                 )
             };
 
         case constants.DELETE_SET:
             return {
                 ...state,
-                Workouts: state.Workouts.map(workout => (workout.id === action.response.id) ? action.response : workout
+                Schedules: state.Schedules.map(schedule =>
+                    (schedule.id === action.response.id) ? action.response : schedule
                 )
             };
+
+        case constants.CREATE_WORKOUT:
+            return {
+                ...state,
+                Schedules: state.Schedules.map(schedule =>
+                    (schedule.id === action.response.schedule) ?
+                        {
+                            ...schedule,
+                            workouts: [
+                                ...schedule.workouts,
+                                action.response
+                            ]
+                        } : schedule
+                )
+            };
+
+        case constants.CREATE_WORKOUT_DAY:
+            const thisSchedule = _.find(state.Schedules, {workouts: [{id: action.response.workout}]});
+            const thisWorkout = _.find(thisSchedule.workouts, {id: action.response.workout});
+            return {
+                ...state,
+                Schedules: state.Schedules.map(schedule =>
+                    (schedule.id === thisSchedule.id) ?
+                        {
+                            ...schedule,
+                            workouts: schedule.workouts.map(workout=>
+                                (workout.id === thisWorkout.id) ? {...workout,
+                                    workout_days: [
+                                        ...workout.workout_days,
+                                        action.response
+                                    ]}
+                                    : workout
+                            )
+                        } : schedule
+                )
+            };
+
+        // case constants.UPDATE_WORKOUT_DAY:
+        //     return {
+        //         ...state,
+        //         Workouts: state.Workouts.map(workout =>
+        //             (workout.id === action.response.workout) ?
+        //                 {
+        //                     ...workout,
+        //                     workout_days: workout.workout_days.map(workout_day =>
+        //                         (workout_day.id === action.response.id) ?
+        //                             {
+        //                                 ...action.response
+        //                             } :
+        //                             workout_day
+        //                     )
+        //                 } :
+        //                 workout
+        //         )
+        //     };
+
 
         default:
             return state

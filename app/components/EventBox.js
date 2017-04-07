@@ -42,13 +42,14 @@ const EventBox = React.createClass({
     render() {
         const occurrence = this.props.occurrence;
         const event = this.props.occurrence.event;
+        console.log(event)
         let image = event.user.profile.thumbnail ? event.user.profile.thumbnail : event.user.profile.avatar;
         let start_time = moment.utc(occurrence.start_time).local();
         const attending = event.invited.map((user, i) => {
             return <Text key={i} style={styles.invitedUser}>{i == 0 ? `${user.username}` : `, ${user.username}`}</Text>
         });
         return (
-            <TouchableOpacity activeOpacity={1} onPress={this._onPress}
+            <TouchableOpacity activeOpacity={.5} onPress={this._onPress}
                               style={[GlobalStyle.simpleBottomBorder, styles.container]}>
                 <View style={styles.eventDate}>
                     <Text style={styles.eventDateMonth}>{start_time.format("MMM").toUpperCase()}</Text>
@@ -57,7 +58,7 @@ const EventBox = React.createClass({
                 <View style={styles.noteInfo}>
                     <View style={styles.noteText}>
                         <Text style={styles.notifText}>
-                            <Text style={styles.firstName}>{event.title}
+                            <Text style={styles.firstName}>{event.event_type.label}: {event.title}
                                 <Text style={styles.smallText}> @ {start_time.format('h:mma')}</Text>
                             </Text>
                         </Text>
@@ -105,12 +106,6 @@ const styles = StyleSheet.create({
     noteAction: {
         textDecorationLine: 'underline',
         color: '#393839'
-    },
-    eventDateTime: {
-        fontFamily: 'OpenSans-Bold',
-        fontSize: 11,
-        backgroundColor: 'transparent',
-        color: '#4d4d4e'
     },
     eventDateDay: {
         fontFamily: 'OpenSans-Bold',

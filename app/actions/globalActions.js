@@ -36,7 +36,6 @@ export function login(email, pass) {
         return fetch(`${API_ENDPOINT}auth/token/`, fetchData('POST', body))
             .then(checkStatus)
             .then((responseJson) => {
-                console.log(responseJson)
                 if (responseJson.token) {
                     return dispatch(setTokenInRedux(responseJson.token, true));
                 }
@@ -273,8 +272,8 @@ export function createWorkout(data, asyncActions) {
         return fetch(`${API_ENDPOINT}training/workouts/`,
             fetchData('POST', JSONDATA, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                asyncActions(false, {routeName: 'EditWorkout', props: {workoutId: responseJson.id}});
-                return dispatch({type: types.CREATE_WORKOUT, response: responseJson});
+                dispatch({type: types.CREATE_WORKOUT, response: responseJson});
+                return asyncActions(false, {routeName: 'EditWorkout', props: {workoutId: responseJson.id}});
             })
             .catch((error) => {
                 asyncActions(false);
@@ -297,18 +296,18 @@ export function addEditWorkoutDay(data, asyncActions = null) {
     return (dispatch, getState) => {
         return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                console.log(responseJson)
+                if (method == 'POST')
+                    dispatch({type: types.CREATE_WORKOUT_DAY, response: responseJson});
+                else
+                    dispatch({type: types.UPDATE_WORKOUT_DAY, response: responseJson});
+
                 if (asyncActions) {
-                    asyncActions(false, {
+                    return asyncActions(false, {
                         routeName: 'WorkoutDayDetail',
                         props: {workout_day_id: responseJson.id},
                         state: responseJson
                     });
                 }
-                if (method == 'POST')
-                    return dispatch({type: types.CREATE_WORKOUT_DAY, response: responseJson});
-                else
-                    return dispatch({type: types.UPDATE_WORKOUT_DAY, response: responseJson});
             })
             .catch((error) => {
                 if (asyncActions) {
@@ -354,9 +353,6 @@ export function deleteSet(id) {
                 return dispatch({type: types.DELETE_SET, response: responseJson});
             })
             .catch((error) => {
-                if (asyncActions) {
-                    asyncActions(false);
-                }
                 console.log(error);
             }).done();
     }

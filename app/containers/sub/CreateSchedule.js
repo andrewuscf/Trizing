@@ -62,12 +62,21 @@ const CreateSchedule = React.createClass({
                     ...values,
                     training_plan: this.props.training_plan
                 }
-            } else {
+            }
+
+            if (values.start_date) {
+                values = {
+                    ...values,
+                    start_date: moment(values.start_date).utc().format("YYYY-MM-DD")
+                }
+            }
+            else {
                 values = {
                     ...values,
                     start_date: moment().utc().format("YYYY-MM-DD")
                 }
             }
+            console.log(values)
             this.props.actions.createSchedule(values, this.asyncActions);
         }
     },
@@ -96,7 +105,7 @@ const CreateSchedule = React.createClass({
                     placeholder: `For example 'Program XY'`,
                     onSubmitEditing: () => this._onSubmit()
                 },
-                date: {
+                start_date: {
                     mode: 'date',
                     minimumDate: moment().toDate(),
                     config: {
@@ -111,7 +120,7 @@ const CreateSchedule = React.createClass({
         if (this.props.training_plan) {
             Schedule = t.struct({
                 name: t.String,
-                startDate: t.Date,
+                start_date: t.Date,
             });
         }
         return (
