@@ -13,7 +13,6 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
-// import FCM from 'react-native-fcm';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as HomeActions from '../actions/homeActions';

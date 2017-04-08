@@ -13,6 +13,7 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Modal from 'react-native-modalbox';
+import FCM, {FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType} from 'react-native-fcm';
 
 import * as GlobalActions from './actions/globalActions';
 import {getRoute} from './routes';
@@ -72,6 +73,47 @@ const App = React.createClass({
                 ]
             );
         }
+        if (this.props.RequestUser && this.props.RequestUser != prevProps.RequestUser) {
+            this.setUpNotifications();
+        }
+    },
+
+    setUpNotifications() {
+        console.log(FCM)
+        FCM.requestPermissions(); // for iOS
+        FCM.getFCMToken().then(token => {
+            console.log(token, 'token form getfcmtocken')
+            // store fcm token in your server
+        });
+        this.notificationListener = FCM.on(FCMEvent.Notification, async (notif) => {
+            // there are two parts of notif. notif.notification contains the notification payload, notif.data contains data payload
+            console.log(notif)
+            if(notif.local_notification){
+                //this is a local notification
+            }
+            if(notif.opened_from_tray){
+                //app is open/resumed because user clicked banner
+            }
+            await someAsyncCall();
+
+            if(Platform.OS ==='ios'){
+                switch(notif._notificationType){
+                    case NotificationType.Remote:
+                        notif.finish(RemoteNotificationResult.NewData);
+                        break;
+                    case NotificationType.NotificationResponse:
+                        notif.finish();
+                        break;
+                    case NotificationType.WillPresent:
+                        notif.finish(WillPresentNotificationResult.All);
+                        break;
+                }
+            }
+        });
+        this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {
+            console.log(token, 'token from refresh token')
+            // fcm token may not be available on first load, catch it here
+        });
     },
 
     componentWillMount() {
@@ -83,6 +125,11 @@ const App = React.createClass({
             this.setState({splashArt: false});
         });
         this.eventEmitter = new EventEmitter();
+    },
+
+    componentWillUnmount() {
+        this.notificationListener.remove();
+        this.refreshTokenListener.remove();
     },
 
     itemChangedFocus(route) {

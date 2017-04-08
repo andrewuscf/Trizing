@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "927499674975",
+    "firebase_url": "https://trainer-5528c.firebaseio.com",
+    "project_id": "trainer-5528c",
+    "storage_bucket": "trainer-5528c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927499674975:android:edc3825f80c8106f",
+        "android_client_info": {
+          "package_name": "com.trizing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "927499674975-kpuj9c91mj3quvl0armrm8m9bjd965ra.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaqm8MHV-ZHtbqTQdEXkECOWh7GWZrSAU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
