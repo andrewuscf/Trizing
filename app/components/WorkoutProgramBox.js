@@ -16,7 +16,7 @@ import {getFontSize} from '../actions/utils';
 
 const WorkoutProgramBox = React.createClass({
     propTypes: {
-        workout: React.PropTypes.object.isRequired,
+        schedule: React.PropTypes.object.isRequired,
         _redirect: React.PropTypes.func.isRequired,
         select: React.PropTypes.func,
         selected: React.PropTypes.bool,
@@ -31,7 +31,7 @@ const WorkoutProgramBox = React.createClass({
 
     _onLongPress() {
         Keyboard.dismiss();
-        this.props.select(this.props.workout.id);
+        this.props.select(this.props.schedule.id);
     },
 
     _onPress() {
@@ -43,18 +43,18 @@ const WorkoutProgramBox = React.createClass({
         Keyboard.dismiss();
         Alert.alert(
             'Delete Macro Plan',
-            `Are you sure you want delete ${this.props.workout.name}?`,
+            `Are you sure you want delete ${this.props.schedule.name}?`,
             [
                 {text: 'Cancel', null, style: 'cancel'},
-                {text: 'Delete', onPress: () => this.props.deleteWorkout(this.props.workout.id)},
+                {text: 'Delete', onPress: () => this.props.deleteWorkout(this.props.schedule.id)},
             ]
         );
     },
 
 
     render() {
-        const workout = this.props.workout;
-        const created_at = moment.utc(workout.created_at).local();
+        const schedule = this.props.schedule;
+        const created_at = moment.utc(schedule.created_at).local();
         return (
             <TouchableOpacity style={[styles.container]}
                               onLongPress={this._onLongPress}
@@ -65,7 +65,7 @@ const WorkoutProgramBox = React.createClass({
                     {this.props.selected ? <Icon name="check-circle" size={30} color={greenCircle}/> :
                         <Icon name="circle-thin" size={30} color='#bfbfbf'/>}
                     <View style={styles.details}>
-                        <Text style={styles.mainText}>{workout.name}</Text>
+                        <Text style={styles.mainText}>{schedule.name}</Text>
                         <Text style={styles.date}>
                             <Icon name="clock-o" size={12} color='#4d4d4e'
                             /> {created_at.format('MMM DD, YY')} at {created_at.format('h:mma')}

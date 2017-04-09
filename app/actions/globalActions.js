@@ -1,7 +1,7 @@
 'use strict';
 import * as types from './actionTypes';
 import {fetchData, API_ENDPOINT, refreshPage, SITE, checkStatus} from './utils';
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage, Platform} from 'react-native';
 import {LoginManager} from 'react-native-fbsdk';
 
 export function setTokenInRedux(token, FromAPI = false) {
@@ -14,6 +14,20 @@ export function setTokenInRedux(token, FromAPI = false) {
 export function removeDeviceNotification(token) {
     return (dispatch, getState) => {
         return fetch(`${API_ENDPOINT}devices/${token}/`, fetchData('DELETE', null, getState().Global.UserToken));
+    }
+}
+
+export function setDeviceForNotification(token) {
+    return (dispatch, getState) => {
+        const RequestUser = getState().Global.RequestUser;
+        let JSONData = {
+            name: `${RequestUser.profile.first_name}-${RequestUser.profile.last_name}-${Platform.OS}`,
+            registration_id: token,
+            is_active: true,
+            type: Platform.OS
+        };
+        const sendData = JSON.stringify(JSONData);
+        return fetch(`${API_ENDPOINT}devices/`, fetchData('POST', sendData, getState().Global.UserToken))
     }
 }
 
@@ -215,6 +229,7 @@ export function createQuestionnaire(data, asyncActions) {
         return fetch(`${API_ENDPOINT}training/questionnaires/`,
             fetchData('POST', JSONDATA, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
+                console.log(responseJson)
                 asyncActions(false);
                 return dispatch({type: types.CREATE_QUESTIONNAIRE, response: responseJson});
             })

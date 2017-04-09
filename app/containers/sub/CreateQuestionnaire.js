@@ -62,11 +62,15 @@ const CheckInModal = React.createClass({
     _onSubmit() {
         if (this.isValid()) {
             Keyboard.dismiss();
-            var data = {
+            const data = {
                 name: this.state.name,
-                questions: this.state.questions,
-
+                questions: [],
             };
+            this.state.questions.forEach((question)=>{
+               if (question.text){
+                   data.questions.push(question)
+               }
+            });
             this.props.createQuestionnaire(data, this.asyncActions)
         }
     },

@@ -15,6 +15,7 @@ import _ from 'lodash';
 import {connect} from 'react-redux';
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import FCM from 'react-native-fcm';
 
 import {fetchData, API_ENDPOINT} from '../../actions/utils';
 
@@ -127,12 +128,17 @@ const EditProfile = React.createClass({
     },
 
     _logOut() {
+        const self = this;
         Alert.alert(
             'Log out',
             'Are you sure you want to log out?',
             [
                 {text: 'Cancel', null, style: 'cancel'},
-                {text: 'Yes', onPress: () => this.props.removeToken()},
+                {text: 'Yes', onPress: () => {
+                    FCM.getFCMToken().then(token => {
+                        self.props.removeToken(token);
+                    });
+                }},
             ]
         );
     },

@@ -76,7 +76,6 @@ const CreateSchedule = React.createClass({
                     start_date: moment().utc().format("YYYY-MM-DD")
                 }
             }
-            console.log(values)
             this.props.actions.createSchedule(values, this.asyncActions);
         }
     },

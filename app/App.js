@@ -80,10 +80,10 @@ const App = React.createClass({
 
     setUpNotifications() {
         console.log(FCM)
+        const self = this;
         FCM.requestPermissions(); // for iOS
         FCM.getFCMToken().then(token => {
-            console.log(token, 'token form getfcmtocken')
-            // store fcm token in your server
+            if (token) self.props.actions.setDeviceForNotification(token);
         });
         this.notificationListener = FCM.on(FCMEvent.Notification, async (notif) => {
             // there are two parts of notif. notif.notification contains the notification payload, notif.data contains data payload

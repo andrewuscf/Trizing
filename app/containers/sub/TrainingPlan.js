@@ -203,10 +203,10 @@ const TrainingPlan = React.createClass({
         this.setState({
             training_plan: {
                 ...this.state.training_plan,
-                workout: id
+                schedule: id
             }
         });
-        this.updatePlan({workout: id})
+        this.updatePlan({schedule: id})
     },
 
     renderCreateBar(rowCount){
@@ -297,9 +297,9 @@ const TrainingPlan = React.createClass({
                                                            _redirect={this.props._redirect}/>
                                       } else if (this.state.tab == 2) {
                                           return <WorkoutProgramBox
-                                              selected={object.id == this.state.training_plan.workout}
+                                              selected={object.id == this.state.training_plan.schedule}
                                               select={this.selectTrainingPlan}
-                                              workout={object} _redirect={this.props._redirect}
+                                              schedule={object} _redirect={this.props._redirect}
                                               deleteSchedule={this.deleteSchedule}/>
                                       }
                                   }}

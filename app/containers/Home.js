@@ -49,7 +49,7 @@ const Home = React.createClass({
         if (this.props.RequestUser.type == 1) {
             this.props.actions.getClients(refresh);
             this.props.getSchedules('?template=true', refresh);
-            this.props.getQuestionnaires();
+            this.props.getQuestionnaires(refresh);
         }
         if (refresh) {
             this.props.getNotifications(refresh);
