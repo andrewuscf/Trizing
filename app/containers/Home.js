@@ -14,6 +14,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import FCM from 'react-native-fcm';
 
 import * as HomeActions from '../actions/homeActions';
 import * as GlobalActions from '../actions/globalActions';
@@ -43,6 +44,18 @@ const Home = React.createClass({
             this.getNeeded(true);
         }
         // this.getToken();
+    },
+
+    componentDidUpdate(prevProps) {
+        if (this.props.Notifications && this.props.Notifications.length && Platform.OS === 'ios') {
+            let unreadcount = 0;
+            this.props.Notifications.forEach((notification, i) => {
+                if (notification.unread) {
+                    unreadcount = unreadcount + 1;
+                }
+            });
+            FCM.setBadgeNumber(unreadcount);
+        }
     },
 
     getNeeded(refresh = false) {
@@ -131,7 +144,7 @@ const Home = React.createClass({
                 </View>
             )
         } else {
-            content = <Text>Client</Text>;
+            content = <View></View>;
         }
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         const dataSource = ds.cloneWithRows(this.props.Notifications.slice(0, 4));

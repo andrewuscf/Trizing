@@ -79,7 +79,6 @@ const App = React.createClass({
     },
 
     setUpNotifications() {
-        console.log(FCM)
         const self = this;
         FCM.requestPermissions(); // for iOS
         FCM.getFCMToken().then(token => {
