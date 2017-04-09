@@ -187,6 +187,13 @@ export function getNotifications(refresh = false) {
     }
 }
 
+export function getNewNotifications() {
+    return (dispatch, getState) => {
+        dispatch(getNotifications(true));
+        return dispatch({type: types.NEW_NOTIFICATION});
+    }
+}
+
 export function readNotification(id) {
     const url = `${API_ENDPOINT}notification/${id}/`;
     return (dispatch, getState) => {

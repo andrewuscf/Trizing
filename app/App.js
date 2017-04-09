@@ -87,7 +87,8 @@ const App = React.createClass({
         });
         this.notificationListener = FCM.on(FCMEvent.Notification, async (notif) => {
             // there are two parts of notif. notif.notification contains the notification payload, notif.data contains data payload
-            console.log(notif)
+            self.props.actions.getNewNotifications();
+            console.log(notif);
             if(notif.local_notification){
                 //this is a local notification
             }
@@ -111,8 +112,7 @@ const App = React.createClass({
             }
         });
         this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {
-            console.log(token, 'token from refresh token')
-            // fcm token may not be available on first load, catch it here
+            if (token) self.props.actions.setDeviceForNotification(token);
         });
     },
 

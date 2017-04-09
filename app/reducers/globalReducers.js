@@ -165,6 +165,14 @@ export default function AppReducers(state = initialState, action = null) {
                 )
             };
 
+        case constants.NEW_NOTIFICATION:
+            return Object.assign({}, state, {
+                RequestUser: state.RequestUser ? {
+                        ...state.RequestUser,
+                        unread_notifications: true
+                    } : null
+            });
+
         // case constants.UPDATE_WORKOUT_DAY:
         //     return {
         //         ...state,
