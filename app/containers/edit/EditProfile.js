@@ -17,7 +17,7 @@ import CameraRollPicker from 'react-native-camera-roll-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FCM from 'react-native-fcm';
 
-import {fetchData, API_ENDPOINT} from '../../actions/utils';
+import {fetchData, API_ENDPOINT, getFontSize} from '../../actions/utils';
 
 import * as ProfileActions from '../../actions/profileActions';
 import {removeToken} from '../../actions/globalActions';
@@ -55,11 +55,11 @@ const EditProfile = React.createClass({
     },
 
     onChange(value) {
-        this.setState({ value });
+        this.setState({value});
     },
 
     clearForm() {
-        this.setState({ value: null });
+        this.setState({value: null});
     },
 
     componentDidUpdate(prevProps) {
@@ -134,11 +134,13 @@ const EditProfile = React.createClass({
             'Are you sure you want to log out?',
             [
                 {text: 'Cancel', null, style: 'cancel'},
-                {text: 'Yes', onPress: () => {
+                {
+                    text: 'Yes', onPress: () => {
                     FCM.getFCMToken().then(token => {
                         self.props.removeToken(token);
                     });
-                }},
+                }
+                },
             ]
         );
     },
@@ -151,14 +153,16 @@ const EditProfile = React.createClass({
             // stylesheet: stylesheet,
             fields: {
                 username: {
-                    // label: 'Event title*',
-                    onSubmitEditing: () => this.refs.form.getComponent('first_name').refs.input.focus()
+                    onSubmitEditing: () => this.refs.form.getComponent('first_name').refs.input.focus(),
+                    autoCapitalize: 'words'
                 },
                 first_name: {
-                    onSubmitEditing: () => this.refs.form.getComponent('last_name').refs.input.focus()
+                    onSubmitEditing: () => this.refs.form.getComponent('last_name').refs.input.focus(),
+                    autoCapitalize: 'words'
                 },
                 last_name: {
-                    onSubmitEditing: () => this.refs.form.getComponent('phone_number').refs.input.focus()
+                    onSubmitEditing: () => this.refs.form.getComponent('phone_number').refs.input.focus(),
+                    autoCapitalize: 'words'
                 },
                 phone_number: {
                     onSubmitEditing: () => Keyboard.dismiss()
@@ -217,6 +221,11 @@ const EditProfile = React.createClass({
                         </View>
                         <View style={styles.mainContent}>
                             <AvatarImage image={userImage} style={styles.avatar} redirect={this.toggleRoll}/>
+                            <TouchableOpacity onPress={this.toggleRoll} activeOpacity={1}>
+                                <Text style={{alignSelf: 'center', fontSize: getFontSize(14), paddingTop: 10}}>
+                                    Upload Profile Photo
+                                </Text>
+                            </TouchableOpacity>
 
                             <Form
                                 ref="form"
@@ -255,7 +264,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     backNavButton: {
-        paddingLeft: 10
+        paddingLeft: 10,
+        width: 100
     },
     mainContent: {
         margin: 10
@@ -289,8 +299,8 @@ const styles = StyleSheet.create({
     },
     logOutCreateProfile: {
         right: 10,
-        top: 25,
-        position: 'absolute'
+        top: 15,
+        position: 'absolute',
     }
 });
 

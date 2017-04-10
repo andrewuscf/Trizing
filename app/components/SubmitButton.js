@@ -29,7 +29,7 @@ const SubmitButton = React.createClass({
         // render
         return (
             <TouchableHighlight style={[this.props.buttonStyle, actionstyle]} onPress={this.onPress}
-                                underlayColor='#99d9f4'>
+                                underlayColor='#99d9f4' activeOpacity={1}>
                 <View style={styles.wrapper}>
                     {this.state.busy ?
                         <View style={[styles.iconWrapper]}>

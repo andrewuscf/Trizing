@@ -102,7 +102,8 @@ const CreateSchedule = React.createClass({
                 name: {
                     label: 'Workout Program Name',
                     placeholder: `For example 'Program XY'`,
-                    onSubmitEditing: () => this._onSubmit()
+                    onSubmitEditing: () => this._onSubmit(),
+                    autoCapitalize: 'sentences'
                 },
                 start_date: {
                     mode: 'date',
