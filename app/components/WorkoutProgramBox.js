@@ -20,7 +20,7 @@ const WorkoutProgramBox = React.createClass({
         _redirect: React.PropTypes.func.isRequired,
         select: React.PropTypes.func,
         selected: React.PropTypes.bool,
-        deleteWorkout: React.PropTypes.func
+        deleteSchedule: React.PropTypes.func.isRequired
     },
 
     getInitialState() {
@@ -29,14 +29,23 @@ const WorkoutProgramBox = React.createClass({
         }
     },
 
-    _onLongPress() {
+    _activate() {
         Keyboard.dismiss();
-        this.props.select(this.props.schedule.id);
+        if (this.props.schedule) {
+            Alert.alert(
+                'Activate Workout Program Active',
+                `Are you sure you want make '${this.props.schedule.name}' active?`,
+                [
+                    {text: 'Cancel', null, style: 'cancel'},
+                    {text: 'Yes', onPress: () => this.props.select(this.props.schedule.id)},
+                ]
+            );
+        }
     },
 
     _onPress() {
         Keyboard.dismiss();
-        // this.props._redirect('WorkoutDayDetail')
+        this.props._redirect('EditSchedule', {scheduleId: this.props.schedule.id});
     },
 
     _onDelete() {
@@ -46,7 +55,7 @@ const WorkoutProgramBox = React.createClass({
             `Are you sure you want delete ${this.props.schedule.name}?`,
             [
                 {text: 'Cancel', null, style: 'cancel'},
-                {text: 'Delete', onPress: () => this.props.deleteWorkout(this.props.schedule.id)},
+                {text: 'Delete', onPress: () => this.props.deleteSchedule(this.props.schedule.id)},
             ]
         );
     },
@@ -56,14 +65,15 @@ const WorkoutProgramBox = React.createClass({
         const schedule = this.props.schedule;
         const created_at = moment.utc(schedule.created_at).local();
         return (
-            <TouchableOpacity style={[styles.container]}
-                              onLongPress={this._onLongPress}
-                              activeOpacity={0.8}
-                              onPress={this._onPress}>
+            <TouchableOpacity style={[styles.container]} activeOpacity={0.8} onPress={this._onPress}>
 
                 <View style={styles.center}>
-                    {this.props.selected ? <Icon name="check-circle" size={30} color={greenCircle}/> :
-                        <Icon name="circle-thin" size={30} color='#bfbfbf'/>}
+                    {this.props.selected ?
+                        <Icon name="check-circle" size={30} color={greenCircle}/> :
+                        <TouchableOpacity onPress={this._activate}>
+                            <Icon name="circle-thin" size={30} color='#bfbfbf'/>
+                        </TouchableOpacity>
+                    }
                     <View style={styles.details}>
                         <Text style={styles.mainText}>{schedule.name}</Text>
                         <Text style={styles.date}>

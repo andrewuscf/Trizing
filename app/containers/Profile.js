@@ -14,7 +14,7 @@ import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as ProfileActions from '../actions/profileActions';
-import {getUser, getQuestionnaires, getNotifications} from '../actions/globalActions';
+import {getUser, getNotifications} from '../actions/globalActions';
 
 import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../actions/utils';
 import {getRoute} from '../routes';
@@ -164,12 +164,9 @@ const Profile = React.createClass({
                             : null
                         }
                     </View>
-                    {this.props.RequestUser.id == user.profile.trainer && this.props.Questionnaires ?
+                    {this.props.RequestUser.id == user.profile.trainer?
                         <TrainingPlan clientId={user.id} UserToken={this.props.UserToken}
                                       openModal={this.props.openModal}
-                                      Questionnaires={this.props.Questionnaires}
-                                      QuestionnairesNext={this.props.QuestionnairesNext}
-                                      getQuestionnaires={this.props.getQuestionnaires}
                                       training_plan={user.training_plan}
                                       _redirect={this._redirect}/>
                         : null
@@ -255,8 +252,6 @@ const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
         UserToken: state.Global.UserToken,
-        Questionnaires: state.Global.Questionnaires,
-        QuestionnairesNext: state.Global.QuestionnairesNext,
     };
 };
 
@@ -264,8 +259,7 @@ const dispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(ProfileActions, dispatch),
         getUser: bindActionCreators(getUser, dispatch),
-        getQuestionnaires: bindActionCreators(getQuestionnaires, dispatch),
-        getNotifications: bindActionCreators(getNotifications, dispatch)
+        getNotifications: bindActionCreators(getNotifications, dispatch),
     }
 };
 

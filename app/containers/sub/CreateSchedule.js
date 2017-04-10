@@ -41,7 +41,7 @@ const CreateSchedule = React.createClass({
         if (start) {
             this.refs.postbutton.setState({busy: true});
         } else {
-            this.refs.postbutton.setState({busy: false});
+            // this.refs.postbutton.setState({busy: false});
             if (data.routeName) {
                 this.props.navigator.replace(getRoute(data.routeName, data.props))
             }
@@ -61,19 +61,6 @@ const CreateSchedule = React.createClass({
                 values = {
                     ...values,
                     training_plan: this.props.training_plan
-                }
-            }
-
-            if (values.start_date) {
-                values = {
-                    ...values,
-                    start_date: moment(values.start_date).utc().format("YYYY-MM-DD")
-                }
-            }
-            else {
-                values = {
-                    ...values,
-                    start_date: moment().utc().format("YYYY-MM-DD")
                 }
             }
             this.props.actions.createSchedule(values, this.asyncActions);
@@ -105,24 +92,11 @@ const CreateSchedule = React.createClass({
                     onSubmitEditing: () => this._onSubmit(),
                     autoCapitalize: 'sentences'
                 },
-                start_date: {
-                    mode: 'date',
-                    minimumDate: moment().toDate(),
-                    config: {
-                        format: (date) => myFormatFunction("MMMM DD YYYY", date),
-                    }
-                }
             }
         };
         let Schedule = t.struct({
             name: t.String,
         });
-        if (this.props.training_plan) {
-            Schedule = t.struct({
-                name: t.String,
-                start_date: t.Date,
-            });
-        }
         return (
             <View style={styles.flexCenter}>
                 <BackBar back={this._cancel} backText="Cancel" navStyle={{height: 40}}/>

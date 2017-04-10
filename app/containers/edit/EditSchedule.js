@@ -67,7 +67,7 @@ const EditSchedule = React.createClass({
         let steps = <Text>No Program blocks</Text>;
         if (this.state.schedule) {
             steps = _.orderBy(this.state.schedule.workouts, ['order']).map((workout, index) => {
-                let start_date = moment.utc(workout.dates.start_date);
+                let start_date = moment.utc(workout.dates.start_date).local();
                 return <TouchableOpacity key={index} onPress={this._toWorkoutDay.bind(null, workout.id)}
                                          style={[GlobalStyle.simpleBottomBorder, styles.workoutBox, (index == 0) ? {marginTop: 5} : null]}>
 

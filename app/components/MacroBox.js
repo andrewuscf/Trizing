@@ -109,10 +109,17 @@ const MacroBox = React.createClass({
         );
     },
 
-    _onLongPress() {
+    _activate() {
         Keyboard.dismiss();
         if (this.props.plan) {
-            this.props.select(this.props.plan.id);
+            Alert.alert(
+                'Activate Macro Plan',
+                `Are you sure you want make '${this.props.plan.name}' active?`,
+                [
+                    {text: 'Cancel', null, style: 'cancel'},
+                    {text: 'Yes', onPress: () => this.props.select(this.props.plan.id)},
+                ]
+            );
         }
     },
 
@@ -132,10 +139,7 @@ const MacroBox = React.createClass({
 
     _removeDay(index) {
         Keyboard.dismiss();
-        console.log(index)
         if (this.state.macro_plan_days.length > 1) {
-            console.log(this.state.macro_plan_days)
-            console.log(this.state.macro_plan_days[index])
             this.setState({
                 macro_plan_days: this.state.macro_plan_days.slice(0, index).concat(this.state.macro_plan_days.slice(index + 1))
             })
@@ -191,7 +195,6 @@ const MacroBox = React.createClass({
             });
         return (
             <TouchableOpacity style={[styles.container]}
-                              onLongPress={this._onLongPress}
                               activeOpacity={0.8}
                               onPress={this._onPress}>
                 {!plan ?
@@ -205,7 +208,9 @@ const MacroBox = React.createClass({
                     :
                     <View style={styles.center}>
                         {this.props.selected ? <Icon name="check-circle" size={30} color={greenCircle}/> :
-                            <Icon name="circle-thin" size={30} color='#bfbfbf'/>}
+                            <TouchableOpacity onPress={this._activate}>
+                                <Icon name="circle-thin" size={30} color='#bfbfbf'/>
+                            </TouchableOpacity>}
                         <View style={styles.details}>
                             <Text style={styles.mainText}>{plan.name}</Text>
                             <Text style={styles.date}>

@@ -103,6 +103,19 @@ export default function AppReducers(state = initialState, action = null) {
                 Refreshing: false
             };
 
+        case constants.ADD_SCHEDULES:
+            return {
+                ...state,
+                Schedules: _.uniqBy(state.Schedules.concat(action.schedules), 'id'),
+            };
+
+        case constants.REMOVE_SCHEDULE:
+            return {
+                ...state,
+                Schedules: _.remove(state.Schedules, {id: action.schedule_id})
+            };
+
+
         case constants.CREATE_SCHEDULE:
             return {
                 ...state,

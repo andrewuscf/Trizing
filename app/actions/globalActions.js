@@ -286,6 +286,18 @@ export function createSchedule(data, asyncActions) {
     }
 }
 
+export function addSchedules(data) {
+    return (dispatch, getState) => {
+        return dispatch({type: types.ADD_SCHEDULES, schedules: data});
+    }
+}
+
+export function removeSchedule(schedule_id) {
+    return (dispatch, getState) => {
+        return dispatch({type: types.REMOVE_SCHEDULE, schedule_id: schedule_id});
+    }
+}
+
 
 export function createWorkout(data, asyncActions) {
     asyncActions(true);

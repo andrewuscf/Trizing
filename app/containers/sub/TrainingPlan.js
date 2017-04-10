@@ -9,11 +9,15 @@ import {
     Platform,
     Dimensions
 } from 'react-native';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import GlobalStyle from '../globalStyle';
 
+
+import {getNotifications, addSchedules, removeSchedule, getQuestionnaires} from '../../actions/globalActions';
 import {API_ENDPOINT, fetchData, getFontSize, checkStatus} from '../../actions/utils';
 
 import CustomIcon from '../../components/CustomIcon';
@@ -29,10 +33,7 @@ const TrainingPlan = React.createClass({
         clientId: React.PropTypes.number.isRequired,
         training_plan: React.PropTypes.object.isRequired,
         _redirect: React.PropTypes.func.isRequired,
-        getQuestionnaires: React.PropTypes.func.isRequired,
         openModal: React.PropTypes.func.isRequired,
-        Questionnaires: React.PropTypes.array.isRequired,
-        QuestionnairesNext: React.PropTypes.string,
         tab: React.PropTypes.number
     },
 
@@ -43,7 +44,6 @@ const TrainingPlan = React.createClass({
             tab: this.props.tab ? this.props.tab : 1,
             refreshing: false,
             training_plan: this.props.training_plan,
-            schedules: [],
             schedule_next: null
         }
     },
@@ -55,18 +55,13 @@ const TrainingPlan = React.createClass({
             this.getClientSchedules(true);
     },
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.Workouts != this.props.Workouts)
-            this.getClientSchedules(true);
-    },
-
     createMacroPlan(data) {
         let jsondata = JSON.stringify(data);
         fetch(`${API_ENDPOINT}training/macros/`,
             fetchData('POST', jsondata, this.props.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
-            console.log(responseJson)
+                console.log(responseJson)
                 if (responseJson.id) {
                     this.setState({
                         macro_plans: [
@@ -117,18 +112,12 @@ const TrainingPlan = React.createClass({
 
     getClientSchedules(refresh = false) {
         let url = `${API_ENDPOINT}training/schedules/?client=${this.props.clientId}`;
-        if (!refresh && this.state.schedule_next)
-            url = this.state.schedule_next;
+        if (!refresh && this.state.schedule_next) url = this.state.schedule_next;
 
         fetch(url, fetchData('GET', null, this.props.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                if (!this.state.schedule_next || refresh)
-                    this.setState({schedules: responseJson.results, schedule_next: responseJson.next});
-                else
-                    this.setState({
-                        schedules: this.state.schedules.concat(responseJson.results),
-                        schedule_next: responseJson.next
-                    });
+                this.props.addSchedules(responseJson.results);
+                this.setState({schedule_next: responseJson.next});
             })
     },
 
@@ -138,23 +127,21 @@ const TrainingPlan = React.createClass({
     },
 
     deleteSchedule(id) {
-        // fetch(`${API_ENDPOINT}training/workout/${id}/`,
-        //     fetchData('DELETE', null, this.props.UserToken)).then(checkStatus)
-        //     .then((responseJson) => {
-        //         if (responseJson.deleted) {
-        //             const index = _.findIndex(this.state.schedules, {id: id});
-        //             this.setState({schedules:
-        //                 [...this.state.schedules.slice(0, index), ...this.state.schedules.slice(index + 1)]
-        //             });
-        //         }
-        //     })
+        fetch(`${API_ENDPOINT}training/schedule/${id}/`,
+            fetchData('DELETE', null, this.props.UserToken)).then(checkStatus)
+            .then((responseJson) => {
+                if (responseJson.deleted) this.props.removeSchedule(id);
+            });
     },
 
     _onTabPress(tab) {
+        const userSchedules = _.filter(this.props.Schedules, schedule => {
+            return schedule.training_plan == this.state.training_plan.id;
+        });
         if (tab != this.state.tab) {
             if (tab == 1 && !this.state.macro_plans) {
                 this.getMacros();
-            } else if (tab == 2 && !this.state.schedules.length) {
+            } else if (tab == 2 && !userSchedules.length) {
                 this.getClientSchedules();
             }
             this.setState({tab: tab});
@@ -210,12 +197,12 @@ const TrainingPlan = React.createClass({
     },
 
     renderCreateBar(rowCount){
-        let textSection =<Text style={styles.helpText}>PRESS AND HOLD TO MAKE ACTIVE</Text>;
+        let textSection = null;
         if (rowCount < 1) {
             if (this.state.tab == 1) {
-                textSection = <Text style={styles.emptyTitle}>Client has zero macro plans. Create One!</Text>;
+                textSection = <Text style={styles.emptyTitle}>No macro plans. Create One!</Text>;
             } else if (this.state.tab == 2) {
-                textSection = <Text style={styles.emptyTitle}>Client has zero workout programs. Create one!</Text>;
+                textSection = <Text style={styles.emptyTitle}>No workout programs. Create one!</Text>;
             }
         }
         if (this.state.tab == 1 || this.state.tab == 2) {
@@ -241,14 +228,16 @@ const TrainingPlan = React.createClass({
     },
 
     render() {
-        if (!this.props.Questionnaires && !this.state.schedules.length && !this.state.macro_plans)
+        if (!this.props.Questionnaires && !this.props.Schedules.length && !this.state.macro_plans)
             return <Loading />;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = null;
         if (this.state.tab == 1 && this.state.macro_plans) {
             dataSource = ds.cloneWithRows(this.state.macro_plans);
         } else if (this.state.tab == 2) {
-            dataSource = ds.cloneWithRows(this.state.schedules);
+            dataSource = ds.cloneWithRows(_.filter(this.props.Schedules, schedule => {
+                return schedule.training_plan == this.state.training_plan.id;
+            }))
         }
         return (
             <View style={GlobalStyle.container}>
@@ -286,7 +275,8 @@ const TrainingPlan = React.createClass({
                                   renderHeader={this.renderCreateBar.bind(null, dataSource.getRowCount())}
                                   keyboardShouldPersistTaps="handled"
                                   style={styles.listContainer} enableEmptySections={true} dataSource={dataSource}
-                                  onEndReached={this._onEndReached} onEndReachedThreshold={Dimensions.get('window').height}
+                                  onEndReached={this._onEndReached}
+                                  onEndReachedThreshold={Dimensions.get('window').height}
                                   renderRow={(object) => {
                                       if (this.state.tab == 1) {
                                           return <MacroBox plan={object}
@@ -315,10 +305,6 @@ const TrainingPlan = React.createClass({
 
 const selectedIcon = '#1352e2';
 const defaultIcon = 'black';
-// <QuestionnaireBox questionnaire={object}
-//                   _redirect={this.props._redirect}
-//                   selected={object.id == this.state.training_plan.questionnaire}
-//                   selectQuestionnaire={this.selectQuestionnaire}/>
 
 
 const styles = StyleSheet.create({
@@ -409,5 +395,25 @@ const styles = StyleSheet.create({
     }
 });
 
-export default TrainingPlan;
+const stateToProps = (state) => {
+    return {
+        RequestUser: state.Global.RequestUser,
+        UserToken: state.Global.UserToken,
+        Questionnaires: state.Global.Questionnaires,
+        QuestionnairesNext: state.Global.QuestionnairesNext,
+        Schedules: state.Global.Schedules,
+    };
+};
+
+const dispatchToProps = (dispatch) => {
+    return {
+        getQuestionnaires: bindActionCreators(getQuestionnaires, dispatch),
+        getNotifications: bindActionCreators(getNotifications, dispatch),
+        addSchedules: bindActionCreators(addSchedules, dispatch),
+        removeSchedule: bindActionCreators(removeSchedule, dispatch)
+    }
+};
+
+export default connect(stateToProps, dispatchToProps)(TrainingPlan);
+
 
