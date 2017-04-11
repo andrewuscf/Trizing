@@ -31,7 +31,7 @@ const EventBox = React.createClass({
     },
 
     _onPress() {
-        console.log(this.props.occurrence)
+        this.props.navigator.push(getRoute('EventDetail', {occurrence: this.props.occurrence}));
     },
 
     _onActions() {

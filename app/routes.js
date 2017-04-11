@@ -21,6 +21,8 @@ import EditWorkout from './containers/edit/EditWorkout';
 // Detail Pages
 import WorkoutDayDetail from './containers/detail/WorkoutDayDetail';
 import ChatRoom from './containers/detail/ChatRoom';
+import EventDetail from './containers/detail/EventDetail';
+import PostDetail from './containers/detail/PostDetail';
 
 // Create Pages
 import CreateWorkout from './containers/sub/CreateWorkout';
@@ -44,6 +46,8 @@ const MAIN_ROUTES = [
     {component: CreateWorkoutDay, name: 'CreateWorkoutDay'},
     {component: CreateExercise, name: 'CreateExercise'},
     {component: WorkoutDayDetail, name: 'WorkoutDayDetail'},
+    {component: EventDetail, name: 'EventDetail'},
+    {component: PostDetail, name: 'PostDetail'},
     {component: CreateEvent, name: 'CreateEvent'},
     {component: ChatRoom, name: 'ChatRoom'},
     {component: CreateSchedule, name: 'CreateSchedule'},

@@ -24,7 +24,7 @@ const PostBox = React.createClass({
     },
 
     onPress() {
-        console.log('log')
+        this.props.navigator.push(getRoute('PostDetail', {post: this.props.post}))
     },
 
     likePress() {
@@ -45,9 +45,8 @@ const PostBox = React.createClass({
                 return <CommentBox key={index} comment={comment}/>
             })
         }
-        console.log(post)
         return (
-            <View style={styles.postBox}>
+            <TouchableOpacity style={styles.postBox} onPress={this.onPress}>
                 <View style={[styles.container]}>
                     <AvatarImage redirect={this.goToProfile} image={image} style={styles.postAvatar}/>
                     <View style={styles.noteInfo}>
@@ -62,7 +61,7 @@ const PostBox = React.createClass({
                             </Text>
                         </View>
                     </View>
-                    <TouchableOpacity onPress={this.likePress} style={{alignSelf: 'center', flexDirection: 'row'}}>
+                    <TouchableOpacity onPress={this.likePress} style={styles.likeButton}>
 
                         {this.props.liked ?
                             <Icon name="heart" size={20} color="black">
@@ -83,7 +82,7 @@ const PostBox = React.createClass({
                     </Text>
                 </View>
                 <View style={styles.commentSection}>
-                    <Text style={styles.commentCount}>Comment</Text>
+                    <Text style={styles.commentCount}>{post.comments.comments.length} Comments</Text>
                     {comments ?
                         <View style={[GlobalStyle.simpleTopBorderMedium]}/>
                         : null
@@ -96,7 +95,7 @@ const PostBox = React.createClass({
                     </TouchableOpacity>
                     : null
                 }
-            </View>
+            </TouchableOpacity>
         );
     }
 });
@@ -173,6 +172,12 @@ const styles = StyleSheet.create({
         paddingRight: 5,
         color: '#999791',
         fontSize: getFontSize(22)
+    },
+    likeButton: {
+        alignSelf: 'center',
+        flexDirection: 'row',
+        margin: 10,
+        marginTop: 0
     }
 });
 

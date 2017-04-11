@@ -66,7 +66,7 @@ const Feed = React.createClass({
         let image = user.profile.thumbnail ? user.profile.thumbnail : user.profile.avatar;
         return (
             <View style={styles.createPost}>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', padding: 5}}>
                     <AvatarImage image={image} style={styles.postAvatar}/>
                     <View style={[styles.inputWrap, {height: this.state.height ? this.state.height : 30}]}>
                         <TextInput ref='post_text'
@@ -147,8 +147,6 @@ const styles = StyleSheet.create({
     },
     createPost: {
         minHeight: 50,
-        paddingLeft: 5,
-        paddingRight: 5,
         margin: 5,
         backgroundColor: 'white',
         justifyContent: 'center'
