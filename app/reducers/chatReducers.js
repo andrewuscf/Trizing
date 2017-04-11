@@ -31,6 +31,16 @@ export default function AppReducers(state = initialState, action = null) {
                 )
             };
 
+        case constants.CREATE_CHAT_ROOM:
+            return {
+                ...state,
+                Rooms: [
+                    action.response,
+                    ...state.Rooms
+                ]
+            };
+
+
         case constants.REMOVE_TOKEN:
             return initialState;
 

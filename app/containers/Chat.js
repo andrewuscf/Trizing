@@ -50,7 +50,7 @@ const Chat = React.createClass({
     },
 
     newChat() {
-        console.log('hit')
+        this.props.navigator.push(getRoute('CreateChatRoom'))
     },
 
     renderHeader() {

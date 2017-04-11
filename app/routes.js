@@ -30,6 +30,7 @@ import CreateSchedule from './containers/sub/CreateSchedule';
 import CreateWorkoutDay from './containers/sub/CreateWorkoutDay';
 import CreateExercise from './containers/sub/CreateExercise';
 import CreateEvent from './containers/sub/CreateEvent';
+import CreateChatRoom from './containers/sub/CreateChatRoom';
 
 const MAIN_ROUTES = [
     {component: Home, name: 'Home'},
@@ -52,6 +53,7 @@ const MAIN_ROUTES = [
     {component: ChatRoom, name: 'ChatRoom'},
     {component: CreateSchedule, name: 'CreateSchedule'},
     {component: EditSchedule, name: 'EditSchedule'},
+    {component: CreateChatRoom, name: 'CreateChatRoom'}
 ];
 
 export function getRoute(routeName, props) {

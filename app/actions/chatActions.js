@@ -29,3 +29,23 @@ export function getChatRooms(refresh = false) {
 export function sendMessage(data) {
     return {type: types.SEND_MESSAGE, response: data};
 }
+
+export function createChatRoom(data) {
+    return (dispatch, getState) => {
+        return fetch(`${API_ENDPOINT}social/chats/`,
+            fetchData('POST', JSON.stringify(data), getState().Global.UserToken))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                // return dispatch({type: types.LOAD_ROOMS, response: responseJson});
+            })
+            .catch((error) => {
+                return dispatch({
+                    type: types.API_ERROR, error: JSON.stringify({
+                        title: 'Request could not be performed.',
+                        text: 'Please try again later.'
+                    })
+                });
+            });
+    }
+}
