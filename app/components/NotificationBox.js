@@ -64,6 +64,8 @@ const NotificationBox = React.createClass({
                 }));
             } else if (action.action_object.event_type) {
                 this.props.navigator.push(getRoute('EventDetail', {eventId: action.action_object.id}));
+            } else if (action.action_object.macro_plan_days) {
+                this.props.navigator.push(getRoute('MacroPlanDetail', {macro_plan: action.action_object}));
             }
         }
     },

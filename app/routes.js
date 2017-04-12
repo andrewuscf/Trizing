@@ -23,6 +23,7 @@ import WorkoutDayDetail from './containers/detail/WorkoutDayDetail';
 import ChatRoom from './containers/detail/ChatRoom';
 import EventDetail from './containers/detail/EventDetail';
 import PostDetail from './containers/detail/PostDetail';
+import MacroPlanDetail from './containers/detail/MacroPlanDetail';
 
 // Create Pages
 import CreateWorkout from './containers/sub/CreateWorkout';
@@ -53,7 +54,8 @@ const MAIN_ROUTES = [
     {component: ChatRoom, name: 'ChatRoom'},
     {component: CreateSchedule, name: 'CreateSchedule'},
     {component: EditSchedule, name: 'EditSchedule'},
-    {component: CreateChatRoom, name: 'CreateChatRoom'}
+    {component: CreateChatRoom, name: 'CreateChatRoom'},
+    {component: MacroPlanDetail, name: 'MacroPlanDetail'},
 ];
 
 export function getRoute(routeName, props) {
