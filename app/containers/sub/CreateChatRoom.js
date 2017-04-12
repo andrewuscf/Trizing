@@ -39,19 +39,14 @@ const CreateChatRoom = React.createClass({
         }
     },
 
-
     _onSubmit() {
-        if (this.state.selected.length > 0){
+        if (this.state.selected.length > 0) {
             const users = [
                 ...this.state.selected,
                 this.props.RequestUser.id
             ];
-            this.props.actions.createChatRoom({users:users})
+            this.props.actions.createChatRoom({users: users})
         }
-    },
-
-    _cancel() {
-        this.props.navigator.pop();
     },
 
     selectUser(userId) {
@@ -75,9 +70,9 @@ const CreateChatRoom = React.createClass({
 
         return (
             <View style={styles.flexCenter}>
-                <BackBar back={this._cancel} backText={this.state.step == 1 ? 'Cancel' : null}>
+                <BackBar back={this.props.navigator.pop} backText={this.state.step == 1 ? 'Cancel' : null}>
                     <Text style={{fontSize: getFontSize(24)}}>
-                        Select Users to start chatting with.
+                        Select Users
                     </Text>
                 </BackBar>
 

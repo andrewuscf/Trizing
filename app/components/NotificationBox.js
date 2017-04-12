@@ -62,6 +62,8 @@ const NotificationBox = React.createClass({
                     id: action.action_object.from_user.id,
                     request: action.action_object
                 }));
+            } else if (action.action_object.event_type) {
+                this.props.navigator.push(getRoute('EventDetail', {eventId: action.action_object.id}));
             }
         }
     },

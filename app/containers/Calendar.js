@@ -49,13 +49,15 @@ const Calendar = React.createClass({
     },
 
     renderHeader() {
-        return (
-            <TouchableOpacity style={styles.header} onPress={this.goToCreate}>
-                <Icon name="calendar-plus-o" size={30}
-                      color='#b1aea5'/>
-                <Text style={styles.createEventText}>Create New Event</Text>
-            </TouchableOpacity>
-        )
+        if (this.props.RequestUser.type == 1)
+            return (
+                <TouchableOpacity style={styles.header} onPress={this.goToCreate}>
+                    <Icon name="calendar-plus-o" size={30}
+                          color='#b1aea5'/>
+                    <Text style={styles.createEventText}>Create New Event</Text>
+                </TouchableOpacity>
+            );
+        return null;
     },
 
 
@@ -65,12 +67,14 @@ const Calendar = React.createClass({
             const dataSource = ds.cloneWithRows(this.props.Events);
             return (
                 <ListView ref="calendar_list"
-                    refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
-                    enableEmptySections={true}
-                    renderHeader={this.renderHeader}
-                    dataSource={dataSource} onEndReached={this.onEndReached}
-                    onEndReachedThreshold={Dimensions.get('window').height}
-                    renderRow={(occurrence, i) => <EventBox occurrence={occurrence} navigator={this.props.navigator}/>}
+                          refreshControl={<RefreshControl refreshing={this.props.Refreshing}
+                                                          onRefresh={this._refresh}/>}
+                          enableEmptySections={true}
+                          renderHeader={this.renderHeader}
+                          dataSource={dataSource} onEndReached={this.onEndReached}
+                          onEndReachedThreshold={Dimensions.get('window').height}
+                          renderRow={(occurrence, i) => <EventBox occurrence={occurrence}
+                                                                  navigator={this.props.navigator}/>}
                 />
             );
         }
@@ -82,7 +86,10 @@ const Calendar = React.createClass({
                     <Icon name="calendar-o" size={60}
                           color='#b1aea5'/>
                     <Text style={styles.noRequestTitle}>
-                        You have no upcoming events.
+                        {this.props.RequestUser.type == 1 ?
+                            'You have no upcoming events.'
+                            : "Your trainer needs to invite you to events."
+                        }
                     </Text>
                 </View>
             </ScrollView>
