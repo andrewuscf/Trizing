@@ -223,7 +223,7 @@ const EditProfile = React.createClass({
                             <AvatarImage image={userImage} style={styles.avatar} redirect={this.toggleRoll}/>
                             <TouchableOpacity onPress={this.toggleRoll} activeOpacity={1}>
                                 <Text style={{alignSelf: 'center', fontSize: getFontSize(14), paddingTop: 10}}>
-                                    Upload Profile Photo
+                                    {this.state.showRoll ? 'Close Camera Roll' : 'Change Profile Photo'}
                                 </Text>
                             </TouchableOpacity>
 

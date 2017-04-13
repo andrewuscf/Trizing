@@ -57,7 +57,6 @@ export function getActiveData(refresh) {
             fetchData('GET', null, getState().Global.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
-            console.log(responseJson)
                 return dispatch({type: types.LOAD_ACTIVE_DATA, response: responseJson});
             })
     }

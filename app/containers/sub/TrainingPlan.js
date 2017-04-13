@@ -200,7 +200,7 @@ const TrainingPlan = React.createClass({
         let textSection = null;
         if (rowCount < 1) {
             if (this.state.tab == 1) {
-                textSection = <Text style={styles.emptyTitle}>No macro plans. Create One!</Text>;
+                textSection = <Text style={styles.emptyTitle}>No Nutrition plans. Create One!</Text>;
             } else if (this.state.tab == 2) {
                 textSection = <Text style={styles.emptyTitle}>No workout programs. Create one!</Text>;
             }

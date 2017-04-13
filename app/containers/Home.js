@@ -146,7 +146,58 @@ const Home = React.createClass({
                 </View>
             )
         } else {
-            content = <View></View>;
+            const data = this.props.ActiveData;
+            if (data) {
+                console.log(data)
+                let calories = 0;
+                if (data.macro_plan_day) {
+                    const fats = (data.macro_plan_day.fats) ? data.macro_plan_day.fats : 0;
+                    const protein = (data.macro_plan_day.protein) ? data.macro_plan_day.protein : 0;
+                    const carbs = (data.macro_plan_day.carbs) ? data.macro_plan_day.carbs : 0;
+                    calories = (9 * fats) + (4 * protein) + (4 * carbs);
+                }
+                content = (
+                    <View>
+                        {data.macro_plan_day ?
+                            <View style={[styles.box, {marginBottom: 5, marginTop: 0}]}>
+                                <Text style={styles.textTitle}>{`Today's Nutrition Plan`}</Text>
+                                <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
+                                    <View style={styles.details}>
+                                        <Text style={styles.sectionTitle}>Protein (g)</Text>
+                                        <Text style={styles.smallText}>{data.macro_plan_day.protein}</Text>
+                                    </View>
+                                    <View style={styles.details}>
+                                        <Text style={styles.sectionTitle}>Carbs (g)</Text>
+                                        <Text style={styles.smallText}>{data.macro_plan_day.carbs}</Text>
+                                    </View>
+                                    <View style={styles.details}>
+                                        <Text style={styles.sectionTitle}>Fats (g)</Text>
+                                        <Text style={styles.smallText}>{data.macro_plan_day.protein}</Text>
+                                    </View>
+                                </View>
+                                <Text style={styles.formCalories}>
+                                    Total Calories: {calories}
+                                </Text>
+                            </View>
+                            : null
+                        }
+                        {data.training_day ?
+                            <TouchableOpacity activeOpacity={.6} style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
+                                <Text style={styles.textTitle}>{`Today's Workout`}</Text>
+                                <Text style={styles.h2Title}>{data.training_day.name}</Text>
+                                <Text>Exercises: {data.training_day.exercises.length}</Text>
+                                <Text>Start Workout</Text>
+
+                            </TouchableOpacity>
+                            : null
+                        }
+
+                    </View>
+                )
+            } else {
+                content = null;
+            }
+
         }
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         const dataSource = ds.cloneWithRows(this.props.Notifications.slice(0, 4));
@@ -185,6 +236,25 @@ const styles = StyleSheet.create({
     contentContainerStyle: {
         backgroundColor: '#f1f1f1'
     },
+    row: {
+        flexDirection: 'row',
+    },
+    details: {
+        flexDirection: 'column',
+        flex: 1,
+        backgroundColor: 'transparent',
+        paddingTop: 3,
+        paddingBottom: 3,
+        borderWidth: .5,
+        borderColor: '#aaaaaa',
+        alignItems: 'center'
+    },
+    formCalories: {
+        fontFamily: 'OpenSans-Bold',
+        alignSelf: 'center',
+        padding: 10,
+        fontSize: getFontSize(22),
+    },
     box: {
         marginTop: 5,
         justifyContent: 'center',
@@ -195,10 +265,14 @@ const styles = StyleSheet.create({
         borderColor: '#e1e3df',
     },
     textTitle: {
-        fontSize: getFontSize(20),
-        fontFamily: 'OpenSans-Semibold',
+        fontSize: getFontSize(26),
+        fontFamily: 'OpenSans-Bold',
         margin: 10,
         alignSelf: 'center'
+    },
+    h2Title: {
+        fontSize: getFontSize(22),
+        fontFamily: 'OpenSans-SemiBold',
     },
     simpleTitle: {
         fontSize: getFontSize(18),
