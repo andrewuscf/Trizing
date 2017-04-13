@@ -80,12 +80,17 @@ const NotificationBox = React.createClass({
                 <View style={[GlobalStyle.simpleBottomBorder, styles.container]}>
                     <AvatarImage goToProfile={this.goToProfile.bind(null, action.actor.id)} image={image}/>
                     <View style={styles.noteInfo}>
-                        <View style={styles.noteText}>
-                            <Text style={styles.notifText}>
-                                <Text style={styles.firstName}>{action.actor.profile.first_name} </Text>
-                                <Text style={styles.noteAction}>{action.verb}</Text>
-                            </Text>
-                        </View>
+                        <Text style={styles.notifText}>
+                            <Text style={styles.firstName}>{action.actor.profile.first_name} </Text>
+
+                        </Text>
+                        <Text style={styles.noteVerb}>
+                            {action.verb}
+                            {action.action_object.event_type ?
+                                <Text style={styles.noteAction}> {action.action_object.title}</Text>
+                                : null
+                            }
+                        </Text>
                         <View style={styles.timeStamp}>
                             <Text style={styles.timeStampText}>{moment(action.timestamp).fromNow(false)}</Text>
                             {notification.unread ? <View style={styles.redDot}/> : null}
@@ -108,7 +113,17 @@ const styles = StyleSheet.create({
         fontFamily: 'OpenSans-Semibold',
         fontSize: getFontSize(22),
         lineHeight: getFontSize(26),
-        backgroundColor: 'transparent',
+        flexDirection: 'column',
+        flexWrap: 'wrap',
+        flex: 1,
+    },
+    noteVerb: {
+        color: '#393839',
+        fontFamily: 'OpenSans-Semibold',
+        fontSize: getFontSize(18),
+        lineHeight: getFontSize(26),
+        flexWrap: 'wrap',
+        // fontSize: getFontSize(22),
     },
     noteInfo: {
         flexDirection: 'column',
@@ -132,11 +147,8 @@ const styles = StyleSheet.create({
     },
     firstName: {
         fontFamily: 'OpenSans-Bold',
-        color: '#393839'
-    },
-    noteText: {
-        flexWrap: 'wrap',
-        flex: 1,
+        color: '#393839',
+        flex: 1
     },
     noteAction: {
         textDecorationLine: 'underline',

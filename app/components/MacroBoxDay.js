@@ -15,10 +15,11 @@ import GlobalStyle from '../containers/globalStyle';
 
 const MacroBoxDay = React.createClass({
     propTypes: {
-        getDayState: React.PropTypes.func.isRequired,
         selectedDays: React.PropTypes.array.isRequired,
         planDayIndex: React.PropTypes.number,
-        day_plan: React.PropTypes.object
+        day_plan: React.PropTypes.object,
+        getDayState: React.PropTypes.func,
+        active: React.PropTypes.bool
     },
 
     getInitialState() {
@@ -29,7 +30,7 @@ const MacroBoxDay = React.createClass({
     },
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.state != prevState)
+        if (this.state != prevState && this.props.getDayState)
             this.props.getDayState(this.props.planDayIndex, this.state)
     },
 
@@ -92,7 +93,7 @@ const MacroBoxDay = React.createClass({
             });
         }
         return (
-            <View style={[GlobalStyle.simpleBottomBorder, {paddingBottom: 10}]}>
+            <View style={[GlobalStyle.simpleBottomBorder, {paddingBottom: 10}, this.props.active ? styles.activeBorder: null]}>
                 <View style={[styles.inputWrap, {height: 50}, styles.row]}>
                     {days}
                 </View>
@@ -232,6 +233,10 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
         textDecorationColor: '#b1aea5'
     },
+    activeBorder: {
+        borderWidth: 2,
+        borderColor: 'green',
+    }
 });
 
 export default MacroBoxDay;

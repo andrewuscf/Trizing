@@ -4,9 +4,11 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    ScrollView,
+    ListView,
     Alert,
-    Keyboard
+    Keyboard,
+    RefreshControl,
+    Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
@@ -14,6 +16,7 @@ import _ from 'lodash';
 
 import {getFontSize} from '../../actions/utils';
 
+import BackBar from '../../components/BackBar';
 import MacroBoxDay from '../../components/MacroBoxDay';
 import SubmitButton from '../../components/SubmitButton';
 
@@ -21,6 +24,13 @@ import SubmitButton from '../../components/SubmitButton';
 const MacroPlanDetail = React.createClass({
     propTypes: {
         macro_plan: React.PropTypes.object.isRequired,
+    },
+
+    getInitialState(){
+        return {
+            daily_logs: [],
+            refreshing: false,
+        }
     },
 
 
@@ -43,18 +53,17 @@ const MacroPlanDetail = React.createClass({
         );
     },
 
-
-    render() {
+    renderHeader() {
         const plan = this.props.macro_plan;
-        let created_at = moment.utc(plan.created_at).local()
+        let created_at = moment.utc(plan.created_at).local();
         const planDays = _.orderBy(plan.macro_plan_days, ['id']).map((day_plan, x) => {
-            return <MacroBoxDay key={x}
-                                getDayState={this.getDayState}
-                                day_plan={day_plan}
-                                selectedDays={day_plan.days}/>
+            console.log(moment().day())
+            return <MacroBoxDay key={x} day_plan={day_plan} selectedDays={day_plan.days}
+                                active={!!(plan.is_active && _.includes(day_plan.days, moment().day()))}/>
         });
         return (
-            <ScrollView style={[styles.container]} >
+            <View>
+                <BackBar back={this.props.navigator.pop}/>
                 <View style={styles.center}>
                     <View style={styles.details}>
                         <Text style={styles.mainText}>{plan.name}</Text>
@@ -65,7 +74,25 @@ const MacroPlanDetail = React.createClass({
                     </View>
                 </View>
                 {planDays}
-            </ScrollView>
+            </View>
+        )
+    },
+
+
+    render() {
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        let dataSource = ds.cloneWithRows(this.state.daily_logs);
+        return (
+            <ListView ref='daily_logs' removeClippedSubviews={(Platform.OS !== 'ios')}
+                      keyboardShouldPersistTaps="handled"
+                      refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh}/>}
+                      renderHeader={this.renderHeader}
+                      style={styles.container} enableEmptySections={true}
+                      dataSource={dataSource}
+                      renderRow={(log, sectionID, rowID) =>
+                          <Text>test</Text>
+                      }
+            />
         );
     }
 });
@@ -77,13 +104,14 @@ const styles = StyleSheet.create({
         flex: 1,
         borderBottomWidth: 1,
         borderColor: '#e1e3df',
-        marginTop: 10,
         backgroundColor: 'white'
     },
     center: {
         flexDirection: 'row',
         alignItems: 'center',
-        margin: 10
+        borderBottomWidth: 1,
+        borderColor: '#e1e3df',
+        padding: 10
     },
     details: {
         flexDirection: 'column',

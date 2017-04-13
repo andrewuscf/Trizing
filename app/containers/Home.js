@@ -63,6 +63,8 @@ const Home = React.createClass({
             this.props.actions.getClients(refresh);
             this.props.getSchedules('?template=true', refresh);
             this.props.getQuestionnaires(refresh);
+        } else {
+            this.props.actions.getActiveData(refresh);
         }
         if (refresh) {
             this.props.getNotifications(refresh);

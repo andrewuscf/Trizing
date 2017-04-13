@@ -6,6 +6,7 @@ const initialState = {
     Clients: [],
     Notifications: [],
     NotificationsNext: null,
+    ActiveData: null,
     Refreshing: false,
 };
 
@@ -44,6 +45,13 @@ export default function homeReducers(state = initialState, action = null) {
                     } :
                         notification
                 )
+            };
+
+        case constants.LOAD_ACTIVE_DATA:
+            return {
+                ...state,
+                ActiveData: action.response,
+                Refreshing: false
             };
 
         case constants.REMOVE_TOKEN:
