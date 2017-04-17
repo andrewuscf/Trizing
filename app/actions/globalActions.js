@@ -3,6 +3,7 @@ import * as types from './actionTypes';
 import {fetchData, API_ENDPOINT, refreshPage, SITE, checkStatus} from './utils';
 import {AsyncStorage, Platform} from 'react-native';
 import {LoginManager} from 'react-native-fbsdk';
+import momentTz from 'moment-timezone';
 
 export function setTokenInRedux(token, FromAPI = false) {
     if (FromAPI) {
@@ -77,6 +78,9 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
         if (refresh) {
             dispatch(refreshPage());
         }
+        const timeZone = momentTz.tz.guess();
+        if (timeZone) url += `?timezone=${timeZone}`;
+        console.log(timeZone)
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
             .then(checkStatus)
             .then((responseJson) => {

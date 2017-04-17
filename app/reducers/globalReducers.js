@@ -110,9 +110,10 @@ export default function AppReducers(state = initialState, action = null) {
             };
 
         case constants.REMOVE_SCHEDULE:
+            const index = _.findIndex(state.Schedules, {id: action.schedule_id});
             return {
                 ...state,
-                Schedules: _.remove(state.Schedules, {id: action.schedule_id})
+                Schedules: state.Schedules.slice(0, index).concat(state.Schedules.slice(index + 1))
             };
 
 

@@ -15,25 +15,38 @@ import {getFontSize} from '../../actions/utils';
 import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
-import SelectInput from '../../components/SelectInput';
 import SubmitButton from '../../components/SubmitButton';
 
 
 const Form = t.form.Form;
 
-let Schedule = t.struct({
-    name: t.String,
+let MacroLog = t.struct({
+    date: t.Date,
+    carbs: t.Number,
+    fats: t.Number,
+    Protein: t.Number
 });
 
-const CreateSchedule = React.createClass({
+let myFormatFunction = (format, date) => {
+    return moment(date).format(format);
+};
+
+const CreateMacroLog = React.createClass({
     propTypes: {
-        training_plan: React.PropTypes.number,
+        date: React.PropTypes.string,
     },
 
     getInitialState() {
+        let value = null;
+        if (this.props.date && moment(this.props.date).isValid()) {
+            value = {
+                date: this.props.date,
+                carbs: null,
+                fats: null,
+                Protein: null
+            }
+        }
         return {
-            Error: null,
-            template: null,
             value: null
         }
     },
@@ -53,29 +66,12 @@ const CreateSchedule = React.createClass({
     _onSubmit() {
         let values = this.refs.form.getValue();
         if (values) {
-            if (this.state.template)
-                values = {
-                    ...values,
-                    template: this.state.template
-                };
-            if (this.props.training_plan) {
-                values = {
-                    ...values,
-                    training_plan: this.props.training_plan
-                }
-            }
-            this.props.actions.createSchedule(values, this.asyncActions);
+            console.log(values);
         }
     },
 
     _cancel() {
         this.props.navigator.pop();
-    },
-
-    selectTemplate(id) {
-        this.setState({
-            template: id
-        });
     },
 
     onChange(value) {
@@ -90,12 +86,12 @@ const CreateSchedule = React.createClass({
             },
             stylesheet: stylesheet,
             fields: {
-                name: {
-                    label: 'Workout Program Name',
-                    placeholder: `For example 'Program XY'`,
-                    onSubmitEditing: () => this._onSubmit(),
-                    autoCapitalize: 'sentences'
-                },
+                date: {
+                    mode: 'date',
+                    config: {
+                        format: (date) => myFormatFunction("MMMM DD YYYY", date),
+                    }
+                }
             }
         };
         return (
@@ -104,22 +100,15 @@ const CreateSchedule = React.createClass({
                 <View style={{margin: 10}}>
                     <Form
                         ref="form"
-                        type={Schedule}
+                        type={MacroLog}
                         options={options}
                         onChange={this.onChange}
                         value={this.state.value}
                     />
-                    <Text>Use Template:</Text>
-                    <SelectInput ref='schedule_templates' options={[
-                        ..._.filter(this.props.Schedules, function (o) {
-                            return !o.training_plan;
-                        }),
-                        {id: null, name: 'None'}
-                    ]} selectedId={this.state.template} submitChange={this.selectTemplate}/>
                 </View>
                 <SubmitButton buttonStyle={styles.button}
                               textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
-                              text='Next Step'/>
+                              text='Submit'/>
             </View>
         )
     }
@@ -211,4 +200,4 @@ const dispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(stateToProps, dispatchToProps)(CreateSchedule);
+export default connect(stateToProps, dispatchToProps)(CreateMacroLog);

@@ -86,7 +86,7 @@ const NotificationBox = React.createClass({
                         </Text>
                         <Text style={styles.noteVerb}>
                             {action.verb}
-                            {action.action_object.event_type ?
+                            {action.action_object && action.action_object.event_type ?
                                 <Text style={styles.noteAction}> {action.action_object.title}</Text>
                                 : null
                             }

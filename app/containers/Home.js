@@ -147,6 +147,7 @@ const Home = React.createClass({
             )
         } else {
             const data = this.props.ActiveData;
+            console.log(this.props)
             if (data) {
                 console.log(data)
                 let calories = 0;
@@ -160,29 +161,37 @@ const Home = React.createClass({
                     <View>
                         {data.macro_plan_day ?
                             <View style={[styles.box, {marginBottom: 5, marginTop: 0}]}>
-                                <Text style={styles.textTitle}>{`Today's Nutrition Plan`}</Text>
+                                <Text style={styles.textTitle}>{`Today`}</Text>
                                 <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
                                     <View style={styles.details}>
-                                        <Text style={styles.sectionTitle}>Protein (g)</Text>
-                                        <Text style={styles.smallText}>{data.macro_plan_day.protein}</Text>
+                                        <Text style={styles.sectionTitle}>Carbs</Text>
+                                        <Text style={styles.smallText}>{`${data.macro_plan_day.carbs}g`}</Text>
                                     </View>
                                     <View style={styles.details}>
-                                        <Text style={styles.sectionTitle}>Carbs (g)</Text>
-                                        <Text style={styles.smallText}>{data.macro_plan_day.carbs}</Text>
+                                        <Text style={styles.sectionTitle}>Fats</Text>
+                                        <Text style={styles.smallText}>{`${data.macro_plan_day.fats}g`}</Text>
                                     </View>
                                     <View style={styles.details}>
-                                        <Text style={styles.sectionTitle}>Fats (g)</Text>
-                                        <Text style={styles.smallText}>{data.macro_plan_day.protein}</Text>
+                                        <Text style={styles.sectionTitle}>Protein</Text>
+                                        <Text style={styles.smallText}>{`${data.macro_plan_day.protein}g`}</Text>
                                     </View>
                                 </View>
                                 <Text style={styles.formCalories}>
-                                    Total Calories: {calories}
+                                    Calories: {calories}
                                 </Text>
+                                <TouchableOpacity onPress={this._redirect.bind(null, 'CreateMacroLog', null)} style={styles.link}>
+                                    <Text style={styles.simpleTitle}>Log Nutrition</Text>
+                                    <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
+                                </TouchableOpacity>
                             </View>
                             : null
                         }
                         {data.training_day ?
-                            <TouchableOpacity activeOpacity={.6} style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
+                            <TouchableOpacity activeOpacity={.6} style={[styles.box, {
+                                marginBottom: 5,
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }]}>
                                 <Text style={styles.textTitle}>{`Today's Workout`}</Text>
                                 <Text style={styles.h2Title}>{data.training_day.name}</Text>
                                 <Text>Exercises: {data.training_day.exercises.length}</Text>
@@ -209,19 +218,22 @@ const Home = React.createClass({
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
 
                     {content}
-                    <View style={styles.box}>
-                        <ListView ref='notification_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                                  style={styles.container} enableEmptySections={true} dataSource={dataSource}
-                                  renderRow={(notification) => <NotificationBox
-                                      navigator={this.props.navigator} notification={notification}
-                                      readNotification={this.props.readNotification}/>}
-                        />
-                        <TouchableOpacity onPress={this._redirect.bind(null, 'Notifications', null)}
-                                          style={styles.link}>
-                            <Text style={styles.simpleTitle}>View All Notifications</Text>
-                            <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
-                        </TouchableOpacity>
-                    </View>
+                    {dataSource.getRowCount() > 0 ?
+                        <View style={styles.box}>
+                            <ListView ref='notification_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                                      style={styles.container} enableEmptySections={true} dataSource={dataSource}
+                                      renderRow={(notification) => <NotificationBox
+                                          navigator={this.props.navigator} notification={notification}
+                                          readNotification={this.props.readNotification}/>}
+                            />
+                            <TouchableOpacity onPress={this._redirect.bind(null, 'Notifications', null)}
+                                              style={styles.link}>
+                                <Text style={styles.simpleTitle}>View All Notifications</Text>
+                                <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
+                            </TouchableOpacity>
+                        </View>
+                        : null
+                    }
                 </ScrollView>
             </View>
         )
@@ -239,14 +251,19 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
     },
+    sectionTitle: {
+        fontSize: getFontSize(20),
+        lineHeight: getFontSize(26),
+        fontFamily: 'OpenSans-Bold',
+    },
     details: {
         flexDirection: 'column',
         flex: 1,
         backgroundColor: 'transparent',
         paddingTop: 3,
         paddingBottom: 3,
-        borderWidth: .5,
-        borderColor: '#aaaaaa',
+        // borderWidth: .5,
+        // borderColor: '#aaaaaa',
         alignItems: 'center'
     },
     formCalories: {
