@@ -284,10 +284,12 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 30,
         paddingRight: 30,
-        width: deviceWidth,
-        position: 'absolute',
+        marginLeft: 50,
+        marginRight: 50,
         bottom: 0,
+        right: 0,
         left: 0,
+        borderRadius: 80
     },
     submitText: {
         color: 'white',
