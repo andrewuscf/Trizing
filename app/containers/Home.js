@@ -179,7 +179,9 @@ const Home = React.createClass({
                                 <Text style={styles.formCalories}>
                                     Calories: {calories}
                                 </Text>
-                                <TouchableOpacity onPress={this._redirect.bind(null, 'CreateMacroLog', null)} style={styles.link}>
+                                <TouchableOpacity
+                                    onPress={this._redirect.bind(null, 'CreateMacroLog', {macro_plan_day: data.macro_plan_day.id})}
+                                    style={styles.link}>
                                     <Text style={styles.simpleTitle}>Log Nutrition</Text>
                                     <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
                                 </TouchableOpacity>

@@ -57,9 +57,8 @@ const MacroPlanDetail = React.createClass({
         const plan = this.props.macro_plan;
         let created_at = moment.utc(plan.created_at).local();
         const planDays = _.orderBy(plan.macro_plan_days, ['id']).map((day_plan, x) => {
-            console.log(moment().day())
             return <MacroBoxDay key={x} day_plan={day_plan} selectedDays={day_plan.days}
-                                active={!!(plan.is_active && _.includes(day_plan.days, moment().day()))}/>
+                                active={!!(plan.is_active && _.includes(day_plan.days, moment().isoWeekday()))}/>
         });
         return (
             <View>

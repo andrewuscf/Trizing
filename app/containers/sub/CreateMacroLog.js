@@ -21,10 +21,10 @@ import SubmitButton from '../../components/SubmitButton';
 const Form = t.form.Form;
 
 let MacroLog = t.struct({
-    date: t.Date,
+    // date: t.Date,
     carbs: t.Number,
     fats: t.Number,
-    Protein: t.Number
+    protein: t.Number
 });
 
 let myFormatFunction = (format, date) => {
@@ -33,6 +33,7 @@ let myFormatFunction = (format, date) => {
 
 const CreateMacroLog = React.createClass({
     propTypes: {
+        macro_plan_day: React.PropTypes.number.isRequired,
         date: React.PropTypes.string,
     },
 
@@ -40,14 +41,23 @@ const CreateMacroLog = React.createClass({
         let value = null;
         if (this.props.date && moment(this.props.date).isValid()) {
             value = {
-                date: this.props.date,
+                // date: this.props.date? this.props.date: moment().format("MMMM DD YYYY"),
                 carbs: null,
                 fats: null,
-                Protein: null
+                protein: null
             }
         }
         return {
-            value: null
+            value: null,
+            date: this.props.date? this.props.date: moment().format("MMMM DD YYYY"),
+        }
+    },
+
+    componentDidUpdate() {
+        if (this.state.value && this.state.value.carbs&& this.state.value.fats && this.state.value.protein) {
+            this.refs.postbutton.setState({disabled: false});
+        } else {
+            this.refs.postbutton.setState({disabled: true});
         }
     },
 
@@ -55,7 +65,7 @@ const CreateMacroLog = React.createClass({
         if (start) {
             this.refs.postbutton.setState({busy: true});
         } else {
-            // this.refs.postbutton.setState({busy: false});
+            this.refs.postbutton.setState({busy: false});
             if (data.routeName) {
                 this.props.navigator.replace(getRoute(data.routeName, data.props))
             }
@@ -66,7 +76,11 @@ const CreateMacroLog = React.createClass({
     _onSubmit() {
         let values = this.refs.form.getValue();
         if (values) {
-            console.log(values);
+            values = {
+                ...values,
+                macro_plan_day: this.props.macro_plan_day
+            };
+            this.props.actions.addEditMacroLog(values);
         }
     },
 
@@ -80,23 +94,26 @@ const CreateMacroLog = React.createClass({
 
     render: function () {
         let options = {
-            i18n: {
-                optional: '',
-                required: '*',
-            },
-            stylesheet: stylesheet,
+            // i18n: {
+                // optional: '',
+                // required: '*',
+            // },
+            // stylesheet: t.form.Form.stylesheet,
             fields: {
-                date: {
-                    mode: 'date',
-                    config: {
-                        format: (date) => myFormatFunction("MMMM DD YYYY", date),
-                    }
-                }
+                // date: {
+                //     mode: 'date',
+                //     config: {
+                //         format: (date) => myFormatFunction("MMMM DD YYYY", date),
+                //     }
+                // }
             }
         };
         return (
             <View style={styles.flexCenter}>
-                <BackBar back={this._cancel} backText="Cancel" navStyle={{height: 40}}/>
+                <BackBar back={this._cancel}>
+                    <Text>{this.state.date}</Text>
+                </BackBar>
+                <Text style={[styles.title]}>Nutrition for the day</Text>
                 <View style={{margin: 10}}>
                     <Form
                         ref="form"
@@ -106,7 +123,7 @@ const CreateMacroLog = React.createClass({
                         value={this.state.value}
                     />
                 </View>
-                <SubmitButton buttonStyle={styles.button}
+                <SubmitButton buttonStyle={styles.button} disabled={true}
                               textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
                               text='Submit'/>
             </View>
@@ -126,68 +143,25 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         paddingLeft: 30,
         paddingRight: 30,
+        margin: 50,
+        bottom: 0,
+        right: 0,
+        left: 0,
+        borderRadius: 80
     },
     submitText: {
         color: 'white',
-        fontSize: 15,
+        fontSize: getFontSize(22),
         fontFamily: 'OpenSans-Bold',
+    },
+    title: {
+        fontSize: getFontSize(26),
+        fontFamily: 'OpenSans-Bold',
+        textAlign: 'center',
+        marginTop: 20
     }
 });
 
-// T FORM SETUP
-const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
-
-stylesheet.formGroup = {
-    ...stylesheet.formGroup,
-    normal: {
-        ...stylesheet.formGroup.normal,
-        marginBottom: 12,
-        borderBottomWidth: .5,
-        borderColor: '#aaaaaa',
-        justifyContent: 'center',
-        alignItems: 'stretch'
-    },
-    error: {
-        ...stylesheet.formGroup.error,
-        marginBottom: 12,
-        borderBottomWidth: .5,
-        borderColor: 'red',
-        justifyContent: 'center',
-        alignItems: 'stretch'
-    }
-};
-stylesheet.textbox = {
-    ...stylesheet.textbox,
-    normal: {
-        ...stylesheet.textbox.normal,
-        borderWidth: 0,
-        marginBottom: 0,
-        textAlign: 'center'
-    },
-    error: {
-        ...stylesheet.textbox.error,
-        borderWidth: 0,
-        marginBottom: 0,
-        textAlign: 'center'
-    }
-};
-stylesheet.controlLabel = {
-    ...stylesheet.controlLabel,
-    normal: {
-        ...stylesheet.controlLabel.normal,
-        fontSize: getFontSize(25),
-        lineHeight: getFontSize(26),
-        fontFamily: 'OpenSans-Semibold',
-        textAlign: 'center'
-    },
-    error: {
-        ...stylesheet.controlLabel.error,
-        fontSize: getFontSize(25),
-        lineHeight: getFontSize(26),
-        fontFamily: 'OpenSans-Semibold',
-        textAlign: 'center'
-    }
-};
 
 
 const stateToProps = (state) => {
