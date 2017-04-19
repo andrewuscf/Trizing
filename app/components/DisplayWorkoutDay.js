@@ -16,7 +16,8 @@ const DisplayWorkoutDay = React.createClass({
     propTypes: {
         workout_day: React.PropTypes.object.isRequired,
         dayIndex: React.PropTypes.number.isRequired,
-        _toWorkoutDay: React.PropTypes.func.isRequired
+        _toWorkoutDay: React.PropTypes.func.isRequired,
+        active: React.PropTypes.bool,
     },
 
     getInitialState() {
@@ -29,7 +30,7 @@ const DisplayWorkoutDay = React.createClass({
     render: function () {
         return (
             <TouchableOpacity onPress={this.props._toWorkoutDay.bind(null, this.props.workout_day.id)}
-                              style={styles.displayWorkoutBox}>
+                              style={[styles.displayWorkoutBox, this.props.active ? styles.active : null]}>
                 <Text style={styles.simpleTitle}>{this.props.workout_day.name}</Text>
                 <DaysOfWeek days={this.state.days}/>
             </TouchableOpacity>
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         borderColor: '#e1e3df',
         backgroundColor: 'white',
-        marginTop:10
+        marginTop: 10
     },
     simpleTitle: {
         fontSize: getFontSize(22),
@@ -52,6 +53,11 @@ const styles = StyleSheet.create({
         margin: 10,
         textAlign: 'center'
     },
+    active: {
+        borderColor: 'green',
+        borderTopWidth: 1,
+        borderBottomWidth: 1
+    }
 });
 
 

@@ -147,7 +147,6 @@ const Home = React.createClass({
             )
         } else {
             const data = this.props.ActiveData;
-            console.log(this.props)
             if (data) {
                 console.log(data)
                 let calories = 0;
@@ -193,14 +192,21 @@ const Home = React.createClass({
                                 marginBottom: 5,
                                 alignItems: 'center',
                                 justifyContent: 'center'
-                            }]}>
+                            }]} onPress={this._redirect.bind(null, 'WorkoutDaySession', {workout_day: data.training_day})}>
                                 <Text style={styles.textTitle}>{`Today's Workout`}</Text>
                                 <Text style={styles.h2Title}>{data.training_day.name}</Text>
                                 <Text>Exercises: {data.training_day.exercises.length}</Text>
                                 <Text>Start Workout</Text>
 
                             </TouchableOpacity>
-                            : null
+                            :
+                            <View style={[styles.box, {
+                                marginBottom: 5,
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }]}>
+                                <Text style={styles.textTitle}>No Workout Today</Text>
+                            </View>
                         }
 
                     </View>
@@ -264,8 +270,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         paddingTop: 3,
         paddingBottom: 3,
-        // borderWidth: .5,
-        // borderColor: '#aaaaaa',
         alignItems: 'center'
     },
     formCalories: {
