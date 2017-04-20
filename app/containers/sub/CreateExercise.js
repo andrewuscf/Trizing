@@ -105,7 +105,7 @@ const CreateExercise = React.createClass({
                         name: this.state.name,
                     },
                     reps: set.reps,
-                    order: index
+                    order: index + 1
                 };
                 if (set.weight)
                     data['weight'] = set.weight;

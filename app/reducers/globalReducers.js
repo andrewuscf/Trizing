@@ -127,7 +127,16 @@ export default function AppReducers(state = initialState, action = null) {
             };
 
 
-        case constants.ADD_EXERCISE || constants.EDIT_EXERCISE:
+        case constants.ADD_EXERCISE:
+            return {
+                ...state,
+                Schedules: state.Schedules.map(schedule =>
+                    (schedule.id === action.response.id) ? action.response : schedule
+                )
+            };
+
+        case constants.EDIT_EXERCISE:
+            console.log(action)
             return {
                 ...state,
                 Schedules: state.Schedules.map(schedule =>
@@ -167,12 +176,14 @@ export default function AppReducers(state = initialState, action = null) {
                     (schedule.id === thisSchedule.id) ?
                         {
                             ...schedule,
-                            workouts: schedule.workouts.map(workout=>
-                                (workout.id === thisWorkout.id) ? {...workout,
-                                    workout_days: [
-                                        ...workout.workout_days,
-                                        action.response
-                                    ]}
+                            workouts: schedule.workouts.map(workout =>
+                                (workout.id === thisWorkout.id) ? {
+                                        ...workout,
+                                        workout_days: [
+                                            ...workout.workout_days,
+                                            action.response
+                                        ]
+                                    }
                                     : workout
                             )
                         } : schedule

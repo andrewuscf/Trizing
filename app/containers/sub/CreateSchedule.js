@@ -92,7 +92,7 @@ const CreateSchedule = React.createClass({
             fields: {
                 name: {
                     label: 'Workout Program Name',
-                    placeholder: `For example 'Program XY'`,
+                    placeholder: this.props.training_plan? `This name will be displayed to your client` :`For example 'Program XY'`,
                     onSubmitEditing: () => this._onSubmit(),
                     autoCapitalize: 'sentences'
                 },

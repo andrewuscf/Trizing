@@ -54,7 +54,7 @@ const Home = React.createClass({
                     unreadcount = unreadcount + 1;
                 }
             });
-            FCM.setBadgeNumber(unreadcount);
+            if (FCM) FCM.setBadgeNumber(unreadcount);
         }
     },
 
