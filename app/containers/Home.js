@@ -165,25 +165,31 @@ const Home = React.createClass({
                                     <View style={styles.details}>
                                         <Text style={styles.sectionTitle}>Carbs</Text>
                                         <Text style={styles.smallText}>{`${data.macro_plan_day.carbs}g`}</Text>
+                                        <Text>{`${data.macro_plan_day.logged_today.carbs}g`}</Text>
                                     </View>
                                     <View style={styles.details}>
                                         <Text style={styles.sectionTitle}>Fats</Text>
                                         <Text style={styles.smallText}>{`${data.macro_plan_day.fats}g`}</Text>
+                                        <Text>{`${data.macro_plan_day.logged_today.fats}g`}</Text>
                                     </View>
                                     <View style={styles.details}>
                                         <Text style={styles.sectionTitle}>Protein</Text>
                                         <Text style={styles.smallText}>{`${data.macro_plan_day.protein}g`}</Text>
+                                        <Text>{`${data.macro_plan_day.logged_today.protein}g`}</Text>
                                     </View>
                                 </View>
                                 <Text style={styles.formCalories}>
                                     Calories: {calories}
                                 </Text>
-                                <TouchableOpacity
-                                    onPress={this._redirect.bind(null, 'CreateMacroLog', {macro_plan_day: data.macro_plan_day.id})}
-                                    style={styles.link}>
-                                    <Text style={styles.simpleTitle}>Log Nutrition</Text>
-                                    <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
-                                </TouchableOpacity>
+                                {!data.macro_plan_day.logged_today ?
+                                    <TouchableOpacity
+                                        onPress={this._redirect.bind(null, 'CreateMacroLog', {macro_plan_day: data.macro_plan_day.id})}
+                                        style={styles.link}>
+                                        <Text style={styles.simpleTitle}>Log Nutrition</Text>
+                                        <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
+                                    </TouchableOpacity>
+                                    : null
+                                }
                             </View>
                             : null
                         }
@@ -192,7 +198,8 @@ const Home = React.createClass({
                                 marginBottom: 5,
                                 alignItems: 'center',
                                 justifyContent: 'center'
-                            }]} onPress={this._redirect.bind(null, 'WorkoutDaySession', {workout_day: data.training_day})}>
+                            }]}
+                                              onPress={this._redirect.bind(null, 'WorkoutDaySession', {workout_day: data.training_day})}>
                                 <Text style={styles.textTitle}>{`Today's Workout`}</Text>
                                 <Text style={styles.h2Title}>{data.training_day.name}</Text>
                                 <Text>Exercises: {data.training_day.exercises.length}</Text>
