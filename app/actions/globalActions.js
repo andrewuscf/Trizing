@@ -428,3 +428,20 @@ export function addEditMacroLog(data, asyncActions = null) {
     }
 }
 
+export function logSets(data, asyncActions) {
+    asyncActions(true);
+    let JSONDATA = JSON.stringify(data);
+    return (dispatch, getState) => {
+        return fetch(`${API_ENDPOINT}training/workout/logs/`,
+            fetchData('POST', JSONDATA, getState().Global.UserToken)).then(checkStatus)
+            .then((responseJson) => {
+                asyncActions(false);
+                return dispatch({type: types.CREATE_WORKOUT_LOG, response: responseJson});
+            })
+            .catch((error) => {
+                asyncActions(false);
+                console.log(error);
+            }).done();
+    }
+}
+

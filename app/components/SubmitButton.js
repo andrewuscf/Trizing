@@ -36,7 +36,7 @@ const SubmitButton = React.createClass({
                             <Image style={[styles.icon, this.props.iconStyle]}
                                    source={require('../assets/images/wait-white.gif')}/>
                         </View> :
-                        <Text style={[this.props.textStyle]}>
+                        <Text style={[this.props.textStyle, styles.submitText]}>
                             {content}
                         </Text>
                     }
@@ -66,7 +66,12 @@ const styles = StyleSheet.create({
     icon: {
         width: 36,
         height: 9
-    }
+    },
+    submitText: {
+        color: 'white',
+        fontSize: 15,
+        fontFamily: 'OpenSans-Bold',
+    },
 });
 
 export default SubmitButton;

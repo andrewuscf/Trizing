@@ -22,7 +22,7 @@ const SetLogBox = React.createClass({
 
     getInitialState() {
         return {
-            value: null
+            value: null,
         }
     },
 
@@ -46,7 +46,6 @@ const SetLogBox = React.createClass({
                 }
             }
         };
-        console.log(set)
         return (
             <View style={styles.setsHeader}>
                 <Text style={styles.setColumn}>{set.order}</Text>

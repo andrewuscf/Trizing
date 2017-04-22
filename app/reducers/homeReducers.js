@@ -54,6 +54,19 @@ export default function homeReducers(state = initialState, action = null) {
                 Refreshing: false
             };
 
+        case constants.CREATE_WORKOUT_LOG:
+            return {
+                ...state,
+                ActiveData: {
+                    ...state.ActiveData,
+                    training_day: {
+                        ...state.ActiveData.training_day,
+                        logged_today: true
+                    }
+
+                },
+            };
+
         case constants.REMOVE_TOKEN:
             return initialState;
 
