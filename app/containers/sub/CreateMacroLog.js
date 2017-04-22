@@ -49,12 +49,12 @@ const CreateMacroLog = React.createClass({
         }
         return {
             value: null,
-            date: this.props.date? this.props.date: moment().format("MMMM DD YYYY"),
+            date: this.props.date ? this.props.date : moment().format("MMMM DD YYYY"),
         }
     },
 
     componentDidUpdate() {
-        if (this.state.value && this.state.value.carbs&& this.state.value.fats && this.state.value.protein) {
+        if (this.state.value && this.state.value.carbs && this.state.value.fats && this.state.value.protein) {
             this.refs.postbutton.setState({disabled: false});
         } else {
             this.refs.postbutton.setState({disabled: true});
@@ -66,9 +66,7 @@ const CreateMacroLog = React.createClass({
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            if (data.routeName) {
-                this.props.navigator.replace(getRoute(data.routeName, data.props))
-            }
+            this.props.navigator.pop();
         }
     },
 
@@ -80,7 +78,7 @@ const CreateMacroLog = React.createClass({
                 ...values,
                 macro_plan_day: this.props.macro_plan_day
             };
-            this.props.actions.addEditMacroLog(values);
+            this.props.actions.addEditMacroLog(values, this.asyncActions);
         }
     },
 
@@ -95,8 +93,8 @@ const CreateMacroLog = React.createClass({
     render: function () {
         let options = {
             // i18n: {
-                // optional: '',
-                // required: '*',
+            // optional: '',
+            // required: '*',
             // },
             // stylesheet: t.form.Form.stylesheet,
             fields: {
@@ -161,7 +159,6 @@ const styles = StyleSheet.create({
         marginTop: 20
     }
 });
-
 
 
 const stateToProps = (state) => {
