@@ -1,6 +1,6 @@
 'use strict';
 
-export const SITE = 'http://localhost:8000/';
+export const SITE = 'http://trainer-staging.us-west-2.elasticbeanstalk.com//';
 
 export const API_ENDPOINT = `${SITE}api/v1/`;
 
