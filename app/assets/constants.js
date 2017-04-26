@@ -1,6 +1,6 @@
 import {SITE} from '../actions/utils';
 
-export const EMPTY_AVATAR = `${SITE}static/img/empty_avatar.png`;
+export const EMPTY_AVATAR = `https://trainerqa.s3.amazonaws.com/static/img/empty_avatar.png`;
 
 export const DAYS_OF_WEEK = [
     {id: 1, day: 'Mon'},

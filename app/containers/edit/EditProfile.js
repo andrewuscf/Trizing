@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
     },
     logOutCreateProfile: {
         right: 10,
-        top: 15,
+        top: 25,
         position: 'absolute',
     }
 });

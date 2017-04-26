@@ -1,6 +1,6 @@
 'use strict';
 
-export const SITE = 'http://trainer-staging.us-west-2.elasticbeanstalk.com//';
+export const SITE = 'https://trizing-staging.herokuapp.com/';
 
 export const API_ENDPOINT = `${SITE}api/v1/`;
 
@@ -32,6 +32,7 @@ export function fetchData(method, body = null, token = null, headers = null, get
 }
 
 export function checkStatus(response) {
+    console.log(response)
     if (response.status == 204){
         return {deleted: true}
     }
