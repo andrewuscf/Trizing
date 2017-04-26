@@ -126,7 +126,6 @@ const CreateEvent = React.createClass({
                 date: {
                     mode: 'date',
                     minimumDate: moment().toDate(),
-                    minuteInterval: 10,
                     config: {
                         format: (date) => myFormatFunction("MMMM DD YYYY", date),
                     }
