@@ -86,7 +86,7 @@ const Chat = React.createClass({
                     <Icon name="comment-o" size={60}
                           color='#b1aea5'/>
                     <Text style={styles.noRequestTitle}>
-                        You should chat.
+                        You should chat with your trainer or fellow clients.
                     </Text>
                 </View>
             </ScrollView>
