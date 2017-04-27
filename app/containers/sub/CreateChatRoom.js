@@ -13,6 +13,7 @@ import _ from 'lodash';
 
 import * as chatActions from '../../actions/chatActions';
 import {getFontSize, trunc} from '../../actions/utils';
+import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import AvatarImage from '../../components/AvatarImage';
@@ -30,7 +31,7 @@ const CreateChatRoom = React.createClass({
     },
 
     componentDidMount() {
-        if (this.props.RequestUser.type == 2) {
+        if (this.props.RequestUser.type == 2 && this.props.Team.length < 1) {
             this.props.actions.getTeam(true);
         }
     },
@@ -40,8 +41,7 @@ const CreateChatRoom = React.createClass({
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            // this.props.actions.getEvents(true);
-            // this.props.navigator.pop();
+            this.props.navigator.replace(getRoute('ChatRoom', {roomId: data.id}));
         }
     },
 
@@ -51,7 +51,7 @@ const CreateChatRoom = React.createClass({
                 ...this.state.selected,
                 this.props.RequestUser.id
             ];
-            this.props.actions.createChatRoom({users: users})
+            this.props.actions.createChatRoom({users: users}, this.asyncActions)
         }
     },
 
