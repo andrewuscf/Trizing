@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
         top: 10,
         width: 100,
         flexDirection: 'row',
-        // justifyContent: 'center',
         alignItems: 'center',
     },
     cancel: {

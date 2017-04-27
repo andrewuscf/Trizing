@@ -13,7 +13,12 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Modal from 'react-native-modalbox';
-import FCM, {FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType} from 'react-native-fcm';
+import FCM, {
+    FCMEvent,
+    RemoteNotificationResult,
+    WillPresentNotificationResult,
+    NotificationType
+} from 'react-native-fcm';
 
 import * as GlobalActions from './actions/globalActions';
 import {getRoute} from './routes';
@@ -54,6 +59,13 @@ const App = React.createClass({
             case 'Profile':
                 return <SceneComponent navigator={ nav } route={route} {...route.passProps} events={this.eventEmitter}
                                        openModal={this.openQuestionnaireModal}/>;
+            case 'Login':
+                return <SceneComponent navigator={ nav } route={route} {...route.passProps}
+                                       login={this.props.actions.login}
+                                       resetPassword={this.props.actions.resetPassword}
+                                       register={this.props.actions.register}
+                                       socialAuth={this.props.actions.socialAuth}
+                                       events={this.eventEmitter}/>;
             default :
                 return <SceneComponent navigator={ nav } route={route} {...route.passProps}
                                        events={this.eventEmitter}/>;
@@ -73,8 +85,14 @@ const App = React.createClass({
                 ]
             );
         }
+
         if (this.props.RequestUser && this.props.RequestUser != prevProps.RequestUser) {
             this.setUpNotifications();
+            if (!this.props.RequestUser.profile.completed) {
+                navigator.push(getRoute('EditProfile'))
+            } else  {
+                navigator.push(getRoute('Home'))
+            }
         }
     },
 
@@ -84,20 +102,20 @@ const App = React.createClass({
         FCM.getFCMToken().then(token => {
             if (token) self.props.actions.setDeviceForNotification(token);
         });
-        this.notificationListener = FCM.on(FCMEvent.Notification, async (notif) => {
+        this.notificationListener = FCM.on(FCMEvent.Notification, async(notif) => {
             // there are two parts of notif. notif.notification contains the notification payload, notif.data contains data payload
             self.props.actions.getNewNotifications();
             console.log(notif);
-            if(notif.local_notification){
+            if (notif.local_notification) {
                 //this is a local notification
             }
-            if(notif.opened_from_tray){
+            if (notif.opened_from_tray) {
                 //app is open/resumed because user clicked banner
             }
             await someAsyncCall();
 
-            if(Platform.OS ==='ios'){
-                switch(notif._notificationType){
+            if (Platform.OS === 'ios') {
+                switch (notif._notificationType) {
                     case NotificationType.Remote:
                         notif.finish(RemoteNotificationResult.NewData);
                         break;
@@ -149,50 +167,55 @@ const App = React.createClass({
 
 
     render() {
-        if (!this.state.splashArt) {
-            if (this.props.UserToken) {
-                if (!this.props.RequestUser) {
-                    return <Loading />;
-                }
-                if (!this.props.RequestUser.profile.completed) {
-                    return <EditProfile />;
-                } else {
-                    return (
-                        <View style={styles.container}>
-                            <Navigator initialRoute={getRoute('Home')}
-                                       ref={(nav) => {navigator = nav}}
-                                       onDidFocus={this.itemChangedFocus}
-                                       renderScene={ this._renderScene }
-                                       navigationBar={<NavBar RequestUser={this.props.RequestUser}
-                                                              scrollToTopEvent={this.scrollToTopEvent}
-                                                              route={this.props.Route}/>}
-                            />
-                            <Modal style={[styles.modal]} backdrop={false} ref={"questionnaire"}
-                                   swipeToClose={false}>
-                                <CreateQuestionnaire closeQuestionnaireModal={this.closeQuestionnaireModal}
-                                                     createQuestionnaire={this.props.actions.createQuestionnaire}/>
-                            </Modal>
-                        </View>
-                    );
-                }
-
-            }
-            return <Login login={this.props.actions.login}
-                          resetPassword={this.props.actions.resetPassword}
-                          register={this.props.actions.register}
-                          error={this.props.Error}
-                          socialAuth={this.props.actions.socialAuth}/>;
+        if (this.state.splashArt) {
+            // Should replace this with a splash art.
+            return <Loading />;
         }
-        // Should replace this with a splash art.
-        return <Loading />;
+
+        let route = getRoute('Loading');
+        if (this.props.UserToken) {
+            if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
+                route = getRoute('Home')
+            } else if (this.props.RequestUser && !this.props.RequestUser.profile.completed) {
+                route = getRoute('EditProfile')
+            }
+        } else {
+            route = getRoute('Login')
+        }
+
+        return (
+            <Navigator initialRoute={route}
+                       style={styles.container}
+                       ref={(nav) => {
+                           navigator = nav
+                       }}
+                       onDidFocus={this.itemChangedFocus}
+                       renderScene={ this._renderScene }
+                       navigationBar={<NavBar RequestUser={this.props.RequestUser}
+                                              scrollToTopEvent={this.scrollToTopEvent}
+                                              route={this.props.Route}/>}
+            />
+        );
+
     }
 });
+
+{/*<Modal style={[styles.modal]} backdrop={false} ref={"questionnaire"}*/
+}
+{/*swipeToClose={false}>*/
+}
+{/*<CreateQuestionnaire closeQuestionnaireModal={this.closeQuestionnaireModal}*/
+}
+{/*createQuestionnaire={this.props.actions.createQuestionnaire}/>*/
+}
+{/*</Modal>*/
+}
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: (Platform.OS === 'ios') ? 20 : 0,
-        backgroundColor: '#f1f1f1'
+        // backgroundColor: '#f1f1f1'
     },
     modal: {
         top: 0,

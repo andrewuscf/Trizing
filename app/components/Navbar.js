@@ -53,6 +53,9 @@ const NavBar = React.createClass({
 
     render: function () {
         const user = this.props.RequestUser;
+        if (!this.props.RequestUser || this.props.route == 'Login' || (this.props.RequestUser && !this.props.RequestUser.profile.completed)) {
+            return null;
+        }
         return (
             <View style={styles.primaryBar}>
 

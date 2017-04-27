@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import FCM from 'react-native-fcm';
 
 import {fetchData, API_ENDPOINT, getFontSize} from '../../actions/utils';
+import {getRoute} from '../../routes';
 
 import * as ProfileActions from '../../actions/profileActions';
 import {removeToken} from '../../actions/globalActions';
@@ -136,6 +137,8 @@ const EditProfile = React.createClass({
                 {text: 'Cancel', null, style: 'cancel'},
                 {
                     text: 'Yes', onPress: () => {
+                        const login = getRoute('Login')
+                    this.props.navigator.immediatelyResetRouteStack([login])
                     FCM.getFCMToken().then(token => {
                         self.props.removeToken(token);
                     });

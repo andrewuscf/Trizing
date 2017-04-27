@@ -6,7 +6,8 @@ import Calendar from './containers/Calendar';
 import Feed from './containers/Feed';
 import Chat from './containers/Chat';
 import Profile from './containers/Profile';
-
+import Login from './containers/Login';
+import Loading from './components/Loading';
 
 // Sub Pages
 import Notifications from './containers/sub/Notifications';
@@ -43,6 +44,8 @@ const MAIN_ROUTES = [
     {component: Feed, name: 'Feed'},
     {component: Chat, name: 'Chat'},
     {component: Profile, name: 'Profile'},
+    {component: Login, name: 'Login'},
+    {component: Loading, name: 'Loading'},
     {component: EditProfile, name: 'EditProfile'},
     {component: ManageClients, name: 'ManageClients'},
     {component: Notifications, name: 'Notifications'},

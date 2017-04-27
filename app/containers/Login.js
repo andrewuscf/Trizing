@@ -189,7 +189,7 @@ const Login = React.createClass({
                                        }}
                                        placeholderTextColor="black"
                                        placeholder="Password"/>
-                            <TouchableOpacity onPress={this.toggleForgotCreds} focusedOpacity={1}
+                            <TouchableOpacity onPress={this.toggleForgotCreds} style={{flex: 1}} focusedOpacity={1}
                                               activeOpacity={1}>
                                 <Icon name="question-circle-o" size={20} style={styles.forgotIcon}/>
                             </TouchableOpacity>
