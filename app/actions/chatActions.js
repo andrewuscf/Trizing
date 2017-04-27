@@ -49,3 +49,13 @@ export function createChatRoom(data) {
             });
     }
 }
+
+export function getTeam(refresh = false) {
+    return (dispatch, getState) => {
+        return fetch(`${API_ENDPOINT}team/`, fetchData('GET', null, getState().Global.UserToken))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                return dispatch({type: types.GET_TEAM, response: responseJson});
+            })
+    }
+}

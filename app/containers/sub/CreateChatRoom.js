@@ -29,6 +29,12 @@ const CreateChatRoom = React.createClass({
         }
     },
 
+    componentDidMount() {
+        if (this.props.RequestUser.type == 2) {
+            this.props.actions.getTeam(true);
+        }
+    },
+
     asyncActions(start, data = {}){
         if (start) {
             this.refs.postbutton.setState({busy: true});
@@ -67,6 +73,10 @@ const CreateChatRoom = React.createClass({
 
 
     render: function () {
+        let source = this.props.Clients;
+        if (this.props.RequestUser.type == 2) {
+            source = this.props.Team
+        }
 
         return (
             <View style={styles.flexCenter}>
@@ -78,7 +88,7 @@ const CreateChatRoom = React.createClass({
 
                 <ScrollView style={{paddingTop: 20}}
                             contentContainerStyle={{flexWrap: 'wrap', flexDirection: 'row'}}>
-                    {this.props.Clients.map((client, i) => {
+                    {source.map((client, i) => {
                         let image = client.profile.thumbnail ? client.profile.thumbnail : client.profile.avatar;
                         return (
                             <View style={styles.inviteBox} key={i}>

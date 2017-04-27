@@ -4,6 +4,7 @@ import * as constants from '../actions/actionTypes';
 
 const initialState = {
     Rooms: [],
+    Team: [],
     Refreshing: false,
     RoomsNext: null
 };
@@ -38,6 +39,12 @@ export default function AppReducers(state = initialState, action = null) {
                     action.response,
                     ...state.Rooms
                 ]
+            };
+
+        case constants.GET_TEAM:
+            return {
+                ...state,
+                Team: (action.refresh) ? action.response.results :state.Team.concat(action.response.results),
             };
 
 

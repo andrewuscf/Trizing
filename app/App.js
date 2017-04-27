@@ -88,10 +88,15 @@ const App = React.createClass({
 
         if (this.props.RequestUser && this.props.RequestUser != prevProps.RequestUser) {
             this.setUpNotifications();
+            const routes = navigator.getCurrentRoutes();
             if (!this.props.RequestUser.profile.completed) {
-                navigator.push(getRoute('EditProfile'))
+                if (routes[routes.length-1].name != 'EditProfile') {
+                    navigator.push(getRoute('EditProfile'))
+                }
             } else  {
-                navigator.push(getRoute('Home'))
+                if (routes[routes.length-1].name != 'Home') {
+                    navigator.push(getRoute('Home'))
+                }
             }
         }
     },

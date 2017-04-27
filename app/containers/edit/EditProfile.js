@@ -7,7 +7,8 @@ import {
     ScrollView,
     Dimensions,
     Alert,
-    Keyboard
+    Keyboard,
+    KeyboardAvoidingView
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import t from 'tcomb-form-native';
@@ -207,6 +208,7 @@ const EditProfile = React.createClass({
                     }
                     <ScrollView ref='_scrollView' keyboardDismissMode='interactive'
                                 style={styles.mainContainer}>
+                        <KeyboardAvoidingView behavior="position">
                         <View style={styles.backNav}>
                             {this.props.RequestUser.profile.completed ?
                                 <TouchableOpacity onPress={this._back} style={styles.backNavButton}>
@@ -240,10 +242,11 @@ const EditProfile = React.createClass({
 
 
                         </View>
+                            <SubmitButton buttonStyle={styles.button}
+                                          textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
+                                          text='Save'/>
+                        </KeyboardAvoidingView>
                     </ScrollView>
-                    <SubmitButton buttonStyle={styles.button}
-                                  textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
-                                  text='Save'/>
                 </View>
             );
         } else {
@@ -259,7 +262,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     backNav: {
-        minHeight: 50,
+        minHeight: 40,
         borderBottomWidth: .5,
         borderBottomColor: 'rgba(0,0,0,.15)',
         alignItems: 'center',
@@ -304,7 +307,7 @@ const styles = StyleSheet.create({
     },
     logOutCreateProfile: {
         right: 10,
-        top: 25,
+        top: 15,
         position: 'absolute',
     }
 });

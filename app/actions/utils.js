@@ -1,6 +1,6 @@
 'use strict';
 
-export const SITE = 'https://trizing-staging.herokuapp.com/';
+export const SITE = 'http://localhost:8000/';
 
 export const API_ENDPOINT = `${SITE}api/v1/`;
 
