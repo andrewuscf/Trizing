@@ -117,7 +117,6 @@ const App = React.createClass({
             if (notif.opened_from_tray) {
                 //app is open/resumed because user clicked banner
             }
-            await someAsyncCall();
 
             if (Platform.OS === 'ios') {
                 switch (notif._notificationType) {
