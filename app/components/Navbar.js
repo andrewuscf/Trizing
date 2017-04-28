@@ -7,7 +7,8 @@ import {getRoute} from '../routes';
 
 const NavBar = React.createClass({
     propTypes: {
-        scrollToTopEvent: React.PropTypes.func.isRequired
+        scrollToTopEvent: React.PropTypes.func.isRequired,
+        unReadMessages: React.PropTypes.bool.isRequired
     },
 
     navigate(routeName) {
@@ -82,8 +83,13 @@ const NavBar = React.createClass({
 
                 <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Chat', null)}>
                     <View style={styles.button}>
-                        <Icon name="comment-o" size={20}
-                              color={ (!this.isActiveRoute('Chat')) ? iconColor : iconColorActive }/>
+                        {this.props.unReadMessages ?
+                            <Icon name="comment" size={20} style={styles.hasUnread}
+                                  color={ (!this.isActiveRoute('Chat')) ? iconColor : iconColorActive }/>
+                            :
+                            <Icon name="comment-o" size={20}
+                                  color={ (!this.isActiveRoute('Chat')) ? iconColor : iconColorActive }/>
+                        }
                     </View>
                 </TouchableOpacity>
 
@@ -134,6 +140,9 @@ const styles = StyleSheet.create({
     button: {
         alignItems: 'center',
         alignSelf: 'stretch'
+    },
+    hasUnread: {
+        color: 'red'
     }
 });
 

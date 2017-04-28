@@ -19,6 +19,7 @@ import FCM, {
     WillPresentNotificationResult,
     NotificationType
 } from 'react-native-fcm';
+import _ from 'lodash';
 
 import * as GlobalActions from './actions/globalActions';
 import {getRoute} from './routes';
@@ -187,6 +188,10 @@ const App = React.createClass({
             route = getRoute('Login')
         }
 
+        const unReadMessages = _.filter(this.props.Notifications, function (o) {
+            return o.unread && o.action && o.action.action_object && o.action.action_object.room;
+        }).length > 0;
+
         return (
             <Navigator initialRoute={route}
                        style={styles.container}
@@ -197,6 +202,7 @@ const App = React.createClass({
                        renderScene={ this._renderScene }
                        navigationBar={<NavBar RequestUser={this.props.RequestUser}
                                               scrollToTopEvent={this.scrollToTopEvent}
+                                              unReadMessages={unReadMessages}
                                               route={this.props.Route}/>}
             />
         );
@@ -230,7 +236,10 @@ const styles = StyleSheet.create({
 });
 
 const stateToProps = (state) => {
-    return state.Global;
+    return {
+        ...state.Global,
+        Notifications: state.Home.Notifications
+    };
 };
 
 const dispatchToProps = (dispatch) => {
