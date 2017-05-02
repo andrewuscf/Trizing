@@ -12,6 +12,7 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
+import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
@@ -53,7 +54,10 @@ const WorkoutDaySession = React.createClass({
         // console.log(this.state.setRefLimits)
         let completed = true;
         let logs = [];
-        for (const row of this.rows) {
+        const rows = _.uniqBy(this.rows, function (e) {
+            if (e && e.props.set) return e.props.set.id;
+        });
+        for (const row of rows) {
             if (row) {
                 const formValues = row.refs.form.getValue();
                 if (formValues) {

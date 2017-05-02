@@ -47,7 +47,6 @@ export function setActiveRoute(routeName) {
 
 export function login(email, pass) {
     const body = JSON.stringify({username: email, password: pass});
-    console.log(API_ENDPOINT)
     return dispatch => {
         return fetch(`${API_ENDPOINT}auth/token/`, fetchData('POST', body))
             .then(checkStatus)
@@ -81,7 +80,6 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
         }
         const timeZone = momentTz.tz.guess();
         if (timeZone) url += `?timezone=${timeZone}`;
-        console.log(timeZone)
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
