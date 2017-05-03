@@ -134,7 +134,9 @@ const Profile = React.createClass({
                                               onPress={this._redirect.bind(null, 'EditProfile', null)}>
                                 <Icon name="gear" size={20} color='#333333'/>
                             </TouchableOpacity>
-                            : null
+                            : <TouchableOpacity style={styles.logOut}>
+                                <Icon name="ellipsis-v" size={20} color='#333333'/>
+                            </TouchableOpacity>
                         }
                     </BackBar>
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
@@ -197,13 +199,12 @@ const styles = StyleSheet.create({
     userDetail: {
         paddingTop: 20,
         paddingBottom: 20,
-        // flexDirection: 'row',
         backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center'
     },
     userInfo: {
-        // paddingLeft: 20
+        marginTop: 10
     },
     name: {
         paddingTop: 5,
@@ -213,7 +214,8 @@ const styles = StyleSheet.create({
     logOut: {
         position: 'absolute',
         top: 15,
-        right: 10
+        right: 10,
+        paddingLeft: 10,
     },
     requestSection: {
         justifyContent: 'center',
