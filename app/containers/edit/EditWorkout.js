@@ -4,7 +4,9 @@ import {
     View,
     Text,
     StyleSheet,
-    Keyboard
+    Keyboard,
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -17,7 +19,6 @@ import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import DisplayWorkoutDay from '../../components/DisplayWorkoutDay';
-import SubmitButton from '../../components/SubmitButton';
 
 import CreateWorkoutDay from '../sub/CreateWorkoutDay';
 
@@ -67,51 +68,85 @@ const EditWorkout = React.createClass({
 
 
     render: function () {
-        let workout_days = <Text>No workout days</Text>;
-        if (this.state.workout) {
+        let workout_days = (
+            <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
+                <Text>You have no workout days! Create Some!</Text>
+            </View>
+        );
+        if (this.state.workout && this.state.workout.workout_days.length) {
             workout_days = this.state.workout.workout_days.map((workout_day, index) => {
                 return <DisplayWorkoutDay key={index} _toWorkoutDay={this._toWorkoutDay} workout_day={workout_day}
                                           dayIndex={index}/>
             });
         }
         return (
-            <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
-                        contentContainerStyle={styles.contentContainerStyle}>
-                <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}>
-                    <Text>{this.state.workout ? this.state.workout.name : null}</Text>
-                </BackBar>
+            <View style={styles.flexCenter}>
+                <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
+                            contentContainerStyle={styles.contentContainerStyle}>
+                    <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}>
+                        <Text>{this.state.workout ? this.state.workout.name : null}</Text>
+                    </BackBar>
 
-                <View style={{marginBottom: 10}}>
-                    {workout_days}
+                    <View style={{marginBottom: 10}}>
+                        {workout_days}
+                    </View>
+
+
+
+                </ScrollView>
+                <View style={styles.footer}>
+                    <TouchableOpacity style={[styles.editBlock, {paddingLeft: 10}]}>
+                        <Icon name="trash" size={20} color={iconColor}/>
+                        <Text style={styles.editItemLabel}>Delete</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.editBlock, {paddingLeft: 15}]} onPress={this._createWorkoutDay}>
+                        <Icon name="plus-circle" size={20} color={iconColor}/>
+                        <Text style={styles.editItemLabel}>Add Workout Day</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.editBlock, {paddingRight: 10}]}>
+                        <Icon name="sticky-note" size={20} color={iconColor}/>
+                        <Text style={styles.editItemLabel}>Add Note</Text>
+                    </TouchableOpacity>
                 </View>
-
-                <SubmitButton buttonStyle={styles.button}
-                              textStyle={styles.submitText} onPress={this._createWorkoutDay} ref='postbutton'
-                              text='Create workout Day'/>
-
-
-            </ScrollView>
+            </View>
         )
     }
 });
+
+const iconColor = '#8E8E8E';
 
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
     },
-    button: {
-        backgroundColor: '#00BFFF',
+    footer: {
+        borderTopWidth: 1,
+        borderColor: '#e1e3df',
+        alignItems: 'center',
+        minHeight: 40,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        left: 0,
+    },
+    editBlock: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginBottom: 5,
+        marginTop: 5,
+    },
+    editItemLabel: {
+        fontFamily: 'OpenSans-Semibold',
+        fontSize: getFontSize(14),
+        color: iconColor,
+        textAlign: 'center',
+    },
+    editItem: {
+        alignSelf: 'flex-start',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 30,
-        paddingRight: 30,
-    },
-    submitText: {
-        color: 'white',
-        fontSize: 15,
-        fontFamily: 'OpenSans-Bold',
     }
 });
 

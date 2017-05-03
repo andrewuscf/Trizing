@@ -115,7 +115,7 @@ const CreateExercise = React.createClass({
                     data['id'] = set.id;
                     data['exercise'] = this.props.exercise.id;
                     const old = _.find(this.props.exercise.sets, {id: set.id});
-                    if (old.reps != data.reps ||old.weight != data.weight ||old.order != data.order) {
+                    if (old.reps != data.reps || old.weight != data.weight || old.order != data.order) {
                         this.props.actions.addEditExercise(data);
                     }
                 }
@@ -137,47 +137,61 @@ const CreateExercise = React.createClass({
                                      value={{reps: set.reps, weight: set.weight}}/>
         });
         return (
-            <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
-                        contentContainerStyle={styles.contentContainerStyle}>
-                <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}>
-                    <Text>{this.state.workout ? this.state.workout_day.name : null}</Text>
-                    <TouchableOpacity style={styles.save} onPress={this._save}>
-                        <Text>Save</Text>
-                    </TouchableOpacity>
-                </BackBar>
-                <View style={styles.subNav}>
-                    <TouchableOpacity onPress={this._toggleShow}>
-                        {!this.state.showSets ?
-                            <Icon name="angle-down" size={20} color="red"/> :
-                            <Icon name="angle-up" size={20} color="red"/>
-                        }
-                    </TouchableOpacity>
-                    <TextInput
-                        ref="name"
-                        style={[styles.filterInput]}
-                        underlineColorAndroid='transparent'
-                        autoCapitalize='words'
-                        autoCorrect={false}
-                        placeholderTextColor='#a7a59f'
-                        onChangeText={this._exerciseNameChange}
-                        value={this.state.name}
-                        placeholder="Enter exercise name"
-                    />
-                </View>
-                {this.state.showSets ?
-                    <View>
-                        {sets}
+            <View style={{flex: 1}}>
+                <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
+                            contentContainerStyle={styles.contentContainerStyle}>
+                    <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}>
+                        <Text>{this.state.workout ? this.state.workout_day.name : null}</Text>
+                        <TouchableOpacity style={styles.save} onPress={this._save}>
+                            <Text>Save</Text>
+                        </TouchableOpacity>
+                    </BackBar>
+                    <View style={styles.subNav}>
+                        <TouchableOpacity onPress={this._toggleShow}>
+                            {!this.state.showSets ?
+                                <Icon name="angle-down" size={20} color="red"/> :
+                                <Icon name="angle-up" size={20} color="red"/>
+                            }
+                        </TouchableOpacity>
+                        <TextInput
+                            ref="name"
+                            style={[styles.filterInput]}
+                            underlineColorAndroid='transparent'
+                            autoCapitalize='words'
+                            autoCorrect={false}
+                            placeholderTextColor='#a7a59f'
+                            onChangeText={this._exerciseNameChange}
+                            value={this.state.name}
+                            placeholder="Enter exercise name"
+                        />
                     </View>
-                    : null
-                }
-                <TouchableOpacity onPress={this._addSet}>
-                    <Text style={styles.addSetStyle}>Add Set</Text>
-                </TouchableOpacity>
-            </ScrollView>
+                    {this.state.showSets ?
+                        <View>
+                            {sets}
+                        </View>
+                        : null
+                    }
+                </ScrollView>
+                <View style={styles.footer}>
+                    <TouchableOpacity style={[styles.editBlock, {marginLeft: 10}]}>
+                        <Icon name="trash" size={20} color={iconColor}/>
+                        <Text style={styles.editItemLabel}>Delete</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.editBlock]} onPress={this._addSet}>
+                        <Icon name="bars" size={20} color={iconColor}/>
+                        <Text style={styles.editItemLabel}>Add Set</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.editBlock, {marginRight: 10}]}>
+                        <Icon name="sticky-note" size={20} color={iconColor}/>
+                        <Text style={styles.editItemLabel}>Add Note</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
         )
     }
 });
 
+const iconColor = '#8E8E8E';
 
 const styles = StyleSheet.create({
     flexCenter: {
@@ -209,24 +223,40 @@ const styles = StyleSheet.create({
         right: 0,
         top: 5
     },
-    addSetStyle: {
-        height: 35,
-        marginTop: 5,
-        marginBottom: 8,
-        color: '#b1aea5',
-        fontSize: getFontSize(22),
-        lineHeight: getFontSize(26),
-        backgroundColor: 'transparent',
-        fontFamily: 'OpenSans-Semibold',
-        alignSelf: 'center',
-        textDecorationLine: 'underline',
-        textDecorationColor: '#b1aea5'
-    },
     save: {
         position: 'absolute',
         top: 20,
         right: 10
     },
+    footer: {
+        borderTopWidth: 1,
+        borderColor: '#e1e3df',
+        alignItems: 'center',
+        minHeight: 40,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        left: 0,
+    },
+    editBlock: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginBottom: 5,
+        marginTop: 5,
+    },
+    editItemLabel: {
+        fontFamily: 'OpenSans-Semibold',
+        fontSize: getFontSize(14),
+        color: iconColor,
+        textAlign: 'center',
+    },
+    editItem: {
+        alignSelf: 'flex-start',
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 });
 
 const stateToProps = (state) => {

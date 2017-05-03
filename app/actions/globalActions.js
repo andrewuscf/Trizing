@@ -303,6 +303,18 @@ export function removeSchedule(schedule_id) {
     }
 }
 
+export function deleteSchedule(scheduleId, asyncActions) {
+    return (dispatch, getState) => {
+        return fetch(`${API_ENDPOINT}training/schedule/${scheduleId}/`,
+            fetchData('DELETE', null, getState().Global.UserToken)).then(checkStatus)
+            .then((responseJson) => {
+                asyncActions({deleted: responseJson.deleted});
+                return dispatch(removeSchedule(scheduleId));
+            })
+            .catch((error) => {
+            }).done();
+    }
+}
 
 export function createWorkout(data, asyncActions) {
     asyncActions(true);

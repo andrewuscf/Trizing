@@ -26,36 +26,29 @@ const DisplayExerciseBox = React.createClass({
             this.props._editExercise(this.props.exercise);
     },
 
+    onEdit(){
+
+    },
+
 
     render: function () {
         return (
             <TouchableOpacity style={styles.displayWorkoutBox} onPress={this._redirect}>
                 <Text style={styles.simpleTitle}>{this.props.exercise.name}</Text>
                 <TouchableOpacity style={styles.edit}>
-                    <Icon name="pencil" size={20} color="black"/>
+                    <Icon name="ellipsis-v" size={20} color="#8E8E8E"/>
                 </TouchableOpacity>
             </TouchableOpacity>
         )
     }
 });
 
-// {this.state.showSets ?
-//     this.props.exercise.sets.map((set, index) => {
-//         return <DisplaySetBox set={set} setIndex={index} key={index}/>
-//     })
-//     : null
-// }
-
 
 const styles = StyleSheet.create({
     displayWorkoutBox: {
-        margin: 5,
         marginBottom: 0,
-        borderWidth: 0.5,
+        borderTopWidth: 1,
         borderColor: '#e1e3df',
-        borderRadius: 8,
-        backgroundColor: 'white',
-        minHeight: 50,
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center'
@@ -67,7 +60,7 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     edit: {
-        margin: 10,
+        margin: 20,
     },
 });
 

@@ -5,7 +5,8 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    Keyboard
+    Keyboard,
+    Alert
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -19,8 +20,6 @@ import {getRoute} from '../../routes';
 import GlobalStyle from '../../containers/globalStyle';
 
 import BackBar from '../../components/BackBar';
-import SubmitButton from '../../components/SubmitButton';
-
 import CreateWorkoutDay from '../sub/CreateWorkoutDay';
 
 
@@ -36,12 +35,9 @@ const EditSchedule = React.createClass({
         }
     },
 
-    asyncActions(start){
-        if (start) {
-            this.refs.postbutton.setState({busy: true});
-        } else {
-            this.refs.postbutton.setState({busy: false});
-            // this.props.navigator.pop();
+    asyncActions(data = {}){
+        if (data.deleted) {
+            this.props.navigator.pop();
         }
     },
 
@@ -62,10 +58,29 @@ const EditSchedule = React.createClass({
         this.props.navigator.push(getRoute('EditWorkout', {workoutId: workoutId}))
     },
 
+    _deleteSchedule() {
+        Keyboard.dismiss();
+        Alert.alert(
+            'Delete Schedule',
+            `Are you sure you want delete this schedule?`,
+            [
+                {text: 'Cancel', null, style: 'cancel'},
+                {
+                    text: 'Delete',
+                    onPress: () => this.props.actions.deleteSchedule(this.props.scheduleId, this.asyncActions)
+                },
+            ]
+        );
+    },
+
 
     render: function () {
-        let steps = <Text>No Program blocks</Text>;
-        if (this.state.schedule) {
+        let steps = (
+            <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
+                <Text>You have no workouts! Create Some!</Text>
+            </View>
+        );
+        if (this.state.schedule && this.state.schedule.workouts.length) {
             steps = _.orderBy(this.state.schedule.workouts, ['order']).map((workout, index) => {
                 let start_date = moment.utc(workout.dates.start_date).local();
                 return <TouchableOpacity key={index} onPress={this._toWorkoutDay.bind(null, workout.id)}
@@ -86,43 +101,42 @@ const EditSchedule = React.createClass({
             });
         }
         return (
-            <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
-                        contentContainerStyle={styles.contentContainerStyle}>
-                <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}>
-                    <Text>{this.state.schedule ? this.state.schedule.name : null}</Text>
-                </BackBar>
+            <View style={styles.flexCenter}>
+                <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
+                            contentContainerStyle={styles.contentContainerStyle}>
+                    <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}>
+                        <Text>{this.state.schedule ? this.state.schedule.name : null}</Text>
+                    </BackBar>
 
-                <View style={{marginBottom: 10}}>
-                    {steps}
+                    <View style={{marginBottom: 10}}>
+                        {steps}
+                    </View>
+
+                </ScrollView>
+                <View style={styles.footer}>
+                    <TouchableOpacity style={[styles.editBlock, {paddingLeft: 10}]} onPress={this._deleteSchedule}>
+                        <Icon name="trash" size={20} color={iconColor}/>
+                        <Text style={styles.editItemLabel}>Delete</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.editBlock, {paddingLeft: 15}]} onPress={this._createWorkoutDay}>
+                        <Icon name="plus-circle" size={20} color={iconColor}/>
+                        <Text style={styles.editItemLabel}>Add Workout</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.editBlock, {paddingRight: 10}]}>
+                        <Icon name="pencil" size={20} color={iconColor}/>
+                        <Text style={styles.editItemLabel}>Edit Name</Text>
+                    </TouchableOpacity>
                 </View>
-
-                <SubmitButton buttonStyle={styles.button}
-                              textStyle={styles.submitText} onPress={this._createWorkoutDay} ref='postbutton'
-                              text='Create a Workout'/>
-
-
-            </ScrollView>
+            </View>
         )
     }
 });
 
+const iconColor = '#8E8E8E';
+
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
-    },
-    button: {
-        backgroundColor: '#00BFFF',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 30,
-        paddingRight: 30,
-    },
-    submitText: {
-        color: 'white',
-        fontSize: 15,
-        fontFamily: 'OpenSans-Bold',
     },
     workoutBox: {
         backgroundColor: 'white',
@@ -146,6 +160,35 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    footer: {
+        borderTopWidth: 1,
+        borderColor: '#e1e3df',
+        alignItems: 'center',
+        minHeight: 40,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        left: 0,
+    },
+    editBlock: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginBottom: 5,
+        marginTop: 5,
+    },
+    editItemLabel: {
+        fontFamily: 'OpenSans-Semibold',
+        fontSize: getFontSize(14),
+        color: iconColor,
+        textAlign: 'center',
+    },
+    editItem: {
+        alignSelf: 'flex-start',
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 });
 
 

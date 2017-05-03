@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     RefreshControl,
     Platform,
-    ListView
+    ListView,
+    Modal
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -19,9 +20,9 @@ import GlobalStyle from '../globalStyle';
 import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
+import CustomIcon from '../../components/CustomIcon';
 import DaysOfWeek from '../../components/DaysOfWeek';
 import DisplayExerciseBox from '../../components/DisplayExerciseBox';
-import SubmitButton from '../../components/SubmitButton';
 
 const WorkoutDayDetail = React.createClass({
     propTypes: {
@@ -34,7 +35,7 @@ const WorkoutDayDetail = React.createClass({
         const workout_day = _.find(workout.workout_days, {id: this.props.workout_day_id});
         return {
             Error: null,
-            workout_day: workout_day
+            workout_day: workout_day,
         }
     },
 
@@ -48,31 +49,12 @@ const WorkoutDayDetail = React.createClass({
         }
     },
 
-    renderSearchBar(){
-        return (
-            <View>
-                <BackBar back={this.props.navigator.pop} navStyle={{height: 50}}>
-                    <Text style={[styles.dayTitle]}>{this.state.workout_day.name}</Text>
-                </BackBar>
-                <DaysOfWeek days={this.state.workout_day.days}/>
-                <Text style={[styles.dayTitle]}>Exercises</Text>
-            </View>
-        )
-
-    },
-
     _addExercise() {
         this.props.navigator.push(getRoute('CreateExercise', {workout_day: this.state.workout_day}))
     },
 
     _editExercise(exercise) {
-        this.props.navigator.push(getRoute('CreateExercise', {workout_day: this.state.workout_day, exercise:exercise}))
-    },
-
-    renderFooter() {
-        return <SubmitButton buttonStyle={styles.button}
-                             textStyle={styles.submitText} onPress={this._addExercise} ref='postbutton'
-                             text='Add Exercise'/>
+        this.props.navigator.push(getRoute('CreateExercise', {workout_day: this.state.workout_day, exercise: exercise}))
     },
 
 
@@ -83,46 +65,91 @@ const WorkoutDayDetail = React.createClass({
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = ds.cloneWithRows(this.state.workout_day.exercises);
         return (
-            <ListView ref='workout_day_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                      keyboardShouldPersistTaps="handled"
-                      refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
-                      renderHeader={this.renderSearchBar}
-                      renderFooter={this.renderFooter}
-                      style={styles.container} enableEmptySections={true}
-                      dataSource={dataSource}
-                      renderRow={(exercise, sectionID, rowID) =>
-                          <DisplayExerciseBox exercise={exercise} _editExercise={this._editExercise}/>
-                      }
-            />
+            <View style={styles.container}>
+                <BackBar back={this.props.navigator.pop} navStyle={{height: 50}}>
+                    <Text style={[styles.dayTitle]}>{this.state.workout_day.name}</Text>
+                </BackBar>
+                <DaysOfWeek days={this.state.workout_day.days}/>
+                <Text style={[styles.dayTitle]}>Exercises</Text>
+
+                {!this.state.workout_day.exercises.length ?
+                    <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
+                        <Text>You have no workout days! Create Some!</Text>
+                    </View> :
+
+                    <ListView ref='workout_day_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                              keyboardShouldPersistTaps="handled"
+                              refreshControl={<RefreshControl refreshing={this.props.Refreshing}
+                                                              onRefresh={this.refresh}/>}
+                              enableEmptySections={true}
+                              dataSource={dataSource}
+                              renderRow={(exercise, sectionID, rowID) =>
+                                  <DisplayExerciseBox exercise={exercise} _editExercise={this._editExercise}/>
+                              }
+                    />
+                }
+
+                <View style={styles.footer}>
+
+                    <TouchableOpacity style={[styles.editBlock, {paddingLeft: 10}]}>
+                        <Icon name="trash" size={20} color={iconColor}/>
+                        <Text style={styles.editItemLabel}>Delete</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.editBlock, {paddingLeft: 15}]} onPress={this._addExercise}>
+                        <CustomIcon name="weight" size={20} color={iconColor}/>
+                        <Text style={styles.editItemLabel}>Add Exercise</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.editBlock, {paddingRight: 10}]}>
+                        <Icon name="sticky-note" size={20} color={iconColor}/>
+                        <Text style={styles.editItemLabel}>Add Note</Text>
+                    </TouchableOpacity>
+
+                </View>
+            </View>
         );
     }
 });
 
+const iconColor = '#8E8E8E';
 
 const styles = StyleSheet.create({
     container: {
-        // backgroundColor: 'white',
+        flex: 1,
     },
     dayTitle: {
         fontSize: getFontSize(30),
         fontFamily: 'OpenSans-Semibold',
         textAlign: 'center'
     },
-    button: {
-        backgroundColor: '#00BFFF',
+    footer: {
+        borderTopWidth: 1,
+        borderColor: '#e1e3df',
+        alignItems: 'center',
+        minHeight: 40,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        left: 0,
+    },
+    editBlock: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginBottom: 5,
+        marginTop: 5,
+    },
+    editItemLabel: {
+        fontFamily: 'OpenSans-Semibold',
+        fontSize: getFontSize(14),
+        color: iconColor,
+        textAlign: 'center',
+    },
+    editItem: {
+        alignSelf: 'flex-start',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 30,
-        paddingRight: 30,
-        marginTop: 10
-    },
-    submitText: {
-        color: 'white',
-        fontSize: 15,
-        fontFamily: 'OpenSans-Bold',
-    },
+    }
 });
 
 const stateToProps = (state) => {
