@@ -27,8 +27,6 @@ import {getRoute} from './routes';
 import Login from './containers/Login';
 import EditProfile from './containers/edit/EditProfile';
 
-import CreateQuestionnaire from './containers/sub/CreateQuestionnaire';
-
 import NavBar from './components/Navbar';
 import Loading from './components/Loading';
 
@@ -91,14 +89,24 @@ const App = React.createClass({
             this.setUpNotifications();
             const routes = navigator.getCurrentRoutes();
             if (!this.props.RequestUser.profile.completed) {
-                if (routes[routes.length-1].name != 'EditProfile') {
+                if (routes[routes.length - 1].name != 'EditProfile') {
                     navigator.push(getRoute('EditProfile'))
                 }
-            } else  {
-                if (routes[routes.length-1].name != 'Home') {
+            } else {
+                if (routes[routes.length - 1].name != 'Home') {
                     navigator.push(getRoute('Home'))
                 }
             }
+        }
+
+        if (this.props.Notifications && this.props.Notifications.length && Platform.OS === 'ios') {
+            let unreadcount = 0;
+            this.props.Notifications.forEach((notification, i) => {
+                if (notification.unread) {
+                    unreadcount = unreadcount + 1;
+                }
+            });
+            if (FCM) FCM.setBadgeNumber(unreadcount);
         }
     },
 
@@ -158,13 +166,6 @@ const App = React.createClass({
         this.props.actions.setActiveRoute(route.name);
     },
 
-    openQuestionnaireModal() {
-        this.refs.questionnaire.open();
-    },
-
-    closeQuestionnaireModal() {
-        this.refs.questionnaire.close();
-    },
 
     scrollToTopEvent(routeName) {
         this.eventEmitter.emit('scrollToTopEvent', {routeName: routeName});
@@ -189,15 +190,13 @@ const App = React.createClass({
         }
 
         const unReadMessages = _.filter(this.props.Notifications, function (o) {
-            return o.unread && o.action && o.action.action_object && o.action.action_object.room;
-        }).length > 0;
+                return o.unread && o.action && o.action.action_object && o.action.action_object.room;
+            }).length > 0;
 
         return (
             <Navigator initialRoute={route}
                        style={styles.container}
-                       ref={(nav) => {
-                           navigator = nav
-                       }}
+                       ref={(nav) => {navigator = nav}}
                        onDidFocus={this.itemChangedFocus}
                        renderScene={ this._renderScene }
                        navigationBar={<NavBar RequestUser={this.props.RequestUser}
@@ -210,16 +209,6 @@ const App = React.createClass({
     }
 });
 
-{/*<Modal style={[styles.modal]} backdrop={false} ref={"questionnaire"}*/
-}
-{/*swipeToClose={false}>*/
-}
-{/*<CreateQuestionnaire closeQuestionnaireModal={this.closeQuestionnaireModal}*/
-}
-{/*createQuestionnaire={this.props.actions.createQuestionnaire}/>*/
-}
-{/*</Modal>*/
-}
 
 const styles = StyleSheet.create({
     container: {

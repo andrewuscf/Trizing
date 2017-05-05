@@ -4,25 +4,22 @@ import {
     View,
     Text,
     StyleSheet,
-    Alert,
     TextInput,
-    TouchableHighlight,
+    TouchableOpacity,
     Keyboard
 } from 'react-native';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 
 import BackBar from '../../components/BackBar';
 import SubmitButton from '../../components/SubmitButton';
 
 
-const CheckInModal = React.createClass({
-    propTypes: {
-        closeQuestionnaireModal: React.PropTypes.func.isRequired,
-        createQuestionnaire: React.PropTypes.func.isRequired
-    },
-
+const CreateQuestionnaire = React.createClass({
     getInitialState() {
         return {
             Error: null,
@@ -38,19 +35,7 @@ const CheckInModal = React.createClass({
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            this.props.closeQuestionnaireModal();
-        }
-    },
-
-    componentDidUpdate(prevProps, prevState) {
-        if (this.state.Error) {
-            Alert.alert(
-                this.state.Error,
-                this.state.Error,
-                [
-                    {text: 'OK', onPress: () => this.setState({Error: null})},
-                ]
-            );
+            this.props.navigator.pop();
         }
     },
 
@@ -66,12 +51,12 @@ const CheckInModal = React.createClass({
                 name: this.state.name,
                 questions: [],
             };
-            this.state.questions.forEach((question)=>{
-               if (question.text){
-                   data.questions.push(question)
-               }
+            this.state.questions.forEach((question) => {
+                if (question.text) {
+                    data.questions.push(question)
+                }
             });
-            this.props.createQuestionnaire(data, this.asyncActions)
+            this.props.actions.createQuestionnaire(data, this.asyncActions)
         }
     },
 
@@ -105,7 +90,7 @@ const CheckInModal = React.createClass({
 
 
     render: function () {
-        const questions = this.state.questions.map((question, x)=> {
+        const questions = this.state.questions.map((question, x) => {
             return (
                 <View key={x}>
                     <Text style={styles.inputLabel}>Question {x + 1}</Text>
@@ -121,44 +106,43 @@ const CheckInModal = React.createClass({
                                    placeholder="Ex: What is your goal?"/>
                     </View>
                     {this.state.questions.length > 1 ?
-                        < TouchableHighlight style={styles.removeQuestion}
-                                             onPress={this.removeQuestion.bind(null, x)} underlayColor='transparent'>
+                        <TouchableOpacity style={styles.removeQuestion}
+                                          onPress={this.removeQuestion.bind(null, x)} underlayColor='transparent'>
                             <Icon name="times" size={30} color='red'/>
-                        </TouchableHighlight>
+                        </TouchableOpacity>
                         : null
                     }
                 </View>
             )
         });
         return (
-            <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}
-                        keyboardShouldPersistTaps="handled">
-                <BackBar back={this.props.closeQuestionnaireModal} backText="Cancel" navStyle={{height: 40}}>
-                    <SubmitButton buttonStyle={[styles.submitButton]}
-                                  textStyle={[styles.cancel, this.isValid() ? styles.blueText : null]}
-                                  onPress={this._onSubmit} ref='postbutton'
-                                  text='Submit'/>
-                </BackBar>
-
-                <View style={styles.formContainer}>
-                    <Text style={styles.inputLabel}>Survey Name</Text>
-                    <View style={styles.inputWrap}>
-                        <TextInput ref="name" style={styles.textInput} autoCapitalize='sentences'
-                                   underlineColorAndroid='transparent'
-                                   autoCorrect={false}
-                                   onChangeText={(text)=>this.setState({name: text})}
-                                   value={this.state.name}
-                                   onSubmitEditing={(event) => {
-                                       this.refs.question0.focus();
-                                   }}/>
+            <View style={{flex: 1}}>
+                <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}
+                            keyboardShouldPersistTaps="handled">
+                    <BackBar back={this.props.navigator.pop} backText="Cancel" navStyle={{height: 40}}/>
+                    <View style={styles.formContainer}>
+                        <Text style={styles.inputLabel}>Survey Name</Text>
+                        <View style={styles.inputWrap}>
+                            <TextInput ref="name" style={styles.textInput} autoCapitalize='sentences'
+                                       underlineColorAndroid='transparent'
+                                       autoCorrect={false}
+                                       onChangeText={(text) => this.setState({name: text})}
+                                       value={this.state.name}
+                                       onSubmitEditing={(event) => {
+                                           this.refs.question0.focus();
+                                       }}/>
+                        </View>
+                        {questions}
+                        <TouchableOpacity onPress={this.addQuestion} underlayColor='transparent'>
+                            <Text style={styles.addQuestion}>Add a Question</Text>
+                        </TouchableOpacity>
                     </View>
-                    {questions}
-                    <TouchableHighlight onPress={this.addQuestion} underlayColor='transparent'>
-                        <Text style={styles.addQuestion}>Add a Question</Text>
-                    </TouchableHighlight>
-                </View>
 
-            </ScrollView>
+                </ScrollView>
+                <View style={{margin: 20}}>
+                    <SubmitButton disabled={!this.isValid()} onPress={this._onSubmit} ref='postbutton' text='Submit'/>
+                </View>
+            </View>
         )
     }
 });
@@ -167,20 +151,6 @@ const CheckInModal = React.createClass({
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1
-    },
-    submitButton: {
-        zIndex: 999,
-        position: 'absolute',
-        right: 10,
-        top: 15,
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    cancel: {
-        color: '#d4d4d4'
-    },
-    blueText: {
-        color: '#00BFFF'
     },
     formContainer: {
         margin: 10
@@ -229,5 +199,14 @@ const styles = StyleSheet.create({
     }
 });
 
+const stateToProps = (state) => {
+    return {};
+};
 
-export default CheckInModal;
+const dispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(GlobalActions, dispatch)
+    }
+};
+
+export default connect(stateToProps, dispatchToProps)(CreateQuestionnaire);

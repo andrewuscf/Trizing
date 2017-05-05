@@ -37,6 +37,7 @@ import CreateExercise from './containers/sub/CreateExercise';
 import CreateEvent from './containers/sub/CreateEvent';
 import CreateChatRoom from './containers/sub/CreateChatRoom';
 import CreateMacroLog from './containers/sub/CreateMacroLog';
+import CreateQuestionnaire from './containers/sub/CreateQuestionnaire';
 
 const MAIN_ROUTES = [
     {component: Home, name: 'Home'},
@@ -67,6 +68,7 @@ const MAIN_ROUTES = [
     {component: ScheduleDetail, name: 'ScheduleDetail'},
     {component: WorkoutDetail, name: 'WorkoutDetail'},
     {component: WorkoutDaySession, name: 'WorkoutDaySession'},
+    {component: CreateQuestionnaire, name: 'CreateQuestionnaire'},
 ];
 
 export function getRoute(routeName, props) {

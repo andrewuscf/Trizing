@@ -45,7 +45,6 @@ const Profile = React.createClass({
 
     propTypes: {
         id: React.PropTypes.number.isRequired,
-        openModal: React.PropTypes.func.isRequired,
         request: React.PropTypes.object
     },
 
@@ -118,6 +117,10 @@ const Profile = React.createClass({
         }
     },
 
+    createQuestionnaire() {
+        this.props.navigator.push(getRoute('CreateQuestionnaire'))
+    },
+
 
     render() {
         const user = this.state.user;
@@ -168,7 +171,7 @@ const Profile = React.createClass({
                     </View>
                     {this.props.RequestUser.id == user.profile.trainer?
                         <TrainingPlan clientId={user.id} UserToken={this.props.UserToken}
-                                      openModal={this.props.openModal}
+                                      openModal={this.createQuestionnaire}
                                       training_plan={user.training_plan}
                                       _redirect={this._redirect}/>
                         : null

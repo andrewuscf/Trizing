@@ -14,7 +14,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import FCM from 'react-native-fcm';
 
 import * as HomeActions from '../actions/homeActions';
 import * as GlobalActions from '../actions/globalActions';
@@ -31,7 +30,6 @@ const Home = React.createClass({
     mixins: [Subscribable.Mixin],
     propTypes: {
         Refreshing: React.PropTypes.bool.isRequired,
-        openModal: React.PropTypes.func.isRequired
     },
 
     scrollToTopEvent(args) {
@@ -42,19 +40,6 @@ const Home = React.createClass({
         this.addListenerOn(this.props.events, 'scrollToTopEvent', this.scrollToTopEvent);
         if (!this.props.Clients.length) {
             this.getNeeded(true);
-        }
-        // this.getToken();
-    },
-
-    componentDidUpdate(prevProps) {
-        if (this.props.Notifications && this.props.Notifications.length && Platform.OS === 'ios') {
-            let unreadcount = 0;
-            this.props.Notifications.forEach((notification, i) => {
-                if (notification.unread) {
-                    unreadcount = unreadcount + 1;
-                }
-            });
-            if (FCM) FCM.setBadgeNumber(unreadcount);
         }
     },
 
@@ -70,14 +55,6 @@ const Home = React.createClass({
             this.props.getNotifications(refresh);
         }
     },
-
-    // getToken() {
-    //     const self = this;
-    //     FCM.requestPermissions(); // for iOS
-    //     FCM.getFCMToken().then(token => {
-    //         if (token) self.props.actions.setDeviceForNotification(token);
-    //     });
-    // },
 
 
     _refresh() {
@@ -144,7 +121,7 @@ const Home = React.createClass({
                                       </TouchableOpacity>
                                   }
                         />
-                        <TouchableOpacity onPress={this.props.openModal} style={styles.link}>
+                        <TouchableOpacity onPress={this._redirect.bind(null, 'CreateQuestionnaire', null)} style={styles.link}>
                             <Text style={styles.simpleTitle}>Create Survey</Text>
                             <Icon name="plus" size={getFontSize(18)} style={styles.linkArrow}/>
                         </TouchableOpacity>

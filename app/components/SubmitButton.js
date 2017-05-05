@@ -2,14 +2,24 @@ import React, {Component} from 'react';
 import {TouchableHighlight, View, Image, Text, StyleSheet} from 'react-native';
 
 const SubmitButton = React.createClass({
+    propTypes: {
+        onPress: React.PropTypes.func.isRequired,
+    },
+
     getInitialState() {
         return {
             busy: false,
             disabled: this.props.disabled
         }
     },
+
+
     onPress: function () {
-        if (!this.state.busy && !this.state.disabled) {
+        if (this.state.busy) {
+            console.log('This button is busy -- onPress blocked');
+        } else if (this.props.disabled) {
+            console.log('This button is disabled -- onPress blocked');
+        } else {
             this.props.onPress();
         }
     },
@@ -19,27 +29,29 @@ const SubmitButton = React.createClass({
         let actionstyle = null;
         if (this.state.busy) {
             actionstyle = styles.activeButtonStyle;
-        } else if (this.state.disabled) {
+        } else if (this.props.disabled) {
             actionstyle = styles.disabledButtonStyle;
         }
 
         // text or icon?
-        let content = this.props.text;
+        let content = null;
+        // if(this.props.iconName){
+        //     content = <MiddleIcon name={this.props.iconName} size={14} color='#fff'/>
+        // }else{
+        content = this.props.text;
+        // }
 
         // render
         return (
-            <TouchableHighlight style={[this.props.buttonStyle, actionstyle]} onPress={this.onPress}
-                                underlayColor='#99d9f4' activeOpacity={1}>
+            <TouchableHighlight style={[styles.button, this.props.buttonStyle, actionstyle]} onPress={this.onPress}
+                                underlayColor='#99d9f4'>
                 <View style={styles.wrapper}>
-                    {this.state.busy ?
-                        <View style={[styles.iconWrapper]}>
-                            <Image style={[styles.icon, this.props.iconStyle]}
-                                   source={require('../assets/images/wait-white.gif')}/>
-                        </View> :
-                        <Text style={[this.props.textStyle, styles.submitText]}>
-                            {content}
-                        </Text>
-                    }
+                    <View style={[styles.iconWrapper, {opacity:(!this.state.busy)?0:1}]}>
+                        <Image style={styles.icon} source={require('../assets/images/wait-white.gif')}/>
+                    </View>
+                    <Text style={[styles.buttonText, this.props.textStyle, {opacity:(this.state.busy)?0:1}]}>
+                        {content}
+                    </Text>
                 </View>
             </TouchableHighlight>
         )
@@ -48,6 +60,7 @@ const SubmitButton = React.createClass({
 
 const styles = StyleSheet.create({
     wrapper: {
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -57,21 +70,35 @@ const styles = StyleSheet.create({
     activeButtonStyle: {
         backgroundColor: '#fff'
     },
-    iconWrapper: {
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0
-    },
-    icon: {
-        width: 36,
-        height: 9
-    },
-    submitText: {
+    buttonText: {
         color: 'white',
         fontSize: 15,
         fontFamily: 'OpenSans-Bold',
     },
+    button: {
+        backgroundColor: '#43c279',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 30,
+        paddingRight: 30,
+        borderRadius: 21,
+        height: 60
+    },
+    iconWrapper: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    icon: {
+        width: 36,
+        height: 9,
+    }
 });
 
 export default SubmitButton;
