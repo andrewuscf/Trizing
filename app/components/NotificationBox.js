@@ -68,6 +68,15 @@ const NotificationBox = React.createClass({
                 this.props.navigator.push(getRoute('MacroPlanDetail', {macro_plan: action.action_object}));
             } else if (action.action_object.workouts) {
                 this.props.navigator.push(getRoute('ScheduleDetail', {schedule: action.action_object}));
+            } else if (action.action_object.questions) {
+                if (action.verb.toLowerCase().indexOf('answered') == -1) {
+                    this.props.navigator.push(getRoute('AnswerQuestionnaire', {questionnaire: action.action_object}));
+                } else {
+                    this.props.navigator.push(getRoute('AnswersDisplay', {
+                        questionnaire: action.action_object,
+                        client: action.actor.id
+                    }))
+                }
             }
         }
     },

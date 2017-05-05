@@ -28,6 +28,8 @@ import MacroPlanDetail from './containers/detail/MacroPlanDetail';
 import ScheduleDetail from './containers/detail/ScheduleDetail';
 import WorkoutDetail from './containers/detail/WorkoutDetail';
 import WorkoutDaySession from './containers/detail/WorkoutDaySession';
+import AnswerQuestionnaire from './containers/detail/AnswerQuestionnaire';
+import AnswersDisplay from './containers/detail/AnswersDisplay';
 
 // Create Pages
 import CreateWorkout from './containers/sub/CreateWorkout';
@@ -69,6 +71,8 @@ const MAIN_ROUTES = [
     {component: WorkoutDetail, name: 'WorkoutDetail'},
     {component: WorkoutDaySession, name: 'WorkoutDaySession'},
     {component: CreateQuestionnaire, name: 'CreateQuestionnaire'},
+    {component: AnswerQuestionnaire, name: 'AnswerQuestionnaire'},
+    {component: AnswersDisplay, name: 'AnswersDisplay'},
 ];
 
 export function getRoute(routeName, props) {

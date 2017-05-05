@@ -54,7 +54,6 @@ const EventDetail = React.createClass({
             start_time = moment.utc(occurrence.start_time).local();
             end_time = moment.utc(occurrence.end_time).local();
         }
-        console.log(occurrence);
         return (
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
                 <BackBar back={this.props.navigator.pop}/>
@@ -68,7 +67,7 @@ const EventDetail = React.createClass({
                     {event.title} <Text style={styles.smallTitle}>({event.event_type.label})</Text>
                 </Text>
                 <Text style={styles.invitedTitle}>Invited</Text>
-                <PeopleBar navigator={this.props.navigator} people={event.invited}/>
+                <PeopleBar navigator={this.props.navigator} people={event.invited.concat(event.user)}/>
             </ScrollView>
         )
     }
