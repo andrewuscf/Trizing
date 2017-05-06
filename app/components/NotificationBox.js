@@ -74,7 +74,7 @@ const NotificationBox = React.createClass({
                 } else {
                     this.props.navigator.push(getRoute('AnswersDisplay', {
                         questionnaire: action.action_object,
-                        client: action.actor.id
+                        client: action.actor
                     }))
                 }
             }

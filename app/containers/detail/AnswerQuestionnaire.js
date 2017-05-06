@@ -110,10 +110,13 @@ const AnswerQuestionnaire = React.createClass({
                               <AnswerQuestionBox ref={(row) => this.rows.push(row)}
                                                  question={question} number={parseInt(rowID) + 1}/>}
                 />
-                <View style={styles.content}>
-                    <SubmitButton ref="post_button" onPress={this.onPress} buttonStyle={styles.buttonStyle}
-                                  text="Continue"/>
-                </View>
+                {!this.state.success ?
+                    <View style={styles.content}>
+                        <SubmitButton ref="post_button" onPress={this.onPress} buttonStyle={styles.buttonStyle}
+                                      text="Continue"/>
+                    </View>
+                    : null
+                }
             </View>
         );
     }

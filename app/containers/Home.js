@@ -114,14 +114,16 @@ const Home = React.createClass({
                         <Text style={styles.textTitle}>Surveys</Text>
                         <ListView ref='survey_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                                   style={styles.container} enableEmptySections={true} dataSource={QuestionnaireDS}
-                                  renderRow={(survey) =>
-                                      <TouchableOpacity style={styles.link}>
-                                          <Text style={styles.simpleTitle}>{survey.name}</Text>
+                                  renderRow={(questionnaire) =>
+                                      <TouchableOpacity style={styles.link}
+                                                        onPress={this._redirect.bind(null, 'AnswersDisplay', {questionnaire: questionnaire})}>
+                                          <Text style={styles.simpleTitle}>{questionnaire.name}</Text>
                                           <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
                                       </TouchableOpacity>
                                   }
                         />
-                        <TouchableOpacity onPress={this._redirect.bind(null, 'CreateQuestionnaire', null)} style={styles.link}>
+                        <TouchableOpacity onPress={this._redirect.bind(null, 'CreateQuestionnaire', null)}
+                                          style={styles.link}>
                             <Text style={styles.simpleTitle}>Create Survey</Text>
                             <Icon name="plus" size={getFontSize(18)} style={styles.linkArrow}/>
                         </TouchableOpacity>

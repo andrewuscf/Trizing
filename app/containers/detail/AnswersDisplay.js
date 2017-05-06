@@ -7,6 +7,7 @@ import {
     Platform
 } from 'react-native';
 import {connect} from 'react-redux';
+import _ from 'lodash';
 
 import GlobalStyle from '../globalStyle';
 import {getFontSize, API_ENDPOINT, checkStatus, fetchData} from '../../actions/utils';
@@ -18,8 +19,8 @@ import BackBar from '../../components/BackBar';
 const AnswersDisplay = React.createClass({
     propTypes: {
         questionnaire: React.PropTypes.object.isRequired,
-        client: React.PropTypes.number.isRequired,
-        UserToken: React.PropTypes.string.isRequired
+        UserToken: React.PropTypes.string.isRequired,
+        client: React.PropTypes.object,
     },
 
     getInitialState() {
@@ -29,9 +30,13 @@ const AnswersDisplay = React.createClass({
     },
 
     componentDidMount() {
-        fetch(`${API_ENDPOINT}training/questionnaires/responses/?client=${this.props.client}&questionnaire=${this.props.questionnaire.id}`,
-            fetchData('GET', null, this.props.UserToken)).then(checkStatus)
-            .then((responseJson) => {this.setState({answers: responseJson.results})});
+        if (this.props.client) {
+            fetch(`${API_ENDPOINT}training/questionnaires/responses/?client=${this.props.client.id}&questionnaire=${this.props.questionnaire.id}`,
+                fetchData('GET', null, this.props.UserToken)).then(checkStatus)
+                .then((responseJson) => {
+                    if (responseJson.results) this.setState({answers: responseJson.results})
+                });
+        }
     },
 
 
@@ -39,26 +44,47 @@ const AnswersDisplay = React.createClass({
         this.props.navigator.pop();
     },
 
+    renderRow(question, sectionID, rowID) {
+        const answer = _.find(this.state.answers, {question: question.id});
+        return (
+            <View style={styles.box}>
+                <Text style={styles.questionText}>
+                    {`${parseInt(rowID) + 1}. ${question.text}`}
+                </Text>
+                {answer ?
+                    <View style={styles.answerBox}>
+                        <Text style={styles.answerText}>{answer.text}</Text>
+                    </View>
+                    : null
+                }
+            </View>
+        )
+    },
+
 
     render() {
-        console.log(this.props.questionnaire)
         const questionnaire = this.props.questionnaire;
-
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        let dataSource = ds.cloneWithRows(this.state.answers);
+        let dataSource = ds.cloneWithRows(this.props.questionnaire.questions);
         return (
             <View style={styles.container}>
                 <BackBar back={this.back}/>
                 <View style={[{padding: 20}]}>
-                    <Text style={[{fontSize: getFontSize(26), color: 'grey'}]}>
+                    <Text style={[{fontSize: getFontSize(26)}]}>
                         {questionnaire.name}
                     </Text>
+                    {this.props.client ?
+                        <Text style={[{fontSize: getFontSize(14), paddingTop: 5, color: 'grey'}]}>
+                            Answered by: {this.props.client.profile.first_name} {this.props.client.profile.last_name}
+                        </Text>
+                        : null
+                    }
                 </View>
                 <ListView ref='answer_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                           keyboardShouldPersistTaps="handled"
                           style={[styles.container, {margin: 20}]} enableEmptySections={true}
                           dataSource={dataSource}
-                          renderRow={(question, sectionID, rowID) => <Text>test</Text>}
+                          renderRow={this.renderRow}
                 />
             </View>
         );
@@ -78,6 +104,26 @@ const styles = StyleSheet.create({
         bottom: 0,
         right: 0,
         left: 0,
+    },
+    questionText: {
+        fontSize: getFontSize(22),
+        paddingBottom: 5
+        // color: 'grey'
+    },
+    box: {
+        borderWidth: 1,
+        borderColor: 'grey',
+        padding: 10,
+        marginBottom: 10
+    },
+    answerBox: {
+        borderTopWidth: 1,
+        borderColor: 'grey',
+    },
+    answerText: {
+        fontSize: getFontSize(20),
+        color: 'grey',
+        paddingTop: 10
     }
 });
 
