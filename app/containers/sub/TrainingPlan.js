@@ -30,7 +30,7 @@ import WorkoutProgramBox from '../../components/WorkoutProgramBox';
 
 const TrainingPlan = React.createClass({
     propTypes: {
-        clientId: React.PropTypes.number.isRequired,
+        client: React.PropTypes.object.isRequired,
         training_plan: React.PropTypes.object.isRequired,
         _redirect: React.PropTypes.func.isRequired,
         openModal: React.PropTypes.func.isRequired,
@@ -91,7 +91,7 @@ const TrainingPlan = React.createClass({
     },
 
     getMacros(refresh = false) {
-        let url = `${API_ENDPOINT}training/macros/?client=${this.props.clientId}`;
+        let url = `${API_ENDPOINT}training/macros/?client=${this.props.client.id}`;
         if (!refresh && this.state.macro_plansNext)
             url = this.state.macro_plansNext;
 
@@ -111,7 +111,7 @@ const TrainingPlan = React.createClass({
     },
 
     getClientSchedules(refresh = false) {
-        let url = `${API_ENDPOINT}training/schedules/?client=${this.props.clientId}`;
+        let url = `${API_ENDPOINT}training/schedules/?client=${this.props.client.id}`;
         if (!refresh && this.state.schedule_next) url = this.state.schedule_next;
 
         fetch(url, fetchData('GET', null, this.props.UserToken)).then(checkStatus)
@@ -170,7 +170,8 @@ const TrainingPlan = React.createClass({
         this.setState({
             training_plan: {
                 ...this.state.training_plan,
-                questionnaire: id
+                questionnaire: id,
+                answered: false,
             }
         });
         this.updatePlan({questionnaire: id});
@@ -228,6 +229,7 @@ const TrainingPlan = React.createClass({
     },
 
     render() {
+        console.log(this.props.training_plan)
         if (!this.props.Questionnaires && !this.props.Schedules.length && !this.state.macro_plans)
             return <Loading />;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -243,10 +245,21 @@ const TrainingPlan = React.createClass({
             <View style={GlobalStyle.container}>
                 {this.props.Questionnaires.length ?
                     <View style={[styles.pickersView, GlobalStyle.simpleBottomBorder]}>
-                        <Text style={styles.pickersText}>Survey: </Text>
-                        <SelectInput ref='questionnaires' options={this.props.Questionnaires}
-                                     selectedId={this.state.training_plan.questionnaire}
-                                     submitChange={this.selectQuestionnaire}/>
+                        <View style={{flexDirection: 'row', flex: .7}}>
+                            <SelectInput ref='questionnaires' options={this.props.Questionnaires}
+                                         selectedId={this.state.training_plan.questionnaire}
+                                         submitChange={this.selectQuestionnaire}/>
+                        </View>
+                        {this.props.training_plan.answered ?
+                            <TouchableOpacity style={{flex: .3, padding: 5}}
+                                onPress={this.props._redirect.bind(null, 'AnswersDisplay', {
+                                    questionnaire: _.find(this.props.Questionnaires, {id: this.props.training_plan.questionnaire}),
+                                    client: this.props.client
+                                })}>
+                                <Text style={{fontSize: getFontSize(18)}}>View Answers</Text>
+                            </TouchableOpacity>
+                            : null
+                        }
                     </View> :
                     <TouchableOpacity style={[styles.pickersView, GlobalStyle.simpleBottomBorder]}
                                       onPress={this.props.openModal}>
@@ -347,10 +360,12 @@ const styles = StyleSheet.create({
         padding: 5
     },
     pickersView: {
+        justifyContent: 'center',
+        alignItems: 'center',
         paddingLeft: 15,
-        paddingRight: 15,
-        paddingTop: 10,
-        paddingBottom: 19,
+        // paddingRight: 15,
+        paddingTop: 15,
+        paddingBottom: 15,
         flexDirection: 'row',
         backgroundColor: 'white',
         // minHeight: 20
