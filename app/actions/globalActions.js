@@ -4,6 +4,9 @@ import {fetchData, API_ENDPOINT, refreshPage, SITE, checkStatus} from './utils';
 import {AsyncStorage, Platform} from 'react-native';
 import {LoginManager} from 'react-native-fbsdk';
 import momentTz from 'moment-timezone';
+import _ from 'lodash';
+
+import {getClients} from './homeActions';
 
 export function setTokenInRedux(token, FromAPI = false) {
     if (FromAPI) {
@@ -179,7 +182,7 @@ export function socialAuth(access_token) {
     }
 }
 
-export function getNotifications(refresh = false) {
+export function getNotifications(refresh = false, newNotifications=false) {
     let url = `${API_ENDPOINT}notifications/`;
     return (dispatch, getState) => {
         if (!refresh && getState().Global.NotificationsNext)
@@ -187,6 +190,15 @@ export function getNotifications(refresh = false) {
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
+                if (newNotifications) {
+                    _.each(responseJson.results, (notification)=>{
+                        if (notification.action.verb.toLowerCase().indexOf('joined') != -1
+                            && getState().Global.RequestUser.type == 1) {
+                            dispatch(getClients(true));
+                            return false;
+                        }
+                    })
+                }
                 return dispatch({type: types.GET_NOTIFICATIONS, response: responseJson, refresh: refresh});
             }).done();
     }
@@ -194,7 +206,7 @@ export function getNotifications(refresh = false) {
 
 export function getNewNotifications() {
     return (dispatch, getState) => {
-        dispatch(getNotifications(true));
+        dispatch(getNotifications(true, true));
         return dispatch({type: types.NEW_NOTIFICATION});
     }
 }
@@ -428,9 +440,7 @@ export function deleteSet(id) {
 
 
 export function addEditMacroLog(data, asyncActions = null) {
-    if (asyncActions) {
         asyncActions(true);
-    }
     let url = `${API_ENDPOINT}training/macros/logs/`;
     let method = 'POST';
     if (data.id) {
@@ -440,21 +450,14 @@ export function addEditMacroLog(data, asyncActions = null) {
     return (dispatch, getState) => {
         return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                console.log(responseJson)
-                if (asyncActions) {
-                    asyncActions(false);
-                }
                 if (method == 'POST')
                     return dispatch({type: types.CREATE_MACRO_LOG, response: responseJson});
                 else
                     return dispatch({type: types.EDIT_MACRO_LOG, response: responseJson});
             })
             .catch((error) => {
-                if (asyncActions) {
-                    asyncActions(false);
-                }
                 console.log(error);
-            }).done();
+            }).done(()=>asyncActions(false));
     }
 }
 

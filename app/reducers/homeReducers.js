@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import * as constants from '../actions/actionTypes';
+import moment from 'moment';
 
 
 const initialState = {
@@ -61,6 +62,33 @@ export default function homeReducers(state = initialState, action = null) {
                     ...state.ActiveData,
                     training_day: {
                         ...state.ActiveData.training_day,
+                        logged_today: moment().isSame(moment.utc(action.response.date).local(), 'day')
+                    }
+
+                },
+            };
+
+
+        case constants.EDIT_MACRO_LOG:
+            return {
+                ...state,
+                ActiveData: {
+                    ...state.ActiveData,
+                    training_day: {
+                        ...state.ActiveData.training_day,
+                        logged_today: moment().isSame(moment.utc(action.response.date).local(), 'day')
+                    }
+
+                },
+            };
+
+        case constants.CREATE_MACRO_LOG:
+            return {
+                ...state,
+                ActiveData: {
+                    ...state.ActiveData,
+                    macro_plan_day: {
+                        ...state.ActiveData.macro_plan_day,
                         logged_today: true
                     }
 

@@ -21,9 +21,8 @@ import SubmitButton from '../../components/SubmitButton';
 const Form = t.form.Form;
 
 let MacroLog = t.struct({
-    // date: t.Date,
-    carbs: t.Number,
     fats: t.Number,
+    carbs: t.Number,
     protein: t.Number
 });
 
@@ -33,23 +32,15 @@ let myFormatFunction = (format, date) => {
 
 const CreateMacroLog = React.createClass({
     propTypes: {
-        macro_plan_day: React.PropTypes.number.isRequired,
+        macro_plan_day: React.PropTypes.object.isRequired,
         date: React.PropTypes.string,
     },
 
     getInitialState() {
-        let value = null;
-        if (this.props.date && moment(this.props.date).isValid()) {
-            value = {
-                // date: this.props.date? this.props.date: moment().format("MMMM DD YYYY"),
-                carbs: null,
-                fats: null,
-                protein: null
-            }
-        }
         return {
             value: null,
-            date: this.props.date ? this.props.date : moment().format("MMMM DD YYYY"),
+            date: (this.props.date && moment(this.props.date).isValid()) ?
+                moment(this.props.date).format("MMMM DD YYYY") : moment().format("MMMM DD YYYY"),
         }
     },
 
@@ -76,7 +67,7 @@ const CreateMacroLog = React.createClass({
         if (values) {
             values = {
                 ...values,
-                macro_plan_day: this.props.macro_plan_day
+                macro_plan_day: this.props.macro_plan_day.id
             };
             this.props.actions.addEditMacroLog(values, this.asyncActions);
         }
@@ -92,26 +83,43 @@ const CreateMacroLog = React.createClass({
 
     render: function () {
         let options = {
-            // i18n: {
-            // optional: '',
-            // required: '*',
-            // },
-            // stylesheet: t.form.Form.stylesheet,
             fields: {
-                // date: {
-                //     mode: 'date',
-                //     config: {
-                //         format: (date) => myFormatFunction("MMMM DD YYYY", date),
-                //     }
-                // }
+                fats: {
+                    onSubmitEditing: () => this.refs.form.getComponent('carbs').refs.input.focus()
+                },
+                carbs: {
+                    onSubmitEditing: () => this.refs.form.getComponent('protein').refs.input.focus()
+                },
+                protein: {
+                    onSubmitEditing: () => this._onSubmit()
+                },
             }
         };
+        // let calories = 0;
+        const fats = (this.props.macro_plan_day.fats) ? this.props.macro_plan_day.fats : 0;
+        const protein = (this.props.macro_plan_day.protein) ? this.props.macro_plan_day.protein : 0;
+        const carbs = (this.props.macro_plan_day.carbs) ? this.props.macro_plan_day.carbs : 0;
+        // calories = (9 * fats) + (4 * protein) + (4 * carbs);
         return (
             <View style={styles.flexCenter}>
                 <BackBar back={this._cancel}>
                     <Text>{this.state.date}</Text>
                 </BackBar>
                 <Text style={[styles.title]}>Nutrition for the day</Text>
+                <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center', paddingTop: 10}]}>
+                    <View style={styles.details}>
+                        <Text style={styles.sectionTitle}>Fats</Text>
+                        <Text style={styles.smallText}>{`${fats}g`}</Text>
+                    </View>
+                    <View style={styles.details}>
+                        <Text style={styles.sectionTitle}>Carbs</Text>
+                        <Text style={styles.smallText}>{`${carbs}g`}</Text>
+                    </View>
+                    <View style={styles.details}>
+                        <Text style={styles.sectionTitle}>Protein</Text>
+                        <Text style={styles.smallText}>{`${protein}g`}</Text>
+                    </View>
+                </View>
                 <View style={{margin: 10}}>
                     <Form
                         ref="form"
@@ -121,7 +129,7 @@ const CreateMacroLog = React.createClass({
                         value={this.state.value}
                     />
                 </View>
-                <SubmitButton disabled={true}
+                <SubmitButton disabled={!(this.state.value && this.state.value.carbs && this.state.value.fats && this.state.value.protein)}
                               textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
                               text='Submit'/>
             </View>
@@ -143,7 +151,23 @@ const styles = StyleSheet.create({
         fontFamily: 'OpenSans-Bold',
         textAlign: 'center',
         marginTop: 20
-    }
+    },
+    row: {
+        flexDirection: 'row',
+    },
+    sectionTitle: {
+        fontSize: getFontSize(20),
+        lineHeight: getFontSize(26),
+        fontFamily: 'OpenSans-Bold',
+    },
+    details: {
+        flexDirection: 'column',
+        flex: 1,
+        backgroundColor: 'transparent',
+        paddingTop: 3,
+        paddingBottom: 3,
+        alignItems: 'center'
+    },
 });
 
 

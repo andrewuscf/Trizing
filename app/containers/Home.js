@@ -147,12 +147,12 @@ const Home = React.createClass({
                                 <Text style={styles.textTitle}>{`Today`}</Text>
                                 <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
                                     <View style={styles.details}>
-                                        <Text style={styles.sectionTitle}>Carbs</Text>
-                                        <Text style={styles.smallText}>{`${data.macro_plan_day.carbs}g`}</Text>
-                                    </View>
-                                    <View style={styles.details}>
                                         <Text style={styles.sectionTitle}>Fats</Text>
                                         <Text style={styles.smallText}>{`${data.macro_plan_day.fats}g`}</Text>
+                                    </View>
+                                    <View style={styles.details}>
+                                        <Text style={styles.sectionTitle}>Carbs</Text>
+                                        <Text style={styles.smallText}>{`${data.macro_plan_day.carbs}g`}</Text>
                                     </View>
                                     <View style={styles.details}>
                                         <Text style={styles.sectionTitle}>Protein</Text>
@@ -164,7 +164,7 @@ const Home = React.createClass({
                                 </Text>
                                 {!data.macro_plan_day.logged_today ?
                                     <TouchableOpacity
-                                        onPress={this._redirect.bind(null, 'CreateMacroLog', {macro_plan_day: data.macro_plan_day.id})}
+                                        onPress={this._redirect.bind(null, 'CreateMacroLog', {macro_plan_day: data.macro_plan_day})}
                                         style={styles.link}>
                                         <Text style={styles.simpleTitle}>Log Today</Text>
                                         <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
