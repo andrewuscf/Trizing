@@ -14,7 +14,7 @@ export default function AppReducers(state = initialState, action = null) {
         case constants.LOAD_ROOMS:
             return {
                 ...state,
-                Rooms: (action.refresh) ? action.response.results :state.Rooms.concat(action.response.results),
+                Rooms: (action.refresh) ? action.response.results : state.Rooms.concat(action.response.results),
                 RoomsNext: action.response.next,
                 Refreshing: false
             };
@@ -33,18 +33,19 @@ export default function AppReducers(state = initialState, action = null) {
             };
 
         case constants.CREATE_CHAT_ROOM:
+            const index = _.findIndex(state.Rooms, {id: action.response.id});
             return {
                 ...state,
-                Rooms: [
-                    action.response,
-                    ...state.Rooms
-                ]
+                Rooms: index != -1 ? state.Rooms : [
+                        action.response,
+                        ...state.Rooms
+                    ]
             };
 
         case constants.GET_TEAM:
             return {
                 ...state,
-                Team: (action.refresh) ? action.response.results :state.Team.concat(action.response.results),
+                Team: (action.refresh) ? action.response.results : state.Team.concat(action.response.results),
             };
 
 
