@@ -85,7 +85,7 @@ const App = React.createClass({
             );
         }
 
-        if (this.props.RequestUser && this.props.RequestUser != prevProps.RequestUser) {
+        if (!prevProps.RequestUser && this.props.RequestUser && this.props.RequestUser != prevProps.RequestUser) {
             this.setUpNotifications();
             const routes = navigator.getCurrentRoutes();
             if (!this.props.RequestUser.profile.completed) {
