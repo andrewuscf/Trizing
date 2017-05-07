@@ -55,7 +55,7 @@ const AnswerQuestionnaire = React.createClass({
             if (e && e.props.question) return e.props.question;
         });
         for (const row of rows) {
-            if (row) {
+            if (row && row.refs.form) {
                 const formValues = row.refs.form.getValue();
                 if (formValues) {
                     answers.push({

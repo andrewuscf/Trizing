@@ -58,7 +58,7 @@ const WorkoutDaySession = React.createClass({
             if (e && e.props.set) return e.props.set.id;
         });
         for (const row of rows) {
-            if (row) {
+            if (row && row.refs.form) {
                 const formValues = row.refs.form.getValue();
                 if (formValues) {
                     logs.push({
