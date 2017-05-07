@@ -139,9 +139,8 @@ const CreateQuestionnaire = React.createClass({
                     </View>
 
                 </ScrollView>
-                <View style={{margin: 20}}>
-                    <SubmitButton disabled={!this.isValid()} onPress={this._onSubmit} ref='postbutton' text='Submit'/>
-                </View>
+                <SubmitButton disabled={!this.isValid()} buttonStyle={{margin: 20}} onPress={this._onSubmit}
+                              ref='postbutton' text='Submit'/>
             </View>
         )
     }

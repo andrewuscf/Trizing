@@ -6,7 +6,8 @@ import {
     StyleSheet,
     TouchableOpacity,
     TextInput,
-    Dimensions
+    Dimensions,
+    Keyboard
 } from 'react-native';
 import {
     LoginButton,
@@ -65,6 +66,7 @@ const Login = React.createClass({
 
     onPress() {
         // sign in + forgot credentials
+        Keyboard.dismiss();
         if (this.state.forgotCreds) {
             if (this.state.email) {
                 this.props.resetPassword(this.state.email.toLowerCase());

@@ -103,8 +103,7 @@ const CreateChatRoom = React.createClass({
                         )
                     })}
                 </ScrollView>
-                <SubmitButton buttonStyle={styles.button}
-                              textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
+                <SubmitButton textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
                               text='Start Chat'/>
 
             </View>
@@ -115,15 +114,6 @@ const CreateChatRoom = React.createClass({
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
-    },
-    button: {
-        backgroundColor: '#00BFFF',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 30,
-        paddingRight: 30,
     },
     submitText: {
         color: 'white',

@@ -138,7 +138,7 @@ const EditProfile = React.createClass({
                 {text: 'Cancel', null, style: 'cancel'},
                 {
                     text: 'Yes', onPress: () => {
-                        const login = getRoute('Login')
+                    const login = getRoute('Login')
                     this.props.navigator.immediatelyResetRouteStack([login])
                     FCM.getFCMToken().then(token => {
                         self.props.removeToken(token);
@@ -201,6 +201,21 @@ const EditProfile = React.createClass({
             }
             return (
                 <View style={styles.mainContainer}>
+                    <View style={styles.backNav}>
+                        {this.props.RequestUser.profile.completed ?
+                            <TouchableOpacity onPress={this._back} style={styles.backNavButton}>
+                                <Icon name="angle-left" size={30} color='#333333'/>
+                            </TouchableOpacity>
+                            : null
+                        }
+
+                        <TouchableOpacity
+                            style={this.props.RequestUser.profile.completed ? styles.logOut : styles.logOutCreateProfile}
+                            onPress={this._logOut}>
+                            <Icon name="power-off" size={20} color='red'/>
+                        </TouchableOpacity>
+
+                    </View>
                     {this.state.showRoll ?
                         <CameraRollPicker imageMargin={2} containerWidth={rollPickerWidth}
                                           callback={this.getSelectedImages} maximum={1} selected={[]}/>
@@ -209,39 +224,24 @@ const EditProfile = React.createClass({
                     <ScrollView ref='_scrollView' keyboardDismissMode='interactive'
                                 style={styles.mainContainer}>
                         <KeyboardAvoidingView behavior="position">
-                        <View style={styles.backNav}>
-                            {this.props.RequestUser.profile.completed ?
-                                <TouchableOpacity onPress={this._back} style={styles.backNavButton}>
-                                    <Icon name="angle-left" size={30} color='#333333'/>
+                            <View style={styles.mainContent}>
+                                <AvatarImage image={userImage} style={styles.avatar} redirect={this.toggleRoll}/>
+                                <TouchableOpacity onPress={this.toggleRoll} activeOpacity={1}>
+                                    <Text style={{alignSelf: 'center', fontSize: getFontSize(14), paddingTop: 10}}>
+                                        {this.state.showRoll ? 'Close Camera Roll' : 'Change Profile Photo'}
+                                    </Text>
                                 </TouchableOpacity>
-                                : null
-                            }
 
-                            <TouchableOpacity
-                                style={this.props.RequestUser.profile.completed ? styles.logOut : styles.logOutCreateProfile}
-                                onPress={this._logOut}>
-                                <Icon name="power-off" size={20} color='red'/>
-                            </TouchableOpacity>
-
-                        </View>
-                        <View style={styles.mainContent}>
-                            <AvatarImage image={userImage} style={styles.avatar} redirect={this.toggleRoll}/>
-                            <TouchableOpacity onPress={this.toggleRoll} activeOpacity={1}>
-                                <Text style={{alignSelf: 'center', fontSize: getFontSize(14), paddingTop: 10}}>
-                                    {this.state.showRoll ? 'Close Camera Roll' : 'Change Profile Photo'}
-                                </Text>
-                            </TouchableOpacity>
-
-                            <Form
-                                ref="form"
-                                type={Profile}
-                                options={options}
-                                value={this.state.value}
-                                onChange={this.onChange}
-                            />
+                                <Form
+                                    ref="form"
+                                    type={Profile}
+                                    options={options}
+                                    value={this.state.value}
+                                    onChange={this.onChange}
+                                />
 
 
-                        </View>
+                            </View>
                             <SubmitButton buttonStyle={styles.button}
                                           textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
                                           text='Save'/>
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     backNav: {
-        minHeight: 40,
+        minHeight: 50,
         borderBottomWidth: .5,
         borderBottomColor: 'rgba(0,0,0,.15)',
         alignItems: 'center',
@@ -283,19 +283,7 @@ const styles = StyleSheet.create({
         borderRadius: 50
     },
     button: {
-        backgroundColor: '#00BFFF',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 30,
-        paddingRight: 30,
-        marginLeft: 50,
-        marginRight: 50,
-        bottom: 0,
-        right: 0,
-        left: 0,
-        borderRadius: 80
+        margin: 20
     },
     submitText: {
         color: 'white',
@@ -307,7 +295,7 @@ const styles = StyleSheet.create({
     },
     logOutCreateProfile: {
         right: 10,
-        top: 15,
+        top: 20,
         position: 'absolute',
     }
 });

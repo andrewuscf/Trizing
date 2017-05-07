@@ -17,7 +17,7 @@ const BackBar = React.createClass({
                                   style={[styles.topNavButton]}>
                     <Icon name="angle-left" size={30} style={[this.props.textStyle, styles.textColor]}/>
                     <Text style={[styles.cancel, styles.textColor, this.props.textStyle]}>
-                        {this.props.backText ? this.props.backText: null}
+                        {this.props.backText ? this.props.backText : null}
                     </Text>
                 </TouchableOpacity>
                 {this.props.children}
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingTop: 10,
         paddingBottom: 10,
-        minHeight:50,
+        minHeight: 50,
         backgroundColor: 'white'
     },
     topNavButton: {

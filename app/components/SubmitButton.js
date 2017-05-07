@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         fontFamily: 'OpenSans-Bold',
     },
     button: {
-        backgroundColor: '#43c279',
+        backgroundColor: '#00BFFF',
         justifyContent: 'center',
         alignItems: 'center',
         paddingTop: 10,
@@ -84,7 +84,8 @@ const styles = StyleSheet.create({
         paddingLeft: 30,
         paddingRight: 30,
         borderRadius: 21,
-        height: 60
+        height: 60,
+        margin: 20,
     },
     iconWrapper: {
         position: 'absolute',

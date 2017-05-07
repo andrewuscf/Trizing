@@ -112,8 +112,7 @@ const CreateWorkoutDay = React.createClass({
                 <Text style={styles.inputLabel}>What days?</Text>
                 <DaysOfWeek daySelectedState={(days) => this.setState({days: days})} days={this.state.days}/>
 
-                <SubmitButton buttonStyle={styles.button}
-                              textStyle={styles.submitText} onPress={this._addExercise} ref='postbutton'
+                <SubmitButton textStyle={styles.submitText} onPress={this._addExercise} ref='postbutton'
                               text='Next Step'/>
             </ScrollView>
         )
@@ -169,15 +168,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         textDecorationLine: 'underline',
         textDecorationColor: '#b1aea5'
-    },
-    button: {
-        backgroundColor: '#00BFFF',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 30,
-        paddingRight: 30,
     },
     submitText: {
         color: 'white',

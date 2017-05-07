@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: 47,
+        height: 50,
         backgroundColor: 'white',
         borderColor: '#e1e3df',
         borderTopWidth: 1
@@ -130,8 +130,10 @@ const styles = StyleSheet.create({
         fontSize: 10
     },
     buttonWrap: {
+        flex: 0.2,
+        height: 50,
         alignItems: 'center',
-        flex: 0.2
+        justifyContent: 'center'
     },
     createButton: {
         alignItems: 'center',

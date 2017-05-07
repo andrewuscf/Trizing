@@ -121,7 +121,7 @@ const CreateMacroLog = React.createClass({
                         value={this.state.value}
                     />
                 </View>
-                <SubmitButton buttonStyle={styles.button} disabled={true}
+                <SubmitButton disabled={true}
                               textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
                               text='Submit'/>
             </View>
@@ -132,20 +132,6 @@ const CreateMacroLog = React.createClass({
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
-    },
-    button: {
-        backgroundColor: '#00BFFF',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 30,
-        paddingRight: 30,
-        margin: 50,
-        bottom: 0,
-        right: 0,
-        left: 0,
-        borderRadius: 80
     },
     submitText: {
         color: 'white',
