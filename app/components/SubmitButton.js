@@ -49,7 +49,7 @@ const SubmitButton = React.createClass({
                     <View style={[styles.iconWrapper, {opacity:(!this.state.busy)?0:1}]}>
                         <Image style={styles.icon} source={require('../assets/images/wait-white.gif')}/>
                     </View>
-                    <Text style={[styles.buttonText, this.props.textStyle, {opacity:(this.state.busy)?0:1}]}>
+                    <Text style={[styles.buttonText, {opacity:(this.state.busy)?0:1}, this.props.textStyle]}>
                         {content}
                     </Text>
                 </View>

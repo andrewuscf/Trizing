@@ -45,7 +45,8 @@ export function setActiveRoute(routeName) {
     return {type: types.SET_ACTIVE_ROUTE, routeName: routeName}
 }
 
-export function login(email, pass) {
+export function login(email, pass, asyncActions) {
+    asyncActions(true);
     const body = JSON.stringify({username: email, password: pass});
     return dispatch => {
         return fetch(`${API_ENDPOINT}auth/token/`, fetchData('POST', body))
@@ -68,7 +69,7 @@ export function login(email, pass) {
                 // return dispatch(
                 //     removeToken()
                 // );
-            }).done();
+            }).done(()=> asyncActions(false));
     }
 }
 
@@ -119,7 +120,8 @@ export function resetPassword(email) {
     }
 }
 
-export function register(data) {
+export function register(data, asyncActions) {
+    asyncActions(true);
     return (dispatch, getState) => {
         let JSONDATA = JSON.stringify(data);
         return fetch(`${API_ENDPOINT}auth/register/`, fetchData('POST', JSONDATA))
@@ -154,7 +156,7 @@ export function register(data) {
                         text: 'Please try again later.'
                     })
                 });
-            }).done();
+            }).done(()=> asyncActions(false));
     }
 }
 

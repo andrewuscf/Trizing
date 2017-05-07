@@ -17,8 +17,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Hr from '../components/HR';
 
 import BackBar from '../components/BackBar';
+import SubmitButton from '../components/SubmitButton';
 
-var {height, width} = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 const Login = React.createClass({
     propTypes: {
@@ -35,6 +36,14 @@ const Login = React.createClass({
             password: null,
             forgotCreds: false,
             signUp: false,
+        }
+    },
+
+    asyncActions(start) {
+        if (start) {
+            this.refs.login_button.setState({busy: true});
+        } else {
+            this.refs.login_button.setState({busy: false});
         }
     },
 
@@ -68,12 +77,12 @@ const Login = React.createClass({
                     username: this.state.username.toLowerCase(),
                     password: this.state.password,
                 };
-                this.props.register(data);
+                this.props.register(data, this.asyncActions);
                 this.resetComponent();
             }
         } else {
             if (this.state.email && this.state.password) {
-                this.props.login(this.state.email.toLowerCase(), this.state.password)
+                this.props.login(this.state.email.toLowerCase(), this.state.password, this.asyncActions)
             }
         }
     },
@@ -99,7 +108,7 @@ const Login = React.createClass({
         return (
             <View style={styles.container}>
                 {this.state.forgotCreds || this.state.signUp ?
-                    <BackBar back={this.back} backText='Log In' />
+                    <BackBar back={this.back} backText='Log In'/>
                     : null
                 }
 
@@ -128,7 +137,7 @@ const Login = React.createClass({
                                     }
                                 }
                             }
-                            />
+                        />
                     </View>
                     : null
                 }
@@ -152,7 +161,7 @@ const Login = React.createClass({
                             <TextInput ref="username" style={styles.textInput} autoCapitalize='none'
                                        underlineColorAndroid='transparent'
                                        autoCorrect={false}
-                                       onChangeText={(text)=>this.setState({username: text})}
+                                       onChangeText={(text) => this.setState({username: text})}
                                        value={this.state.username}
                                        onSubmitEditing={(event) => {
                                            this.refs.email.focus();
@@ -167,7 +176,7 @@ const Login = React.createClass({
                                    keyboardType='email-address'
                                    underlineColorAndroid='transparent'
                                    autoCorrect={false}
-                                   onChangeText={(text)=>this.setState({email: text})}
+                                   onChangeText={(text) => this.setState({email: text})}
                                    value={this.state.email}
                                    onSubmitEditing={(event) => {
                                        this.refs.password.focus();
@@ -182,7 +191,7 @@ const Login = React.createClass({
                                        underlineColorAndroid='transparent'
                                        secureTextEntry={true}
                                        autoCorrect={false}
-                                       onChangeText={(text)=>this.setState({password: text})}
+                                       onChangeText={(text) => this.setState({password: text})}
                                        value={this.state.password}
                                        onSubmitEditing={(event) => {
                                            this.onPress();
@@ -197,14 +206,15 @@ const Login = React.createClass({
                         : null
                     }
 
-                    <TouchableOpacity style={[styles.button]} onPress={this.onPress}>
-                        <Text style={styles.buttonText}>{!this.state.signUp && !this.state.forgotCreds ? 'Log In' : 'Submit'}</Text>
-                    </TouchableOpacity>
+
+                    <SubmitButton onPress={this.onPress} ref="login_button"
+                                  buttonStyle={[styles.button]} textStyle={styles.buttonText}
+                                  text={!this.state.signUp && !this.state.forgotCreds ? 'Log In' : 'Submit'}/>
 
                     {!this.state.forgotCreds && !this.state.signUp ?
-                        <TouchableOpacity style={[styles.button]} onPress={this.toggleSignUp}>
-                            <Text style={styles.buttonText}>SIGN UP</Text>
-                        </TouchableOpacity>
+                        <SubmitButton onPress={this.toggleSignUp} ref="sign_button"
+                                      buttonStyle={[styles.button]} textStyle={styles.buttonText}
+                                      text="SIGN UP"/>
                         : null
                     }
 
@@ -274,6 +284,8 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 30,
         paddingRight: 30,
+        borderRadius: 0,
+        height: 40
     },
 });
 
