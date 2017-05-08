@@ -31,18 +31,37 @@ const WorkoutDaySession = React.createClass({
         workout_day: React.PropTypes.object.isRequired,
     },
 
+    getInitialState() {
+        return {
+            success: false
+        }
+    },
+
     rows: [],
 
-    asyncActions(start){
+    asyncActions(start) {
         if (start) {
             this.postbutton.setState({busy: true});
         } else {
             this.postbutton.setState({busy: false});
-            this.props.navigator.pop();
+            this.setState({success: true});
+            setTimeout(() => {
+                this.setState({success: false});
+                this.props.navigator.pop();
+            }, 2000);
         }
     },
 
     renderHeader() {
+        if (this.state.success) {
+            return (
+                <View style={{flex: .4, backgroundColor: 'green', alignItems: 'center', justifyContent: 'center'}}>
+                    <Text style={{color: 'white', fontSize: getFontSize(24)}}>
+                        Success
+                    </Text>
+                </View>
+            )
+        }
         return (
             <BackBar back={this.props.navigator.pop}>
                 <Text style={styles.header}>{this.props.workout_day.name}</Text>

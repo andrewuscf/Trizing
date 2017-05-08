@@ -6,7 +6,7 @@ import {LoginManager} from 'react-native-fbsdk';
 import momentTz from 'moment-timezone';
 import _ from 'lodash';
 
-import {getClients} from './homeActions';
+import {getClients, getActiveData} from './homeActions';
 
 export function setTokenInRedux(token, FromAPI = false) {
     if (FromAPI) {
@@ -72,7 +72,7 @@ export function login(email, pass, asyncActions) {
                 // return dispatch(
                 //     removeToken()
                 // );
-            }).done(()=> asyncActions(false));
+            }).done(() => asyncActions(false));
     }
 }
 
@@ -159,7 +159,7 @@ export function register(data, asyncActions) {
                         text: 'Please try again later.'
                     })
                 });
-            }).done(()=> asyncActions(false));
+            }).done(() => asyncActions(false));
     }
 }
 
@@ -182,7 +182,7 @@ export function socialAuth(access_token) {
     }
 }
 
-export function getNotifications(refresh = false, newNotifications=false) {
+export function getNotifications(refresh = false, newNotifications = false) {
     let url = `${API_ENDPOINT}notifications/`;
     return (dispatch, getState) => {
         if (!refresh && getState().Global.NotificationsNext)
@@ -191,10 +191,13 @@ export function getNotifications(refresh = false, newNotifications=false) {
             .then(checkStatus)
             .then((responseJson) => {
                 if (newNotifications) {
-                    _.each(responseJson.results, (notification)=>{
+                    _.each(responseJson.results, (notification) => {
                         if (notification.action.verb.toLowerCase().indexOf('joined') != -1
                             && getState().Global.RequestUser.type == 1) {
                             dispatch(getClients(true));
+                            return false;
+                        } else if (notification.action.action_object.macro_plan_days || notification.action.action_object.workouts) {
+                            dispatch(getActiveData());
                             return false;
                         }
                     })
@@ -440,7 +443,7 @@ export function deleteSet(id) {
 
 
 export function addEditMacroLog(data, asyncActions = null) {
-        asyncActions(true);
+    asyncActions(true);
     let url = `${API_ENDPOINT}training/macros/logs/`;
     let method = 'POST';
     if (data.id) {
@@ -457,7 +460,7 @@ export function addEditMacroLog(data, asyncActions = null) {
             })
             .catch((error) => {
                 console.log(error);
-            }).done(()=>asyncActions(false));
+            }).done(() => asyncActions(false));
     }
 }
 

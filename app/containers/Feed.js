@@ -147,9 +147,12 @@ const styles = StyleSheet.create({
     },
     createPost: {
         minHeight: 50,
-        margin: 5,
+        // margin: 5,
         backgroundColor: 'white',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderColor: '#e1e3df',
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
     },
     postAvatar: {
         height: 40,
@@ -167,7 +170,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'stretch',
-        paddingTop: 5
+        paddingTop: 5,
     },
     textInput: {
         color: 'black',

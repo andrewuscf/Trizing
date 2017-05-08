@@ -72,7 +72,7 @@ const CreateWorkoutDay = React.createClass({
 
 
     _addExercise() {
-        if (this.state.name && !this.state.saved) {
+        if (this.state.name && !this.state.saved && this.state.days.length) {
             this.props.actions.addEditWorkoutDay(this.getCurrentData(), this.asyncActions)
             this.setState({saved: true});
         }

@@ -53,7 +53,7 @@ const PersonBox = React.createClass({
                 <AvatarImage style={styles.avatar} image={person.profile.thumbnail} resizeImage={102}/>
                 <View style={styles.text}>
                     <Text style={styles.userName}>{person.username}</Text>
-                    <Text style={styles.title}>{person.profile.first_name} {person.profile.last_name}</Text>
+                    <Text style={styles.title}>{person.profile.first_name} {person.profile.last_name[0]}.</Text>
                 </View>
                 {!this.state.invited ?
                     person.id != trainer.id ?

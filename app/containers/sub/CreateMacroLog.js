@@ -41,6 +41,7 @@ const CreateMacroLog = React.createClass({
             value: null,
             date: (this.props.date && moment(this.props.date).isValid()) ?
                 moment(this.props.date).format("MMMM DD YYYY") : moment().format("MMMM DD YYYY"),
+            success: false
         }
     },
 
@@ -52,12 +53,16 @@ const CreateMacroLog = React.createClass({
         }
     },
 
-    asyncActions(start, data = {}){
+    asyncActions(start) {
         if (start) {
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            this.props.navigator.pop();
+            this.setState({success: true});
+            setTimeout(() => {
+                this.setState({success: false});
+                this.props.navigator.pop();
+            }, 2000);
         }
     },
 
@@ -102,9 +107,17 @@ const CreateMacroLog = React.createClass({
         // calories = (9 * fats) + (4 * protein) + (4 * carbs);
         return (
             <View style={styles.flexCenter}>
-                <BackBar back={this._cancel}>
-                    <Text>{this.state.date}</Text>
-                </BackBar>
+                {this.state.success ?
+                    <View style={{flex: .1, backgroundColor: 'green', alignItems: 'center', justifyContent: 'center'}}>
+                        <Text style={{color: 'white', fontSize: getFontSize(24)}}>
+                            Success
+                        </Text>
+                    </View>
+                    :
+                    <BackBar back={this._cancel}>
+                        <Text>{this.state.date}</Text>
+                    </BackBar>
+                }
                 <Text style={[styles.title]}>Nutrition for the day</Text>
                 <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center', paddingTop: 10}]}>
                     <View style={styles.details}>

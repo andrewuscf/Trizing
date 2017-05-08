@@ -46,8 +46,8 @@ const PostBox = React.createClass({
             })
         }
         return (
-            <TouchableOpacity style={styles.postBox} onPress={this.onPress}>
-                <View style={[styles.container]}>
+            <TouchableOpacity style={[styles.postBox, {borderColor: '#e1e3df', borderBottomWidth: 1}]} onPress={this.onPress}>
+                <View style={[styles.container, {borderColor: '#e1e3df', borderTopWidth: 1}]}>
                     <AvatarImage redirect={this.goToProfile} image={image} style={styles.postAvatar}/>
                     <View style={styles.noteInfo}>
                         <View style={styles.noteText}>
@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     postBox: {
         backgroundColor: 'white',
         marginBottom: 5,
+        paddingTop: 5
     },
     container: {
         flex: 1,

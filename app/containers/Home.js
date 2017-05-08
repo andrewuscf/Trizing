@@ -132,7 +132,7 @@ const Home = React.createClass({
             )
         } else {
             const data = this.props.ActiveData;
-            if (data) {
+            if (data && (data.macro_plan_day || data.training_day)) {
                 let calories = 0;
                 if (data.macro_plan_day) {
                     const fats = (data.macro_plan_day.fats) ? data.macro_plan_day.fats : 0;
@@ -172,7 +172,9 @@ const Home = React.createClass({
                                     : null
                                 }
                             </View>
-                            : null
+                            : <View style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
+                                <Text style={styles.textTitle}>No Nutrition Plan Today</Text>
+                            </View>
                         }
                         {data.training_day ?
                             <TouchableOpacity activeOpacity={.6} style={[styles.box, {
@@ -187,11 +189,7 @@ const Home = React.createClass({
 
                             </TouchableOpacity>
                             :
-                            <View style={[styles.box, {
-                                marginBottom: 5,
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }]}>
+                            <View style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
                                 <Text style={styles.textTitle}>No Workout Today</Text>
                             </View>
                         }
@@ -199,7 +197,15 @@ const Home = React.createClass({
                     </View>
                 )
             } else {
-                content = null;
+                content = (
+                    <View style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
+                        <Text style={styles.textTitle}>You have no trainer</Text>
+                        <TouchableOpacity onPress={this._redirect.bind(null, 'ManageClients', null)} style={styles.link}>
+                            <Text style={styles.simpleTitle}>Find a trainer</Text>
+                            <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
+                        </TouchableOpacity>
+                    </View>
+                )
             }
 
         }

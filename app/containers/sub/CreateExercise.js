@@ -138,14 +138,15 @@ const CreateExercise = React.createClass({
         });
         return (
             <View style={{flex: 1}}>
+                <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}>
+                    <Text>{this.state.workout ? this.state.workout_day.name : null}</Text>
+                    <TouchableOpacity style={styles.save} onPress={this._save}>
+                        <Text>Save</Text>
+                    </TouchableOpacity>
+                </BackBar>
                 <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                             contentContainerStyle={styles.contentContainerStyle}>
-                    <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}>
-                        <Text>{this.state.workout ? this.state.workout_day.name : null}</Text>
-                        <TouchableOpacity style={styles.save} onPress={this._save}>
-                            <Text>Save</Text>
-                        </TouchableOpacity>
-                    </BackBar>
+
                     <View style={styles.subNav}>
                         <TouchableOpacity onPress={this._toggleShow}>
                             {!this.state.showSets ?
@@ -173,18 +174,20 @@ const CreateExercise = React.createClass({
                     }
                 </ScrollView>
                 <View style={styles.footer}>
-                    <TouchableOpacity style={[styles.editBlock, {marginLeft: 10}]}>
+
+                    <TouchableOpacity style={[styles.editBlock, {paddingLeft: 10}]}>
                         <Icon name="trash" size={20} color={iconColor}/>
                         <Text style={styles.editItemLabel}>Delete</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.editBlock]} onPress={this._addSet}>
+                    <TouchableOpacity style={[styles.editBlock, {paddingLeft: 15}]} onPress={this._addExercise}>
                         <Icon name="bars" size={20} color={iconColor}/>
-                        <Text style={styles.editItemLabel}>Add Set</Text>
+                        <Text style={styles.editItemLabel}>Add Exercise</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.editBlock, {marginRight: 10}]}>
+                    <TouchableOpacity style={[styles.editBlock, {paddingRight: 10}]}>
                         <Icon name="sticky-note" size={20} color={iconColor}/>
                         <Text style={styles.editItemLabel}>Add Note</Text>
                     </TouchableOpacity>
+
                 </View>
             </View>
         )
@@ -195,7 +198,7 @@ const iconColor = '#8E8E8E';
 
 const styles = StyleSheet.create({
     flexCenter: {
-        flex: 1,
+        flex: .9,
     },
     filterInput: {
         flex: 1,
@@ -235,16 +238,12 @@ const styles = StyleSheet.create({
         minHeight: 40,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-        left: 0,
+        flex: .1
     },
     editBlock: {
         flexDirection: 'column',
         alignItems: 'center',
-        marginBottom: 5,
-        marginTop: 5,
+        paddingBottom: 5
     },
     editItemLabel: {
         fontFamily: 'OpenSans-Semibold',

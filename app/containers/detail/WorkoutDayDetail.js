@@ -7,7 +7,6 @@ import {
     RefreshControl,
     Platform,
     ListView,
-    Modal
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -70,24 +69,26 @@ const WorkoutDayDetail = React.createClass({
                     <Text style={[styles.dayTitle]}>{this.state.workout_day.name}</Text>
                 </BackBar>
                 <DaysOfWeek days={this.state.workout_day.days}/>
-                <Text style={[styles.dayTitle]}>Exercises</Text>
+                <View style={styles.flexCenter} keyboardShouldPersistTaps="handled">
+                    <Text style={[styles.dayTitle]}>Exercises</Text>
 
-                {!this.state.workout_day.exercises.length ?
-                    <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
-                        <Text>You have no workout days! Create Some!</Text>
-                    </View> :
+                    {!this.state.workout_day.exercises.length ?
+                        <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
+                            <Text>Create Exercises!</Text>
+                        </View> :
 
-                    <ListView ref='workout_day_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                              keyboardShouldPersistTaps="handled"
-                              refreshControl={<RefreshControl refreshing={this.props.Refreshing}
-                                                              onRefresh={this.refresh}/>}
-                              enableEmptySections={true}
-                              dataSource={dataSource}
-                              renderRow={(exercise, sectionID, rowID) =>
-                                  <DisplayExerciseBox exercise={exercise} _editExercise={this._editExercise}/>
-                              }
-                    />
-                }
+                        <ListView ref='workout_day_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                                  keyboardShouldPersistTaps="handled"
+                                  refreshControl={<RefreshControl refreshing={this.props.Refreshing}
+                                                                  onRefresh={this.refresh}/>}
+                                  enableEmptySections={true}
+                                  dataSource={dataSource}
+                                  renderRow={(exercise, sectionID, rowID) =>
+                                      <DisplayExerciseBox exercise={exercise} _editExercise={this._editExercise}/>
+                                  }
+                        />
+                    }
+                </View>
 
                 <View style={styles.footer}>
 
@@ -116,6 +117,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    flexCenter: {
+        flex: .9
+    },
     dayTitle: {
         fontSize: getFontSize(30),
         fontFamily: 'OpenSans-Semibold',
@@ -128,16 +132,11 @@ const styles = StyleSheet.create({
         minHeight: 40,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-        left: 0,
+        flex: .1
     },
     editBlock: {
         flexDirection: 'column',
         alignItems: 'center',
-        marginBottom: 5,
-        marginTop: 5,
     },
     editItemLabel: {
         fontFamily: 'OpenSans-Semibold',

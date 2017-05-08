@@ -80,7 +80,7 @@ const EditWorkout = React.createClass({
             });
         }
         return (
-            <View style={styles.flexCenter}>
+            <View style={{flex: 1}}>
                 <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                             contentContainerStyle={styles.contentContainerStyle}>
                     <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}>
@@ -90,7 +90,6 @@ const EditWorkout = React.createClass({
                     <View style={{marginBottom: 10}}>
                         {workout_days}
                     </View>
-
 
 
                 </ScrollView>
@@ -117,7 +116,7 @@ const iconColor = '#8E8E8E';
 
 const styles = StyleSheet.create({
     flexCenter: {
-        flex: 1,
+        flex: .9,
     },
     footer: {
         borderTopWidth: 1,
@@ -126,10 +125,7 @@ const styles = StyleSheet.create({
         minHeight: 40,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-        left: 0,
+        flex:.1
     },
     editBlock: {
         flexDirection: 'column',

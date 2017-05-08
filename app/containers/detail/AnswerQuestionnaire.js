@@ -81,9 +81,7 @@ const AnswerQuestionnaire = React.createClass({
 
 
     render() {
-        console.log(this.props.questionnaire)
         const questionnaire = this.props.questionnaire;
-
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = ds.cloneWithRows(this.props.questionnaire.questions);
         return (
