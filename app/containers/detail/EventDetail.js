@@ -38,7 +38,6 @@ const EventDetail = React.createClass({
         fetch(`${API_ENDPOINT}social/event/${this.props.eventId}/`, fetchData('GET', null, this.props.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
                 this.setState({event: responseJson})
             });
     },

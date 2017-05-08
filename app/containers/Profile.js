@@ -12,6 +12,12 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {
+    Menu,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+} from 'react-native-popup-menu';
 
 import * as ProfileActions from '../actions/profileActions';
 import {getUser, getNotifications} from '../actions/globalActions';
@@ -121,6 +127,19 @@ const Profile = React.createClass({
         this.props.navigator.push(getRoute('CreateQuestionnaire'))
     },
 
+    reportUser() {
+        if (this.state.user) {
+            fetch(`${API_ENDPOINT}user/reports/`,
+                fetchData('POST', JSON.stringify({to_user: this.state.user.id}), this.props.UserToken))
+            Alert.alert(
+                'Report sent',
+                '',
+                [
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ],
+            )
+        }
+    },
 
     render() {
         const user = this.state.user;
@@ -137,9 +156,16 @@ const Profile = React.createClass({
                                               onPress={this._redirect.bind(null, 'EditProfile', null)}>
                                 <Icon name="gear" size={20} color='#333333'/>
                             </TouchableOpacity>
-                            : <TouchableOpacity style={styles.logOut}>
-                                <Icon name="ellipsis-v" size={20} color='#333333'/>
-                            </TouchableOpacity>
+                            :
+                            <Menu style={styles.logOut}>
+                                <MenuTrigger>
+                                    <Icon name="ellipsis-v" size={20} color='#333333'/>
+                                </MenuTrigger>
+                                <MenuOptions>
+                                    <MenuOption onSelect={() => this.reportUser()} text='Report user'/>
+                                </MenuOptions>
+                            </Menu>
+
                         }
                     </BackBar>
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
@@ -169,7 +195,7 @@ const Profile = React.createClass({
                             : null
                         }
                     </View>
-                    {this.props.RequestUser.id == user.profile.trainer?
+                    {this.props.RequestUser.id == user.profile.trainer ?
                         <TrainingPlan client={user} UserToken={this.props.UserToken}
                                       openModal={this.createQuestionnaire}
                                       training_plan={user.training_plan}

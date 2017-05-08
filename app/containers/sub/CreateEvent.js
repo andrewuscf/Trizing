@@ -182,7 +182,7 @@ const CreateEvent = React.createClass({
                         })}
                     </ScrollView>
                 }
-                <SubmitButton textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
+                <SubmitButton onPress={this._onSubmit} ref='postbutton'
                               text={this.state.step == 2 ? 'Create Event' : 'Invite Users'}/>
 
             </View>
@@ -193,11 +193,6 @@ const CreateEvent = React.createClass({
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
-    },
-    submitText: {
-        color: 'white',
-        fontSize: 15,
-        fontFamily: 'OpenSans-Bold',
     },
     selected: {
         borderWidth: 2,

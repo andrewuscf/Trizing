@@ -20,6 +20,8 @@ import FCM, {
     NotificationType
 } from 'react-native-fcm';
 import _ from 'lodash';
+import {MenuContext} from 'react-native-popup-menu';
+
 
 import * as GlobalActions from './actions/globalActions';
 import {getRoute} from './routes';
@@ -194,16 +196,20 @@ const App = React.createClass({
             }).length > 0;
 
         return (
-            <Navigator initialRoute={route}
-                       style={styles.container}
-                       ref={(nav) => {navigator = nav}}
-                       onDidFocus={this.itemChangedFocus}
-                       renderScene={ this._renderScene }
-                       navigationBar={<NavBar RequestUser={this.props.RequestUser}
-                                              scrollToTopEvent={this.scrollToTopEvent}
-                                              unReadMessages={unReadMessages}
-                                              route={this.props.Route}/>}
-            />
+            <MenuContext>
+                <Navigator initialRoute={route}
+                           style={styles.container}
+                           ref={(nav) => {
+                               navigator = nav
+                           }}
+                           onDidFocus={this.itemChangedFocus}
+                           renderScene={ this._renderScene }
+                           navigationBar={<NavBar RequestUser={this.props.RequestUser}
+                                                  scrollToTopEvent={this.scrollToTopEvent}
+                                                  unReadMessages={unReadMessages}
+                                                  route={this.props.Route}/>}
+                />
+            </MenuContext>
         );
 
     }
