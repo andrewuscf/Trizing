@@ -5,9 +5,7 @@ import {fetchData, API_ENDPOINT, refreshPage, checkStatus} from './utils';
 
 
 export function updateProfile(data, asyncActions) {
-    if (asyncActions) {
-        asyncActions(true);
-    }
+    asyncActions(true);
     const headers = {
         'Content-Type': 'multipart/form-data',
     };
@@ -16,9 +14,7 @@ export function updateProfile(data, asyncActions) {
             fetchData('PATCH', data, getState().Global.UserToken, headers))
             .then(checkStatus)
             .then((responseJson) => {
-                if (asyncActions) {
-                    asyncActions(false);
-                }
+                asyncActions(false, responseJson);
                 return dispatch({type: types.UPDATE_PROFILE, profile: responseJson});
             })
             .catch((error) => {
@@ -34,10 +30,8 @@ export function updateProfile(data, asyncActions) {
 }
 
 
-export function updateUser(data, profileData=false, asyncActions) {
-    if (asyncActions) {
-        asyncActions(true);
-    }
+export function updateUser(data, profileData = false, asyncActions) {
+    asyncActions(true);
     let jsondata = JSON.stringify(data);
     return (dispatch, getState) => {
         return fetch(`${API_ENDPOINT}user/${getState().Global.RequestUser.id}/`,
@@ -45,11 +39,11 @@ export function updateUser(data, profileData=false, asyncActions) {
             .then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.UPDATE_USER, request_user: responseJson});
-            }).then(()=> {
+            }).then(() => {
                 if (profileData) {
                     return dispatch(updateProfile(profileData, asyncActions))
                 }
-                else{
+                else {
                     if (asyncActions) {
                         asyncActions(false);
                     }

@@ -87,11 +87,14 @@ const EditProfile = React.createClass({
         }
     },
 
-    asyncActions(start){
+    asyncActions(start, data={}){
         if (start) {
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
+            if (data.completed && !this.props.RequestUser.profile.completed){
+                this.props.navigator.immediatelyResetRouteStack([getRoute('Home')]);
+            }
         }
     },
 
@@ -161,8 +164,8 @@ const EditProfile = React.createClass({
                 {text: 'Cancel', null, style: 'cancel'},
                 {
                     text: 'Yes', onPress: () => {
-                    const login = getRoute('Login')
-                    this.props.navigator.immediatelyResetRouteStack([login])
+                    const login = getRoute('Login');
+                    this.props.navigator.immediatelyResetRouteStack([login]);
                     FCM.getFCMToken().then(token => {
                         self.props.removeToken(token);
                     });
@@ -174,6 +177,12 @@ const EditProfile = React.createClass({
 
     getCameraData(data) {
         console.log(data)
+        this.setState({
+            previewImage: {
+                uri: data.mediaUri,
+                path: data.path
+            }
+        });
         this.toggleCamera();
     },
 
@@ -240,21 +249,26 @@ const EditProfile = React.createClass({
                                 style={styles.mainContainer}>
                         <KeyboardAvoidingView behavior="position">
                             <View style={styles.mainContent}>
-                                <AvatarImage image={userImage}
-                                             style={[styles.avatar, this.state.imageError ? {
-                                                     borderColor: 'red',
-                                                     borderWidth: 1
-                                                 } : null]} redirect={this.toggleRoll}/>
-
-                                <Menu>
+                                <Menu style={{justifyContent: 'center', alignItems: 'center'}}>
                                     <MenuTrigger>
-                                        <Text style={{alignSelf: 'center', fontSize: getFontSize(14), paddingTop: 10}}>
+                                        <AvatarImage image={userImage}
+                                                     style={[styles.avatar, this.state.imageError ? {
+                                                             borderColor: 'red',
+                                                             borderWidth: 1
+                                                         } : null]}/>
+                                        <Text style={{alignSelf: 'center', fontSize: getFontSize(18), paddingTop: 10}}>
                                             {this.state.showRoll ? 'Close Camera Roll' : 'Change Profile Photo'}
                                         </Text>
                                     </MenuTrigger>
-                                    <MenuOptions>
-                                        <MenuOption onSelect={() => this.toggleRoll()} text='From Camera Roll'/>
-                                        <MenuOption onSelect={() => this.toggleCamera()} text='Take New Photo'/>
+                                    <MenuOptions
+                                        optionsContainerStyle={{alignSelf: 'center', width: 300, marginTop: 120}}>
+                                        <MenuOption style={[styles.menuOption, {borderBottomWidth: 1, borderColor: 'grey'}]}
+                                                    onSelect={() => this.toggleRoll()} text='From Camera Roll'/>
+                                        <MenuOption style={[styles.menuOption]}
+                                                    onSelect={() => this.toggleCamera()}>
+                                            <Text>Take New Photo</Text>
+                                        </MenuOption>
+
                                     </MenuOptions>
                                 </Menu>
 
@@ -331,9 +345,9 @@ const styles = StyleSheet.create({
     },
     avatar: {
         alignSelf: 'center',
-        height: 100,
-        width: 100,
-        borderRadius: 50
+        height: 120,
+        width: 120,
+        borderRadius: 60
     },
     button: {
         margin: 20
@@ -351,6 +365,11 @@ const styles = StyleSheet.create({
         top: 5,
         position: 'absolute',
         padding: 10
+    },
+    menuOption: {
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 });
 

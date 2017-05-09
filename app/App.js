@@ -87,10 +87,13 @@ const App = React.createClass({
             );
         }
 
-        if (!prevProps.RequestUser && this.props.RequestUser && this.props.RequestUser != prevProps.RequestUser) {
+        const prevUser = prevProps.RequestUser;
+        const newUser = this.props.RequestUser;
+
+        if (!prevUser && newUser && newUser != prevUser) {
             this.setUpNotifications();
             const routes = navigator.getCurrentRoutes();
-            if (!this.props.RequestUser.profile.completed) {
+            if (!newUser.profile.completed) {
                 if (routes[routes.length - 1].name != 'EditProfile') {
                     navigator.immediatelyResetRouteStack([getRoute('EditProfile')])
                 }
@@ -196,7 +199,7 @@ const App = React.createClass({
             }).length > 0;
 
         return (
-            <MenuContext>
+            <MenuContext lazyRender={200}>
                 <Navigator initialRoute={route}
                            style={styles.container}
                            ref={(nav) => {
