@@ -23,7 +23,7 @@ const CameraPage = React.createClass({
                     }}
                     style={styles.preview}
                     aspect={Camera.constants.Aspect.fill}>
-                    <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
+                    <Text style={styles.capture} onPress={this.takePicture}>[CAPTURE]</Text>
                 </Camera>
             </View>
         );

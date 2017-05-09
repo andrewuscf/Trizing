@@ -92,11 +92,11 @@ const App = React.createClass({
             const routes = navigator.getCurrentRoutes();
             if (!this.props.RequestUser.profile.completed) {
                 if (routes[routes.length - 1].name != 'EditProfile') {
-                    navigator.push(getRoute('EditProfile'))
+                    navigator.immediatelyResetRouteStack([getRoute('EditProfile')])
                 }
             } else {
                 if (routes[routes.length - 1].name != 'Home') {
-                    navigator.push(getRoute('Home'))
+                    navigator.immediatelyResetRouteStack([getRoute('Home')])
                 }
             }
         }

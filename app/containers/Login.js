@@ -46,6 +46,14 @@ const Login = React.createClass({
                 stylesheet: stylesheet,
                 auto: 'placeholders',
                 fields: {
+                    username: {
+                        autoCapitalize: 'none',
+                        autoCorrect: false,
+                        onSubmitEditing: () => {
+                            if (this.refs.form.getComponent('email'))
+                                this.refs.form.getComponent('email').refs.input.focus()
+                        },
+                    },
                     email: {
                         autoCapitalize: 'none',
                         autoCorrect: false,
@@ -248,7 +256,7 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     buttonForgot: {
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
     },
     buttonText: {
         color: '#1352e2',

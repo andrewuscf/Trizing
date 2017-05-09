@@ -17,6 +17,12 @@ import {connect} from 'react-redux';
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FCM from 'react-native-fcm';
+import {
+    Menu,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+} from 'react-native-popup-menu';
 
 import {fetchData, API_ENDPOINT, getFontSize} from '../../actions/utils';
 import {getRoute} from '../../routes';
@@ -26,6 +32,7 @@ import {removeToken} from '../../actions/globalActions';
 
 import AvatarImage from '../../components/AvatarImage';
 import BackBar from '../../components/BackBar';
+import CameraPage from '../../components/CameraPage';
 import {EMPTY_AVATAR} from '../../assets/constants';
 import Loading from '../../components/Loading';
 import SubmitButton from '../../components/SubmitButton';
@@ -39,18 +46,19 @@ const EditProfile = React.createClass({
             value: null,
             showRoll: false,
             previewImage: null,
+            imageError: false,
+            showCamera: false
         };
         if (this.props.RequestUser) {
             initData = {
+                ...initData,
                 value: {
                     username: this.props.RequestUser.username,
                     first_name: this.props.RequestUser.profile.first_name,
                     last_name: this.props.RequestUser.profile.last_name,
                     phone_number: this.props.RequestUser.profile.phone_number,
                     type: this.props.RequestUser.type
-                },
-                showRoll: false,
-                previewImage: null,
+                }
             }
         }
         return initData;
@@ -92,7 +100,6 @@ const EditProfile = React.createClass({
             previewImage: images[0]
         });
         this.toggleRoll();
-        this.refs._scrollView.scrollTo({y: 0, false});
     },
 
     toggleRoll() {
@@ -101,8 +108,21 @@ const EditProfile = React.createClass({
         });
     },
 
+    toggleCamera() {
+        this.setState({
+            showCamera: !this.state.showCamera,
+        });
+    },
+
     _back() {
-        this.props.navigator.pop();
+        if (this.state.showRoll) {
+            this.setState({showRoll: false});
+        } else if (this.state.showCamera) {
+            this.setState({showCamera: false});
+        } else if (this.props.RequestUser.profile.completed) {
+            this.props.navigator.pop();
+        }
+
     },
 
     _onSubmit(){
@@ -125,8 +145,11 @@ const EditProfile = React.createClass({
             profileData.append("last_name", values.last_name);
             profileData.append("phone_number", values.phone_number);
             this.props.actions.updateUser(data, profileData, this.asyncActions);
-
         }
+        if (!this.state.previewImage && !this.props.RequestUser.profile.avatar)
+            this.setState({imageError: true});
+        else
+            this.setState({imageError: false});
     },
 
     _logOut() {
@@ -149,8 +172,13 @@ const EditProfile = React.createClass({
         );
     },
 
+    getCameraData(data) {
+        console.log(data)
+        this.toggleCamera();
+    },
+
     render() {
-        const rollPickerWidth = deviceWidth - 20;
+        const rollPickerWidth = deviceWidth;
         const user = this.props.RequestUser;
 
         let options = {
@@ -199,38 +227,36 @@ const EditProfile = React.createClass({
                     phone_number: t.Number,
                 });
             }
-            return (
-                <View style={styles.mainContainer}>
-                    <View style={styles.backNav}>
-                        {this.props.RequestUser.profile.completed ?
-                            <TouchableOpacity onPress={this._back} style={styles.backNavButton}>
-                                <Icon name="angle-left" size={30} color='#333333'/>
-                            </TouchableOpacity>
-                            : null
-                        }
 
-                        <TouchableOpacity
-                            style={this.props.RequestUser.profile.completed ? styles.logOut : styles.logOutCreateProfile}
-                            onPress={this._logOut}>
-                            <Icon name="power-off" size={20} color='red'/>
-                        </TouchableOpacity>
-
-                    </View>
-                    {this.state.showRoll ?
-                        <CameraRollPicker imageMargin={2} containerWidth={rollPickerWidth}
-                                          callback={this.getSelectedImages} maximum={1} selected={[]}/>
-                        : null
-                    }
+            let content = null;
+            if (this.state.showRoll) {
+                content = <CameraRollPicker imageMargin={2} containerWidth={rollPickerWidth}
+                                            callback={this.getSelectedImages} maximum={1} selected={[]}/>;
+            } else if (this.state.showCamera) {
+                content = <CameraPage passData={this.getCameraData}/>;
+            } else {
+                content = (
                     <ScrollView ref='_scrollView' keyboardDismissMode='interactive'
                                 style={styles.mainContainer}>
                         <KeyboardAvoidingView behavior="position">
                             <View style={styles.mainContent}>
-                                <AvatarImage image={userImage} style={styles.avatar} redirect={this.toggleRoll}/>
-                                <TouchableOpacity onPress={this.toggleRoll} activeOpacity={1}>
-                                    <Text style={{alignSelf: 'center', fontSize: getFontSize(14), paddingTop: 10}}>
-                                        {this.state.showRoll ? 'Close Camera Roll' : 'Change Profile Photo'}
-                                    </Text>
-                                </TouchableOpacity>
+                                <AvatarImage image={userImage}
+                                             style={[styles.avatar, this.state.imageError ? {
+                                                     borderColor: 'red',
+                                                     borderWidth: 1
+                                                 } : null]} redirect={this.toggleRoll}/>
+
+                                <Menu>
+                                    <MenuTrigger>
+                                        <Text style={{alignSelf: 'center', fontSize: getFontSize(14), paddingTop: 10}}>
+                                            {this.state.showRoll ? 'Close Camera Roll' : 'Change Profile Photo'}
+                                        </Text>
+                                    </MenuTrigger>
+                                    <MenuOptions>
+                                        <MenuOption onSelect={() => this.toggleRoll()} text='From Camera Roll'/>
+                                        <MenuOption onSelect={() => this.toggleCamera()} text='Take New Photo'/>
+                                    </MenuOptions>
+                                </Menu>
 
                                 <Form
                                     ref="form"
@@ -247,6 +273,33 @@ const EditProfile = React.createClass({
                                           text='Save'/>
                         </KeyboardAvoidingView>
                     </ScrollView>
+                )
+            }
+
+            return (
+                <View style={styles.mainContainer}>
+                    {this.props.RequestUser.profile.completed || this.state.showRoll || this.state.showCamera ?
+                        <BackBar back={this._back}
+                                 navStyle={styles.customBack}>
+                            <TouchableOpacity
+                                style={this.props.RequestUser.profile.completed ? styles.logOut : styles.logOutCreateProfile}
+                                onPress={this._logOut}>
+                                <Icon name="power-off" size={20} color='red'/>
+                            </TouchableOpacity>
+                        </BackBar> :
+                        <BackBar navStyle={styles.customBack}>
+                            <TouchableOpacity
+                                style={this.props.RequestUser.profile.completed ? styles.logOut : styles.logOutCreateProfile}
+                                onPress={this._logOut}>
+                                <Icon name="power-off" size={20} color='red'/>
+                            </TouchableOpacity>
+                        </BackBar>
+                    }
+
+
+                    {content}
+
+
                 </View>
             );
         } else {
@@ -294,9 +347,10 @@ const styles = StyleSheet.create({
         paddingRight: 10,
     },
     logOutCreateProfile: {
-        right: 10,
-        top: 20,
+        right: 5,
+        top: 5,
         position: 'absolute',
+        padding: 10
     }
 });
 

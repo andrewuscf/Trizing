@@ -6,20 +6,23 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const BackBar = React.createClass({
     propTypes: {
-        back: React.PropTypes.func.isRequired,
+        back: React.PropTypes.func,
         backText: React.PropTypes.string,
     },
 
     render() {
         return (
             <View style={[styles.nav, this.props.navStyle]}>
-                <TouchableOpacity onPress={this.props.back}
-                                  style={[styles.topNavButton]}>
-                    <Icon name="angle-left" size={30} style={[this.props.textStyle, styles.textColor]}/>
-                    <Text style={[styles.cancel, styles.textColor, this.props.textStyle]}>
-                        {this.props.backText ? this.props.backText : null}
-                    </Text>
-                </TouchableOpacity>
+                {this.props.back ?
+                    <TouchableOpacity onPress={this.props.back}
+                                      style={[styles.topNavButton]}>
+                        <Icon name="angle-left" size={30} style={[this.props.textStyle, styles.textColor]}/>
+                        <Text style={[styles.cancel, styles.textColor, this.props.textStyle]}>
+                            {this.props.backText ? this.props.backText : null}
+                        </Text>
+                    </TouchableOpacity>
+                    : null
+                }
                 {this.props.children}
             </View>
         );
@@ -33,18 +36,15 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         paddingTop: 10,
         paddingBottom: 10,
         minHeight: 50,
         backgroundColor: 'white'
     },
     topNavButton: {
-        zIndex: 999,
-        position: 'absolute',
-        left: 10,
-        top: 10,
-        width: 100,
+        paddingLeft: 10,
+        width: 60,
         flexDirection: 'row',
         alignItems: 'center',
     },
