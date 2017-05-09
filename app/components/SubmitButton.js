@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         width: 36,
-        height: 9,
+        height: 20,
     }
 });
 

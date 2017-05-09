@@ -5,7 +5,6 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    TextInput,
     Dimensions,
     Keyboard
 } from 'react-native';
@@ -16,11 +15,16 @@ import {
 } from 'react-native-fbsdk';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Hr from '../components/HR';
+import t from 'tcomb-form-native';
+import _ from 'lodash';
+
+import {getFontSize} from '../actions/utils';
 
 import BackBar from '../components/BackBar';
 import SubmitButton from '../components/SubmitButton';
 
 const {height, width} = Dimensions.get('window');
+const Form = t.form.Form;
 
 const Login = React.createClass({
     propTypes: {
@@ -32,11 +36,35 @@ const Login = React.createClass({
 
     getInitialState() {
         return {
-            email: null,
+            value: null,
             username: null,
             password: null,
             forgotCreds: false,
             signUp: false,
+            options: {
+                // stylesheet: fullWidthLineInputs,
+                stylesheet: stylesheet,
+                auto: 'placeholders',
+                fields: {
+                    email: {
+                        autoCapitalize: 'none',
+                        autoCorrect: false,
+                        keyboardType: "email-address",
+                        onSubmitEditing: () => {
+                            if (this.refs.form.getComponent('password'))
+                                this.refs.form.getComponent('password').refs.input.focus()
+                        },
+                        placeholder: 'Email Address'
+                    },
+                    password: {
+                        secureTextEntry: true,
+                        onSubmitEditing: () => {
+                            this.onPress();
+                        },
+                        placeholder: 'Password',
+                    }
+                }
+            }
         }
     },
 
@@ -59,42 +87,28 @@ const Login = React.createClass({
         this.setState({
             forgotCreds: false,
             signUp: !this.state.signUp,
-            email: null,
-            username: null
         });
     },
 
     onPress() {
         // sign in + forgot credentials
-        Keyboard.dismiss();
+        // Keyboard.dismiss();
+        const formValues = this.refs.form.getValue();
         if (this.state.forgotCreds) {
-            if (this.state.email) {
-                this.props.resetPassword(this.state.email.toLowerCase());
+            if (formValues) {
+                this.props.resetPassword(formValues);
                 this.toggleForgotCreds();
             }
         } else if (this.state.signUp) {
-            if (this.state.username && this.state.email && this.state.password) {
-                const data = {
-                    email: this.state.email.toLowerCase(),
-                    username: this.state.username.toLowerCase(),
-                    password: this.state.password,
-                };
-                this.props.register(data, this.asyncActions);
-                this.resetComponent();
+            if (formValues) {
+                this.props.register(formValues, this.asyncActions);
+                this.setState({value: null});
             }
         } else {
-            if (this.state.email && this.state.password) {
-                this.props.login(this.state.email.toLowerCase(), this.state.password, this.asyncActions)
+            if (formValues) {
+                this.props.login({username: formValues.email, password: formValues.password}, this.asyncActions)
             }
         }
-    },
-
-    resetComponent() {
-        this.setState({
-            email: null,
-            username: null,
-            password: null,
-        });
     },
 
     back() {
@@ -107,6 +121,21 @@ const Login = React.createClass({
 
     render() {
         // <Image style={styles.logo} source={require('../assets/images/small-white-logo.png')}/>
+        let User = t.struct({
+            email: t.String,
+            password: t.String,
+        });
+        if (this.state.signUp) {
+            User = t.struct({
+                username: t.String,
+                email: t.String,
+                password: t.String,
+            });
+        } else if (this.state.forgotCreds) {
+            User = t.struct({
+                email: t.String,
+            });
+        }
         return (
             <View style={styles.container}>
                 {this.state.forgotCreds || this.state.signUp ?
@@ -158,53 +187,19 @@ const Login = React.createClass({
 
                 <View style={styles.contentContainer}>
 
-                    {(this.state.signUp) ?
-                        <View style={styles.inputWrap}>
-                            <TextInput ref="username" style={styles.textInput} autoCapitalize='none'
-                                       underlineColorAndroid='transparent'
-                                       autoCorrect={false}
-                                       onChangeText={(text) => this.setState({username: text})}
-                                       value={this.state.username}
-                                       onSubmitEditing={(event) => {
-                                           this.refs.email.focus();
-                                       }}
-                                       placeholderTextColor="black"
-                                       placeholder="Username"/>
-                        </View> : null
-                    }
+                    <Form
+                        ref="form"
+                        type={User}
+                        options={this.state.options}
+                        onChange={this.onChange}
+                        value={this.state.value}
+                    />
 
-                    <View style={styles.inputWrap}>
-                        <TextInput ref="email" style={styles.textInput} autoCapitalize='none'
-                                   keyboardType='email-address'
-                                   underlineColorAndroid='transparent'
-                                   autoCorrect={false}
-                                   onChangeText={(text) => this.setState({email: text})}
-                                   value={this.state.email}
-                                   onSubmitEditing={(event) => {
-                                       this.refs.password.focus();
-                                   }}
-                                   placeholderTextColor="black"
-                                   placeholder={this.state.signUp ? 'Email' : 'Email or username'}/>
-                    </View>
-
-                    {(!this.state.forgotCreds) ?
-                        <View style={styles.inputWrap}>
-                            <TextInput ref="password" style={styles.textInput} autoCapitalize='none'
-                                       underlineColorAndroid='transparent'
-                                       secureTextEntry={true}
-                                       autoCorrect={false}
-                                       onChangeText={(text) => this.setState({password: text})}
-                                       value={this.state.password}
-                                       onSubmitEditing={(event) => {
-                                           this.onPress();
-                                       }}
-                                       placeholderTextColor="black"
-                                       placeholder="Password"/>
-                            <TouchableOpacity onPress={this.toggleForgotCreds} style={{flex: 1}} focusedOpacity={1}
-                                              activeOpacity={1}>
-                                <Icon name="question-circle-o" size={20} style={styles.forgotIcon}/>
-                            </TouchableOpacity>
-                        </View>
+                    {!this.state.forgotCreds && !this.state.signUp ?
+                        <TouchableOpacity activeOpacity={1} style={styles.buttonForgot}
+                                          onPress={this.toggleForgotCreds}>
+                            <Text style={styles.buttonForgotText}>Forgot your password?</Text>
+                        </TouchableOpacity>
                         : null
                     }
 
@@ -245,29 +240,15 @@ const styles = StyleSheet.create({
         height: 70,
         alignSelf: 'center'
     },
-    inputWrap: {
-        alignSelf: 'center',
-        marginBottom: 12,
-        height: 40,
-        borderBottomWidth: .5,
-        borderColor: '#aaaaaa',
-        width: width * .80,
+    buttonForgotText: {
+        color: '#b1aea5',
+        fontSize: getFontSize(22),
+        fontFamily: 'OpenSans-SemiBold',
+        marginTop: 10,
+        marginBottom: 10
     },
-    textInput: {
-        color: 'black',
-        fontSize: 17,
-        fontFamily: 'OpenSans-Light',
-        backgroundColor: 'transparent',
-        paddingTop: 3,
-        paddingBottom: 3,
-        height: 40
-    },
-    forgotIcon: {
-        color: '#424242',
-        bottom: 8,
-        right: 0,
-        position: 'absolute'
-
+    buttonForgot: {
+        backgroundColor: '#fff',
     },
     buttonText: {
         color: '#1352e2',
@@ -290,5 +271,36 @@ const styles = StyleSheet.create({
         height: 40
     },
 });
+
+const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
+
+stylesheet.formGroup = {
+    ...stylesheet.formGroup,
+    normal: {
+        ...stylesheet.formGroup.normal,
+        borderBottomWidth: .5,
+        borderColor: '#aaaaaa',
+        width: width * .80
+    },
+    error: {
+        ...stylesheet.formGroup.error,
+        borderBottomWidth: .5,
+        borderColor: 'red',
+        width: width * .80
+    }
+};
+stylesheet.textbox = {
+    ...stylesheet.textbox,
+    normal: {
+        ...stylesheet.textbox.normal,
+        borderWidth: 0,
+        marginBottom: 0,
+    },
+    error: {
+        ...stylesheet.textbox.error,
+        borderWidth: 0,
+        marginBottom: 0,
+    }
+};
 
 export default Login;
