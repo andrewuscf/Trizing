@@ -42,21 +42,20 @@ const DisplayWorkoutDay = React.createClass({
 const styles = StyleSheet.create({
     displayWorkoutBox: {
         flex: 1,
-        borderBottomWidth: 0.5,
+        margin: 5,
         borderColor: '#e1e3df',
-        backgroundColor: 'white',
-        marginTop: 10
+        borderWidth: 1,
+        borderRadius: 10,
     },
     simpleTitle: {
-        fontSize: getFontSize(22),
+        fontSize: getFontSize(26),
         fontFamily: 'OpenSans-Semibold',
-        margin: 10,
+        marginTop: 10,
+        marginBottom: 10,
         textAlign: 'center'
     },
     active: {
         borderColor: 'green',
-        borderTopWidth: 1,
-        borderBottomWidth: 1
     }
 });
 

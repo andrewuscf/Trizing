@@ -65,9 +65,9 @@ const WorkoutDayDetail = React.createClass({
         let dataSource = ds.cloneWithRows(this.state.workout_day.exercises);
         return (
             <View style={styles.container}>
-                <BackBar back={this.props.navigator.pop} navStyle={{height: 50}}>
-                    <Text style={[styles.dayTitle]}>{this.state.workout_day.name}</Text>
-                </BackBar>
+                <BackBar back={this.props.navigator.pop} navStyle={{height: 50}} />
+                <Text style={[styles.title]}>{this.state.workout_day.name}</Text>
+
                 <DaysOfWeek days={this.state.workout_day.days}/>
                 <View style={styles.flexCenter} keyboardShouldPersistTaps="handled">
                     <Text style={[styles.dayTitle]}>Exercises</Text>
@@ -120,8 +120,15 @@ const styles = StyleSheet.create({
     flexCenter: {
         flex: .9
     },
+    title: {
+        fontSize: getFontSize(28),
+        fontFamily: 'OpenSans-Bold',
+        alignSelf: 'center',
+        paddingTop: 10,
+        paddingBottom: 10
+    },
     dayTitle: {
-        fontSize: getFontSize(30),
+        fontSize: getFontSize(26),
         fontFamily: 'OpenSans-Semibold',
         textAlign: 'center'
     },

@@ -83,11 +83,12 @@ const EditWorkout = React.createClass({
             <View style={{flex: 1}}>
                 <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                             contentContainerStyle={styles.contentContainerStyle}>
-                    <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}>
-                        <Text>{this.state.workout ? this.state.workout.name : null}</Text>
-                    </BackBar>
+                    <BackBar back={this.props.navigator.pop} navStyle={{height: 40}}/>
 
                     <View style={{marginBottom: 10}}>
+                        <Text style={styles.title}>
+                            {this.state.workout ? this.state.workout.name : null}
+                        </Text>
                         {workout_days}
                     </View>
 
@@ -118,6 +119,13 @@ const styles = StyleSheet.create({
     flexCenter: {
         flex: .9,
     },
+    title: {
+        fontSize: getFontSize(28),
+        fontFamily: 'OpenSans-Bold',
+        alignSelf: 'center',
+        paddingTop: 10,
+        paddingBottom: 10
+    },
     footer: {
         borderTopWidth: 1,
         borderColor: '#e1e3df',
@@ -125,7 +133,7 @@ const styles = StyleSheet.create({
         minHeight: 40,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        flex:.1
+        flex: .1
     },
     editBlock: {
         flexDirection: 'column',

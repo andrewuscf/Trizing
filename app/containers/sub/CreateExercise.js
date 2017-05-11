@@ -39,7 +39,6 @@ const CreateExercise = React.createClass({
             sets = [...this.props.exercise.sets];
         }
         return {
-            showSets: true,
             fetchedExercises: [],
             name: name,
             sets: sets,
@@ -86,13 +85,6 @@ const CreateExercise = React.createClass({
             ...state
         };
         this.setState({sets: sets});
-    },
-
-
-    _toggleShow: function () {
-        this.setState({
-            showSets: !this.state.showSets,
-        });
     },
 
     _save() {
@@ -148,12 +140,6 @@ const CreateExercise = React.createClass({
                             contentContainerStyle={styles.contentContainerStyle}>
 
                     <View style={styles.subNav}>
-                        <TouchableOpacity onPress={this._toggleShow}>
-                            {!this.state.showSets ?
-                                <Icon name="angle-down" size={20} color="red"/> :
-                                <Icon name="angle-up" size={20} color="red"/>
-                            }
-                        </TouchableOpacity>
                         <TextInput
                             ref="name"
                             style={[styles.filterInput]}
@@ -166,12 +152,9 @@ const CreateExercise = React.createClass({
                             placeholder="Enter exercise name"
                         />
                     </View>
-                    {this.state.showSets ?
-                        <View>
-                            {sets}
-                        </View>
-                        : null
-                    }
+                    <View>
+                        {sets}
+                    </View>
                 </ScrollView>
                 <View style={styles.footer}>
 
@@ -179,15 +162,10 @@ const CreateExercise = React.createClass({
                         <Icon name="trash" size={20} color={iconColor}/>
                         <Text style={styles.editItemLabel}>Delete</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.editBlock, {paddingLeft: 15}]} onPress={this._addExercise}>
+                    <TouchableOpacity style={[styles.editBlock, {paddingRight: 10}]} onPress={this._addSet}>
                         <Icon name="bars" size={20} color={iconColor}/>
-                        <Text style={styles.editItemLabel}>Add Exercise</Text>
+                        <Text style={styles.editItemLabel}>Add Set</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.editBlock, {paddingRight: 10}]}>
-                        <Icon name="sticky-note" size={20} color={iconColor}/>
-                        <Text style={styles.editItemLabel}>Add Note</Text>
-                    </TouchableOpacity>
-
                 </View>
             </View>
         )

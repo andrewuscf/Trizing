@@ -77,14 +77,14 @@ const EditSchedule = React.createClass({
     render: function () {
         let steps = (
             <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
-                <Text>You have no workouts! Create Some!</Text>
+                <Text>You have no workout blocks. Create Some!</Text>
             </View>
         );
         if (this.state.schedule && this.state.schedule.workouts.length) {
             steps = _.orderBy(this.state.schedule.workouts, ['order']).map((workout, index) => {
                 let start_date = moment.utc(workout.dates.start_date).local();
                 return <TouchableOpacity key={index} onPress={this._toWorkoutDay.bind(null, workout.id)}
-                                         style={[GlobalStyle.simpleBottomBorder, styles.workoutBox, (index == 0) ? {marginTop: 5} : null]}>
+                                         style={[styles.workoutBox]}>
 
                     {this.state.schedule.training_plan ?
                         <View style={styles.eventDate}>
@@ -104,11 +104,12 @@ const EditSchedule = React.createClass({
             <View style={styles.flexCenter}>
                 <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                             contentContainerStyle={styles.contentContainerStyle}>
-                    <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}>
-                        <Text>{this.state.schedule ? this.state.schedule.name : null}</Text>
-                    </BackBar>
+                    <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}/>
 
                     <View style={{marginBottom: 10}}>
+                        <Text style={styles.title}>
+                            {this.state.schedule ? this.state.schedule.name : null}
+                        </Text>
                         {steps}
                     </View>
 
@@ -118,13 +119,9 @@ const EditSchedule = React.createClass({
                         <Icon name="trash" size={20} color={iconColor}/>
                         <Text style={styles.editItemLabel}>Delete</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.editBlock, {paddingLeft: 15}]} onPress={this._createWorkoutDay}>
+                    <TouchableOpacity style={[styles.editBlock, {paddingRight: 10}]} onPress={this._createWorkoutDay}>
                         <Icon name="plus-circle" size={20} color={iconColor}/>
-                        <Text style={styles.editItemLabel}>Add Workout</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.editBlock, {paddingRight: 10}]}>
-                        <Icon name="pencil" size={20} color={iconColor}/>
-                        <Text style={styles.editItemLabel}>Edit Name</Text>
+                        <Text style={styles.editItemLabel}>Add Block</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -138,11 +135,22 @@ const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
     },
+    title: {
+        fontSize: getFontSize(28),
+        fontFamily: 'OpenSans-Bold',
+        alignSelf: 'center',
+        paddingTop:10,
+        paddingBottom:10
+    },
     workoutBox: {
         backgroundColor: 'white',
         marginBottom: 5,
         padding: 10,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        margin: 5,
+        borderColor: '#e1e3df',
+        borderWidth: 1,
+        borderRadius: 10
     },
     eventDateDay: {
         fontFamily: 'OpenSans-Bold',

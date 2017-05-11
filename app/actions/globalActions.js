@@ -309,9 +309,16 @@ export function getSchedules(param = '', refresh = false) {
 export function createSchedule(data, asyncActions) {
     asyncActions(true);
     let JSONDATA = JSON.stringify(data);
+
+    let url = `${API_ENDPOINT}training/schedules/`;
+    let method = 'POST';
+    if (data.id) {
+        url = `${API_ENDPOINT}training/schedules/${data.id}/`;
+        method = 'PATCH';
+    }
+
     return (dispatch, getState) => {
-        return fetch(`${API_ENDPOINT}training/schedules/`,
-            fetchData('POST', JSONDATA, getState().Global.UserToken)).then(checkStatus)
+        return fetch(url, fetchData(method, JSONDATA, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
                 asyncActions(false, {routeName: 'EditSchedule', props: {scheduleId: responseJson.id}});
                 return dispatch({type: types.CREATE_SCHEDULE, response: responseJson});

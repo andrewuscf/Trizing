@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     },
     topNavButton: {
         paddingLeft: 10,
-        width: 60,
+        width: 70,
         flexDirection: 'row',
         alignItems: 'center',
     },
