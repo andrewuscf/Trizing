@@ -161,7 +161,7 @@ const EditProfile = React.createClass({
             'Log out',
             'Are you sure you want to log out?',
             [
-                {text: 'Cancel', null, style: 'cancel'},
+                {text: 'Cancel', style: 'cancel'},
                 {
                     text: 'Yes', onPress: () => {
                     const login = getRoute('Login');
