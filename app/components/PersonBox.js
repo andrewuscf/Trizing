@@ -34,7 +34,7 @@ const PersonBox = React.createClass({
             'Removing Client',
             'Are you sure you want remove this client?',
             [
-                {text: 'Cancel', null, style: 'cancel'},
+                {text: 'Cancel', style: 'cancel'},
                 {text: 'Delete', onPress: () => this.props.removeClient(this.props.person.id)},
             ]
         );

@@ -33,7 +33,10 @@ const Home = React.createClass({
     },
 
     scrollToTopEvent(args) {
-        if (args.routeName == 'Home') this.refs.home_scroll.scrollTo({y: 0, true});
+        if (args.routeName == 'Home') {
+            const isTrue = true;
+            this.refs.home_scroll.scrollTo({y: 0, isTrue});
+        }
     },
 
     componentDidMount() {

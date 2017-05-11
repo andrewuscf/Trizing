@@ -27,7 +27,10 @@ import NotificationBox from '../../components/NotificationBox';
 const Notifications = React.createClass({
     mixins: [Subscribable.Mixin],
     scrollToTopEvent(args) {
-        if (args.routeName == 'Notifications') this.refs.notifications.scrollTo({y: 0, true});
+        if (args.routeName == 'Notifications') {
+            const isTrue = true;
+            this.refs.notifications.scrollTo({y: 0, isTrue});
+        }
     },
 
     componentDidMount() {

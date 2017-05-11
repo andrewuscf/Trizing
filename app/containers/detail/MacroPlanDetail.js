@@ -47,7 +47,7 @@ const MacroPlanDetail = React.createClass({
             'Delete Macro Plan',
             `Are you sure you want delete ${this.props.plan.name}?`,
             [
-                {text: 'Cancel', null, style: 'cancel'},
+                {text: 'Cancel', style: 'cancel'},
                 {text: 'Delete', onPress: () => this.props.deleteMacroPlan(this.props.plan.id)},
             ]
         );

@@ -38,7 +38,7 @@ const QuestionnaireBox = React.createClass({
             'Delete Questionnaire',
             `Are you sure you want delete ${this.props.questionnaire.name}?`,
             [
-                {text: 'Cancel', null, style: 'cancel'},
+                {text: 'Cancel', style: 'cancel'},
                 {text: 'Delete', onPress: () => console.log(this.props.questionnaire.name)},
             ]
         );

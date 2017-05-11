@@ -64,7 +64,7 @@ const EditSchedule = React.createClass({
             'Delete Schedule',
             `Are you sure you want delete this schedule?`,
             [
-                {text: 'Cancel', null, style: 'cancel'},
+                {text: 'Cancel', style: 'cancel'},
                 {
                     text: 'Delete',
                     onPress: () => this.props.actions.deleteSchedule(this.props.scheduleId, this.asyncActions)

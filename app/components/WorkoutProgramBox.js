@@ -36,7 +36,7 @@ const WorkoutProgramBox = React.createClass({
                 'Activate Workout Program Active',
                 `Are you sure you want make '${this.props.schedule.name}' active?`,
                 [
-                    {text: 'Cancel', null, style: 'cancel'},
+                    {text: 'Cancel', style: 'cancel'},
                     {text: 'Yes', onPress: () => this.props.select(this.props.schedule.id)},
                 ]
             );
@@ -54,7 +54,7 @@ const WorkoutProgramBox = React.createClass({
             'Delete Macro Plan',
             `Are you sure you want delete ${this.props.schedule.name}?`,
             [
-                {text: 'Cancel', null, style: 'cancel'},
+                {text: 'Cancel', style: 'cancel'},
                 {text: 'Delete', onPress: () => this.props.deleteSchedule(this.props.schedule.id)},
             ]
         );

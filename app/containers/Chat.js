@@ -26,7 +26,10 @@ const Chat = React.createClass({
     mixins: [Subscribable.Mixin],
 
     scrollToTopEvent(args) {
-        if (args.routeName == 'Chat') this.refs.todayscroll.scrollTo({y: 0, true});
+        // if (args.routeName == 'Chat') {
+        //     const isTrue = true;
+        //     this.refs.todayscroll.scrollTo({y: 0, true});
+        // }
     },
 
     componentDidMount() {

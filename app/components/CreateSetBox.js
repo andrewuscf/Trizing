@@ -36,7 +36,7 @@ const CreateSetBox = React.createClass({
             'Delete Set',
             `Are you sure you want delete this set?`,
             [
-                {text: 'Cancel', null, style: 'cancel'},
+                {text: 'Cancel', style: 'cancel'},
                 {text: 'Delete', onPress: () => this.props._deleteSet(this.props.setIndex)},
             ]
         );

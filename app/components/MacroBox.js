@@ -103,7 +103,7 @@ const MacroBox = React.createClass({
             'Delete Macro Plan',
             `Are you sure you want delete ${this.props.plan.name}?`,
             [
-                {text: 'Cancel', null, style: 'cancel'},
+                {text: 'Cancel', style: 'cancel'},
                 {text: 'Delete', onPress: () => this.props.deleteMacroPlan(this.props.plan.id)},
             ]
         );
@@ -116,7 +116,7 @@ const MacroBox = React.createClass({
                 'Activate Macro Plan',
                 `Are you sure you want make '${this.props.plan.name}' active?`,
                 [
-                    {text: 'Cancel', null, style: 'cancel'},
+                    {text: 'Cancel', style: 'cancel'},
                     {text: 'Yes', onPress: () => this.props.select(this.props.plan.id)},
                 ]
             );

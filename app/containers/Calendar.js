@@ -26,7 +26,10 @@ import EventBox from '../components/EventBox';
 const Calendar = React.createClass({
     mixins: [Subscribable.Mixin],
     scrollToTopEvent(args) {
-        if (args.routeName == 'Calendar') this.refs.calendar_list.scrollTo({y: 0, true});
+        if (args.routeName == 'Calendar') {
+            const isTrue = true;
+            this.refs.calendar_list.scrollTo({y: 0, isTrue});
+        }
     },
 
     componentDidMount() {
