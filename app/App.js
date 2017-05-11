@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Modal from 'react-native-modalbox';
 import FCM, {
     FCMEvent,
     RemoteNotificationResult,
@@ -54,12 +53,12 @@ const App = React.createClass({
     _renderScene: function (route, nav) {
         const SceneComponent = route.component;
         switch (route.name) {
-            case 'Home':
-                return <SceneComponent navigator={ nav } route={route} {...route.passProps}
-                                       events={this.eventEmitter} openModal={this.openQuestionnaireModal}/>;
-            case 'Profile':
-                return <SceneComponent navigator={ nav } route={route} {...route.passProps} events={this.eventEmitter}
-                                       openModal={this.openQuestionnaireModal}/>;
+            // case 'Home':
+            //     return <SceneComponent navigator={ nav } route={route} {...route.passProps}
+            //                            events={this.eventEmitter}/>;
+            // case 'Profile':
+            //     return <SceneComponent navigator={ nav } route={route} {...route.passProps} events={this.eventEmitter}
+            //     />;
             case 'Login':
                 return <SceneComponent navigator={ nav } route={route} {...route.passProps}
                                        login={this.props.actions.login}
@@ -224,12 +223,6 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: (Platform.OS === 'ios') ? 20 : 0,
         // backgroundColor: '#f1f1f1'
-    },
-    modal: {
-        top: 0,
-        bottom: 0,
-        right: 0,
-        left: 0,
     },
 });
 
