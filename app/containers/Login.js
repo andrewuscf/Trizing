@@ -13,7 +13,6 @@ import {
     AccessToken,
     LoginManager
 } from 'react-native-fbsdk';
-import Hr from '../components/HR';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
 
@@ -127,7 +126,6 @@ const Login = React.createClass({
 
 
     render() {
-        // <Image style={styles.logo} source={require('../assets/images/small-white-logo.png')}/>
         let User = t.struct({
             email: t.String,
             password: t.String,
@@ -171,10 +169,9 @@ const Login = React.createClass({
                     : null
                 }
 
-                {!this.state.forgotCreds && !this.state.signUp ?
-                    <Text style={styles.logo}>LOGO</Text>
-                    : null
-                }
+                <View style={styles.logoView}>
+                    <Image style={styles.logo} source={require('../assets/images/red-logo.png')}/>
+                </View>
 
                 { !this.state.forgotCreds ?
                     <View style={styles.fbLogin}>
@@ -198,18 +195,6 @@ const Login = React.createClass({
                             }
                         />
                     </View>
-                    : null
-                }
-
-                { !this.state.forgotCreds ?
-                    <Hr text='OR'
-                        lineStyle={{
-                            backgroundColor: "#aaaaaa",
-                        }}
-                        textStyle={{
-                            color: "#aaaaaa",
-                        }}
-                    />
                     : null
                 }
 
@@ -255,7 +240,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     fbLogin: {
-        flex: .3,
+        flex: .1,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -264,9 +249,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    logoView: {
+        flex: .3,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     logo: {
-        height: 70,
-        alignSelf: 'center'
+        height: 100,
+        width: 100,
+        // borderWidth: 1,
+        // borderColor: 'black'
     },
     buttonForgotText: {
         color: '#b1aea5',
@@ -284,7 +276,7 @@ const styles = StyleSheet.create({
         fontFamily: 'OpenSans-Bold',
     },
     button: {
-        marginTop: 20,
+        marginTop: 10,
         backgroundColor: 'transparent',
         borderWidth: 1,
         borderColor: '#1352e2',
