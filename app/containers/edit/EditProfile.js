@@ -87,12 +87,12 @@ const EditProfile = React.createClass({
         }
     },
 
-    asyncActions(start, data={}){
+    asyncActions(start, data = {}){
         if (start) {
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            if (data.completed && !this.props.RequestUser.profile.completed){
+            if (data.completed && !this.props.RequestUser.profile.completed) {
                 this.props.navigator.immediatelyResetRouteStack([getRoute('Home')]);
             }
         }
@@ -262,8 +262,9 @@ const EditProfile = React.createClass({
                                     </MenuTrigger>
                                     <MenuOptions
                                         optionsContainerStyle={{alignSelf: 'center', width: 300, marginTop: 120}}>
-                                        <MenuOption style={[styles.menuOption, {borderBottomWidth: 1, borderColor: 'grey'}]}
-                                                    onSelect={() => this.toggleRoll()} text='From Camera Roll'/>
+                                        <MenuOption
+                                            style={[styles.menuOption, {borderBottomWidth: 1, borderColor: 'grey'}]}
+                                            onSelect={() => this.toggleRoll()} text='From Camera Roll'/>
                                         <MenuOption style={[styles.menuOption]}
                                                     onSelect={() => this.toggleCamera()}>
                                             <Text>Take New Photo</Text>
@@ -292,23 +293,14 @@ const EditProfile = React.createClass({
 
             return (
                 <View style={styles.mainContainer}>
-                    {this.props.RequestUser.profile.completed || this.state.showRoll || this.state.showCamera ?
-                        <BackBar back={this._back}
-                                 navStyle={styles.customBack}>
-                            <TouchableOpacity
-                                style={this.props.RequestUser.profile.completed ? styles.logOut : styles.logOutCreateProfile}
-                                onPress={this._logOut}>
-                                <Icon name="power-off" size={20} color='red'/>
-                            </TouchableOpacity>
-                        </BackBar> :
-                        <BackBar navStyle={styles.customBack}>
-                            <TouchableOpacity
-                                style={this.props.RequestUser.profile.completed ? styles.logOut : styles.logOutCreateProfile}
-                                onPress={this._logOut}>
-                                <Icon name="power-off" size={20} color='red'/>
-                            </TouchableOpacity>
-                        </BackBar>
-                    }
+                    <BackBar
+                        back={this.props.RequestUser.profile.completed || this.state.showRoll || this.state.showCamera ? this._back : null}>
+                        <TouchableOpacity
+                            style={styles.logOutCreateProfile}
+                            onPress={this._logOut}>
+                            <Icon name="power-off" size={20} color='red'/>
+                        </TouchableOpacity>
+                    </BackBar>
 
 
                     {content}
@@ -357,14 +349,10 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontFamily: 'OpenSans-Bold',
     },
-    logOut: {
-        paddingRight: 10,
-    },
     logOutCreateProfile: {
-        right: 5,
-        top: 5,
+        right: 0,
         position: 'absolute',
-        padding: 10
+        padding: 10,
     },
     menuOption: {
         height: 50,

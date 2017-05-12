@@ -65,7 +65,7 @@ const WorkoutDayDetail = React.createClass({
         let dataSource = ds.cloneWithRows(this.state.workout_day.exercises);
         return (
             <View style={styles.container}>
-                <BackBar back={this.props.navigator.pop} navStyle={{height: 50}} />
+                <BackBar back={this.props.navigator.pop} />
                 <Text style={[styles.title]}>{this.state.workout_day.name}</Text>
 
                 <DaysOfWeek days={this.state.workout_day.days}/>

@@ -68,14 +68,7 @@ const DaysOfWeek = React.createClass({
             )
         });
         return (
-            <View style={[styles.inputWrap, {
-                height: 50,
-                backgroundColor: 'white',
-                marginTop: 10,
-                marginBottom: 10,
-                borderWidth: 0.5,
-                borderColor: '#e1e3df',
-            }, styles.row]}>
+            <View style={[styles.wrap, styles.row]}>
                 {days}
             </View>
         )
@@ -87,18 +80,26 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
     },
-    inputWrap: {
-        marginBottom: 12,
+    wrap: {
+        // flex: 1,
         minHeight: 50,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+
+        height: 50,
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        borderWidth: 0.5,
+        borderColor: '#e1e3df',
     },
     dayOfWeek: {
         borderWidth: .5,
         borderRadius: 20,
+        flex: .1,
         height: 40,
-        width: 40,
-        marginLeft: 10,
+        // width: 40,
+        // marginLeft: 10,
         borderColor: 'black',
         alignItems: 'center',
         justifyContent: 'center',

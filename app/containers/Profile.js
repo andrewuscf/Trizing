@@ -155,16 +155,17 @@ const Profile = React.createClass({
                 <ScrollView style={GlobalStyle.container} ref="profile_list">
                     <BackBar back={this._back} navStyle={styles.customBack}>
                         {isRequestUser ?
-                            <TouchableOpacity style={styles.logOut}
+                            <TouchableOpacity style={styles.topRightNav}
                                               onPress={this._redirect.bind(null, 'EditProfile', null)}>
                                 <Icon name="gear" size={20} color='#333333'/>
                             </TouchableOpacity>
                             :
-                            <Menu style={styles.logOut}>
-                                <MenuTrigger>
+                            <Menu style={{right: 0,
+                                position: 'absolute',}}>
+                                <MenuTrigger style={styles.topRightNav}>
                                     <Icon name="ellipsis-v" size={20} color='#333333'/>
                                 </MenuTrigger>
-                                <MenuOptions>
+                                <MenuOptions optionsContainerStyle={{alignSelf: 'center', width: 200, marginTop: 50}}>
                                     <MenuOption onSelect={() => this.reportUser()} text='Report user'/>
                                 </MenuOptions>
                             </Menu>
@@ -243,11 +244,13 @@ const styles = StyleSheet.create({
         fontFamily: 'OpenSans-Bold',
         fontSize: getFontSize(22)
     },
-    logOut: {
+    topRightNav: {
+        right: 0,
         position: 'absolute',
-        top: 15,
-        right: 10,
-        paddingLeft: 10,
+        padding: 10,
+        width: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     requestSection: {
         justifyContent: 'center',

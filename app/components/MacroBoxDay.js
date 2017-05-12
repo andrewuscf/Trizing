@@ -94,7 +94,7 @@ const MacroBoxDay = React.createClass({
         }
         return (
             <View style={[GlobalStyle.simpleBottomBorder, {paddingBottom: 10}, this.props.active ? styles.activeBorder: null]}>
-                <View style={[styles.inputWrap, {height: 50}, styles.row]}>
+                <View style={[styles.inputWrap, styles.row]}>
                     {days}
                 </View>
                 {day_plan ?
@@ -168,8 +168,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     inputWrap: {
-        marginBottom: 12,
-        minHeight: 50,
+        flex: 1,
+        marginBottom: 10,
+        // minHeight: 50,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -189,17 +190,17 @@ const styles = StyleSheet.create({
     formCalories: {
         fontFamily: 'OpenSans-Bold',
         alignSelf: 'center',
-        // padding: 10,
         paddingTop: 10,
         fontSize: getFontSize(22),
-        // lineHeight: getFontSize(26),
     },
     dayOfWeek: {
+        flex: .1,
         borderWidth: .5,
         borderRadius: 20,
         height: 40,
-        width: 40,
-        marginLeft: 10,
+        // width: 40,
+        marginLeft: 5,
+        marginRight: 5,
         borderColor: 'black',
         alignItems: 'center',
         justifyContent: 'center'

@@ -13,7 +13,6 @@ import {
     AccessToken,
     LoginManager
 } from 'react-native-fbsdk';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Hr from '../components/HR';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
@@ -62,7 +61,7 @@ const Login = React.createClass({
                             if (this.refs.form.getComponent('password'))
                                 this.refs.form.getComponent('password').refs.input.focus()
                         },
-                        placeholder: 'Email Address'
+                        placeholder: 'Username or Email Address'
                     },
                     password: {
                         secureTextEntry: true,
@@ -133,16 +132,37 @@ const Login = React.createClass({
             email: t.String,
             password: t.String,
         });
+        let options = this.state.options;
         if (this.state.signUp) {
             User = t.struct({
                 username: t.String,
                 email: t.String,
                 password: t.String,
             });
+            options = {
+                ...options,
+                fields: {
+                    ...options.fields,
+                    email: {
+                        ...options.fields.email,
+                        placeholder: 'Email Address'
+                    }
+                }
+            }
         } else if (this.state.forgotCreds) {
             User = t.struct({
                 email: t.String,
             });
+            options = {
+                ...options,
+                fields: {
+                    ...options.fields,
+                    email: {
+                        ...options.fields.email,
+                        placeholder: 'Email Address'
+                    }
+                }
+            }
         }
         return (
             <View style={styles.container}>
@@ -198,7 +218,7 @@ const Login = React.createClass({
                     <Form
                         ref="form"
                         type={User}
-                        options={this.state.options}
+                        options={options}
                         onChange={this.onChange}
                         value={this.state.value}
                     />

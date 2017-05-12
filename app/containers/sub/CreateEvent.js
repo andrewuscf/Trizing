@@ -148,10 +148,10 @@ const CreateEvent = React.createClass({
         };
         return (
             <View style={styles.flexCenter}>
-                <BackBar back={this._cancel} backText={this.state.step == 1 ? 'Cancel' : null}>
-                    <Text style={{fontSize: getFontSize(24)}}>
+                <BackBar back={this._cancel}>
+                    <Text style={{fontSize: getFontSize(24),fontFamily: 'OpenSans-Bold'}}>
                         {this.state.step == 1 ? 'Create Event' : 'Select Users to Invite'}
-                        </Text>
+                    </Text>
                 </BackBar>
                 {this.state.step == 1 ?
                     <ScrollView style={{margin: 10}}>
@@ -176,7 +176,7 @@ const CreateEvent = React.createClass({
                                                  redirect={this.selectUser.bind(null, client.id)}/>
                                     <Text style={styles.userText}>
                                         {trunc(`${client.profile.first_name} ${client.profile.last_name[0]}`.toUpperCase(), 13)}
-                                        </Text>
+                                    </Text>
                                 </View>
                             )
                         })}

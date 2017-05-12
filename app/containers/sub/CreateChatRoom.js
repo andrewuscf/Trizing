@@ -80,8 +80,8 @@ const CreateChatRoom = React.createClass({
 
         return (
             <View style={styles.flexCenter}>
-                <BackBar back={this.props.navigator.pop} backText={this.state.step == 1 ? 'Cancel' : null}>
-                    <Text style={{fontSize: getFontSize(24)}}>
+                <BackBar back={this.props.navigator.pop}>
+                    <Text style={{fontSize: getFontSize(24),fontFamily: 'OpenSans-Bold'}}>
                         Select Users
                     </Text>
                 </BackBar>

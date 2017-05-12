@@ -133,7 +133,7 @@ const CreateExercise = React.createClass({
                 <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}>
                     <Text>{this.state.workout ? this.state.workout_day.name : null}</Text>
                     <TouchableOpacity style={styles.save} onPress={this._save}>
-                        <Text>Save</Text>
+                        <Text style={{fontSize: getFontSize(24),fontFamily: 'OpenSans-Bold'}}>Save</Text>
                     </TouchableOpacity>
                 </BackBar>
                 <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     },
     save: {
         position: 'absolute',
-        top: 20,
+        top: 6,
         right: 10
     },
     footer: {
