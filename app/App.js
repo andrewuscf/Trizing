@@ -123,27 +123,27 @@ const App = React.createClass({
         this.notificationListener = FCM.on(FCMEvent.Notification, async(notif) => {
             // there are two parts of notif. notif.notification contains the notification payload, notif.data contains data payload
             self.props.actions.getNewNotifications();
-            console.log(notif);
+            // console.log(notif);
             if (notif.local_notification) {
                 //this is a local notification
             }
             if (notif.opened_from_tray) {
                 //app is open/resumed because user clicked banner
             }
-
-            if (Platform.OS === 'ios') {
-                switch (notif._notificationType) {
-                    case NotificationType.Remote:
-                        notif.finish(RemoteNotificationResult.NewData);
-                        break;
-                    case NotificationType.NotificationResponse:
-                        notif.finish();
-                        break;
-                    case NotificationType.WillPresent:
-                        notif.finish(WillPresentNotificationResult.All);
-                        break;
-                }
-            }
+            //
+            // if (Platform.OS === 'ios') {
+            //     switch (notif._notificationType) {
+            //         case NotificationType.Remote:
+            //             notif.finish(RemoteNotificationResult.NewData);
+            //             break;
+            //         case NotificationType.NotificationResponse:
+            //             notif.finish();
+            //             break;
+            //         case NotificationType.WillPresent:
+            //             notif.finish(WillPresentNotificationResult.All);
+            //             break;
+            //     }
+            // }
         });
         this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {
             if (token) self.props.actions.setDeviceForNotification(token);
