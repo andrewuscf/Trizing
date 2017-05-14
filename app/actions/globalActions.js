@@ -59,6 +59,7 @@ export function login(data, asyncActions) {
                     return dispatch(setTokenInRedux(responseJson.token, true));
                 }
                 if (responseJson.non_field_errors) {
+                    asyncActions(false);
                     return dispatch({
                         type: types.API_ERROR, error: JSON.stringify({
                             title: 'Incorrect Email or Password',
@@ -68,11 +69,8 @@ export function login(data, asyncActions) {
                 }
             })
             .catch((error) => {
-                console.log(error)
-                // return dispatch(
-                //     removeToken()
-                // );
-            }).done(() => asyncActions(false));
+                asyncActions(false);
+            });
     }
 }
 

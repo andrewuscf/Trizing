@@ -176,7 +176,6 @@ const EditProfile = React.createClass({
     },
 
     getCameraData(data) {
-        console.log(data)
         this.setState({
             previewImage: {
                 uri: data.mediaUri,

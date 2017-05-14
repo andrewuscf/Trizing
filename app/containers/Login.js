@@ -6,15 +6,16 @@ import {
     StyleSheet,
     TouchableOpacity,
     Dimensions,
-    Keyboard
+    Keyboard,
+    ActivityIndicator
 } from 'react-native';
 import {
-    LoginButton,
     AccessToken,
     LoginManager
 } from 'react-native-fbsdk';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {getFontSize} from '../actions/utils';
 
@@ -35,10 +36,9 @@ const Login = React.createClass({
     getInitialState() {
         return {
             value: null,
-            username: null,
-            password: null,
             forgotCreds: false,
             signUp: false,
+            busy: false,
             options: {
                 // stylesheet: fullWidthLineInputs,
                 stylesheet: stylesheet,
@@ -76,9 +76,9 @@ const Login = React.createClass({
 
     asyncActions(start) {
         if (start) {
-            this.refs.login_button.setState({busy: true});
+            this.setState({busy: true});
         } else {
-            this.refs.login_button.setState({busy: false});
+            this.setState({busy: false});
         }
     },
 
@@ -98,7 +98,7 @@ const Login = React.createClass({
 
     onPress() {
         // sign in + forgot credentials
-        // Keyboard.dismiss();
+        Keyboard.dismiss();
         const formValues = this.refs.form.getValue();
         if (this.state.forgotCreds) {
             if (formValues) {
@@ -124,8 +124,37 @@ const Login = React.createClass({
         });
     },
 
+    facebookLogin() {
+        const self = this;
+        self.asyncActions(true);
+        LoginManager.logInWithReadPermissions(['public_profile']).then(
+            function (result) {
+                if (result.isCancelled) {
+                    self.asyncActions(false);
+                    LoginManager.logOut();
+                } else {
+                    AccessToken.getCurrentAccessToken().then(
+                        (data) => {
+                            self.props.socialAuth(data.accessToken);
+                        }
+                    )
+                }
+            },
+            function (error) {
+                console.log('Login fail with error: ' + error);
+            }
+        );
+    },
+
 
     render() {
+        if (this.state.busy) {
+            return (
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <ActivityIndicator animating={true} size='large'/>
+                </View>
+            )
+        }
         let User = t.struct({
             email: t.String,
             password: t.String,
@@ -173,31 +202,6 @@ const Login = React.createClass({
                     <Image style={styles.logo} source={require('../assets/images/red-logo.png')}/>
                 </View>
 
-                { !this.state.forgotCreds ?
-                    <View style={styles.fbLogin}>
-                        <LoginButton
-                            readPermissions={['email']}
-                            onLoginFinished={
-                                (error, result) => {
-                                    if (error) {
-                                        console.log(error)
-                                        LoginManager.logOut();
-                                    } else if (result.isCancelled) {
-                                        LoginManager.logOut();
-                                    } else {
-                                        AccessToken.getCurrentAccessToken().then(
-                                            (data) => {
-                                                this.props.socialAuth(data.accessToken);
-                                            }
-                                        )
-                                    }
-                                }
-                            }
-                        />
-                    </View>
-                    : null
-                }
-
                 <View style={styles.contentContainer}>
 
                     <Form
@@ -209,16 +213,14 @@ const Login = React.createClass({
                     />
 
                     {!this.state.forgotCreds && !this.state.signUp ?
-                        <TouchableOpacity activeOpacity={1} style={styles.buttonForgot}
-                                          onPress={this.toggleForgotCreds}>
+                        <TouchableOpacity activeOpacity={1} onPress={this.toggleForgotCreds}>
                             <Text style={styles.buttonForgotText}>Forgot your password?</Text>
                         </TouchableOpacity>
                         : null
                     }
 
 
-                    <SubmitButton onPress={this.onPress} ref="login_button"
-                                  buttonStyle={[styles.button]} textStyle={styles.buttonText}
+                    <SubmitButton onPress={this.onPress} buttonStyle={[styles.button]} textStyle={styles.buttonText}
                                   text={!this.state.signUp && !this.state.forgotCreds ? 'Log In' : 'Submit'}/>
 
                     {!this.state.forgotCreds && !this.state.signUp ?
@@ -229,6 +231,16 @@ const Login = React.createClass({
                     }
 
                 </View>
+
+                { !this.state.forgotCreds ?
+                    <TouchableOpacity style={styles.fbLogin} onPress={this.facebookLogin}>
+                        <Icon name="facebook-official" size={getFontSize(22)} color="#3b5998"/>
+                        <Text style={{color: '#3b5998', fontSize: getFontSize(22), paddingLeft: 10}}>
+                            Login with Facebook
+                        </Text>
+                    </TouchableOpacity>
+                    : null
+                }
 
             </View>
         );
@@ -243,22 +255,24 @@ const styles = StyleSheet.create({
         flex: .1,
         justifyContent: 'center',
         alignItems: 'center',
+        borderTopWidth: .5,
+        borderColor: '#aaaaaa',
+        flexDirection: 'row',
+        paddingBottom: 10
     },
     contentContainer: {
-        flex: .8,
+        flex: .6,
         justifyContent: 'center',
         alignItems: 'center',
     },
     logoView: {
-        flex: .3,
+        flex: .28,
         alignItems: 'center',
         justifyContent: 'center'
     },
     logo: {
         height: 100,
         width: 100,
-        // borderWidth: 1,
-        // borderColor: 'black'
     },
     buttonForgotText: {
         color: '#b1aea5',
@@ -266,9 +280,6 @@ const styles = StyleSheet.create({
         fontFamily: 'OpenSans-SemiBold',
         marginTop: 10,
         marginBottom: 10
-    },
-    buttonForgot: {
-        // backgroundColor: '#fff',
     },
     buttonText: {
         color: '#1352e2',

@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: 40,
+        minHeight: 50,
         backgroundColor: 'white',
     },
     topNavButton: {
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         paddingLeft: 10,
         width: 70,
-        minHeight: 40,
+        minHeight: 50,
         flexDirection: 'row',
         alignItems: 'center',
     },

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TouchableHighlight, View, Image, Text, StyleSheet} from 'react-native';
+import {TouchableHighlight, View, Image, Text, StyleSheet, ActivityIndicator} from 'react-native';
 
 const SubmitButton = React.createClass({
     propTypes: {
@@ -47,7 +47,7 @@ const SubmitButton = React.createClass({
                                 underlayColor='#99d9f4'>
                 <View style={styles.wrapper}>
                     <View style={[styles.iconWrapper, {opacity:(!this.state.busy)?0:1}]}>
-                        <Image style={styles.icon} source={require('../assets/images/wait-white.gif')}/>
+                        <ActivityIndicator animating={this.state.busy} size='small'/>
                     </View>
                     <Text style={[styles.buttonText, {opacity:(this.state.busy)?0:1}, this.props.textStyle]}>
                         {content}
