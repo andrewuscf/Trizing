@@ -247,8 +247,8 @@ const styles = StyleSheet.create({
     topRightNav: {
         right: 0,
         position: 'absolute',
-        padding: 10,
-        width: 40,
+        padding: 15,
+        width: 50,
         justifyContent: 'center',
         alignItems: 'center',
     },

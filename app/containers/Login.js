@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
         borderTopWidth: .5,
         borderColor: '#aaaaaa',
         flexDirection: 'row',
-        paddingBottom: 10
+        // paddingBottom: 10
     },
     contentContainer: {
         flex: .6,

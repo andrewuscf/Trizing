@@ -8,8 +8,7 @@ import {
     AsyncStorage,
     BackAndroid,
     Platform,
-    Alert,
-    Dimensions
+    Alert
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -32,8 +31,6 @@ import EditProfile from './containers/edit/EditProfile';
 import NavBar from './components/Navbar';
 import Loading from './components/Loading';
 
-const { width, height } = Dimensions.get('window');
-const sceneStyle = { height: height };
 
 let navigator;
 
@@ -209,7 +206,6 @@ const App = React.createClass({
                            }}
                            onDidFocus={this.itemChangedFocus}
                            renderScene={ this._renderScene }
-                           sceneStyle={sceneStyle}
                            navigationBar={<NavBar RequestUser={this.props.RequestUser}
                                                   scrollToTopEvent={this.scrollToTopEvent}
                                                   unReadMessages={unReadMessages}

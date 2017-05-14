@@ -294,9 +294,7 @@ const EditProfile = React.createClass({
                 <View style={styles.mainContainer}>
                     <BackBar
                         back={this.props.RequestUser.profile.completed || this.state.showRoll || this.state.showCamera ? this._back : null}>
-                        <TouchableOpacity
-                            style={styles.logOutCreateProfile}
-                            onPress={this._logOut}>
+                        <TouchableOpacity style={styles.logOut} onPress={this._logOut}>
                             <Icon name="power-off" size={20} color='red'/>
                         </TouchableOpacity>
                     </BackBar>
@@ -348,10 +346,11 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontFamily: 'OpenSans-Bold',
     },
-    logOutCreateProfile: {
+    logOut: {
         right: 0,
         position: 'absolute',
         padding: 10,
+        paddingTop: 17,
     },
     menuOption: {
         height: 50,
