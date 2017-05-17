@@ -166,6 +166,7 @@ const EditProfile = React.createClass({
                     text: 'Yes', onPress: () => {
                     const login = getRoute('Login');
                     this.props.navigator.immediatelyResetRouteStack([login]);
+                    if (FCM) FCM.setBadgeNumber(0);
                     FCM.getFCMToken().then(token => {
                         self.props.removeToken(token);
                     });

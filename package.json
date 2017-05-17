@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "build_ios": "react-native bundle --entry-file index.ios.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios"
   },
   "dependencies": {
     "EventEmitter": "^1.0.0",
