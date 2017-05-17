@@ -97,10 +97,10 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
 }
 
 
-export function resetPassword(email) {
+export function resetPassword(data) {
     return (dispatch, getState) => {
-        const data = JSON.stringify({email: email});
-        return fetch(`${API_ENDPOINT}auth/password/reset/`, fetchData('POST', data))
+        const JSONData = JSON.stringify(data);
+        return fetch(`${API_ENDPOINT}auth/password/reset/`, fetchData('POST', JSONData))
             .then((response) => {
                 if (response.status == 204) {
                     return dispatch({
