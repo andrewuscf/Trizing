@@ -55,9 +55,6 @@ const ChatRoom = React.createClass({
                         next: responseJson.next
                     };
                 });
-            })
-            .catch((error) => {
-                console.log(error);
             });
 
     },

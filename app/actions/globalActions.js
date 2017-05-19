@@ -90,7 +90,6 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
                 return dispatch({type: types.LOAD_REQUEST_USER, request_user: responseJson});
             })
             .catch((error) => {
-                console.log(error)
                 // return dispatch(removeToken());
             }).done();
     }
@@ -150,7 +149,6 @@ export function register(data, asyncActions) {
                 return dispatch({type: types.REGISTER_USER, message: JSON.stringify(message)});
             })
             .catch((error) => {
-                console.log(error);
                 return dispatch({
                     type: types.API_ERROR, error: JSON.stringify({
                         title: 'Request could not be performed.',
@@ -221,9 +219,7 @@ export function readNotification(id) {
             .then((responseJson) => {
                 return dispatch({type: types.READ_NOTIFICATION, noteId: id});
             })
-            .catch((error) => {
-                console.log(error);
-            }).done();
+            .done();
     }
 }
 
@@ -240,9 +236,6 @@ export function getQuestionnaires(refresh = false) {
         return fetch(url, fetchData('GET', null, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.GET_QUESTIONNAIRES, response: responseJson, refresh: refresh});
-            })
-            .catch((error) => {
-                console.log(error);
             }).done();
     }
 }
@@ -254,13 +247,11 @@ export function createQuestionnaire(data, asyncActions) {
         return fetch(`${API_ENDPOINT}training/questionnaires/`,
             fetchData('POST', JSONDATA, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                console.log(responseJson)
                 asyncActions(false);
                 return dispatch({type: types.CREATE_QUESTIONNAIRE, response: responseJson});
             })
             .catch((error) => {
                 asyncActions(false);
-                console.log(error);
             }).done();
     }
 }
@@ -272,7 +263,6 @@ export function answerQuestionnaire(data, asyncActions) {
         return fetch(`${API_ENDPOINT}training/questionnaires/responses/`,
             fetchData('POST', JSONDATA, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                console.log(responseJson);
                 asyncActions(false);
                 return dispatch({type: types.CREATE_QUESTIONNAIRE, response: responseJson});
             })
@@ -323,7 +313,6 @@ export function createSchedule(data, asyncActions) {
             })
             .catch((error) => {
                 asyncActions(false);
-                console.log(error);
             }).done();
     }
 }
@@ -365,7 +354,6 @@ export function createWorkout(data, asyncActions) {
             })
             .catch((error) => {
                 asyncActions(false);
-                console.log(error);
             }).done();
     }
 }
@@ -401,7 +389,6 @@ export function addEditWorkoutDay(data, asyncActions = null) {
                 if (asyncActions) {
                     asyncActions(false);
                 }
-                console.log(error);
             }).done();
     }
 }
@@ -428,7 +415,6 @@ export function addEditExercise(data, asyncActions = null) {
                 if (asyncActions) {
                     asyncActions(false);
                 }
-                console.log(error);
             }).done();
     }
 }
@@ -439,9 +425,6 @@ export function deleteSet(id) {
             fetchData('DELETE', null, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.DELETE_SET, response: responseJson});
-            })
-            .catch((error) => {
-                console.log(error);
             }).done();
     }
 }
@@ -462,9 +445,6 @@ export function addEditMacroLog(data, asyncActions = null) {
                     return dispatch({type: types.CREATE_MACRO_LOG, response: responseJson});
                 else
                     return dispatch({type: types.EDIT_MACRO_LOG, response: responseJson});
-            })
-            .catch((error) => {
-                console.log(error);
             }).done(() => asyncActions(false));
     }
 }
@@ -478,10 +458,6 @@ export function logSets(data, asyncActions) {
             .then((responseJson) => {
                 asyncActions(false);
                 return dispatch({type: types.CREATE_WORKOUT_LOG, response: responseJson});
-            })
-            .catch((error) => {
-                asyncActions(false);
-                console.log(error);
             }).done();
     }
 }

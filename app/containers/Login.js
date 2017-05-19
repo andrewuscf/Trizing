@@ -141,7 +141,7 @@ const Login = React.createClass({
                 }
             },
             function (error) {
-                console.log('Login fail with error: ' + error);
+                // console.log('Login fail with error: ' + error);
             }
         );
     },

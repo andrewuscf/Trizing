@@ -25,7 +25,6 @@ const PostDetail = React.createClass({
 
     render: function () {
         const post = this.props.post;
-        console.log(post)
         return (
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
                 <BackBar back={this.props.navigator.pop}/>

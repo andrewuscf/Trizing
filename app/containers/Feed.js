@@ -56,7 +56,6 @@ const Feed = React.createClass({
     },
 
     onEndReached() {
-        console.log('End reach')
     },
 
     _redirect(routeName, props = null) {

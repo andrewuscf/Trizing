@@ -92,9 +92,6 @@ const Profile = React.createClass({
                     this.setState({
                         user: responseJson
                     })
-                })
-                .catch((error) => {
-                    console.log(error);
                 });
         }
     },
@@ -119,9 +116,6 @@ const Profile = React.createClass({
                     this.setState({request: null});
                     this.props.getNotifications(true);
                     this.getUser(true);
-                })
-                .catch((error) => {
-                    console.log(error);
                 });
         }
     },
@@ -138,7 +132,7 @@ const Profile = React.createClass({
                 'Report sent',
                 '',
                 [
-                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    {text: 'OK'},
                 ],
             )
         }

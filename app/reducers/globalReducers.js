@@ -136,7 +136,6 @@ export default function AppReducers(state = initialState, action = null) {
             };
 
         case constants.EDIT_EXERCISE:
-            console.log(action)
             return {
                 ...state,
                 Schedules: state.Schedules.map(schedule =>

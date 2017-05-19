@@ -41,7 +41,6 @@ export function addEditEvent(data, asyncActions = null) {
                 if (asyncActions) {
                     asyncActions(false);
                 }
-                console.log(error);
             }).done();
     }
 }

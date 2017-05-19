@@ -38,14 +38,13 @@ const EventBox = React.createClass({
     },
 
     _onActions() {
-        console.log('on actions')
+        // console.log('on actions')
     },
 
 
     render() {
         const occurrence = this.props.occurrence;
         const event = this.props.occurrence.event;
-        console.log(event)
         let image = event.user.profile.thumbnail ? event.user.profile.thumbnail : event.user.profile.avatar;
         let start_time = moment.utc(occurrence.start_time).local();
         const attending = event.invited.map((user, i) => {

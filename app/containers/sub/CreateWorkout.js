@@ -59,7 +59,6 @@ const CreateWorkout = React.createClass({
                 ...values,
                 schedule: this.props.scheduleId
             };
-            console.log(values)
             this.props.actions.createWorkout(values, this.asyncActions);
         }
     },

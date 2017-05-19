@@ -32,7 +32,7 @@ const CommentBox = React.createClass({
     },
 
     onPress() {
-        console.log('log')
+        // console.log('log')
     },
 
 

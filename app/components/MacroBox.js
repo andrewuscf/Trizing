@@ -85,7 +85,7 @@ const MacroBox = React.createClass({
         if (this.props.plan) {
             let delta = new Date().getTime() - this.state.lastPress;
             if (delta < 200) {
-                console.log('Double tap')
+                // console.log('Double tap')
             } else {
                 this.setState({showDetails: !this.state.showDetails});
             }

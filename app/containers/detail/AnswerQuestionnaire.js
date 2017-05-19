@@ -69,7 +69,6 @@ const AnswerQuestionnaire = React.createClass({
             }
         }
         if (completed) {
-            console.log(answers)
             this.props.actions.answerQuestionnaire(answers, this.asyncActions);
         }
     },

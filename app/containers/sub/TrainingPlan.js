@@ -61,7 +61,6 @@ const TrainingPlan = React.createClass({
             fetchData('POST', jsondata, this.props.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
-                console.log(responseJson)
                 if (responseJson.id) {
                     this.setState({
                         macro_plans: [
@@ -70,9 +69,7 @@ const TrainingPlan = React.createClass({
                         ]
                     });
                 }
-            }).catch((error) => {
-            console.log(error)
-        });
+            });
     },
 
     deleteMacroPlan(id) {
@@ -104,9 +101,6 @@ const TrainingPlan = React.createClass({
                         macro_plans: this.state.macro_plans.concat(responseJson.results),
                         macro_plansNext: responseJson.next
                     });
-            })
-            .catch((error) => {
-                console.log(error);
             });
     },
 
@@ -229,7 +223,6 @@ const TrainingPlan = React.createClass({
     },
 
     render() {
-        console.log(this.props.training_plan)
         if (!this.props.Questionnaires && !this.props.Schedules.length && !this.state.macro_plans)
             return <Loading />;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});

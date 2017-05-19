@@ -44,7 +44,6 @@ const NotificationBox = React.createClass({
 
     onPress() {
         const action = this.props.notification.action;
-        console.log(action)
         if (this.props.notification.unread) {
             this.props.readNotification(this.props.notification.id);
         }
@@ -56,7 +55,7 @@ const NotificationBox = React.createClass({
             else if (action.action_object.macro_plan || action.action_object.questionnaire || action.action_object.workout) {
                 this.props.navigator.push(getRoute('Profile', {id: action.action_object.client}));
             } else if (action.action_object.liked_by) {
-                console.log('this is a post')
+                // console.log('this is a post')
             } else if (action.action_object.from_user) {
                 this.props.navigator.push(getRoute('Profile', {
                     id: action.action_object.from_user.id,

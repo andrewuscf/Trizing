@@ -15,11 +15,7 @@ const SubmitButton = React.createClass({
 
 
     onPress: function () {
-        if (this.state.busy) {
-            console.log('This button is busy -- onPress blocked');
-        } else if (this.props.disabled) {
-            console.log('This button is disabled -- onPress blocked');
-        } else {
+        if (!this.state.busy && !this.props.disabled) {
             this.props.onPress();
         }
     },
