@@ -13,26 +13,23 @@ import {
     AccessToken,
     LoginManager
 } from 'react-native-fbsdk';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+import * as GlobalActions from '../actions/globalActions';
 
 import {getFontSize} from '../actions/utils';
 
 import BackBar from '../components/BackBar';
 import SubmitButton from '../components/SubmitButton';
 
-const {height, width} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 const Form = t.form.Form;
 
 const Login = React.createClass({
-    propTypes: {
-        login: React.PropTypes.func.isRequired,
-        resetPassword: React.PropTypes.func.isRequired,
-        register: React.PropTypes.func.isRequired,
-        socialAuth: React.PropTypes.func.isRequired,
-    },
-
     getInitialState() {
         return {
             value: null,
@@ -102,17 +99,17 @@ const Login = React.createClass({
         const formValues = this.refs.form.getValue();
         if (this.state.forgotCreds) {
             if (formValues) {
-                this.props.resetPassword(formValues);
+                this.props.actions.resetPassword(formValues);
                 this.toggleForgotCreds();
             }
         } else if (this.state.signUp) {
             if (formValues) {
-                this.props.register(formValues, this.asyncActions);
+                this.props.actions.register(formValues, this.asyncActions);
                 this.setState({value: null});
             }
         } else {
             if (formValues) {
-                this.props.login({username: formValues.email, password: formValues.password}, this.asyncActions)
+                this.props.actions.login({username: formValues.email, password: formValues.password}, this.asyncActions)
             }
         }
     },
@@ -135,7 +132,7 @@ const Login = React.createClass({
                 } else {
                     AccessToken.getCurrentAccessToken().then(
                         (data) => {
-                            self.props.socialAuth(data.accessToken);
+                            self.props.actions.socialAuth(data.accessToken);
                         }
                     )
                 }
@@ -334,4 +331,14 @@ stylesheet.textbox = {
     }
 };
 
-export default Login;
+const stateToProps = (state) => {
+    return state.Global;
+};
+
+const dispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(GlobalActions, dispatch)
+    }
+};
+
+export default connect(stateToProps, dispatchToProps)(Login);

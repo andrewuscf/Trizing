@@ -11,7 +11,7 @@ import AvatarImage from './AvatarImage';
 const PeopleBar = React.createClass({
     propTypes: {
         people: React.PropTypes.array.isRequired,
-        navigator: React.PropTypes.object.isRequired,
+        navigate: React.PropTypes.func.isRequired,
         manageClients: React.PropTypes.func,
         action: React.PropTypes.func,
         selected: React.PropTypes.array
@@ -21,7 +21,7 @@ const PeopleBar = React.createClass({
         if (this.props.action) {
             this.props.action(userId)
         } else {
-            this.props.navigator.push(getRoute('Profile', {id: userId}));
+            this.props.navigate('Profile', {id: userId});
         }
     },
 

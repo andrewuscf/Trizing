@@ -1,4 +1,7 @@
 import _ from 'lodash';
+import {Platform} from 'react-native';
+
+import {StackNavigator} from 'react-navigation';
 
 // Main Pages
 import Home from './containers/Home';
@@ -8,6 +11,7 @@ import Chat from './containers/Chat';
 import Profile from './containers/Profile';
 import Login from './containers/Login';
 import Loading from './components/Loading';
+import SplashScreen from './containers/SplashScreen';
 
 // Sub Pages
 import Notifications from './containers/sub/Notifications';
@@ -42,15 +46,15 @@ import CreateMacroLog from './containers/sub/CreateMacroLog';
 import CreateQuestionnaire from './containers/sub/CreateQuestionnaire';
 
 const MAIN_ROUTES = [
-    {component: Home, name: 'Home'},
-    {component: Calendar, name: 'Calendar'},
+    // {component: Home, name: 'Home'},
+    // {component: Calendar, name: 'Calendar'},
     {component: Feed, name: 'Feed'},
     {component: Chat, name: 'Chat'},
-    {component: Profile, name: 'Profile'},
-    {component: Login, name: 'Login'},
+    // {component: Profile, name: 'Profile'},
+    // {component: Login, name: 'Login'},
     {component: Loading, name: 'Loading'},
-    {component: EditProfile, name: 'EditProfile'},
-    {component: ManageClients, name: 'ManageClients'},
+    // {component: EditProfile, name: 'EditProfile'},
+    // {component: ManageClients, name: 'ManageClients'},
     {component: Notifications, name: 'Notifications'},
     {component: TrainingPlan, name: 'TrainingPlan'},
     {component: CreateWorkout, name: 'CreateWorkout'},
@@ -82,3 +86,50 @@ export function getRoute(routeName, props) {
     else
         return {component: MAIN_ROUTES[index].component, name: routeName};
 }
+
+const paramsToProps = (SomeComponent) => {
+// turns this.props.navigation.state.params into this.params.<x>
+    return class extends React.Component {
+        static navigationOptions = SomeComponent.navigationOptions;
+        // everything else, call as SomeComponent
+        render() {
+            const {navigation, ...otherProps} = this.props;
+            const {state: {params}} = navigation;
+            return <SomeComponent {...this.props} {...params} />
+        }
+    }
+};
+
+export const AppNavigator = StackNavigator({
+    SplashScreen: {
+        screen: SplashScreen,
+        headerMode: 'none',
+        navigationOptions: {
+            headerMode: 'none',
+        },
+
+    },
+    Login: {screen: Login},
+
+    Profile: {screen: Profile},
+    EditProfile: {screen: EditProfile},
+
+    ManageClients: {screen: ManageClients},
+
+
+    Home: {screen: Home},
+    Calendar: {
+        path: 'calendar/',
+        screen: Calendar,
+    },
+
+}, {
+    headerMode: 'screen',
+    initialRouteName: 'SplashScreen',
+    navigationOptions: {header: null},
+    cardStyle: {
+        flex: 1,
+        marginTop: (Platform.OS === 'ios') ? 20 : 0,
+        backgroundColor: 'white'
+    }
+});

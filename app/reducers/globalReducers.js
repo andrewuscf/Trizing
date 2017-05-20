@@ -5,6 +5,7 @@ import moment from 'moment';
 
 
 const initialState = {
+    AppIsReady: false,
     RequestUser: null,
     UserToken: '',
     Route: null,
@@ -18,6 +19,13 @@ const initialState = {
 
 export default function AppReducers(state = initialState, action = null) {
     switch (action.type) {
+        case constants.NOT_LOGGED_IN:
+            return {
+                ...state,
+                AppIsReady: true,
+            };
+
+
         case constants.SET_TOKEN:
             return {
                 ...state,
@@ -37,7 +45,8 @@ export default function AppReducers(state = initialState, action = null) {
         case constants.LOAD_REQUEST_USER:
             return {
                 ...state,
-                RequestUser: action.request_user
+                RequestUser: action.request_user,
+                AppIsReady: true,
             };
 
         case constants.REFRESHING:

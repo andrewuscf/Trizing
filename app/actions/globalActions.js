@@ -8,6 +8,16 @@ import _ from 'lodash';
 
 import {getClients, getActiveData} from './homeActions';
 
+
+export function initializeApp() {
+    return (dispatch, getState) => {
+        AsyncStorage.getItem('USER_TOKEN', (err, result) => {
+            if (result) dispatch(setTokenInRedux(result));
+            else dispatch({type: types.NOT_LOGGED_IN});
+        });
+    }
+}
+
 export function setTokenInRedux(token, FromAPI = false) {
     if (FromAPI) {
         AsyncStorage.setItem('USER_TOKEN', token)
@@ -186,19 +196,21 @@ export function getNotifications(refresh = false, newNotifications = false) {
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
-                if (newNotifications) {
-                    _.each(responseJson.results, (notification) => {
-                        if (notification.action.verb.toLowerCase().indexOf('joined') != -1
-                            && getState().Global.RequestUser.type == 1) {
-                            dispatch(getClients(true));
-                            return false;
-                        } else if (notification.action.action_object.macro_plan_days || notification.action.action_object.workouts) {
-                            dispatch(getActiveData());
-                            return false;
-                        }
-                    })
+                if (!responseJson.detail) {
+                    if (newNotifications) {
+                        _.each(responseJson.results, (notification) => {
+                            if (notification.action.verb.toLowerCase().indexOf('joined') != -1
+                                && getState().Global.RequestUser.type == 1) {
+                                dispatch(getClients(true));
+                                return false;
+                            } else if (notification.action.action_object.macro_plan_days || notification.action.action_object.workouts) {
+                                dispatch(getActiveData());
+                                return false;
+                            }
+                        })
+                    }
+                    return dispatch({type: types.GET_NOTIFICATIONS, response: responseJson, refresh: refresh});
                 }
-                return dispatch({type: types.GET_NOTIFICATIONS, response: responseJson, refresh: refresh});
             }).done();
     }
 }

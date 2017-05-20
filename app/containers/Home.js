@@ -1,5 +1,4 @@
 import React from 'react';
-import Subscribable from 'Subscribable';
 import {
     StyleSheet,
     Text,
@@ -27,7 +26,6 @@ import PeopleBar from '../components/PeopleBar';
 
 
 const Home = React.createClass({
-    mixins: [Subscribable.Mixin],
     propTypes: {
         Refreshing: React.PropTypes.bool.isRequired,
     },
@@ -40,7 +38,6 @@ const Home = React.createClass({
     },
 
     componentDidMount() {
-        this.addListenerOn(this.props.events, 'scrollToTopEvent', this.scrollToTopEvent);
         if (!this.props.Clients.length) {
             this.getNeeded(true);
         }
@@ -82,6 +79,7 @@ const Home = React.createClass({
         const user = this.props.RequestUser;
         const isTrainer = user.type == 1;
         let content = null;
+        const { navigate } = this.props.navigation;
         if (isTrainer) {
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             const QuestionnaireDS = ds.cloneWithRows(this.props.Questionnaires);
@@ -90,8 +88,8 @@ const Home = React.createClass({
             }));
             content = (
                 <View>
-                    <PeopleBar navigator={this.props.navigator} people={this.props.Clients}
-                               manageClients={this._redirect.bind(null, 'ManageClients', null)}/>
+                    <PeopleBar navigator={navigate} people={this.props.Clients}
+                               manageClients={()=> navigate( 'ManageClients')}/>
 
                     <View style={[styles.box]}>
                         <Text style={styles.textTitle}>Program Templates</Text>

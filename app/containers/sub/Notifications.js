@@ -25,7 +25,7 @@ import NotificationBox from '../../components/NotificationBox';
 
 
 const Notifications = React.createClass({
-    mixins: [Subscribable.Mixin],
+    // mixins: [Subscribable.Mixin],
     scrollToTopEvent(args) {
         if (args.routeName == 'Notifications') {
             const isTrue = true;
@@ -34,7 +34,7 @@ const Notifications = React.createClass({
     },
 
     componentDidMount() {
-        this.addListenerOn(this.props.events, 'scrollToTopEvent', this.scrollToTopEvent);
+        // this.addListenerOn(this.props.events, 'scrollToTopEvent', this.scrollToTopEvent);
         if (!this.props.Notifications.length) {
             this.props.actions.getNotifications();
         }

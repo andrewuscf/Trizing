@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
 import chainMiddleware from './chainMiddleware';
-import rootReducer from '../reducers';
+import rootReducer from '../reducers/index';
 import effects from '../effects';
 
 

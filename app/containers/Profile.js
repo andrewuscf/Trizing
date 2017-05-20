@@ -1,5 +1,4 @@
 import React from 'react';
-import Subscribable from 'Subscribable';
 import {
     StyleSheet,
     Text,
@@ -20,7 +19,7 @@ import {
 } from 'react-native-popup-menu';
 
 import * as ProfileActions from '../actions/profileActions';
-import {getUser, getNotifications} from '../actions/globalActions';
+import {getUser} from '../actions/globalActions';
 
 import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../actions/utils';
 import {getRoute} from '../routes';
@@ -47,7 +46,6 @@ moment.updateLocale('en', {
 
 
 const Profile = React.createClass({
-    mixins: [Subscribable.Mixin],
 
     propTypes: {
         id: React.PropTypes.number.isRequired,
@@ -71,7 +69,6 @@ const Profile = React.createClass({
 
 
     componentDidMount() {
-        this.addListenerOn(this.props.events, 'scrollToTopEvent', this.scrollToTopEvent);
         this.getUser();
     },
 
@@ -114,7 +111,6 @@ const Profile = React.createClass({
                 .then(checkStatus)
                 .then((responseJson) => {
                     this.setState({request: null});
-                    this.props.getNotifications(true);
                     this.getUser(true);
                 });
         }
@@ -290,7 +286,6 @@ const dispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(ProfileActions, dispatch),
         getUser: bindActionCreators(getUser, dispatch),
-        getNotifications: bindActionCreators(getNotifications, dispatch),
     }
 };
 

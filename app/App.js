@@ -1,5 +1,4 @@
 import React from 'react';
-import EventEmitter from 'EventEmitter';
 import {
     StyleSheet,
     Text,
@@ -18,61 +17,14 @@ import FCM, {
     WillPresentNotificationResult,
     NotificationType
 } from 'react-native-fcm';
-import _ from 'lodash';
-import {MenuContext} from 'react-native-popup-menu';
+// import {MenuContext} from 'react-native-popup-menu';
 
 
 import * as GlobalActions from './actions/globalActions';
-import {getRoute} from './routes';
+import {AppNavigator} from './routes';
 
-import Login from './containers/Login';
-import EditProfile from './containers/edit/EditProfile';
-
-import NavBar from './components/Navbar';
-import Loading from './components/Loading';
-
-
-let navigator;
-
-BackAndroid.addEventListener('hardwareBackPress', () => {
-    if (navigator && navigator.getCurrentRoutes().length > 1) {
-        navigator.pop();
-        return true;
-    }
-    return false;
-});
 
 const App = React.createClass({
-
-    getInitialState: function () {
-        return {
-            splashArt: true,
-        };
-    },
-
-    _renderScene: function (route, nav) {
-        const SceneComponent = route.component;
-        switch (route.name) {
-            // case 'Home':
-            //     return <SceneComponent navigator={ nav } route={route} {...route.passProps}
-            //                            events={this.eventEmitter}/>;
-            // case 'Profile':
-            //     return <SceneComponent navigator={ nav } route={route} {...route.passProps} events={this.eventEmitter}
-            //     />;
-            case 'Login':
-                return <SceneComponent navigator={ nav } route={route} {...route.passProps}
-                                       login={this.props.actions.login}
-                                       resetPassword={this.props.actions.resetPassword}
-                                       register={this.props.actions.register}
-                                       socialAuth={this.props.actions.socialAuth}
-                                       events={this.eventEmitter}/>;
-            default :
-                return <SceneComponent navigator={ nav } route={route} {...route.passProps}
-                                       events={this.eventEmitter}/>;
-
-        }
-
-    },
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.Error) {
@@ -86,26 +38,9 @@ const App = React.createClass({
             );
         }
 
-        const prevUser = prevProps.RequestUser;
-        const newUser = this.props.RequestUser;
-
-        if (!prevUser && newUser && newUser != prevUser) {
-            this.setUpNotifications();
-            const routes = navigator.getCurrentRoutes();
-            if (!newUser.profile.completed) {
-                if (routes[routes.length - 1].name != 'EditProfile') {
-                    navigator.immediatelyResetRouteStack([getRoute('EditProfile')])
-                }
-            } else {
-                if (routes[routes.length - 1].name != 'Home') {
-                    navigator.immediatelyResetRouteStack([getRoute('Home')])
-                }
-            }
-        }
-
         if (this.props.Notifications && this.props.Notifications.length && Platform.OS === 'ios') {
             let unreadcount = 0;
-            this.props.Notifications.forEach((notification, i) => {
+            this.props.Notifications.forEach((notification) => {
                 if (notification.unread) {
                     unreadcount = unreadcount + 1;
                 }
@@ -150,81 +85,22 @@ const App = React.createClass({
         });
     },
 
-    componentWillMount() {
-        // this.props.actions.removeToken();
-        AsyncStorage.getItem('USER_TOKEN', (err, result) => {
-            if (result) {
-                this.props.actions.setTokenInRedux(result);
-            }
-            this.setState({splashArt: false});
-        });
-        this.eventEmitter = new EventEmitter();
-    },
-
     componentWillUnmount() {
         this.notificationListener.remove();
         this.refreshTokenListener.remove();
     },
 
-    itemChangedFocus(route) {
-        this.props.actions.setActiveRoute(route.name);
-    },
-
-
-    scrollToTopEvent(routeName) {
-        this.eventEmitter.emit('scrollToTopEvent', {routeName: routeName});
-    },
+    // itemChangedFocus(route) {
+    //     this.props.actions.setActiveRoute(route.name);
+    // },
 
 
     render() {
-        if (this.state.splashArt) {
-            // Should replace this with a splash art.
-            return <Loading />;
-        }
-
-        let route = getRoute('Loading');
-        if (this.props.UserToken) {
-            if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
-                route = getRoute('Home')
-            } else if (this.props.RequestUser && !this.props.RequestUser.profile.completed) {
-                route = getRoute('EditProfile')
-            }
-        } else {
-            route = getRoute('Login')
-        }
-
-        const unReadMessages = _.filter(this.props.Notifications, function (o) {
-                return o.unread && o.action && o.action.action_object && o.action.action_object.room;
-            }).length > 0;
-
-        return (
-            <MenuContext lazyRender={200}>
-                <Navigator initialRoute={route}
-                           style={styles.container}
-                           ref={(nav) => {
-                               navigator = nav
-                           }}
-                           onDidFocus={this.itemChangedFocus}
-                           renderScene={ this._renderScene }
-                           navigationBar={<NavBar RequestUser={this.props.RequestUser}
-                                                  scrollToTopEvent={this.scrollToTopEvent}
-                                                  unReadMessages={unReadMessages}
-                                                  route={this.props.Route}/>}
-                />
-            </MenuContext>
-        );
+        return <AppNavigator/>;
 
     }
 });
 
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginTop: (Platform.OS === 'ios') ? 20 : 0,
-        // backgroundColor: '#f1f1f1'
-    },
-});
 
 const stateToProps = (state) => {
     return {
