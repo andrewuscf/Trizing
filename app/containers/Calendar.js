@@ -1,5 +1,4 @@
 import React from 'react';
-import Subscribable from 'Subscribable';
 import {
     StyleSheet,
     Text,
@@ -18,13 +17,11 @@ import * as CalendarActions from '../actions/calendarActions';
 
 import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
-import GlobalStyle from './globalStyle';
 
 import EventBox from '../components/EventBox';
 
 
 const Calendar = React.createClass({
-    mixins: [Subscribable.Mixin],
     scrollToTopEvent(args) {
         if (args.routeName == 'Calendar') {
             const isTrue = true;
@@ -33,7 +30,6 @@ const Calendar = React.createClass({
     },
 
     componentDidMount() {
-        this.addListenerOn(this.props.events, 'scrollToTopEvent', this.scrollToTopEvent);
         if (!this.props.Events.length) {
             this.props.actions.getEvents();
         }

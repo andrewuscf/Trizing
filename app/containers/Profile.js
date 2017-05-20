@@ -48,7 +48,7 @@ moment.updateLocale('en', {
 const Profile = React.createClass({
 
     propTypes: {
-        id: React.PropTypes.number.isRequired,
+        id: React.PropTypes.number,
         request: React.PropTypes.object
     },
 
@@ -77,7 +77,7 @@ const Profile = React.createClass({
     },
 
     getUser(refresh = false) {
-        if (this.props.id == this.props.RequestUser.id) {
+        if (!this.props.id || this.props.id == this.props.RequestUser.id) {
             if (refresh)
                 this.props.getUser();
             else

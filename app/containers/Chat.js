@@ -1,5 +1,4 @@
 import React from 'react';
-import Subscribable from 'Subscribable';
 import {
     StyleSheet,
     Text,
@@ -23,7 +22,6 @@ import GlobalStyle from './globalStyle';
 import ChatRoomBox from '../components/ChatRoomBox';
 
 const Chat = React.createClass({
-    mixins: [Subscribable.Mixin],
 
     scrollToTopEvent(args) {
         // if (args.routeName == 'Chat') {

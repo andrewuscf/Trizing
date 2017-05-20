@@ -1,7 +1,9 @@
+import React from 'react'
 import _ from 'lodash';
 import {Platform} from 'react-native';
-
-import {StackNavigator} from 'react-navigation';
+import { NavigationComponent } from 'react-native-material-bottom-navigation';
+import {TabNavigator, StackNavigator} from 'react-navigation';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // Main Pages
 import Home from './containers/Home';
@@ -48,8 +50,8 @@ import CreateQuestionnaire from './containers/sub/CreateQuestionnaire';
 const MAIN_ROUTES = [
     // {component: Home, name: 'Home'},
     // {component: Calendar, name: 'Calendar'},
-    {component: Feed, name: 'Feed'},
-    {component: Chat, name: 'Chat'},
+    // {component: Feed, name: 'Feed'},
+    // {component: Chat, name: 'Chat'},
     // {component: Profile, name: 'Profile'},
     // {component: Login, name: 'Login'},
     {component: Loading, name: 'Loading'},
@@ -100,6 +102,60 @@ const paramsToProps = (SomeComponent) => {
     }
 };
 
+const MainTabNav = TabNavigator({
+    Home: {screen: Home},
+    Calendar: {
+        // path: 'calendar/',
+        screen: Calendar,
+    },
+    Feed: {screen: Feed},
+    Chat: {screen: Chat},
+    Profile: {screen: Profile},
+}, {
+    tabBarComponent: NavigationComponent,
+    tabBarPosition: 'bottom',
+    lazy: true,
+    tabBarOptions: {
+        bottomNavigationOptions: {
+            // style: {height: 50},
+            labelColor: 'white',
+            rippleColor: 'grey',
+            tabs: {
+                Home: {
+                    // labelColor: '#434343',
+                    // activeLabelColor: '#212121',
+                    icon: <Icon size={24} color="#434343" name="home" />,
+                    activeIcon: <Icon size={24} color="#212121" name="home" />
+                },
+                Calendar: {
+                    // labelColor: '#434343',
+                    // activeLabelColor: '#212121',
+                    icon: <Icon size={24} color="#434343" name="date-range" />,
+                    activeIcon: <Icon size={24} color="#212121" name="date-range" />
+                },
+                Feed: {
+                    // labelColor: '#434343',
+                    // activeLabelColor: '#212121',
+                    icon: <Icon size={24} color="#434343" name="list" />,
+                    activeIcon: <Icon size={24} color="#212121" name="list" />
+                },
+                Chat: {
+                    // labelColor: '#434343',
+                    // activeLabelColor: '#212121',
+                    icon: <Icon size={24} color="#434343" name="comment" />,
+                    activeIcon: <Icon size={24} color="#212121" name="comment" />
+                },
+                Profile: {
+                    // labelColor: '#434343',
+                    // activeLabelColor: '#212121',
+                    icon: <Icon size={24} color="#434343" name="account-circle" />,
+                    activeIcon: <Icon size={24} color="#212121" name="account-circle" />
+                }
+            }
+        }
+    }
+});
+
 export const AppNavigator = StackNavigator({
     SplashScreen: {
         screen: SplashScreen,
@@ -111,17 +167,16 @@ export const AppNavigator = StackNavigator({
     },
     Login: {screen: Login},
 
-    Profile: {screen: Profile},
     EditProfile: {screen: EditProfile},
 
     ManageClients: {screen: ManageClients},
 
 
-    Home: {screen: Home},
-    Calendar: {
-        path: 'calendar/',
-        screen: Calendar,
-    },
+    Home: {screen: MainTabNav},
+    // Calendar: {
+    //     path: 'calendar/',
+    //     screen: Calendar,
+    // },
 
 }, {
     headerMode: 'screen',

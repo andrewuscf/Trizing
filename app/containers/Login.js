@@ -21,7 +21,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as GlobalActions from '../actions/globalActions';
 
-import {getFontSize} from '../actions/utils';
+import {getFontSize, resetNav} from '../actions/utils';
 
 import BackBar from '../components/BackBar';
 import SubmitButton from '../components/SubmitButton';
@@ -78,6 +78,17 @@ const Login = React.createClass({
             this.setState({busy: false});
         }
     },
+
+    componentDidUpdate (prevProps) {
+        if (this.props.UserToken) {
+            if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
+                this.props.navigation.dispatch(resetNav('Home'))
+            } else if (this.props.RequestUser && !this.props.RequestUser.profile.completed) {
+                this.props.navigation.dispatch(resetNav('EditProfile'))
+            }
+        }
+    },
+
 
     toggleForgotCreds() {
         this.setState({

@@ -14,14 +14,8 @@ export function getChatRooms(refresh = false) {
             .then((response) => response.json())
             .then((responseJson) => {
                 return dispatch({type: types.LOAD_ROOMS, response: responseJson, refresh: refresh});
-            })
-            .catch((error) => {
-                return dispatch({
-                    type: types.API_ERROR, error: JSON.stringify({
-                        title: 'Request could not be performed.',
-                        text: 'Please try again later.'
-                    })
-                });
+            }).catch((error) => {
+                console.log(error);
             });
     }
 }
@@ -57,7 +51,7 @@ export function getTeam(refresh = false) {
         return fetch(`${API_ENDPOINT}team/`, fetchData('GET', null, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
-                return dispatch({type: types.GET_TEAM, response: responseJson, refresh:refresh});
+                return dispatch({type: types.GET_TEAM, response: responseJson, refresh: refresh});
             })
     }
 }

@@ -30,12 +30,12 @@ const Home = React.createClass({
         Refreshing: React.PropTypes.bool.isRequired,
     },
 
-    scrollToTopEvent(args) {
-        if (args.routeName == 'Home') {
-            const isTrue = true;
-            this.refs.home_scroll.scrollTo({y: 0, isTrue});
-        }
-    },
+    // scrollToTopEvent(args) {
+    //     if (args.routeName == 'Home') {
+    //         const isTrue = true;
+    //         this.refs.home_scroll.scrollTo({y: 0, isTrue});
+    //     }
+    // },
 
     componentDidMount() {
         if (!this.props.Clients.length) {
@@ -77,6 +77,7 @@ const Home = React.createClass({
 
     render() {
         const user = this.props.RequestUser;
+        if (!user) return null;
         const isTrainer = user.type == 1;
         let content = null;
         const { navigate } = this.props.navigation;
@@ -88,7 +89,7 @@ const Home = React.createClass({
             }));
             content = (
                 <View>
-                    <PeopleBar navigator={navigate} people={this.props.Clients}
+                    <PeopleBar navigate={navigate} people={this.props.Clients}
                                manageClients={()=> navigate( 'ManageClients')}/>
 
                     <View style={[styles.box]}>

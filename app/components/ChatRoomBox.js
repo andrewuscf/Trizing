@@ -6,7 +6,6 @@ import {
     Image,
     TouchableHighlight,
 } from 'react-native';
-import _ from 'lodash';
 import moment from 'moment';
 
 import AvatarImage from './AvatarImage';
@@ -42,8 +41,9 @@ const ChatRoomBox = React.createClass({
     render() {
         const room = this.props.room;
         let sender = room.users[room.users.length - 1];
-        if (this.props.RequestUser.id == sender.id)
+        if (this.props.RequestUser.id == sender.id && room.users.length > 1) {
             sender = room.users[room.users.length - 2];
+        }
         let image = sender.profile.thumbnail ? sender.profile.thumbnail : sender.profile.avatar
         return (
             <TouchableHighlight style={styles.container} onPress={this._toRoom} underlayColor='white'>
