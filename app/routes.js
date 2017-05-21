@@ -1,8 +1,9 @@
 import React from 'react'
 import {Platform} from 'react-native';
-import {NavigationComponent} from 'react-native-material-bottom-navigation';
 import {TabNavigator, StackNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import Save from './components/NavBarSave';
 
 // Main Pages
 import Home from './containers/Home';
@@ -59,55 +60,63 @@ const paramsToProps = (SomeComponent) => {
     }
 };
 
+const navBlue = 'blue';
+
 const MainTabNav = TabNavigator({
-    Home: {screen: Home},
+    Home: {
+        screen: Home,
+        navigationOptions: {
+            header: null,
+            tabBarIcon: (focused, tintColor)=> <Icon size={24} color={focused ? navBlue: tintColor} name="home"/>
+        },
+    },
     Calendar: {
         // path: 'calendar/',
         screen: Calendar,
+        navigationOptions: {
+            header: null,
+            tabBarIcon: (focused, tintColor)=> <Icon size={24} color={focused ? navBlue: tintColor} name="date-range"/>
+        }
     },
-    Feed: {screen: Feed},
-    Chat: {screen: Chat},
-    Profile: {screen: paramsToProps(Profile)},
+    Feed: {
+        screen: Feed,
+        navigationOptions: {
+            header: null,
+            tabBarIcon: (focused, tintColor)=> <Icon size={24} color={focused ? navBlue: tintColor} name="list"/>
+        }
+    },
+    Chat: {
+        screen: Chat,
+        navigationOptions: {
+            header: null,
+            tabBarIcon: (focused, tintColor)=> <Icon size={24} color={focused ? navBlue: tintColor} name="comment"/>
+        }
+    },
+    Profile: {
+        screen: paramsToProps(Profile),
+        path: 'profile/:id',
+        navigationOptions: {
+            headerStyle: {
+                position: 'absolute',
+                // zIndex: 99,
+                right: 0,
+                top: 0,
+                left: 0,
+                backgroundColor: 'transparent',
+            },
+            // title: '',
+            tabBarIcon: (focused, tintColor)=> <Icon size={24} color={focused ? navBlue: tintColor} name="account-circle"/>
+        }
+    },
 }, {
-    tabBarComponent: NavigationComponent,
+    // tabBarComponent: ,
     tabBarPosition: 'bottom',
     lazy: true,
     swipeEnabled: true,
     animationEnabled: false,
     tabBarOptions: {
-        bottomNavigationOptions: {
-            innerStyle: {
-                borderTopWidth: 0.5,
-                borderColor: '#CCC'
-            },
-            style: {
-                elevation: 0
-            },
-            labelColor: 'white',
-            rippleColor: 'grey',
-            tabs: {
-                Home: {
-                    icon: <Icon size={24} color="#434343" name="home"/>,
-                    activeIcon: <Icon size={24} color="#212121" name="home"/>
-                },
-                Calendar: {
-                    icon: <Icon size={24} color="#434343" name="date-range"/>,
-                    activeIcon: <Icon size={24} color="#212121" name="date-range"/>
-                },
-                Feed: {
-                    icon: <Icon size={24} color="#434343" name="list"/>,
-                    activeIcon: <Icon size={24} color="#212121" name="list"/>
-                },
-                Chat: {
-                    icon: <Icon size={24} color="#434343" name="comment"/>,
-                    activeIcon: <Icon size={24} color="#212121" name="comment"/>
-                },
-                Profile: {
-                    icon: <Icon size={24} color="#434343" name="account-circle"/>,
-                    activeIcon: <Icon size={24} color="#212121" name="account-circle"/>
-                }
-            }
-        }
+        showLabel: false,
+        activeTintColor: navBlue
     }
 });
 
@@ -115,14 +124,21 @@ export const AppNavigator = StackNavigator({
     SplashScreen: {
         screen: SplashScreen,
         // headerMode: 'none',
-        // navigationOptions: {
-        //     headerMode: 'none',
-        // },
+        navigationOptions: {
+            header: null,
+        },
 
     },
-    Login: {screen: Login},
+    Login: {
+        screen: Login,
+        navigationOptions: {
+            header: null
+        },
+    },
 
-    EditProfile: {screen: EditProfile},
+    EditProfile: {
+        screen: EditProfile,
+    },
 
     ManageClients: {screen: ManageClients},
 
@@ -168,10 +184,18 @@ export const AppNavigator = StackNavigator({
 }, {
     headerMode: 'screen',
     initialRouteName: 'SplashScreen',
-    navigationOptions: {header: null},
+    navigationOptions: ({navigation}) => {
+        const {state, setParams} = navigation;
+        return {
+            headerRight: state.params && state.params.handleSave ? <Save save={state.params.handleSave}/> : null,
+            headerStyle: {
+                backgroundColor: 'white'
+            }
+        };
+    },
     cardStyle: {
-        flex: 1,
-        marginTop: (Platform.OS === 'ios') ? 20 : 0,
+        // flex: 1,
+        // marginTop: (Platform.OS === 'ios') ? 20 : 0,
         backgroundColor: 'white'
     }
 });

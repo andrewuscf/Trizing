@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as CalendarActions from '../actions/calendarActions';
 
+import GlobalStyle from './globalStyle';
 import {getFontSize} from '../actions/utils';
 
 import EventBox from '../components/EventBox';
@@ -77,7 +78,7 @@ const Calendar = React.createClass({
             );
         }
         return (
-            <ScrollView contentContainerStyle={styles.scrollContainer} ref="calendar_list"
+            <ScrollView contentContainerStyle={styles.scrollContainer} ref="calendar_list" style={GlobalStyle.noHeaderContainer}
                         refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}>
                 {this.renderHeader()}
                 <View style={styles.noRequests}>

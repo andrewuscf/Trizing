@@ -141,18 +141,7 @@ const Profile = React.createClass({
             if (user.profile.thumbnail)
                 userImage = user.profile.thumbnail;
             return (
-                <ScrollView style={GlobalStyle.container} ref="profile_list">
-                    <BackBar back={this._back} navStyle={styles.customBack}>
-                        {isRequestUser ?
-                            <TouchableOpacity style={styles.topRightNav}
-                                              onPress={this._redirect.bind(null, 'EditProfile', null)}>
-                                <Icon name="gear" size={20} color='#333333'/>
-                            </TouchableOpacity>
-                            :
-                            null
-
-                        }
-                    </BackBar>
+                <ScrollView style={GlobalStyle.noHeaderContainer} ref="profile_list">
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
                         <AvatarImage style={styles.avatar} image={userImage}/>
                         <View style={styles.userInfo}>
@@ -160,6 +149,22 @@ const Profile = React.createClass({
                                 {trunc(`${user.profile.first_name} ${user.profile.last_name}`, 26)}
                             </Text>
                         </View>
+                        {isRequestUser ?
+                            <TouchableOpacity style={styles.topRightNav}
+                                              onPress={this._redirect.bind(null, 'EditProfile', null)}>
+                                <Icon name="gear" size={20} color='#333333'/>
+                            </TouchableOpacity>
+                            :
+                            <Menu style={{right: 0, position: 'absolute'}}>
+                                <MenuTrigger style={styles.topRightNav}>
+                                    <Icon name="ellipsis-v" size={20} color='#333333'/>
+                                </MenuTrigger>
+                                <MenuOptions optionsContainerStyle={{alignSelf: 'center', width: 200, marginTop: 50}}>
+                                    <MenuOption onSelect={() => this.reportUser()} text='Report user'/>
+                                </MenuOptions>
+                            </Menu>
+
+                        }
                         {(this.state.request && this.state.request.to_user == this.props.RequestUser.id) ?
                             <View style={styles.requestSection}>
                                 {this.state.request.from_user.type == 1 ?
@@ -194,15 +199,6 @@ const Profile = React.createClass({
     }
 });
 
-//<Menu style={{right: 0,
-//    position: 'absolute',}}>
-//    <MenuTrigger style={styles.topRightNav}>
-//        <Icon name="ellipsis-v" size={20} color='#333333'/>
-//    </MenuTrigger>
-//    <MenuOptions optionsContainerStyle={{alignSelf: 'center', width: 200, marginTop: 50}}>
-//        <MenuOption onSelect={() => this.reportUser()} text='Report user'/>
-//    </MenuOptions>
-//</Menu>
 
 
 const styles = StyleSheet.create({

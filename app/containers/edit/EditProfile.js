@@ -8,14 +8,15 @@ import {
     Dimensions,
     Alert,
     Keyboard,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Platform
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
 import {connect} from 'react-redux';
 import CameraRollPicker from 'react-native-camera-roll-picker';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import FCM from 'react-native-fcm';
 import {
     Menu,
@@ -34,6 +35,7 @@ import BackBar from '../../components/BackBar';
 import CameraPage from '../../components/CameraPage';
 import {EMPTY_AVATAR} from '../../assets/constants';
 import Loading from '../../components/Loading';
+import Save from '../../components/NavBarSave';
 import SubmitButton from '../../components/SubmitButton';
 
 const {width: deviceWidth} = Dimensions.get('window');
@@ -71,6 +73,10 @@ const EditProfile = React.createClass({
         this.setState({value: null});
     },
 
+    componentDidMount() {
+        this.props.navigation.setParams({handleSave: this._onSubmit});
+    },
+
     componentDidUpdate(prevProps) {
         if (!prevProps.RequestUser && this.props.RequestUser) {
             this.setState({
@@ -87,10 +93,7 @@ const EditProfile = React.createClass({
     },
 
     asyncActions(start, data = {}){
-        if (start) {
-            this.refs.postbutton.setState({busy: true});
-        } else {
-            this.refs.postbutton.setState({busy: false});
+        if (!start) {
             if (data.completed && !this.props.RequestUser.profile.completed) {
                 this.props.navigation.dispatch(resetNav('Home'));
             }
@@ -237,7 +240,9 @@ const EditProfile = React.createClass({
 
             let content = null;
             if (this.state.showRoll) {
-                content = <CameraRollPicker imageMargin={2} containerWidth={rollPickerWidth}
+                content = <CameraRollPicker imageMargin={2} containerWidth={rollPickerWidth} initialListSize={1}
+                                            pageSize={1}
+                                            assetType="Photos"
                                             callback={this.getSelectedImages} maximum={1} selected={[]}/>;
             } else if (this.state.showCamera) {
                 content = <CameraPage passData={this.getCameraData}/>;
@@ -282,8 +287,8 @@ const EditProfile = React.createClass({
 
                             </View>
                             <SubmitButton buttonStyle={styles.button}
-                                          textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
-                                          text='Save'/>
+                                          textStyle={styles.submitText} onPress={this._logOut}
+                                          text='Log Out'/>
                         </KeyboardAvoidingView>
                     </ScrollView>
                 )
@@ -291,13 +296,6 @@ const EditProfile = React.createClass({
 
             return (
                 <View style={styles.mainContainer}>
-                    <BackBar
-                        back={this.props.RequestUser.profile.completed || this.state.showRoll || this.state.showCamera ? this._back : null}>
-                        <TouchableOpacity style={styles.logOut} onPress={this._logOut}>
-                            <Icon name="power-off" size={20} color='red'/>
-                        </TouchableOpacity>
-                    </BackBar>
-
 
                     {content}
 
@@ -310,6 +308,14 @@ const EditProfile = React.createClass({
 
     }
 });
+
+EditProfile.navigationOptions = ({navigation}) => {
+    const {state, setParams} = navigation;
+    return {
+        title: 'Edit Profile',
+    };
+};
+
 
 const styles = StyleSheet.create({
     mainContainer: {
@@ -345,11 +351,13 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontFamily: 'OpenSans-Bold',
     },
-    logOut: {
-        right: 0,
-        position: 'absolute',
-        padding: 10,
-        paddingTop: 17,
+    save: {
+        borderWidth: 1,
+        borderColor: 'red',
+        height: Platform.OS === 'ios' ? 44 : 56,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 50
     },
     menuOption: {
         height: 50,

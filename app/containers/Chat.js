@@ -70,7 +70,7 @@ const Chat = React.createClass({
             return (
                 <ListView
                     refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
-                    style={styles.container} enableEmptySections={true}
+                    style={GlobalStyle.noHeaderContainer} enableEmptySections={true}
                     removeClippedSubviews={false}
                     renderHeader={this.renderHeader}
                     dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={Dimensions.get('window').height}
@@ -80,7 +80,7 @@ const Chat = React.createClass({
             );
         }
         return (
-            <ScrollView contentContainerStyle={styles.scrollContainer}
+            <ScrollView contentContainerStyle={styles.scrollContainer} style={GlobalStyle.noHeaderContainer}
                         refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}>
                 {this.renderHeader()}
                 <View style={styles.noRequests}>

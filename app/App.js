@@ -17,7 +17,7 @@ import FCM, {
     WillPresentNotificationResult,
     NotificationType
 } from 'react-native-fcm';
-// import {MenuContext} from 'react-native-popup-menu';
+import {MenuContext} from 'react-native-popup-menu';
 
 
 import * as GlobalActions from './actions/globalActions';
@@ -96,7 +96,7 @@ const App = React.createClass({
 
 
     render() {
-        return <AppNavigator/>;
+        return <MenuContext lazyRender={200}><AppNavigator/></MenuContext>;
 
     }
 });

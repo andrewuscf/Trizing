@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -112,7 +112,7 @@ const CreateEvent = React.createClass({
         this.setState({value: value});
     },
 
-    render: function () {
+    render() {
         let options = {
             i18n: {
                 optional: '',
@@ -193,6 +193,10 @@ const CreateEvent = React.createClass({
         )
     }
 });
+
+CreateEvent.navigationOptions = {
+    title: 'Create Event',
+};
 
 const styles = StyleSheet.create({
     flexCenter: {

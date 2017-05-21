@@ -82,7 +82,6 @@ const ChatRoom = React.createClass({
         // });
         return (
             <View style={styles.container}>
-                <BackBar back={this._back} backText="Back"/>
                 <GiftedChat
                     messages={this.state.messages}
                     onSend={this.onSendPress}

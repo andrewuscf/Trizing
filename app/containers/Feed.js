@@ -124,7 +124,8 @@ const Feed = React.createClass({
                       renderHeader={this.renderCreatePost}
                       keyboardShouldPersistTaps="handled"
                       refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
-                      style={[GlobalStyle.container,styles.feedContainer]} enableEmptySections={true} dataSource={dataSource}
+                      style={[GlobalStyle.noHeaderContainer,styles.feedContainer]}
+                      enableEmptySections={true} dataSource={dataSource}
                       onEndReached={this.onEndReached}
                       renderRow={(post) => <PostBox
                           updateLike={this.props.actions.updateLike}

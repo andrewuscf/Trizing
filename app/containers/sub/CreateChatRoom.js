@@ -30,10 +30,12 @@ const CreateChatRoom = React.createClass({
     },
 
     componentDidMount() {
+        this.props.navigation.setParams({handleSave: this._onSubmit});
         if (this.props.RequestUser.type == 2 && this.props.Team.length < 1) {
             this.props.actions.getTeam(true);
         }
     },
+
 
     asyncActions(start, data = {}){
         if (start) {
@@ -83,11 +85,6 @@ const CreateChatRoom = React.createClass({
 
         return (
             <View style={styles.flexCenter}>
-                <BackBar back={this._back}>
-                    <Text style={{fontSize: getFontSize(24),fontFamily: 'OpenSans-Bold'}}>
-                        Select Users
-                    </Text>
-                </BackBar>
 
                 <ScrollView style={{paddingTop: 20}}
                             contentContainerStyle={{flexWrap: 'wrap', flexDirection: 'row'}}>
@@ -106,9 +103,6 @@ const CreateChatRoom = React.createClass({
                         )
                     })}
                 </ScrollView>
-                <SubmitButton textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
-                              text='Start Chat'/>
-
             </View>
         )
     }
@@ -144,6 +138,13 @@ const styles = StyleSheet.create({
         fontFamily: 'OpenSans-SemiBold',
     },
 });
+
+CreateChatRoom.navigationOptions = ({navigation}) => {
+    const {state, setParams} = navigation;
+    return {
+        title: 'Select users',
+    };
+};
 
 
 const stateToProps = (state) => {

@@ -212,7 +212,7 @@ const Home = React.createClass({
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         const dataSource = ds.cloneWithRows(this.props.Notifications.slice(0, 4));
         return (
-            <View style={GlobalStyle.container}>
+            <View style={GlobalStyle.noHeaderContainer}>
                 <ScrollView ref='home_scroll'
                             refreshControl={<RefreshControl refreshing={this.props.Refreshing}
                                                             onRefresh={this._refresh}/>}

@@ -1,7 +1,10 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Platform} from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : 0;
 
 
 const BackBar = React.createClass({
@@ -29,20 +32,30 @@ const BackBar = React.createClass({
 
 const styles = StyleSheet.create({
     nav: {
+        paddingTop: STATUSBAR_HEIGHT,
+        height: STATUSBAR_HEIGHT + APPBAR_HEIGHT,
+        // shadowColor: 'black',
+        // shadowOpacity: 0.1,
+        // shadowRadius: StyleSheet.hairlineWidth,
+        // shadowOffset: {
+        //     height: StyleSheet.hairlineWidth,
+        // },
+
+
         borderColor: '#d4d4d4',
         borderBottomWidth: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: 50,
         backgroundColor: 'white',
     },
     topNavButton: {
         left: 0,
         position: 'absolute',
         paddingLeft: 10,
+        paddingTop: STATUSBAR_HEIGHT,
         width: 70,
-        minHeight: 50,
+        minHeight: STATUSBAR_HEIGHT,
         flexDirection: 'row',
         alignItems: 'center',
     },
