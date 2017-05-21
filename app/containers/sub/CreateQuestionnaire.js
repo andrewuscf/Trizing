@@ -35,8 +35,12 @@ const CreateQuestionnaire = React.createClass({
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            this.props.navigator.pop();
+            this._back();
         }
+    },
+
+    _back() {
+        this.props.navigation.goBack()
     },
 
     isValid() {
@@ -119,7 +123,7 @@ const CreateQuestionnaire = React.createClass({
             <View style={{flex: 1}}>
                 <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}
                             keyboardShouldPersistTaps="handled">
-                    <BackBar back={this.props.navigator.pop} backText="Cancel" navStyle={{height: 40}}/>
+                    <BackBar back={this._back} backText="Cancel" navStyle={{height: 40}}/>
                     <View style={styles.formContainer}>
                         <Text style={styles.inputLabel}>Survey Name</Text>
                         <View style={styles.inputWrap}>

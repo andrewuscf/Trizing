@@ -13,7 +13,6 @@ import _ from 'lodash';
 
 import * as chatActions from '../../actions/chatActions';
 import {getFontSize, trunc} from '../../actions/utils';
-import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import AvatarImage from '../../components/AvatarImage';
@@ -41,7 +40,7 @@ const CreateChatRoom = React.createClass({
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            this.props.navigator.replace(getRoute('ChatRoom', {roomId: data.id}));
+            this.props.navigation.navigate('ChatRoom', {roomId: data.id});
         }
     },
 
@@ -71,6 +70,10 @@ const CreateChatRoom = React.createClass({
         }
     },
 
+    _back() {
+        this.props.navigation.goBack()
+    },
+
 
     render: function () {
         let source = this.props.Clients;
@@ -80,7 +83,7 @@ const CreateChatRoom = React.createClass({
 
         return (
             <View style={styles.flexCenter}>
-                <BackBar back={this.props.navigator.pop}>
+                <BackBar back={this._back}>
                     <Text style={{fontSize: getFontSize(24),fontFamily: 'OpenSans-Bold'}}>
                         Select Users
                     </Text>

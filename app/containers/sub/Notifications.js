@@ -48,9 +48,13 @@ const Notifications = React.createClass({
             this.props.actions.getNotifications();
     },
 
+    _back() {
+        this.props.navigation.goBack()
+    },
+
     renderHeader() {
         return (
-            <BackBar back={this.props.navigator.pop}>
+            <BackBar back={this._back}>
                 <Text style={{fontSize: getFontSize(24)}}>Notifications</Text>
             </BackBar>
         )
@@ -67,7 +71,7 @@ const Notifications = React.createClass({
                     renderHeader={this.renderHeader}
                     dataSource={dataSource} onEndReached={this.onEndReached}
                     onEndReachedThreshold={Dimensions.get('window').height}
-                    renderRow={(noti, i) => <NotificationBox navigator={this.props.navigator} notification={noti}
+                    renderRow={(noti, i) => <NotificationBox navigate={this.props.navigation.navigate} notification={noti}
                                                              readNotification={this.props.actions.readNotification}/>}
                 />
             );

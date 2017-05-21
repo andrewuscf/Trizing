@@ -15,7 +15,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as ChatActions from '../actions/chatActions';
 
-import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
@@ -42,7 +41,7 @@ const Chat = React.createClass({
     },
 
     _redirect(routeName, props = null) {
-        this.props.navigator.push(getRoute(routeName, props));
+        this.props.navigation.navigate(routeName, props);
     },
 
     onEndReached() {
@@ -51,7 +50,7 @@ const Chat = React.createClass({
     },
 
     newChat() {
-        this.props.navigator.push(getRoute('CreateChatRoom'))
+        this.props.navigation.navigate('CreateChatRoom');
     },
 
     renderHeader() {

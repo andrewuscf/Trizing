@@ -36,10 +36,6 @@ const ChatRoom = React.createClass({
         this.getMessages();
     },
 
-    _back() {
-        this.props.navigator.pop();
-    },
-
     getMessages() {
         let url = `${API_ENDPOINT}social/messages/?room_id=${this.props.roomId}`;
         if (this.state.next) {
@@ -71,6 +67,10 @@ const ChatRoom = React.createClass({
                     };
                 });
             });
+    },
+
+    _back() {
+        this.props.navigation.goBack()
     },
 
     render() {

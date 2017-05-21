@@ -14,7 +14,6 @@ import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
-import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 
@@ -31,12 +30,16 @@ const CreateNote = React.createClass({
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            // this.props.navigator.pop();
+            // this._back();
         }
     },
 
     submit() {
 
+    },
+
+    _back() {
+        this.props.navigation.goBack()
     },
 
 
@@ -45,7 +48,7 @@ const CreateNote = React.createClass({
             <View style={{flex: 1}}>
                 <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                             contentContainerStyle={styles.contentContainerStyle}>
-                    <BackBar back={this.props.navigator.pop} navStyle={{height: 40}}/>
+                    <BackBar back={this._back} navStyle={{height: 40}}/>
 
                     <View style={{marginBottom: 10}}>
                         <Text>test</Text>

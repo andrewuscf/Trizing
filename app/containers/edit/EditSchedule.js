@@ -16,7 +16,6 @@ import moment from 'moment';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
-import {getRoute} from '../../routes';
 import GlobalStyle from '../../containers/globalStyle';
 
 import BackBar from '../../components/BackBar';
@@ -37,8 +36,12 @@ const EditSchedule = React.createClass({
 
     asyncActions(data = {}){
         if (data.deleted) {
-            this.props.navigator.pop();
+            this._back();
         }
+    },
+
+    _back() {
+        this.props.navigation.goBack()
     },
 
     componentDidUpdate(prevProps, prevState) {
@@ -50,12 +53,12 @@ const EditSchedule = React.createClass({
 
     _createWorkoutDay() {
         if (this.state.schedule) {
-            this.props.navigator.push(getRoute('CreateWorkout', {scheduleId: this.props.scheduleId}))
+            this.props.navigation.navigate('CreateWorkout', {scheduleId: this.props.scheduleId});
         }
     },
 
     _toWorkoutDay(workoutId) {
-        this.props.navigator.push(getRoute('EditWorkout', {workoutId: workoutId}))
+        this.props.navigation.navigate('EditWorkout', {workoutId: workoutId});
     },
 
     _deleteSchedule() {
@@ -104,7 +107,7 @@ const EditSchedule = React.createClass({
             <View style={styles.flexCenter}>
                 <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                             contentContainerStyle={styles.contentContainerStyle}>
-                    <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}/>
+                    <BackBar back={this._back} backText="" navStyle={{height: 40}}/>
 
                     <View style={{marginBottom: 10}}>
                         <Text style={styles.title}>

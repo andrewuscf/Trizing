@@ -12,11 +12,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 import * as GlobalActions from '../../actions/globalActions';
 
 import {getFontSize, API_ENDPOINT} from '../../actions/utils';
-import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import DisplayExerciseBox from '../../components/DisplayExerciseBox';
@@ -57,7 +57,13 @@ const CreateWorkoutDay = React.createClass({
                 this.setState({...data.state})
             }
             if (data.routeName) {
-                this.props.navigator.replace(getRoute(data.routeName, data.props))
+                const resetAction = NavigationActions.reset({
+                    index: self.navigation.state.routes.length - 1,
+                    actions: [
+                        NavigationActions.navigate({ routeName: data.routeName, params: data.props})
+                    ]
+                });
+                this.props.navigation.dispatch(resetAction);
             }
         }
     },
@@ -82,14 +88,18 @@ const CreateWorkoutDay = React.createClass({
         if (!this.state.saved) {
             this.props.actions.addEditWorkoutDay(this.getCurrentData());
         }
-        this.props.navigator.pop();
+        this._back();
+    },
+
+    _back() {
+        this.props.navigation.goBack()
     },
 
     render: function () {
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                         contentContainerStyle={styles.contentContainerStyle}>
-                <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}>
+                <BackBar back={this._back()} backText="" navStyle={{height: 40}}>
                     <Text>{this.state.workout ? this.state.workout.name : null}</Text>
                     <TouchableOpacity style={styles.save} onPress={this._save}>
                         <Text>Save</Text>

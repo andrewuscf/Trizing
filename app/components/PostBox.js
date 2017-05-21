@@ -3,7 +3,6 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
 
 import GlobalStyle from '../containers/globalStyle';
@@ -17,14 +16,15 @@ const PostBox = React.createClass({
         post: React.PropTypes.object.isRequired,
         liked: React.PropTypes.bool.isRequired,
         updateLike: React.PropTypes.func.isRequired,
+        navigate: React.PropTypes.func.isRequired,
     },
 
     goToProfile(userId) {
-        this.props.navigator.push(getRoute('Profile', {'id': this.props.post.user.id}));
+        this.props.navigate('Profile', {'id': this.props.post.user.id});
     },
 
     onPress() {
-        this.props.navigator.push(getRoute('PostDetail', {post: this.props.post}))
+        this.props.navigate('PostDetail', {post: this.props.post});
     },
 
     likePress() {
@@ -42,7 +42,7 @@ const PostBox = React.createClass({
         let comments = null;
         if (post.comments.count > 0) {
             comments = post.comments.comments.map((comment, index) => {
-                return <CommentBox key={index} comment={comment}/>
+                return <CommentBox key={index} comment={comment} navigate={this.props.navigate}/>
             })
         }
         return (

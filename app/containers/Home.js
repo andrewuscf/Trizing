@@ -17,7 +17,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import * as HomeActions from '../actions/homeActions';
 import * as GlobalActions from '../actions/globalActions';
 
-import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
@@ -65,7 +64,7 @@ const Home = React.createClass({
     },
 
     _redirect(routeName, props = null) {
-        this.props.navigator.push(getRoute(routeName, props));
+        this.props.navigation.navigate(routeName, props);
     },
 
     _toLogWorkout() {
@@ -225,7 +224,7 @@ const Home = React.createClass({
                             <ListView ref='notification_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                                       style={styles.container} enableEmptySections={true} dataSource={dataSource}
                                       renderRow={(notification) => <NotificationBox
-                                          navigator={this.props.navigator} notification={notification}
+                                          navigate={this.props.navigation.navigate} notification={notification}
                                           readNotification={this.props.readNotification}/>}
                             />
                             <TouchableOpacity onPress={this._redirect.bind(null, 'Notifications', null)}

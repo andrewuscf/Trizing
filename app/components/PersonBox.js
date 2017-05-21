@@ -4,7 +4,6 @@ import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {getFontSize} from '../actions/utils';
-import {getRoute} from '../routes';
 import AvatarImage from './AvatarImage';
 
 const PersonBox = React.createClass({
@@ -12,7 +11,8 @@ const PersonBox = React.createClass({
         person: React.PropTypes.object.isRequired,
         RequestUser: React.PropTypes.object.isRequired,
         removeClient: React.PropTypes.func.isRequired,
-        sendRequest: React.PropTypes.func.isRequired
+        sendRequest: React.PropTypes.func.isRequired,
+        navigate: React.PropTypes.func.isRequired,
     },
 
     getInitialState() {
@@ -41,7 +41,7 @@ const PersonBox = React.createClass({
     },
 
     goToProfile() {
-        this.props.navigator.push(getRoute('Profile', {id:this.props.person.id}));
+        this.props.navigate('Profile', {id:this.props.person.id});
     },
 
 

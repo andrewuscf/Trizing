@@ -39,8 +39,12 @@ const CreateEvent = React.createClass({
         } else {
             this.refs.postbutton.setState({busy: false});
             this.props.actions.getEvents(true);
-            this.props.navigator.pop();
+            this._back();
         }
+    },
+
+    _back() {
+        this.props.navigation.goBack()
     },
 
 
@@ -82,7 +86,7 @@ const CreateEvent = React.createClass({
 
     _cancel() {
         if (this.state.step == 1) {
-            this.props.navigator.pop();
+            this._back();
         } else {
             this.setState({step: 1});
         }

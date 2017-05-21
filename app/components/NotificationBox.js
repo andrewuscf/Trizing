@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 
-import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
 
 import GlobalStyle from '../containers/globalStyle';
@@ -24,7 +23,7 @@ moment.updateLocale('en', {
 const NotificationBox = React.createClass({
     propTypes: {
         notification: React.PropTypes.object.isRequired,
-        navigator: React.PropTypes.object.isRequired,
+        navigate: React.PropTypes.func.isRequired,
         readNotification: React.PropTypes.func.isRequired
     },
 
@@ -38,8 +37,12 @@ const NotificationBox = React.createClass({
             : text;
     },
 
+    _navigateTo(routeName, props) {
+        this.props.navigate(routeName, props);
+    },
+
     goToProfile(userId) {
-        this.props.navigator.push(getRoute('Profile', {'id': userId}));
+        this._navigateTo('Profile', {'id': userId});
     },
 
     onPress() {
@@ -49,32 +52,32 @@ const NotificationBox = React.createClass({
         }
         if (action.action_object) {
             if (action.action_object.profile)
-                this.props.navigator.push(getRoute('Profile', {id: action.action_object.id}));
+                this._navigateTo('Profile', {id: action.action_object.id});
             else if (action.action_object.room)
-                this.props.navigator.push(getRoute('ChatRoom', {roomId: action.action_object.room}));
+                this._navigateTo('ChatRoom', {roomId: action.action_object.room});
             else if (action.action_object.macro_plan || action.action_object.questionnaire || action.action_object.workout) {
-                this.props.navigator.push(getRoute('Profile', {id: action.action_object.client}));
+                this._navigateTo('Profile', {id: action.action_object.client});
             } else if (action.action_object.liked_by) {
                 // console.log('this is a post')
             } else if (action.action_object.from_user) {
-                this.props.navigator.push(getRoute('Profile', {
+                this._navigateTo('Profile', {
                     id: action.action_object.from_user.id,
                     request: action.action_object
-                }));
+                });
             } else if (action.action_object.event_type) {
-                this.props.navigator.push(getRoute('EventDetail', {eventId: action.action_object.id}));
+                this._navigateTo('EventDetail', {eventId: action.action_object.id});
             } else if (action.action_object.macro_plan_days) {
-                this.props.navigator.push(getRoute('MacroPlanDetail', {macro_plan: action.action_object}));
+                this._navigateTo('MacroPlanDetail', {macro_plan: action.action_object});
             } else if (action.action_object.workouts) {
-                this.props.navigator.push(getRoute('ScheduleDetail', {schedule: action.action_object}));
+                this._navigateTo('ScheduleDetail', {schedule: action.action_object});
             } else if (action.action_object.questions) {
                 if (action.verb.toLowerCase().indexOf('answered') == -1) {
-                    this.props.navigator.push(getRoute('AnswerQuestionnaire', {questionnaire: action.action_object}));
+                    this._navigateTo('AnswerQuestionnaire', {questionnaire: action.action_object});
                 } else {
-                    this.props.navigator.push(getRoute('AnswersDisplay', {
+                    this._navigateTo('AnswersDisplay', {
                         questionnaire: action.action_object,
                         client: action.actor
-                    }))
+                    })
                 }
             }
         }

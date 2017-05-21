@@ -11,7 +11,6 @@ import _ from 'lodash';
 import moment from 'moment';
 
 import {getFontSize} from '../../actions/utils';
-import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import DisplayWorkoutDay from '../../components/DisplayWorkoutDay';
@@ -24,8 +23,12 @@ const WorkoutDetail = React.createClass({
 
     _toWorkoutDay(workout_day_id) {
         // if (this.props.workout) {
-        //     this.props.navigator.push(getRoute('WorkoutDayDetail', {workout_day_id: workout_day_id}))
+        //     this.props.navigation.navigate('WorkoutDayDetail', {workout_day_id: workout_day_id});
         // }
+    },
+
+    _back() {
+        this.props.navigation.goBack()
     },
 
 
@@ -38,7 +41,7 @@ const WorkoutDetail = React.createClass({
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                         contentContainerStyle={styles.contentContainerStyle}>
-                <BackBar back={this.props.navigator.pop}>
+                <BackBar back={this._back}>
                     <Text>{this.props.workout ? this.props.workout.name : null}</Text>
                 </BackBar>
 

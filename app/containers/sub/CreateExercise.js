@@ -115,7 +115,11 @@ const CreateExercise = React.createClass({
         });
         if (sets.length > 0)
             this.props.actions.addEditExercise(sets);
-        this.props.navigator.pop();
+        this._back();
+    },
+
+    _back() {
+        this.props.navigation.goBack()
     },
 
 
@@ -130,7 +134,7 @@ const CreateExercise = React.createClass({
         });
         return (
             <View style={{flex: 1}}>
-                <BackBar back={this.props.navigator.pop} backText="" navStyle={{height: 40}}>
+                <BackBar back={this._back} backText="" navStyle={{height: 40}}>
                     <Text>{this.state.workout ? this.state.workout_day.name : null}</Text>
                     <TouchableOpacity style={styles.save} onPress={this._save}>
                         <Text style={{fontSize: getFontSize(24),fontFamily: 'OpenSans-Bold'}}>Save</Text>

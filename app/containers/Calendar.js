@@ -15,7 +15,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as CalendarActions from '../actions/calendarActions';
 
-import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
 
 import EventBox from '../components/EventBox';
@@ -44,7 +43,7 @@ const Calendar = React.createClass({
     },
 
     goToCreate() {
-        this.props.navigator.push(getRoute('CreateEvent'))
+        this.props.navigation.navigate('CreateEvent');
     },
 
     renderHeader() {
@@ -73,7 +72,7 @@ const Calendar = React.createClass({
                           dataSource={dataSource} onEndReached={this.onEndReached}
                           onEndReachedThreshold={Dimensions.get('window').height}
                           renderRow={(occurrence, i) => <EventBox occurrence={occurrence}
-                                                                  navigator={this.props.navigator}/>}
+                                                                  navigate={this.props.navigation.navigate}/>}
                 />
             );
         }

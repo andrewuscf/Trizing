@@ -11,7 +11,6 @@ import _ from 'lodash';
 
 import GlobalStyle from '../globalStyle';
 import {getFontSize, API_ENDPOINT, checkStatus, fetchData} from '../../actions/utils';
-import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 
@@ -39,11 +38,6 @@ const AnswersDisplay = React.createClass({
         }
     },
 
-
-    back() {
-        this.props.navigator.pop();
-    },
-
     renderRow(question, sectionID, rowID) {
         const answer = _.find(this.state.answers, {question: question.id});
         return (
@@ -61,6 +55,10 @@ const AnswersDisplay = React.createClass({
         )
     },
 
+    _back() {
+        this.props.navigation.goBack()
+    },
+
 
     render() {
         const questionnaire = this.props.questionnaire;
@@ -68,7 +66,7 @@ const AnswersDisplay = React.createClass({
         let dataSource = ds.cloneWithRows(this.props.questionnaire.questions);
         return (
             <View style={styles.container}>
-                <BackBar back={this.back}/>
+                <BackBar back={this._back}/>
                 <View style={[{padding: 20}]}>
                     <Text style={[{fontSize: getFontSize(26)}]}>
                         {questionnaire.name}

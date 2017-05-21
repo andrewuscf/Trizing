@@ -17,7 +17,6 @@ import _ from 'lodash';
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 import GlobalStyle from '../globalStyle';
-import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import SetLogBox from '../../components/SetLogBox';
@@ -47,9 +46,13 @@ const WorkoutDaySession = React.createClass({
             this.setState({success: true});
             setTimeout(() => {
                 this.setState({success: false});
-                this.props.navigator.pop();
+                this._back();
             }, 2000);
         }
+    },
+
+    _back() {
+        this.props.navigation.goBack()
     },
 
     renderHeader() {
@@ -63,7 +66,7 @@ const WorkoutDaySession = React.createClass({
             )
         }
         return (
-            <BackBar back={this.props.navigator.pop}>
+            <BackBar back={this._back}>
                 <Text style={styles.header}>{this.props.workout_day.name}</Text>
             </BackBar>
         )

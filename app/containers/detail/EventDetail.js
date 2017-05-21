@@ -15,7 +15,6 @@ import {connect} from 'react-redux';
 import {getFontSize, fetchData, API_ENDPOINT} from '../../actions/utils';
 import * as CalendarActions from '../../actions/calendarActions';
 import GlobalStyle from '../globalStyle';
-import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import PeopleBar from '../../components/PeopleBar';
@@ -42,6 +41,10 @@ const EventDetail = React.createClass({
             });
     },
 
+    _back() {
+        this.props.navigation.goBack()
+    },
+
 
     render: function () {
         const event = this.state.event;
@@ -55,7 +58,7 @@ const EventDetail = React.createClass({
         }
         return (
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
-                <BackBar back={this.props.navigator.pop}/>
+                <BackBar back={this._back}/>
                 {start_time ?
                     <Text style={styles.eventDate}>
                         {start_time.format('ddd MMM DD, h:mm A ')} - {end_time.format('h:mm A')}
@@ -66,7 +69,7 @@ const EventDetail = React.createClass({
                     {event.title} <Text style={styles.smallTitle}>({event.event_type.label})</Text>
                 </Text>
                 <Text style={styles.invitedTitle}>Invited</Text>
-                <PeopleBar navigator={this.props.navigator} people={event.invited.concat(event.user)}/>
+                <PeopleBar navigate={this.props.navigation.navigate} people={event.invited.concat(event.user)}/>
             </ScrollView>
         )
     }

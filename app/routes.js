@@ -1,7 +1,6 @@
 import React from 'react'
-import _ from 'lodash';
 import {Platform} from 'react-native';
-import { NavigationComponent } from 'react-native-material-bottom-navigation';
+import {NavigationComponent} from 'react-native-material-bottom-navigation';
 import {TabNavigator, StackNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -12,7 +11,6 @@ import Feed from './containers/Feed';
 import Chat from './containers/Chat';
 import Profile from './containers/Profile';
 import Login from './containers/Login';
-import Loading from './components/Loading';
 import SplashScreen from './containers/SplashScreen';
 
 // Sub Pages
@@ -47,47 +45,6 @@ import CreateChatRoom from './containers/sub/CreateChatRoom';
 import CreateMacroLog from './containers/sub/CreateMacroLog';
 import CreateQuestionnaire from './containers/sub/CreateQuestionnaire';
 
-const MAIN_ROUTES = [
-    // {component: Home, name: 'Home'},
-    // {component: Calendar, name: 'Calendar'},
-    // {component: Feed, name: 'Feed'},
-    // {component: Chat, name: 'Chat'},
-    // {component: Profile, name: 'Profile'},
-    // {component: Login, name: 'Login'},
-    {component: Loading, name: 'Loading'},
-    // {component: EditProfile, name: 'EditProfile'},
-    // {component: ManageClients, name: 'ManageClients'},
-    {component: Notifications, name: 'Notifications'},
-    {component: TrainingPlan, name: 'TrainingPlan'},
-    {component: CreateWorkout, name: 'CreateWorkout'},
-    {component: EditWorkout, name: 'EditWorkout'},
-    {component: CreateWorkoutDay, name: 'CreateWorkoutDay'},
-    {component: CreateExercise, name: 'CreateExercise'},
-    {component: WorkoutDayDetail, name: 'WorkoutDayDetail'},
-    {component: EventDetail, name: 'EventDetail'},
-    {component: PostDetail, name: 'PostDetail'},
-    {component: CreateEvent, name: 'CreateEvent'},
-    {component: ChatRoom, name: 'ChatRoom'},
-    {component: CreateSchedule, name: 'CreateSchedule'},
-    {component: EditSchedule, name: 'EditSchedule'},
-    {component: CreateChatRoom, name: 'CreateChatRoom'},
-    {component: MacroPlanDetail, name: 'MacroPlanDetail'},
-    {component: CreateMacroLog, name: 'CreateMacroLog'},
-    {component: ScheduleDetail, name: 'ScheduleDetail'},
-    {component: WorkoutDetail, name: 'WorkoutDetail'},
-    {component: WorkoutDaySession, name: 'WorkoutDaySession'},
-    {component: CreateQuestionnaire, name: 'CreateQuestionnaire'},
-    {component: AnswerQuestionnaire, name: 'AnswerQuestionnaire'},
-    {component: AnswersDisplay, name: 'AnswersDisplay'},
-];
-
-export function getRoute(routeName, props) {
-    const index = _.findIndex(MAIN_ROUTES, {name: routeName});
-    if (props)
-        return {component: MAIN_ROUTES[index].component, name: routeName, passProps: props};
-    else
-        return {component: MAIN_ROUTES[index].component, name: routeName};
-}
 
 const paramsToProps = (SomeComponent) => {
 // turns this.props.navigation.state.params into this.params.<x>
@@ -110,46 +67,44 @@ const MainTabNav = TabNavigator({
     },
     Feed: {screen: Feed},
     Chat: {screen: Chat},
-    Profile: {screen: Profile},
+    Profile: {screen: paramsToProps(Profile)},
 }, {
     tabBarComponent: NavigationComponent,
     tabBarPosition: 'bottom',
     lazy: true,
+    swipeEnabled: true,
+    animationEnabled: false,
     tabBarOptions: {
         bottomNavigationOptions: {
-            // style: {height: 50},
+            innerStyle: {
+                borderTopWidth: 0.5,
+                borderColor: '#CCC'
+            },
+            style: {
+                elevation: 0
+            },
             labelColor: 'white',
             rippleColor: 'grey',
             tabs: {
                 Home: {
-                    // labelColor: '#434343',
-                    // activeLabelColor: '#212121',
-                    icon: <Icon size={24} color="#434343" name="home" />,
-                    activeIcon: <Icon size={24} color="#212121" name="home" />
+                    icon: <Icon size={24} color="#434343" name="home"/>,
+                    activeIcon: <Icon size={24} color="#212121" name="home"/>
                 },
                 Calendar: {
-                    // labelColor: '#434343',
-                    // activeLabelColor: '#212121',
-                    icon: <Icon size={24} color="#434343" name="date-range" />,
-                    activeIcon: <Icon size={24} color="#212121" name="date-range" />
+                    icon: <Icon size={24} color="#434343" name="date-range"/>,
+                    activeIcon: <Icon size={24} color="#212121" name="date-range"/>
                 },
                 Feed: {
-                    // labelColor: '#434343',
-                    // activeLabelColor: '#212121',
-                    icon: <Icon size={24} color="#434343" name="list" />,
-                    activeIcon: <Icon size={24} color="#212121" name="list" />
+                    icon: <Icon size={24} color="#434343" name="list"/>,
+                    activeIcon: <Icon size={24} color="#212121" name="list"/>
                 },
                 Chat: {
-                    // labelColor: '#434343',
-                    // activeLabelColor: '#212121',
-                    icon: <Icon size={24} color="#434343" name="comment" />,
-                    activeIcon: <Icon size={24} color="#212121" name="comment" />
+                    icon: <Icon size={24} color="#434343" name="comment"/>,
+                    activeIcon: <Icon size={24} color="#212121" name="comment"/>
                 },
                 Profile: {
-                    // labelColor: '#434343',
-                    // activeLabelColor: '#212121',
-                    icon: <Icon size={24} color="#434343" name="account-circle" />,
-                    activeIcon: <Icon size={24} color="#212121" name="account-circle" />
+                    icon: <Icon size={24} color="#434343" name="account-circle"/>,
+                    activeIcon: <Icon size={24} color="#212121" name="account-circle"/>
                 }
             }
         }
@@ -159,10 +114,10 @@ const MainTabNav = TabNavigator({
 export const AppNavigator = StackNavigator({
     SplashScreen: {
         screen: SplashScreen,
-        headerMode: 'none',
-        navigationOptions: {
-            headerMode: 'none',
-        },
+        // headerMode: 'none',
+        // navigationOptions: {
+        //     headerMode: 'none',
+        // },
 
     },
     Login: {screen: Login},
@@ -171,13 +126,45 @@ export const AppNavigator = StackNavigator({
 
     ManageClients: {screen: ManageClients},
 
+    Notifications: {screen: Notifications},
+
+
+    PostDetail: {screen: paramsToProps(PostDetail)},
+
+    CreateEvent: {screen: CreateEvent},
+    EventDetail: {screen: paramsToProps(EventDetail)},
+
+
+    CreateChatRoom: {screen: CreateChatRoom},
+
+    ChatRoom: {screen: paramsToProps(ChatRoom)},
+
+
+    CreateQuestionnaire: {screen: CreateQuestionnaire},
+
+
+    AnswerQuestionnaire: {screen: paramsToProps(AnswerQuestionnaire)},
+    AnswersDisplay: {screen: paramsToProps(AnswersDisplay)},
+
+
+    MacroPlanDetail: {screen: paramsToProps(MacroPlanDetail)},
+    ScheduleDetail: {screen: paramsToProps(ScheduleDetail)},
+
+
+    TrainingPlan: {screen: paramsToProps(TrainingPlan)},
+    CreateWorkout: {screen: paramsToProps(CreateWorkout)},
+    EditWorkout: {screen: paramsToProps(EditWorkout)},
+    CreateWorkoutDay: {screen: paramsToProps(CreateWorkoutDay)},
+    CreateExercise: {screen: paramsToProps(CreateExercise)},
+    WorkoutDayDetail: {screen: paramsToProps(WorkoutDayDetail)},
+    CreateSchedule: {screen: paramsToProps(CreateSchedule)},
+    EditSchedule: {screen: paramsToProps(EditSchedule)},
+    CreateMacroLog: {screen: paramsToProps(CreateMacroLog)},
+    WorkoutDetail: {screen: paramsToProps(WorkoutDetail)},
+    WorkoutDaySession: {screen: paramsToProps(WorkoutDaySession)},
+
 
     Home: {screen: MainTabNav},
-    // Calendar: {
-    //     path: 'calendar/',
-    //     screen: Calendar,
-    // },
-
 }, {
     headerMode: 'screen',
     initialRouteName: 'SplashScreen',

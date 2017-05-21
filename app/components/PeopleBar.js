@@ -3,7 +3,6 @@ import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {getRoute} from '../routes';
 import {trunc, getFontSize} from '../actions/utils';
 
 import AvatarImage from './AvatarImage';

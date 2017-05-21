@@ -12,7 +12,6 @@ import moment from 'moment';
 
 import {getFontSize} from '../../actions/utils';
 import GlobalStyle from '../globalStyle';
-import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import PeopleBar from '../../components/PeopleBar';
@@ -22,12 +21,16 @@ const PostDetail = React.createClass({
         post: React.PropTypes.object.isRequired,
     },
 
+    _back() {
+        this.props.navigation.goBack()
+    },
+
 
     render: function () {
         const post = this.props.post;
         return (
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
-                <BackBar back={this.props.navigator.pop}/>
+                <BackBar back={this._back}/>
                 <Text style={styles.title}>{post.text}</Text>
             </ScrollView>
         )

@@ -12,7 +12,6 @@ import moment from 'moment';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
-import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import SubmitButton from '../../components/SubmitButton';
@@ -61,9 +60,13 @@ const CreateMacroLog = React.createClass({
             this.setState({success: true});
             setTimeout(() => {
                 this.setState({success: false});
-                this.props.navigator.pop();
+                this._back();
             }, 2000);
         }
+    },
+
+    _back() {
+        this.props.navigation.goBack()
     },
 
 
@@ -79,7 +82,7 @@ const CreateMacroLog = React.createClass({
     },
 
     _cancel() {
-        this.props.navigator.pop();
+        this._back();
     },
 
     onChange(value) {

@@ -8,10 +8,10 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
+import { NavigationActions } from 'react-navigation';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
-import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import SelectInput from '../../components/SelectInput';
@@ -35,7 +35,13 @@ const CreateWorkout = React.createClass({
         } else {
             this.refs.postbutton.setState({busy: false});
             if (data.routeName) {
-                this.props.navigator.replace(getRoute(data.routeName, data.props))
+                const resetAction = NavigationActions.reset({
+                    index: self.navigation.state.routes.length - 1,
+                    actions: [
+                        NavigationActions.navigate({ routeName: data.routeName, params: data.props})
+                    ]
+                });
+                this.props.navigation.dispatch(resetAction);
             }
         }
     },
@@ -63,8 +69,8 @@ const CreateWorkout = React.createClass({
         }
     },
 
-    _cancel() {
-        this.props.navigator.pop();
+    _back() {
+        this.props.navigation.goBack();
     },
 
     selectTemplate(id) {
@@ -97,7 +103,7 @@ const CreateWorkout = React.createClass({
         };
         return (
             <View style={styles.flexCenter}>
-                <BackBar back={this._cancel} backText="Cancel"/>
+                <BackBar back={this._back} backText="Cancel"/>
                 <View style={{margin: 10}}>
                     <Form
                         ref="form"

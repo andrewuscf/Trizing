@@ -22,7 +22,6 @@ import * as ProfileActions from '../actions/profileActions';
 import {getUser} from '../actions/globalActions';
 
 import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../actions/utils';
-import {getRoute} from '../routes';
 import GlobalStyle from './globalStyle';
 
 
@@ -94,11 +93,7 @@ const Profile = React.createClass({
     },
 
     _redirect(routeName, props = null) {
-        this.props.navigator.push(getRoute(routeName, props));
-    },
-
-    _back() {
-        this.props.navigator.pop();
+        this.props.navigation.navigate(routeName, props);
     },
 
     _respond(respond) {
@@ -117,7 +112,7 @@ const Profile = React.createClass({
     },
 
     createQuestionnaire() {
-        this.props.navigator.push(getRoute('CreateQuestionnaire'))
+        this.props.navigation.navigate('CreateQuestionnaire');
     },
 
     reportUser() {
@@ -132,6 +127,10 @@ const Profile = React.createClass({
                 ],
             )
         }
+    },
+
+    _back() {
+        this.props.navigation.goBack()
     },
 
     render() {
@@ -150,15 +149,7 @@ const Profile = React.createClass({
                                 <Icon name="gear" size={20} color='#333333'/>
                             </TouchableOpacity>
                             :
-                            <Menu style={{right: 0,
-                                position: 'absolute',}}>
-                                <MenuTrigger style={styles.topRightNav}>
-                                    <Icon name="ellipsis-v" size={20} color='#333333'/>
-                                </MenuTrigger>
-                                <MenuOptions optionsContainerStyle={{alignSelf: 'center', width: 200, marginTop: 50}}>
-                                    <MenuOption onSelect={() => this.reportUser()} text='Report user'/>
-                                </MenuOptions>
-                            </Menu>
+                            null
 
                         }
                     </BackBar>
@@ -202,6 +193,16 @@ const Profile = React.createClass({
         return <Loading />
     }
 });
+
+//<Menu style={{right: 0,
+//    position: 'absolute',}}>
+//    <MenuTrigger style={styles.topRightNav}>
+//        <Icon name="ellipsis-v" size={20} color='#333333'/>
+//    </MenuTrigger>
+//    <MenuOptions optionsContainerStyle={{alignSelf: 'center', width: 200, marginTop: 50}}>
+//        <MenuOption onSelect={() => this.reportUser()} text='Report user'/>
+//    </MenuOptions>
+//</Menu>
 
 
 const styles = StyleSheet.create({

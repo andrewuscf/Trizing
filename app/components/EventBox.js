@@ -3,7 +3,6 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
 
 import GlobalStyle from '../containers/globalStyle';
@@ -13,7 +12,7 @@ import AvatarImage from './AvatarImage';
 const EventBox = React.createClass({
     propTypes: {
         occurrence: React.PropTypes.object.isRequired,
-        navigator: React.PropTypes.object.isRequired,
+        navigate: React.PropTypes.func.isRequired,
     },
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -27,14 +26,14 @@ const EventBox = React.createClass({
     },
 
     goToProfile(userId) {
-        this.props.navigator.push(getRoute('Profile', {'id': this.props.occurrence.event.user.id}));
+        this.props.navigate('Profile', {'id': this.props.occurrence.event.user.id});
     },
 
     _onPress() {
-        this.props.navigator.push(getRoute('EventDetail', {
+        this.props.navigate('EventDetail', {
             occurrenceId: this.props.occurrence.id,
             eventId: this.props.occurrence.event.id
-        }));
+        });
     },
 
     _onActions() {

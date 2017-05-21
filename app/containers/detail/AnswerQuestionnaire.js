@@ -15,7 +15,6 @@ import * as GlobalActions from '../../actions/globalActions';
 
 import GlobalStyle from '../globalStyle';
 import {getFontSize} from '../../actions/utils';
-import {getRoute} from '../../routes';
 
 import AnswerQuestionBox from '../../components/AnswerQuestionBox';
 import BackBar from '../../components/BackBar';
@@ -43,9 +42,13 @@ const AnswerQuestionnaire = React.createClass({
             this.setState({success: true});
             setTimeout(() => {
                 this.setState({success: false});
-                this.props.navigator.pop();
+                this._back();
             }, 2000);
         }
+    },
+
+    _back() {
+        this.props.navigation.goBack()
     },
 
     onPress() {
@@ -74,11 +77,6 @@ const AnswerQuestionnaire = React.createClass({
     },
 
 
-    back() {
-        this.props.navigator.pop();
-    },
-
-
     render() {
         const questionnaire = this.props.questionnaire;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -92,7 +90,7 @@ const AnswerQuestionnaire = React.createClass({
                         </Text>
                     </View>
                     :
-                    <BackBar back={this.back}/>
+                    <BackBar back={this._back}/>
                 }
                 <View style={[{padding: 20}]}>
                     <Text style={[{fontSize: getFontSize(26), color: 'grey'}]}>

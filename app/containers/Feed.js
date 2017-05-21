@@ -17,7 +17,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as FeedActions from '../actions/feedActions';
 
-import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
@@ -53,10 +52,6 @@ const Feed = React.createClass({
     },
 
     onEndReached() {
-    },
-
-    _redirect(routeName, props = null) {
-        this.props.navigator.push(getRoute(routeName, props));
     },
 
     renderCreatePost(){
@@ -134,7 +129,7 @@ const Feed = React.createClass({
                       renderRow={(post) => <PostBox
                           updateLike={this.props.actions.updateLike}
                           liked={_.indexOf(post.liked_by, this.props.RequestUser.id) != -1}
-                          post={post} navigator={this.props.navigator}/>}
+                          post={post} navigate={this.props.navigation.navigate}/>}
             />
         )
     }

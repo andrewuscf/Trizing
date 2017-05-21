@@ -24,8 +24,7 @@ import {
     MenuTrigger,
 } from 'react-native-popup-menu';
 
-import {fetchData, API_ENDPOINT, getFontSize} from '../../actions/utils';
-import {getRoute} from '../../routes';
+import {fetchData, API_ENDPOINT, getFontSize, resetNav} from '../../actions/utils';
 
 import * as ProfileActions from '../../actions/profileActions';
 import {removeToken} from '../../actions/globalActions';
@@ -93,7 +92,7 @@ const EditProfile = React.createClass({
         } else {
             this.refs.postbutton.setState({busy: false});
             if (data.completed && !this.props.RequestUser.profile.completed) {
-                this.props.navigator.immediatelyResetRouteStack([getRoute('Home')]);
+                this.props.navigation.dispatch(resetNav('Home'));
             }
         }
     },
@@ -123,7 +122,7 @@ const EditProfile = React.createClass({
         } else if (this.state.showCamera) {
             this.setState({showCamera: false});
         } else if (this.props.RequestUser.profile.completed) {
-            this.props.navigator.pop();
+            this.props.navigation.goBack();
         }
 
     },
@@ -164,8 +163,7 @@ const EditProfile = React.createClass({
                 {text: 'Cancel', style: 'cancel'},
                 {
                     text: 'Yes', onPress: () => {
-                    const login = getRoute('Login');
-                    this.props.navigator.immediatelyResetRouteStack([login]);
+                    this.props.navigation.dispatch(resetNav('Login'));
                     if (FCM) FCM.setBadgeNumber(0);
                     FCM.getFCMToken().then(token => {
                         self.props.removeToken(token);

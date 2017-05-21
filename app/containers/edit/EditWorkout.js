@@ -15,7 +15,6 @@ import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
-import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import DisplayWorkoutDay from '../../components/DisplayWorkoutDay';
@@ -42,8 +41,12 @@ const EditWorkout = React.createClass({
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            // this.props.navigator.pop();
+            // this._back();
         }
+    },
+
+    _back() {
+        this.props.navigation.goBack()
     },
 
     componentDidUpdate(prevProps, prevState) {
@@ -56,14 +59,18 @@ const EditWorkout = React.createClass({
 
     _createWorkoutDay() {
         if (this.state.workout) {
-            this.props.navigator.push(getRoute('CreateWorkoutDay', {workoutId: this.state.workout.id}))
+            this.props.navigation.navigate('CreateWorkoutDay', {workoutId: this.state.workout.id});
         }
     },
 
     _toWorkoutDay(workout_day_id) {
         if (this.state.workout) {
-            this.props.navigator.push(getRoute('WorkoutDayDetail', {workout_day_id: workout_day_id}))
+            this.props.navigation.navigate('WorkoutDayDetail', {workout_day_id: workout_day_id});
         }
+    },
+
+    _back() {
+        this.props.navigation.goBack()
     },
 
 
@@ -83,7 +90,7 @@ const EditWorkout = React.createClass({
             <View style={{flex: 1}}>
                 <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                             contentContainerStyle={styles.contentContainerStyle}>
-                    <BackBar back={this.props.navigator.pop} navStyle={{height: 40}}/>
+                    <BackBar back={this._back} navStyle={{height: 40}}/>
 
                     <View style={{marginBottom: 10}}>
                         <Text style={styles.title}>

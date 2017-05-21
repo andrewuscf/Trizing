@@ -16,7 +16,6 @@ import _ from 'lodash';
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 import GlobalStyle from '../globalStyle';
-import {getRoute} from '../../routes';
 
 import BackBar from '../../components/BackBar';
 import CustomIcon from '../../components/CustomIcon';
@@ -49,11 +48,15 @@ const WorkoutDayDetail = React.createClass({
     },
 
     _addExercise() {
-        this.props.navigator.push(getRoute('CreateExercise', {workout_day: this.state.workout_day}))
+        this.props.navigation.navigate('CreateExercise', {workout_day: this.state.workout_day});
     },
 
     _editExercise(exercise) {
-        this.props.navigator.push(getRoute('CreateExercise', {workout_day: this.state.workout_day, exercise: exercise}))
+        this.props.navigation.navigate('CreateExercise', {workout_day: this.state.workout_day, exercise: exercise});
+    },
+
+    _back() {
+        this.props.navigation.goBack()
     },
 
 
@@ -65,7 +68,7 @@ const WorkoutDayDetail = React.createClass({
         let dataSource = ds.cloneWithRows(this.state.workout_day.exercises);
         return (
             <View style={styles.container}>
-                <BackBar back={this.props.navigator.pop} />
+                <BackBar back={this._back} />
                 <Text style={[styles.title]}>{this.state.workout_day.name}</Text>
 
                 <DaysOfWeek days={this.state.workout_day.days}/>

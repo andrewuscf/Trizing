@@ -57,10 +57,6 @@ const ManageClients = React.createClass({
         });
     },
 
-    _back() {
-        this.props.navigator.pop();
-    },
-
     getUsersList(text) {
         fetch(`${API_ENDPOINT}user/list/?search=${text}`, fetchData('GET', null, this.props.UserToken), 1)
             .then(checkStatus)
@@ -113,6 +109,10 @@ const ManageClients = React.createClass({
         }
     },
 
+    _back() {
+        this.props.navigation.goBack()
+    },
+
     renderSearchBar(){
         return (
             <View>
@@ -150,7 +150,7 @@ const ManageClients = React.createClass({
                       style={styles.container} enableEmptySections={true}
                       dataSource={dataSource}
                       renderRow={(person) =>
-                          <PersonBox navigator={this.props.navigator} person={person} RequestUser={user}
+                          <PersonBox navigate={this.props.navigation.navigate} person={person} RequestUser={user}
                                      removeClient={this.props.actions.removeClient}
                                      sendRequest={this.props.actions.sendRequest}/>
                       }

@@ -3,7 +3,6 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {getRoute} from '../routes';
 import {getFontSize} from '../actions/utils';
 
 import GlobalStyle from '../containers/globalStyle';
@@ -25,10 +24,11 @@ moment.updateLocale('en', {
 const CommentBox = React.createClass({
     propTypes: {
         comment: React.PropTypes.object.isRequired,
+        navigate: React.PropTypes.func.isRequired
     },
 
     goToProfile(userId) {
-        this.props.navigator.push(getRoute('Profile', {'id': this.props.comment.user.id}));
+        this.props.navigate('Profile', {'id': this.props.comment.user.id});
     },
 
     onPress() {

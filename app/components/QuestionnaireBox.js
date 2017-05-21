@@ -11,7 +11,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
 import {getFontSize} from '../actions/utils';
-import {getRoute} from '../routes';
 
 const QuestionnaireBox = React.createClass({
     propTypes: {
