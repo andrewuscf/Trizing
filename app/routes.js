@@ -1,6 +1,6 @@
 import React from 'react'
 import {Platform} from 'react-native';
-import {TabNavigator, StackNavigator} from 'react-navigation';
+import {TabNavigator, StackNavigator, NavigationActions} from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Save from './components/NavBarSave';
@@ -67,7 +67,7 @@ const MainTabNav = TabNavigator({
         screen: Home,
         navigationOptions: {
             header: null,
-            tabBarIcon: (focused, tintColor)=> <Icon size={24} color={focused ? navBlue: tintColor} name="home"/>
+            tabBarIcon: (focused, tintColor) => <Icon size={24} color={focused ? navBlue : tintColor} name="home"/>
         },
     },
     Calendar: {
@@ -75,21 +75,22 @@ const MainTabNav = TabNavigator({
         screen: Calendar,
         navigationOptions: {
             header: null,
-            tabBarIcon: (focused, tintColor)=> <Icon size={24} color={focused ? navBlue: tintColor} name="date-range"/>
+            tabBarIcon: (focused, tintColor) => <Icon size={24} color={focused ? navBlue : tintColor}
+                                                      name="date-range"/>
         }
     },
     Feed: {
         screen: Feed,
         navigationOptions: {
             header: null,
-            tabBarIcon: (focused, tintColor)=> <Icon size={24} color={focused ? navBlue: tintColor} name="list"/>
+            tabBarIcon: (focused, tintColor) => <Icon size={24} color={focused ? navBlue : tintColor} name="list"/>
         }
     },
     Chat: {
         screen: Chat,
         navigationOptions: {
             header: null,
-            tabBarIcon: (focused, tintColor)=> <Icon size={24} color={focused ? navBlue: tintColor} name="comment"/>
+            tabBarIcon: (focused, tintColor) => <Icon size={24} color={focused ? navBlue : tintColor} name="comment"/>
         }
     },
     Profile: {
@@ -105,11 +106,27 @@ const MainTabNav = TabNavigator({
                 backgroundColor: 'transparent',
             },
             // title: '',
-            tabBarIcon: (focused, tintColor)=> <Icon size={24} color={focused ? navBlue: tintColor} name="account-circle"/>
+            tabBarIcon: (focused, tintColor) => <Icon size={24} color={focused ? navBlue : tintColor}
+                                                      name="account-circle"/>
         }
     },
 }, {
-    // tabBarComponent: ,
+    tabBarComponent: props => {
+        const {navigation, navigationState} = props;
+        const jumpToIndex = index => {
+            const lastPosition = navigationState.index;
+            const tab = navigationState.routes[index];
+            const tabRoute = tab.routeName;
+            const firstTab = tab.routes[0].routeName;
+
+            lastPosition !== index && navigation.dispatch(NavigationActions.navigate({routeName: tabRoute}));
+            lastPosition === index && navigation.dispatch(NavigationActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({routeName: firstTab})]
+            }))
+        };
+        return <TabView.TabBarBottom {...props} jumpToIndex={jumpToIndex}/>
+    },
     tabBarPosition: 'bottom',
     lazy: true,
     swipeEnabled: true,
