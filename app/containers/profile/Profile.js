@@ -18,18 +18,18 @@ import {
     MenuTrigger,
 } from 'react-native-popup-menu';
 
-import * as ProfileActions from '../actions/profileActions';
-import {getUser} from '../actions/globalActions';
+import * as ProfileActions from '../../actions/profileActions';
+import {getUser} from '../../actions/globalActions';
 
-import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../actions/utils';
-import GlobalStyle from './globalStyle';
+import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../actions/utils';
+import GlobalStyle from '../globalStyle';
 
 
-import AvatarImage from '../components/AvatarImage';
-import BackBar from '../components/BackBar';
-import Loading from '../components/Loading';
+import AvatarImage from '../../components/AvatarImage';
+import BackBar from '../../components/BackBar';
+import Loading from '../../components/Loading';
 
-import TrainingPlan from './sub/TrainingPlan';
+import TrainingPlan from '../sub/TrainingPlan';
 
 
 moment.updateLocale('en', {
@@ -47,8 +47,7 @@ moment.updateLocale('en', {
 const Profile = React.createClass({
 
     propTypes: {
-        id: React.PropTypes.number,
-        request: React.PropTypes.object
+        id: React.PropTypes.number.isRequired,
     },
 
     getInitialState() {
@@ -76,20 +75,15 @@ const Profile = React.createClass({
     },
 
     getUser(refresh = false) {
-        if (!this.props.id || this.props.id == this.props.RequestUser.id) {
-            if (refresh)
-                this.props.getUser();
-            else
-                this.setState({user: this.props.RequestUser});
-        } else {
-            fetch(`${API_ENDPOINT}user/${this.props.id}/`, fetchData('GET', null, this.props.UserToken))
-                .then(checkStatus)
-                .then((responseJson) => {
-                    this.setState({
-                        user: responseJson
-                    })
-                });
-        }
+        this.setState({refreshing: true});
+        fetch(`${API_ENDPOINT}user/${this.props.id}/`, fetchData('GET', null, this.props.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+                this.setState({
+                    user: responseJson,
+                    refreshing: false
+                })
+            });
     },
 
     _redirect(routeName, props = null) {
@@ -136,7 +130,6 @@ const Profile = React.createClass({
     render() {
         const user = this.state.user;
         if (user) {
-            const isRequestUser = user.id == this.props.RequestUser.id;
             let userImage = user.profile.avatar;
             if (user.profile.thumbnail)
                 userImage = user.profile.thumbnail;
@@ -149,22 +142,15 @@ const Profile = React.createClass({
                                 {trunc(`${user.profile.first_name} ${user.profile.last_name}`, 26)}
                             </Text>
                         </View>
-                        {isRequestUser ?
-                            <TouchableOpacity style={styles.topRightNav}
-                                              onPress={this._redirect.bind(null, 'EditProfile', null)}>
-                                <Icon name="gear" size={20} color='#333333'/>
-                            </TouchableOpacity>
-                            :
-                            <Menu style={{right: 0, position: 'absolute'}}>
-                                <MenuTrigger style={styles.topRightNav}>
-                                    <Icon name="ellipsis-v" size={20} color='#333333'/>
-                                </MenuTrigger>
-                                <MenuOptions optionsContainerStyle={{alignSelf: 'center', width: 200, marginTop: 50}}>
-                                    <MenuOption onSelect={() => this.reportUser()} text='Report user'/>
-                                </MenuOptions>
-                            </Menu>
+                        <Menu style={{right: 0, position: 'absolute'}}>
+                            <MenuTrigger style={styles.topRightNav}>
+                                <Icon name="ellipsis-v" size={20} color='#333333'/>
+                            </MenuTrigger>
+                            <MenuOptions optionsContainerStyle={{alignSelf: 'center', width: 200, marginTop: 50}}>
+                                <MenuOption onSelect={() => this.reportUser()} text='Report user'/>
+                            </MenuOptions>
+                        </Menu>
 
-                        }
                         {(this.state.request && this.state.request.to_user == this.props.RequestUser.id) ?
                             <View style={styles.requestSection}>
                                 {this.state.request.from_user.type == 1 ?
@@ -200,17 +186,7 @@ const Profile = React.createClass({
 });
 
 
-
 const styles = StyleSheet.create({
-    customBack: {
-        position: 'absolute',
-        zIndex: 99,
-        right: 0,
-        top: 0,
-        left: 0,
-        backgroundColor: 'transparent',
-        borderBottomWidth: 0
-    },
     avatar: {
         height: 80,
         width: 80,

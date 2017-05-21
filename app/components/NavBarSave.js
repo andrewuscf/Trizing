@@ -2,16 +2,18 @@ import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Platform} from 'react-native';
 
 
-
 const Save = React.createClass({
     propTypes: {
-        save: React.PropTypes.func,
+        save: React.PropTypes.func.isRequired,
+        text: React.PropTypes.string,
     },
 
     render() {
         return (
             <TouchableOpacity style={styles.container} onPress={this.props.save}>
-                <Text style={styles.text}>Save</Text>
+                <Text style={styles.text}>
+                    {this.props.text ? this.props.text : 'Save'}
+                </Text>
             </TouchableOpacity>
         );
     }

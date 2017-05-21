@@ -30,7 +30,8 @@ export default function homeReducers(state = initialState, action = null) {
         case constants.GET_NOTIFICATIONS:
             return {
                 ...state,
-                Notifications: (action.refresh) ? action.response.results : state.Notifications.concat(action.response.results),
+                Notifications: (action.refresh) ? action.response.results
+                    : _.uniqBy(state.Notifications.concat(action.response.results), 'id'),
                 NotificationsNext: action.response.next,
                 Refreshing: false
             };
@@ -40,10 +41,10 @@ export default function homeReducers(state = initialState, action = null) {
                 ...state,
                 Notifications: state.Notifications.map(notification =>
                     (notification.id === action.noteId) ?
-                    {
-                        ...notification,
-                        unread: false
-                    } :
+                        {
+                            ...notification,
+                            unread: false
+                        } :
                         notification
                 )
             };

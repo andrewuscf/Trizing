@@ -47,6 +47,7 @@ export default function AppReducers(state = initialState, action = null) {
                 ...state,
                 RequestUser: action.request_user,
                 AppIsReady: true,
+                Refreshing: false
             };
 
         case constants.REFRESHING:

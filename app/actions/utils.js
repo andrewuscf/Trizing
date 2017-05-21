@@ -69,6 +69,7 @@ export function validateEmail(email) {
 export function resetNav(routeName, params = '') {
     return NavigationActions.reset({
         index: 0,
+        key: null,
         actions: [NavigationActions.navigate({routeName})],
         params: params
     });
