@@ -16,10 +16,8 @@ import { NavigationActions } from 'react-navigation';
 
 import * as GlobalActions from '../../actions/globalActions';
 
-import {getFontSize, API_ENDPOINT} from '../../actions/utils';
+import {getFontSize} from '../../actions/utils';
 
-import BackBar from '../../components/BackBar';
-import DisplayExerciseBox from '../../components/DisplayExerciseBox';
 import DaysOfWeek from '../../components/DaysOfWeek';
 import SubmitButton from '../../components/SubmitButton';
 
@@ -88,24 +86,13 @@ const CreateWorkoutDay = React.createClass({
         if (!this.state.saved) {
             this.props.actions.addEditWorkoutDay(this.getCurrentData());
         }
-        this._back();
-    },
-
-    _back() {
-        this.props.navigation.goBack()
+        this.props.navigation.goBack();
     },
 
     render: function () {
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                         contentContainerStyle={styles.contentContainerStyle}>
-                <BackBar back={this._back()} backText="" navStyle={{height: 40}}>
-                    <Text>{this.state.workout ? this.state.workout.name : null}</Text>
-                    <TouchableOpacity style={styles.save} onPress={this._save}>
-                        <Text>Save</Text>
-                    </TouchableOpacity>
-                </BackBar>
-
 
                 <Text style={styles.inputLabel}>Name of Day</Text>
                 <View style={[styles.inputWrap]}>

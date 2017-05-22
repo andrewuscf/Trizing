@@ -16,9 +16,7 @@ import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
-import GlobalStyle from '../globalStyle';
 
-import BackBar from '../../components/BackBar';
 import SetLogBox from '../../components/SetLogBox';
 import SubmitButton from '../../components/SubmitButton';
 
@@ -46,13 +44,9 @@ const WorkoutDaySession = React.createClass({
             this.setState({success: true});
             setTimeout(() => {
                 this.setState({success: false});
-                this._back();
+                this.props.navigation.goBack();
             }, 2000);
         }
-    },
-
-    _back() {
-        this.props.navigation.goBack()
     },
 
     renderHeader() {
@@ -65,11 +59,7 @@ const WorkoutDaySession = React.createClass({
                 </View>
             )
         }
-        return (
-            <BackBar back={this._back}>
-                <Text style={styles.header}>{this.props.workout_day.name}</Text>
-            </BackBar>
-        )
+        return null;
     },
 
     _onSubmit() {
@@ -135,6 +125,15 @@ const WorkoutDaySession = React.createClass({
         );
     }
 });
+
+WorkoutDaySession.navigationOptions = ({navigation}) => {
+    const {state, setParams} = navigation;
+    return {
+        headerTitle: state.params && state.params.workout_day ?
+            state.params.workout_day.name
+            : null,
+    };
+};
 
 
 const styles = StyleSheet.create({

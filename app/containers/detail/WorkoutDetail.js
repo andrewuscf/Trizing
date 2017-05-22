@@ -6,14 +6,11 @@ import {
     StyleSheet,
     Keyboard
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
 import moment from 'moment';
 
-import {getFontSize} from '../../actions/utils';
-
-import BackBar from '../../components/BackBar';
 import DisplayWorkoutDay from '../../components/DisplayWorkoutDay';
+
 
 const WorkoutDetail = React.createClass({
     propTypes: {
@@ -27,10 +24,6 @@ const WorkoutDetail = React.createClass({
         // }
     },
 
-    _back() {
-        this.props.navigation.goBack()
-    },
-
 
     render: function () {
         const todayDay = moment().isoWeekday();
@@ -41,10 +34,6 @@ const WorkoutDetail = React.createClass({
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                         contentContainerStyle={styles.contentContainerStyle}>
-                <BackBar back={this._back}>
-                    <Text>{this.props.workout ? this.props.workout.name : null}</Text>
-                </BackBar>
-
                 <View style={{marginBottom: 10}}>
                     {workout_days}
                 </View>
@@ -53,6 +42,15 @@ const WorkoutDetail = React.createClass({
         )
     }
 });
+
+WorkoutDetail.navigationOptions = ({navigation}) => {
+    const {state, setParams} = navigation;
+    return {
+        headerTitle: state.params && state.params.workout ?
+            state.params.workout.name
+            : null,
+    };
+};
 
 const styles = StyleSheet.create({
     flexCenter: {

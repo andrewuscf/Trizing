@@ -7,14 +7,10 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
-import _ from 'lodash';
 import moment from 'moment';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
-
-import BackBar from '../../components/BackBar';
-import SubmitButton from '../../components/SubmitButton';
 
 
 const Form = t.form.Form;
@@ -55,13 +51,9 @@ const CreateMacroLog = React.createClass({
             this.setState({success: true});
             setTimeout(() => {
                 this.setState({success: false});
-                this._back();
+                this.props.navigation.goBack();
             }, 2000);
         }
-    },
-
-    _back() {
-        this.props.navigation.goBack()
     },
 
 
@@ -74,10 +66,6 @@ const CreateMacroLog = React.createClass({
             };
             this.props.actions.addEditMacroLog(values, this.asyncActions);
         }
-    },
-
-    _cancel() {
-        this._back();
     },
 
     onChange(value) {

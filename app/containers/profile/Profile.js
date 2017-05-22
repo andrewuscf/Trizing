@@ -26,7 +26,6 @@ import GlobalStyle from '../globalStyle';
 
 
 import AvatarImage from '../../components/AvatarImage';
-import BackBar from '../../components/BackBar';
 import Loading from '../../components/Loading';
 
 import TrainingPlan from '../sub/TrainingPlan';

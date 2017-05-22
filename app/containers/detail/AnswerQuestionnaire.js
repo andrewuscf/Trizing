@@ -8,18 +8,13 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import moment from 'moment';
 import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
 
-import GlobalStyle from '../globalStyle';
 import {getFontSize} from '../../actions/utils';
 
 import AnswerQuestionBox from '../../components/AnswerQuestionBox';
-import BackBar from '../../components/BackBar';
-import SubmitButton from '../../components/SubmitButton';
-
 
 const AnswerQuestionnaire = React.createClass({
     propTypes: {
@@ -32,23 +27,22 @@ const AnswerQuestionnaire = React.createClass({
         }
     },
 
+    componentDidMount() {
+        this.props.navigation.setParams({handleSave: this.onPress});
+    },
+
     rows: [],
 
     asyncActions(start) {
         if (start) {
-            this.refs.post_button.setState({busy: true});
+            // fail
         } else {
-            this.refs.post_button.setState({busy: false});
             this.setState({success: true});
             setTimeout(() => {
                 this.setState({success: false});
-                this._back();
+                this.props.navigation.goBack();
             }, 2000);
         }
-    },
-
-    _back() {
-        this.props.navigation.goBack()
     },
 
     onPress() {
@@ -78,7 +72,6 @@ const AnswerQuestionnaire = React.createClass({
 
 
     render() {
-        const questionnaire = this.props.questionnaire;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = ds.cloneWithRows(this.props.questionnaire.questions);
         return (
@@ -90,13 +83,8 @@ const AnswerQuestionnaire = React.createClass({
                         </Text>
                     </View>
                     :
-                    <BackBar back={this._back}/>
+                    null
                 }
-                <View style={[{padding: 20}]}>
-                    <Text style={[{fontSize: getFontSize(26), color: 'grey'}]}>
-                        {questionnaire.name}
-                    </Text>
-                </View>
                 <ListView ref='questionnaire_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                           keyboardShouldPersistTaps="handled"
                           style={[styles.container, {margin: 20}]} enableEmptySections={true}
@@ -105,17 +93,19 @@ const AnswerQuestionnaire = React.createClass({
                               <AnswerQuestionBox ref={(row) => this.rows.push(row)}
                                                  question={question} number={parseInt(rowID) + 1}/>}
                 />
-                {!this.state.success ?
-                    <View style={styles.content}>
-                        <SubmitButton ref="post_button" onPress={this.onPress} buttonStyle={styles.buttonStyle}
-                                      text="Continue"/>
-                    </View>
-                    : null
-                }
             </View>
         );
     }
 });
+
+AnswerQuestionnaire.navigationOptions = ({navigation}) => {
+    const {state, setParams} = navigation;
+    return {
+        headerTitle: state.params && state.params.questionnaire ?
+            state.params.questionnaire.name
+            : null,
+    };
+};
 
 const styles = StyleSheet.create({
     container: {

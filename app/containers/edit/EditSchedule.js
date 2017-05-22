@@ -16,10 +16,6 @@ import moment from 'moment';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
-import GlobalStyle from '../../containers/globalStyle';
-
-import BackBar from '../../components/BackBar';
-import CreateWorkoutDay from '../sub/CreateWorkoutDay';
 
 
 const EditSchedule = React.createClass({
@@ -36,12 +32,8 @@ const EditSchedule = React.createClass({
 
     asyncActions(data = {}){
         if (data.deleted) {
-            this._back();
+            this.props.navigation.goBack();
         }
-    },
-
-    _back() {
-        this.props.navigation.goBack()
     },
 
     componentDidUpdate(prevProps, prevState) {
@@ -107,7 +99,6 @@ const EditSchedule = React.createClass({
             <View style={styles.flexCenter}>
                 <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                             contentContainerStyle={styles.contentContainerStyle}>
-                    <BackBar back={this._back} backText="" navStyle={{height: 40}}/>
 
                     <View style={{marginBottom: 10}}>
                         <Text style={styles.title}>

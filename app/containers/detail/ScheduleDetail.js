@@ -7,14 +7,11 @@ import {
     TouchableOpacity,
     Keyboard
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
 import moment from 'moment';
 
 import {getFontSize} from '../../actions/utils';
 import GlobalStyle from '../../containers/globalStyle';
-
-import BackBar from '../../components/BackBar';
 
 
 const ScheduleDetail = React.createClass({
@@ -25,11 +22,6 @@ const ScheduleDetail = React.createClass({
     _toWorkoutDay(workout) {
         this.props.navigation.navigate('WorkoutDetail', {workout: workout});
     },
-
-    _back() {
-        this.props.navigation.goBack()
-    },
-
 
     render: function () {
         const today = moment();
@@ -57,9 +49,6 @@ const ScheduleDetail = React.createClass({
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                         contentContainerStyle={styles.contentContainerStyle}>
-                <BackBar back={this._back}>
-                    <Text>{this.props.schedule ? this.props.schedule.name : null}</Text>
-                </BackBar>
 
                 <View style={{marginBottom: 10}}>
                     {steps}
@@ -70,6 +59,15 @@ const ScheduleDetail = React.createClass({
         )
     }
 });
+
+ScheduleDetail.navigationOptions = ({navigation}) => {
+    const {state, setParams} = navigation;
+    return {
+        headerTitle: state.params && state.params.schedule ?
+            state.params.schedule.name
+            : null,
+    };
+};
 
 const styles = StyleSheet.create({
     flexCenter: {

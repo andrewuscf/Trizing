@@ -22,12 +22,11 @@ import {
 import * as ProfileActions from '../../actions/profileActions';
 import {getUser} from '../../actions/globalActions';
 
-import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../actions/utils';
+import {trunc, getFontSize} from '../../actions/utils';
 import GlobalStyle from '../globalStyle';
 
 
 import AvatarImage from '../../components/AvatarImage';
-import BackBar from '../../components/BackBar';
 import Loading from '../../components/Loading';
 
 import TrainingPlan from '../sub/TrainingPlan';

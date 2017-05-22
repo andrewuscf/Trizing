@@ -9,14 +9,8 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
-import {getFontSize} from '../../actions/utils';
-
-import BackBar from '../../components/BackBar';
-
 
 
 const CreateNote = React.createClass({
@@ -30,7 +24,7 @@ const CreateNote = React.createClass({
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            // this._back();
+            this.props.navigation.goBack();
         }
     },
 
@@ -38,17 +32,11 @@ const CreateNote = React.createClass({
 
     },
 
-    _back() {
-        this.props.navigation.goBack()
-    },
-
-
     render: function () {
         return (
             <View style={{flex: 1}}>
                 <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                             contentContainerStyle={styles.contentContainerStyle}>
-                    <BackBar back={this._back} navStyle={{height: 40}}/>
 
                     <View style={{marginBottom: 10}}>
                         <Text>test</Text>

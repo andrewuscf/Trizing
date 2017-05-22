@@ -16,7 +16,6 @@ import _ from 'lodash';
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 
-import BackBar from '../../components/BackBar';
 import DisplayWorkoutDay from '../../components/DisplayWorkoutDay';
 
 import CreateWorkoutDay from '../sub/CreateWorkoutDay';
@@ -41,12 +40,8 @@ const EditWorkout = React.createClass({
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            // this._back();
+            // this.props.navigation.goBack();
         }
-    },
-
-    _back() {
-        this.props.navigation.goBack()
     },
 
     componentDidUpdate(prevProps, prevState) {
@@ -69,10 +64,6 @@ const EditWorkout = React.createClass({
         }
     },
 
-    _back() {
-        this.props.navigation.goBack()
-    },
-
 
     render: function () {
         let workout_days = (
@@ -90,7 +81,6 @@ const EditWorkout = React.createClass({
             <View style={{flex: 1}}>
                 <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                             contentContainerStyle={styles.contentContainerStyle}>
-                    <BackBar back={this._back} navStyle={{height: 40}}/>
 
                     <View style={{marginBottom: 10}}>
                         <Text style={styles.title}>

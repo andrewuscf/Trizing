@@ -18,9 +18,7 @@ import * as GlobalActions from '../../actions/globalActions';
 
 import {getFontSize} from '../../actions/utils';
 
-import BackBar from '../../components/BackBar';
 import CreateSetBox from '../../components/CreateSetBox';
-import SubmitButton from '../../components/SubmitButton';
 
 
 const BlankSet = {reps: null, weight: null};
@@ -115,11 +113,7 @@ const CreateExercise = React.createClass({
         });
         if (sets.length > 0)
             this.props.actions.addEditExercise(sets);
-        this._back();
-    },
-
-    _back() {
-        this.props.navigation.goBack()
+        this.props.navigation.goBack();
     },
 
 
@@ -134,12 +128,6 @@ const CreateExercise = React.createClass({
         });
         return (
             <View style={{flex: 1}}>
-                <BackBar back={this._back} backText="" navStyle={{height: 40}}>
-                    <Text>{this.state.workout ? this.state.workout_day.name : null}</Text>
-                    <TouchableOpacity style={styles.save} onPress={this._save}>
-                        <Text style={{fontSize: getFontSize(24),fontFamily: 'OpenSans-Bold'}}>Save</Text>
-                    </TouchableOpacity>
-                </BackBar>
                 <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                             contentContainerStyle={styles.contentContainerStyle}>
 
@@ -175,6 +163,15 @@ const CreateExercise = React.createClass({
         )
     }
 });
+
+CreateExercise.navigationOptions = ({navigation}) => {
+    const {state, setParams} = navigation;
+    return {
+        headerTitle: state.params && state.params.workout_day ?
+            state.params.workout_day.name
+            : null,
+    };
+};
 
 const iconColor = '#8E8E8E';
 

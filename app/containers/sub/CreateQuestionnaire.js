@@ -15,7 +15,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 
-import BackBar from '../../components/BackBar';
 import SubmitButton from '../../components/SubmitButton';
 
 
@@ -35,12 +34,8 @@ const CreateQuestionnaire = React.createClass({
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            this._back();
+            this.props.navigation.goBack();
         }
-    },
-
-    _back() {
-        this.props.navigation.goBack()
     },
 
     isValid() {
@@ -123,7 +118,6 @@ const CreateQuestionnaire = React.createClass({
             <View style={{flex: 1}}>
                 <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}
                             keyboardShouldPersistTaps="handled">
-                    <BackBar back={this._back} backText="Cancel" navStyle={{height: 40}}/>
                     <View style={styles.formContainer}>
                         <Text style={styles.inputLabel}>Survey Name</Text>
                         <View style={styles.inputWrap}>

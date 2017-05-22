@@ -14,9 +14,7 @@ import _ from 'lodash';
 import * as chatActions from '../../actions/chatActions';
 import {getFontSize, trunc} from '../../actions/utils';
 
-import BackBar from '../../components/BackBar';
 import AvatarImage from '../../components/AvatarImage';
-import SubmitButton from '../../components/SubmitButton';
 
 
 const window = Dimensions.get('window');

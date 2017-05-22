@@ -8,13 +8,11 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
-import moment from 'moment';
 import { NavigationActions } from 'react-navigation';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 
-import BackBar from '../../components/BackBar';
 import SelectInput from '../../components/SelectInput';
 import SubmitButton from '../../components/SubmitButton';
 
@@ -75,10 +73,6 @@ const CreateSchedule = React.createClass({
         }
     },
 
-    _back() {
-        this.props.navigation.goBack()
-    },
-
     selectTemplate(id) {
         this.setState({
             template: id
@@ -107,7 +101,6 @@ const CreateSchedule = React.createClass({
         };
         return (
             <View style={styles.flexCenter}>
-                <BackBar back={this._back} backText="Cancel" navStyle={{height: 40}}/>
                 <View style={{margin: 10}}>
                     <Form
                         ref="form"

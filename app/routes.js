@@ -115,6 +115,8 @@ const HomeNav = StackNavigator({
     WorkoutDetail: {screen: paramsToProps(WorkoutDetail)},
     WorkoutDaySession: {screen: paramsToProps(WorkoutDaySession)},
 
+    EventDetail: {screen: paramsToProps(EventDetail)},
+
 
 }, {
     headerMode: 'screen',
@@ -128,7 +130,7 @@ const HomeNav = StackNavigator({
             headerStyle: {
                 backgroundColor: 'white'
             },
-            headerBackTitle: null
+            headerBackTitle: null,
         };
     },
     cardStyle: {
@@ -157,7 +159,7 @@ const CalendarNav = StackNavigator({
             headerStyle: {
                 backgroundColor: 'white'
             },
-            headerBackTitle: null
+            headerBackTitle: null,
         };
     },
     cardStyle: {
@@ -186,7 +188,7 @@ const ChatNav = StackNavigator({
             headerStyle: {
                 backgroundColor: 'white'
             },
-            headerBackTitle: null
+            headerBackTitle: null,
         };
     },
     cardStyle: {
@@ -286,12 +288,12 @@ export const AppNavigator = StackNavigator({
     navigationOptions: ({navigation}) => {
         const {state, setParams} = navigation;
         return {
-            headerRightheaderRight: state.params && state.params.handleSave ?
+            headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
                 : null,
             headerStyle: {
                 backgroundColor: 'white'
-            }
+            },
         };
     },
     cardStyle: {

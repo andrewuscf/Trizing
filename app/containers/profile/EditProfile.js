@@ -25,17 +25,15 @@ import {
     MenuTrigger,
 } from 'react-native-popup-menu';
 
-import {fetchData, API_ENDPOINT, getFontSize, resetNav} from '../../actions/utils';
+import {getFontSize, resetNav} from '../../actions/utils';
 
 import * as ProfileActions from '../../actions/profileActions';
 import {removeToken} from '../../actions/globalActions';
 
 import AvatarImage from '../../components/AvatarImage';
-import BackBar from '../../components/BackBar';
 import CameraPage from '../../components/CameraPage';
 import {EMPTY_AVATAR} from '../../assets/constants';
 import Loading from '../../components/Loading';
-import Save from '../../components/NavBarSave';
 import SubmitButton from '../../components/SubmitButton';
 
 const {width: deviceWidth} = Dimensions.get('window');
@@ -309,11 +307,8 @@ const EditProfile = React.createClass({
     }
 });
 
-EditProfile.navigationOptions = ({navigation}) => {
-    const {state, setParams} = navigation;
-    return {
-        title: 'Edit Profile',
-    };
+EditProfile.navigationOptions = {
+    title: 'Edit Profile',
 };
 
 

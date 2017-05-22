@@ -14,13 +14,11 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {fetchData, API_ENDPOINT, validateEmail, getFontSize} from '../../actions/utils';
+import {getFontSize} from '../../actions/utils';
 
 import * as GlobalActions from '../../actions/globalActions';
 
-import GlobalStyle from '../globalStyle';
 
-import BackBar from '../../components/BackBar';
 import NotificationBox from '../../components/NotificationBox';
 
 
@@ -46,10 +44,6 @@ const Notifications = React.createClass({
     onEndReached() {
         if (this.props.NotificationsNext)
             this.props.actions.getNotifications();
-    },
-
-    _back() {
-        this.props.navigation.goBack()
     },
 
     render() {

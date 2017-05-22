@@ -6,7 +6,6 @@ import {
     RefreshControl,
     ScrollView,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
 import moment from 'moment';
 import {bindActionCreators} from 'redux';
@@ -14,9 +13,7 @@ import {connect} from 'react-redux';
 
 import {getFontSize, fetchData, API_ENDPOINT} from '../../actions/utils';
 import * as CalendarActions from '../../actions/calendarActions';
-import GlobalStyle from '../globalStyle';
 
-import BackBar from '../../components/BackBar';
 import PeopleBar from '../../components/PeopleBar';
 
 const EventDetail = React.createClass({
@@ -41,10 +38,6 @@ const EventDetail = React.createClass({
             });
     },
 
-    _back() {
-        this.props.navigation.goBack()
-    },
-
 
     render: function () {
         const event = this.state.event;
@@ -58,7 +51,6 @@ const EventDetail = React.createClass({
         }
         return (
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
-                <BackBar back={this._back}/>
                 {start_time ?
                     <Text style={styles.eventDate}>
                         {start_time.format('ddd MMM DD, h:mm A ')} - {end_time.format('h:mm A')}

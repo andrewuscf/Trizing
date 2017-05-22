@@ -15,18 +15,12 @@ import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import fetch from 'react-native-cancelable-fetch';
 
-import {fetchData, API_ENDPOINT, validateEmail, checkStatus} from '../../actions/utils';
+import {fetchData, API_ENDPOINT, checkStatus} from '../../actions/utils';
 
 import * as HomeActions from '../../actions/homeActions';
 
-import GlobalStyle from '../globalStyle';
-
-import {EMPTY_AVATAR} from '../../assets/constants';
-
-import BackBar from '../../components/BackBar';
 import Loading from '../../components/Loading';
 import PersonBox from '../../components/PersonBox';
-import SubmitButton from '../../components/SubmitButton';
 
 
 const ManageClients = React.createClass({
@@ -109,30 +103,23 @@ const ManageClients = React.createClass({
         }
     },
 
-    _back() {
-        this.props.navigation.goBack()
-    },
-
     renderSearchBar(){
         return (
-            <View>
-                <BackBar back={this._back} navStyle={{height: 40}}/>
-                <View style={styles.subNav}>
-                    <Icon name="search" size={16} color={this.state.iconColor}/>
-                    <TextInput
-                        ref="searchinput"
-                        style={[styles.filterInput]}
-                        underlineColorAndroid='transparent'
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                        placeholderTextColor='#a7a59f'
-                        onChangeText={this.textChange}
-                        onFocus={this.onFocus}
-                        value={this.state.filterText}
-                        placeholder="Search"
-                    />
-                    {this._renderCancel()}
-                </View>
+            <View style={styles.subNav}>
+                <Icon name="search" size={16} color={this.state.iconColor}/>
+                <TextInput
+                    ref="searchinput"
+                    style={[styles.filterInput]}
+                    underlineColorAndroid='transparent'
+                    autoCapitalize='none'
+                    autoCorrect={false}
+                    placeholderTextColor='#a7a59f'
+                    onChangeText={this.textChange}
+                    onFocus={this.onFocus}
+                    value={this.state.filterText}
+                    placeholder="Search"
+                />
+                {this._renderCancel()}
             </View>
         )
     },
@@ -160,6 +147,10 @@ const ManageClients = React.createClass({
     }
 });
 
+ManageClients.navigationOptions = {
+    title: 'Manage Clients',
+};
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -179,7 +170,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 40,
+        height: 50,
         marginLeft: 10,
         marginRight: 10,
         borderBottomWidth: 1,

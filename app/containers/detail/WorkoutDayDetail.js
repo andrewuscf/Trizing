@@ -15,9 +15,7 @@ import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
-import GlobalStyle from '../globalStyle';
 
-import BackBar from '../../components/BackBar';
 import CustomIcon from '../../components/CustomIcon';
 import DaysOfWeek from '../../components/DaysOfWeek';
 import DisplayExerciseBox from '../../components/DisplayExerciseBox';
@@ -55,20 +53,14 @@ const WorkoutDayDetail = React.createClass({
         this.props.navigation.navigate('CreateExercise', {workout_day: this.state.workout_day, exercise: exercise});
     },
 
-    _back() {
-        this.props.navigation.goBack()
-    },
-
 
     render: function () {
-        let exercises = null;
         if (!this.state.workout_day)
             return null;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = ds.cloneWithRows(this.state.workout_day.exercises);
         return (
             <View style={styles.container}>
-                <BackBar back={this._back} />
                 <Text style={[styles.title]}>{this.state.workout_day.name}</Text>
 
                 <DaysOfWeek days={this.state.workout_day.days}/>

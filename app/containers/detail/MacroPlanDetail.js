@@ -16,9 +16,7 @@ import _ from 'lodash';
 
 import {getFontSize} from '../../actions/utils';
 
-import BackBar from '../../components/BackBar';
 import MacroBoxDay from '../../components/MacroBoxDay';
-import SubmitButton from '../../components/SubmitButton';
 
 
 const MacroPlanDetail = React.createClass({
@@ -53,10 +51,6 @@ const MacroPlanDetail = React.createClass({
         );
     },
 
-    _back() {
-        this.props.navigation.goBack()
-    },
-
     renderHeader() {
         const plan = this.props.macro_plan;
         let created_at = moment.utc(plan.created_at).local();
@@ -66,7 +60,6 @@ const MacroPlanDetail = React.createClass({
         });
         return (
             <View>
-                <BackBar back={this._back}/>
                 <View style={styles.center}>
                     <View style={styles.details}>
                         <Text style={styles.mainText}>{plan.name}</Text>

@@ -9,10 +9,7 @@ import {
 import {connect} from 'react-redux';
 import _ from 'lodash';
 
-import GlobalStyle from '../globalStyle';
 import {getFontSize, API_ENDPOINT, checkStatus, fetchData} from '../../actions/utils';
-
-import BackBar from '../../components/BackBar';
 
 
 const AnswersDisplay = React.createClass({
@@ -55,22 +52,12 @@ const AnswersDisplay = React.createClass({
         )
     },
 
-    _back() {
-        this.props.navigation.goBack()
-    },
-
-
     render() {
-        const questionnaire = this.props.questionnaire;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = ds.cloneWithRows(this.props.questionnaire.questions);
         return (
             <View style={styles.container}>
-                <BackBar back={this._back}/>
                 <View style={[{padding: 20}]}>
-                    <Text style={[{fontSize: getFontSize(26)}]}>
-                        {questionnaire.name}
-                    </Text>
                     {this.props.client ?
                         <Text style={[{fontSize: getFontSize(14), paddingTop: 5, color: 'grey'}]}>
                             Answered by: {this.props.client.profile.first_name} {this.props.client.profile.last_name}
@@ -88,6 +75,16 @@ const AnswersDisplay = React.createClass({
         );
     }
 });
+
+AnswersDisplay.navigationOptions = ({navigation}) => {
+    const {state, setParams} = navigation;
+    return {
+        headerTitle: state.params && state.params.questionnaire ?
+            state.params.questionnaire.name
+            : null,
+    };
+};
+
 
 const styles = StyleSheet.create({
     container: {
@@ -116,11 +113,11 @@ const styles = StyleSheet.create({
     },
     answerBox: {
         borderTopWidth: 1,
-        borderColor: 'grey',
+        borderColor: '#e1e3df',
     },
     answerText: {
         fontSize: getFontSize(20),
-        color: 'grey',
+        color: 'blue',
         paddingTop: 10
     }
 });
