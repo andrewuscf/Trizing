@@ -212,7 +212,6 @@ const Login = React.createClass({
                                      onKeyboardWillHide={() => {
                                          this.setState({keyboard: false});
                                      }}
-                                     extraHeight={20}
                                      scrollEnabled={this.state.keyboard}>
                 {this.state.forgotCreds || this.state.signUp ?
                     <BackBar back={this.back} backText='Log In'/>
