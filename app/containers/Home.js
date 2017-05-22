@@ -12,7 +12,9 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import IconBadge from 'react-native-icon-badge';
+
 
 import * as HomeActions from '../actions/homeActions';
 import * as GlobalActions from '../actions/globalActions';
@@ -20,6 +22,8 @@ import * as GlobalActions from '../actions/globalActions';
 import {getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
+
+import AvatarImage from '../components/AvatarImage';
 import NotificationBox from '../components/NotificationBox';
 import PeopleBar from '../components/PeopleBar';
 
@@ -73,13 +77,40 @@ const Home = React.createClass({
         }
     },
 
+    renderNotifications() {
+        const unread_count = _.filter(this.props.Notifications, function (o) {
+            return o.unread;
+        }).length;
+        return (
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Notifications')}
+                              style={[{padding: 10, paddingRight: 20}]}>
+                {unread_count ?
+                    <IconBadge
+                        MainElement={
+                            <Icon name="notifications" size={getFontSize(50)}/>
+                        }
+                        BadgeElement={
+                            <Text style={{color: '#FFFFFF'}}>{unread_count}</Text>
+                        }
+
+                        IconBadgeStyle={
+                            {top: 0}
+                        }
+
+                    /> :
+                    <Icon name="notifications" size={getFontSize(50)}/>
+                }
+            </TouchableOpacity>
+        )
+    },
+
 
     render() {
         const user = this.props.RequestUser;
         if (!user) return null;
         const isTrainer = user.type == 1;
         let content = null;
-        const { navigate } = this.props.navigation;
+        const {navigate} = this.props.navigation;
         if (isTrainer) {
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             const QuestionnaireDS = ds.cloneWithRows(this.props.Questionnaires);
@@ -89,7 +120,7 @@ const Home = React.createClass({
             content = (
                 <View>
                     <PeopleBar navigate={navigate} people={this.props.Clients}
-                               manageClients={()=> navigate( 'ManageClients')}/>
+                               manageClients={() => navigate('ManageClients')}/>
 
                     <View style={[styles.box]}>
                         <Text style={styles.textTitle}>Program Templates</Text>
@@ -99,7 +130,8 @@ const Home = React.createClass({
                                       <TouchableOpacity style={styles.link}
                                                         onPress={this._redirect.bind(null, 'EditSchedule', {scheduleId: schedule.id})}>
                                           <Text style={styles.simpleTitle}>{schedule.name}</Text>
-                                          <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
+                                          <Icon name="keyboard-arrow-right" size={getFontSize(18)}
+                                                style={styles.linkArrow}/>
                                       </TouchableOpacity>
                                   }
                         />
@@ -118,14 +150,15 @@ const Home = React.createClass({
                                       <TouchableOpacity style={styles.link}
                                                         onPress={this._redirect.bind(null, 'AnswersDisplay', {questionnaire: questionnaire})}>
                                           <Text style={styles.simpleTitle}>{questionnaire.name}</Text>
-                                          <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
+                                          <Icon name="keyboard-arrow-right" size={getFontSize(18)}
+                                                style={styles.linkArrow}/>
                                       </TouchableOpacity>
                                   }
                         />
                         <TouchableOpacity onPress={this._redirect.bind(null, 'CreateQuestionnaire', null)}
                                           style={styles.link}>
                             <Text style={styles.simpleTitle}>Create Survey</Text>
-                            <Icon name="plus" size={getFontSize(18)} style={styles.linkArrow}/>
+                            <Icon name="add" size={getFontSize(18)} style={styles.linkArrow}/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -144,7 +177,11 @@ const Home = React.createClass({
                     <View>
                         {data.macro_plan_day ?
                             <View style={[styles.box, {marginBottom: 5, marginTop: 0}]}>
-                                <Text style={styles.textTitle}>{`Today`}</Text>
+                                <View style={styles.todayTitle}>
+                                    <Icon size={24} color='black' name="date-range"/>
+                                    <Text style={styles.textTitle}>{`Today`}</Text>
+                                </View>
+
                                 <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
                                     <View style={styles.details}>
                                         <Text style={styles.sectionTitle}>Fats</Text>
@@ -167,12 +204,14 @@ const Home = React.createClass({
                                         onPress={this._redirect.bind(null, 'CreateMacroLog', {macro_plan_day: data.macro_plan_day})}
                                         style={styles.link}>
                                         <Text style={styles.simpleTitle}>Log Today</Text>
-                                        <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
+                                        <Icon name="keyboard-arrow-right" size={getFontSize(18)}
+                                              style={styles.linkArrow}/>
                                     </TouchableOpacity>
                                     : null
                                 }
                             </View>
-                            : <View style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
+                            : <View
+                                style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
                                 <Text style={styles.textTitle}>No Nutrition Plan Today</Text>
                             </View>
                         }
@@ -189,7 +228,8 @@ const Home = React.createClass({
 
                             </TouchableOpacity>
                             :
-                            <View style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
+                            <View
+                                style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
                                 <Text style={styles.textTitle}>No Workout Today</Text>
                             </View>
                         }
@@ -200,17 +240,19 @@ const Home = React.createClass({
                 content = (
                     <View style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
                         <Text style={styles.textTitle}>You have no trainer</Text>
-                        <TouchableOpacity onPress={this._redirect.bind(null, 'ManageClients', null)} style={styles.link}>
+                        <TouchableOpacity onPress={this._redirect.bind(null, 'ManageClients', null)}
+                                          style={styles.link}>
                             <Text style={styles.simpleTitle}>Find a trainer</Text>
-                            <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
+                            <Icon name="keyboard-arrow-right" size={getFontSize(18)} style={styles.linkArrow}/>
                         </TouchableOpacity>
                     </View>
                 )
             }
 
         }
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        const dataSource = ds.cloneWithRows(this.props.Notifications.slice(0, 4));
+        let userImage = user.profile.avatar;
+        if (user.profile.thumbnail)
+            userImage = user.profile.thumbnail;
         return (
             <View style={GlobalStyle.noHeaderContainer}>
                 <ScrollView ref='home_scroll'
@@ -218,23 +260,20 @@ const Home = React.createClass({
                                                             onRefresh={this._refresh}/>}
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
 
-                    {content}
-                    {dataSource.getRowCount() > 0 ?
-                        <View style={styles.box}>
-                            <ListView ref='notification_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                                      style={styles.container} enableEmptySections={true} dataSource={dataSource}
-                                      renderRow={(notification) => <NotificationBox
-                                          navigate={this.props.navigation.navigate} notification={notification}
-                                          readNotification={this.props.readNotification}/>}
-                            />
-                            <TouchableOpacity onPress={this._redirect.bind(null, 'Notifications', null)}
-                                              style={styles.link}>
-                                <Text style={styles.simpleTitle}>View All Notifications</Text>
-                                <Icon name="angle-right" size={getFontSize(18)} style={styles.linkArrow}/>
-                            </TouchableOpacity>
+                    <View style={styles.userProfile}>
+                        <View style={styles.topItem}/>
+                        <View style={[{flex: 3.3, justifyContent: 'center', alignItems: 'center'}]}>
+                            <AvatarImage style={styles.avatar} image={userImage}
+                                         redirect={this._redirect.bind(null, 'MyProfile')}/>
                         </View>
-                        : null
-                    }
+                        <View style={styles.topItem}>
+                            {this.renderNotifications()}
+                        </View>
+                    </View>
+
+                    <View style={{flex: .8}}>
+                        {content}
+                    </View>
                 </ScrollView>
             </View>
         )
@@ -244,10 +283,12 @@ const Home = React.createClass({
 
 const styles = StyleSheet.create({
     scrollView: {
-        backgroundColor: '#f1f1f1'
+        flex: 1,
+        flexDirection: 'column'
     },
     contentContainerStyle: {
-        backgroundColor: '#f1f1f1'
+        flex: 1,
+        flexDirection: 'column'
     },
     row: {
         flexDirection: 'row',
@@ -299,7 +340,6 @@ const styles = StyleSheet.create({
     },
     link: {
         flexDirection: 'row',
-        flex: 1,
         alignItems: 'center',
         borderTopWidth: 0.5,
         borderColor: '#e1e3df',
@@ -314,6 +354,26 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         fontFamily: 'OpenSans-Semibold',
         textDecorationLine: 'underline'
+    },
+    userProfile: {
+        flex: .1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    avatar: {
+        borderColor: 'black',
+        borderWidth: 1,
+    },
+    topItem: {
+        flex: 3.3,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+    },
+    todayTitle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row'
     }
 });
 

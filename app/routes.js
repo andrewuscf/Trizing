@@ -64,7 +64,7 @@ const paramsToProps = (SomeComponent) => {
     }
 };
 
-const navBlue = 'blue';
+const navBlue = '#000000';
 
 
 const HomeNav = StackNavigator({
@@ -75,10 +75,49 @@ const HomeNav = StackNavigator({
         }
     },
     ManageClients: {screen: ManageClients},
-    Notifications: {screen: Notifications},
+    Notifications: {
+        screen: Notifications,
+        navigationOptions: {
+            headerTitle: 'Notifications',
+        }
+    },
     CreateMacroLog: {screen: paramsToProps(CreateMacroLog)},
+
+    MyProfile: {
+        path: 'profile/me',
+        screen: paramsToProps(MyProfile),
+    },
+    EditProfile: {screen: EditProfile},
+
     Profile: {screen: paramsToProps(Profile)},
+
+
+
+    CreateQuestionnaire: {screen: CreateQuestionnaire},
+
+
+    AnswerQuestionnaire: {screen: paramsToProps(AnswerQuestionnaire)},
+    AnswersDisplay: {screen: paramsToProps(AnswersDisplay)},
+
+
+    MacroPlanDetail: {screen: paramsToProps(MacroPlanDetail)},
+    ScheduleDetail: {screen: paramsToProps(ScheduleDetail)},
+
+
+    TrainingPlan: {screen: paramsToProps(TrainingPlan)},
+    CreateWorkout: {screen: paramsToProps(CreateWorkout)},
+    EditWorkout: {screen: paramsToProps(EditWorkout)},
+    CreateWorkoutDay: {screen: paramsToProps(CreateWorkoutDay)},
+    CreateExercise: {screen: paramsToProps(CreateExercise)},
+    WorkoutDayDetail: {screen: paramsToProps(WorkoutDayDetail)},
+    CreateSchedule: {screen: paramsToProps(CreateSchedule)},
+    EditSchedule: {screen: paramsToProps(EditSchedule)},
+    WorkoutDetail: {screen: paramsToProps(WorkoutDetail)},
+    WorkoutDaySession: {screen: paramsToProps(WorkoutDaySession)},
+
+
 }, {
+    headerMode: 'screen',
     initialRouteName: 'Home',
     navigationOptions: ({navigation}) => {
         const {state, setParams} = navigation;
@@ -88,7 +127,8 @@ const HomeNav = StackNavigator({
                 : null,
             headerStyle: {
                 backgroundColor: 'white'
-            }
+            },
+            headerBackTitle: null
         };
     },
     cardStyle: {
@@ -154,37 +194,43 @@ const ChatNav = StackNavigator({
     }
 });
 
-const ProfileNav = StackNavigator({
-    MyProfile: {
-        path: 'profile/me',
-        screen: paramsToProps(MyProfile),
-        navigationOptions: {
-            header: null,
-        }
-    },
-    EditProfile: {screen: EditProfile},
-
-    Profile: {screen: paramsToProps(Profile)},
-}, {
-    initialRouteName: 'MyProfile',
-    navigationOptions: ({navigation}) => {
-        const {state, setParams} = navigation;
-        return {
-            headerRight: state.params && state.params.handleSave ?
-                <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
-                : null,
-            headerStyle: {
-                backgroundColor: 'white'
-            }
-        };
-    },
-    cardStyle: {
-        backgroundColor: 'white'
-    }
-});
+// const ProfileNav = StackNavigator({
+//     MyProfile: {
+//         path: 'profile/me',
+//         screen: paramsToProps(MyProfile),
+//         navigationOptions: {
+//             header: null,
+//         }
+//     },
+//     EditProfile: {screen: EditProfile},
+//
+//     Profile: {screen: paramsToProps(Profile)},
+// }, {
+//     initialRouteName: 'MyProfile',
+//     navigationOptions: ({navigation}) => {
+//         const {state, setParams} = navigation;
+//         return {
+//             headerRight: state.params && state.params.handleSave ?
+//                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
+//                 : null,
+//             headerStyle: {
+//                 backgroundColor: 'white'
+//             }
+//         };
+//     },
+//     cardStyle: {
+//         backgroundColor: 'white'
+//     }
+// });
 
 
 const MainTabNav = TabNavigator({
+    Chat: {
+        screen: ChatNav,
+        navigationOptions: {
+            tabBarIcon: (data) => <Icon size={24} color={data.tintColor} name="comment"/>
+        }
+    },
     Home: {
         screen: HomeNav,
         navigationOptions: {
@@ -205,46 +251,27 @@ const MainTabNav = TabNavigator({
     //         tabBarIcon: (data) => <Icon size={24} color={data.tintColor} name="list"/>
     //     }
     // },
-    Chat: {
-        screen: ChatNav,
-        navigationOptions: {
-            tabBarIcon: (data) => <Icon size={24} color={data.tintColor} name="comment"/>
-        }
-    },
-    MyProfile: {
-        screen: ProfileNav,
-        navigationOptions: {
-            headerStyle: {
-                position: 'absolute',
-                // zIndex: 99,
-                right: 0,
-                top: 0,
-                left: 0,
-                backgroundColor: 'transparent',
-            },
-            // title: '',
-            tabBarIcon: (data) => <Icon size={24} color={data.tintColor}
-                                        name="account-circle"/>
-        }
-    },
+    // Chat: {
+    //     screen: ChatNav,
+    //     navigationOptions: {
+    //         tabBarIcon: (data) => <Icon size={24} color={data.tintColor} name="comment"/>
+    //     }
+    // },
+    // MyProfile: {
+    //     screen: ProfileNav,
+    //     navigationOptions: {
+    //         headerStyle: {
+    //             position: 'absolute',
+    //             right: 0,
+    //             top: 0,
+    //             left: 0,
+    //             backgroundColor: 'transparent',
+    //         },
+    //         tabBarIcon: (data) => <Icon size={24} color={data.tintColor}
+    //                                     name="account-circle"/>
+    //     }
+    // },
 }, {
-    // tabBarComponent: ({jumpToIndex, ...props}) => (
-    //     <TabBarBottom
-    //         {...props}
-    //         jumpToIndex={index => {
-    //             const { dispatch, state } = props.navigation
-    //
-    //             if (state.index === index) {
-    //                 dispatch(NavigationActions.reset({
-    //                     index: 0,
-    //                     actions: [NavigationActions.navigate({ routeName: 'Main' })],
-    //                 }))
-    //             } else {
-    //                 jumpToIndex(index)
-    //             }
-    //         }}
-    //     />
-    // ),
     tabBarComponent: props => {
         const {navigation, navigationState} = props
         const jumpToIndex = index => {
@@ -267,6 +294,7 @@ const MainTabNav = TabNavigator({
         };
         return <TabBarBottom {...props} jumpToIndex={jumpToIndex}/>
     },
+    initialRouteName: 'Home',
     tabBarPosition: 'bottom',
     lazy: true,
     swipeEnabled: true,
@@ -297,32 +325,6 @@ export const AppNavigator = StackNavigator({
     },
 
     // PostDetail: {screen: paramsToProps(PostDetail)},
-    //
-    //
-    //
-    //
-    //
-    // CreateQuestionnaire: {screen: CreateQuestionnaire},
-    //
-    //
-    // AnswerQuestionnaire: {screen: paramsToProps(AnswerQuestionnaire)},
-    // AnswersDisplay: {screen: paramsToProps(AnswersDisplay)},
-    //
-    //
-    // MacroPlanDetail: {screen: paramsToProps(MacroPlanDetail)},
-    // ScheduleDetail: {screen: paramsToProps(ScheduleDetail)},
-    //
-    //
-    // TrainingPlan: {screen: paramsToProps(TrainingPlan)},
-    // CreateWorkout: {screen: paramsToProps(CreateWorkout)},
-    // EditWorkout: {screen: paramsToProps(EditWorkout)},
-    // CreateWorkoutDay: {screen: paramsToProps(CreateWorkoutDay)},
-    // CreateExercise: {screen: paramsToProps(CreateExercise)},
-    // WorkoutDayDetail: {screen: paramsToProps(WorkoutDayDetail)},
-    // CreateSchedule: {screen: paramsToProps(CreateSchedule)},
-    // EditSchedule: {screen: paramsToProps(EditSchedule)},
-    // WorkoutDetail: {screen: paramsToProps(WorkoutDetail)},
-    // WorkoutDaySession: {screen: paramsToProps(WorkoutDaySession)},
 
 
     Main: {screen: MainTabNav},

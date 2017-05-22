@@ -52,14 +52,6 @@ const Notifications = React.createClass({
         this.props.navigation.goBack()
     },
 
-    renderHeader() {
-        return (
-            <BackBar back={this._back}>
-                <Text style={{fontSize: getFontSize(24)}}>Notifications</Text>
-            </BackBar>
-        )
-    },
-
     render() {
         if (this.props.Notifications.length) {
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -68,7 +60,7 @@ const Notifications = React.createClass({
                 <ListView
                     refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
                     style={styles.container} enableEmptySections={true}
-                    renderHeader={this.renderHeader}
+                    initialListSize={1}
                     dataSource={dataSource} onEndReached={this.onEndReached}
                     onEndReachedThreshold={Dimensions.get('window').height}
                     renderRow={(noti, i) => <NotificationBox navigate={this.props.navigation.navigate} notification={noti}
@@ -79,7 +71,6 @@ const Notifications = React.createClass({
         return (
             <ScrollView contentContainerStyle={styles.scrollContainer}
                         refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}>
-                {this.renderHeader()}
                 <View style={styles.noRequests}>
                     <Icon name="comments-o" size={60}
                           color='#b1aea5'/>
