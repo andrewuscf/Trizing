@@ -8,18 +8,16 @@ import {
     TouchableOpacity,
     Keyboard
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import { NavigationActions } from 'react-navigation';
+import {NavigationActions} from 'react-navigation';
 
 import * as GlobalActions from '../../actions/globalActions';
 
 import {getFontSize} from '../../actions/utils';
 
 import DaysOfWeek from '../../components/DaysOfWeek';
-import SubmitButton from '../../components/SubmitButton';
 
 const CreateWorkoutDay = React.createClass({
     propTypes: {
@@ -37,6 +35,10 @@ const CreateWorkoutDay = React.createClass({
         }
     },
 
+    componentDidMount() {
+        this.props.navigation.setParams({handleSave: this._addExercise, saveText: 'Next'});
+    },
+
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.Schedules != prevProps.Schedules) {
@@ -48,21 +50,9 @@ const CreateWorkoutDay = React.createClass({
 
     asyncActions(start, data = {}){
         if (start) {
-            this.refs.postbutton.setState({busy: true});
+            // Fail
         } else {
-            this.refs.postbutton.setState({busy: false});
-            if (data.state) {
-                this.setState({...data.state})
-            }
-            if (data.routeName) {
-                const resetAction = NavigationActions.reset({
-                    index: self.navigation.state.routes.length - 1,
-                    actions: [
-                        NavigationActions.navigate({ routeName: data.routeName, params: data.props})
-                    ]
-                });
-                this.props.navigation.dispatch(resetAction);
-            }
+            this.props.navigation.goBack()
         }
     },
 
@@ -89,6 +79,12 @@ const CreateWorkoutDay = React.createClass({
         this.props.navigation.goBack();
     },
 
+    selectDay(days) {
+        if (days.length < 2) {
+            this.setState({days: days});
+        }
+    },
+
     render: function () {
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
@@ -106,11 +102,8 @@ const CreateWorkoutDay = React.createClass({
                                value={this.state.name}
                                placeholder="'Pull day, 'Monday' or 'Day One'"/>
                 </View>
-                <Text style={styles.inputLabel}>What days?</Text>
-                <DaysOfWeek daySelectedState={(days) => this.setState({days: days})} days={this.state.days}/>
-
-                <SubmitButton textStyle={styles.submitText} onPress={this._addExercise} ref='postbutton'
-                              text='Next Step'/>
+                <Text style={styles.inputLabel}>Day of the week</Text>
+                <DaysOfWeek daySelectedState={(days) => this.selectDay(days)} days={this.state.days}/>
             </ScrollView>
         )
     }

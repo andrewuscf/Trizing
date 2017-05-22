@@ -13,10 +13,8 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import t from 'tcomb-form-native';
-import _ from 'lodash';
 import {connect} from 'react-redux';
 import CameraRollPicker from 'react-native-camera-roll-picker';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import FCM from 'react-native-fcm';
 import {
     Menu,
