@@ -19,6 +19,7 @@ import {getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
 import ChatRoomBox from '../components/ChatRoomBox';
+import Loading from '../components/Loading';
 
 const Chat = React.createClass({
 
@@ -64,6 +65,7 @@ const Chat = React.createClass({
 
 
     render() {
+        if (this.props.ChatIsLoading) return <Loading />;
         if (this.props.Rooms.length) {
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             const dataSource = ds.cloneWithRows(this.props.Rooms);

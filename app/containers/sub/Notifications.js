@@ -60,7 +60,8 @@ const Notifications = React.createClass({
                 <ListView
                     refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
                     style={styles.container} enableEmptySections={true}
-                    initialListSize={1}
+                    initialListSize={5}
+                    removeClippedSubviews={false}
                     dataSource={dataSource} onEndReached={this.onEndReached}
                     onEndReachedThreshold={Dimensions.get('window').height}
                     renderRow={(noti, i) => <NotificationBox navigate={this.props.navigation.navigate} notification={noti}

@@ -6,6 +6,7 @@ const initialState = {
     Events: [],
     EventsNext: null,
     Refreshing: false,
+    CalendarIsLoading: true,
 };
 
 export default function calendarReducers(state = initialState, action = null) {
@@ -16,7 +17,8 @@ export default function calendarReducers(state = initialState, action = null) {
                 ...state,
                 Events: (action.refresh) ? action.response.results : state.Events.concat(action.response.results),
                 EventsNext: action.response.next,
-                Refreshing: false
+                Refreshing: false,
+                CalendarIsLoading: false,
             };
 
         case constants.REMOVE_TOKEN:

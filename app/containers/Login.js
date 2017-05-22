@@ -22,6 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import * as GlobalActions from '../actions/globalActions';
 
 import {getFontSize, resetNav} from '../actions/utils';
+import GlobalStyle from './globalStyle';
 
 import BackBar from '../components/BackBar';
 import SubmitButton from '../components/SubmitButton';
@@ -82,7 +83,7 @@ const Login = React.createClass({
     componentDidUpdate (prevProps) {
         if (this.props.UserToken) {
             if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
-                this.props.navigation.dispatch(resetNav('Home'))
+                this.props.navigation.dispatch(resetNav('Main'))
             } else if (this.props.RequestUser && !this.props.RequestUser.profile.completed) {
                 this.props.navigation.dispatch(resetNav('EditProfile'))
             }
@@ -200,7 +201,7 @@ const Login = React.createClass({
             }
         }
         return (
-            <View style={styles.container}>
+            <View style={GlobalStyle.noHeaderContainer}>
                 {this.state.forgotCreds || this.state.signUp ?
                     <BackBar back={this.back} backText='Log In'/>
                     : null
@@ -263,7 +264,7 @@ const styles = StyleSheet.create({
         flex: .1,
         justifyContent: 'center',
         alignItems: 'center',
-        borderTopWidth: .5,
+        borderTopWidth: StyleSheet.hairlineWidth,
         borderColor: '#aaaaaa',
         flexDirection: 'row',
         // paddingBottom: 10
@@ -274,7 +275,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     logoView: {
-        flex: .28,
+        flex: .3,
         alignItems: 'center',
         justifyContent: 'center'
     },

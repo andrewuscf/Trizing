@@ -19,6 +19,7 @@ import GlobalStyle from './globalStyle';
 import {getFontSize} from '../actions/utils';
 
 import EventBox from '../components/EventBox';
+import Loading from '../components/Loading';
 
 
 const Calendar = React.createClass({
@@ -61,37 +62,39 @@ const Calendar = React.createClass({
 
 
     render() {
-        if (this.props.Events.length) {
-            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-            const dataSource = ds.cloneWithRows(this.props.Events);
+        if (this.props.CalendarIsLoading) return <Loading />;
+        if (!this.props.Events.length) {
             return (
-                <ListView ref="calendar_list"
-                          refreshControl={<RefreshControl refreshing={this.props.Refreshing}
-                                                          onRefresh={this._refresh}/>}
-                          enableEmptySections={true}
-                          renderHeader={this.renderHeader}
-                          dataSource={dataSource} onEndReached={this.onEndReached}
-                          onEndReachedThreshold={Dimensions.get('window').height}
-                          renderRow={(occurrence, i) => <EventBox occurrence={occurrence}
-                                                                  navigate={this.props.navigation.navigate}/>}
-                />
+                <ScrollView contentContainerStyle={styles.scrollContainer} ref="calendar_list" style={GlobalStyle.noHeaderContainer}
+                      refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}>
+                    {this.renderHeader()}
+                    <View style={styles.noRequests}>
+                        <Icon name="calendar-o" size={60}
+                              color='#b1aea5'/>
+                        <Text style={styles.noRequestTitle}>
+                            {this.props.RequestUser.type == 1 ?
+                                'You have no upcoming events.'
+                                : "Your trainer needs to invite you to events."
+                            }
+                        </Text>
+                    </View>
+                </ScrollView>
             );
         }
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        const dataSource = ds.cloneWithRows(this.props.Events);
         return (
-            <ScrollView contentContainerStyle={styles.scrollContainer} ref="calendar_list" style={GlobalStyle.noHeaderContainer}
-                        refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}>
-                {this.renderHeader()}
-                <View style={styles.noRequests}>
-                    <Icon name="calendar-o" size={60}
-                          color='#b1aea5'/>
-                    <Text style={styles.noRequestTitle}>
-                        {this.props.RequestUser.type == 1 ?
-                            'You have no upcoming events.'
-                            : "Your trainer needs to invite you to events."
-                        }
-                    </Text>
-                </View>
-            </ScrollView>
+            <ListView ref="calendar_list"
+                      refreshControl={<RefreshControl refreshing={this.props.Refreshing}
+                                                      onRefresh={this._refresh}/>}
+                      style={GlobalStyle.noHeaderContainer}
+                      enableEmptySections={true}
+                      renderHeader={this.renderHeader}
+                      dataSource={dataSource} onEndReached={this.onEndReached}
+                      onEndReachedThreshold={Dimensions.get('window').height}
+                      renderRow={(occurrence, i) => <EventBox occurrence={occurrence}
+                                                              navigate={this.props.navigation.navigate}/>}
+            />
         );
     }
 });

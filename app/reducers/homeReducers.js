@@ -9,6 +9,7 @@ const initialState = {
     NotificationsNext: null,
     ActiveData: null,
     Refreshing: false,
+    HomeIsLoading: true,
 };
 
 export default function homeReducers(state = initialState, action = null) {
@@ -17,7 +18,8 @@ export default function homeReducers(state = initialState, action = null) {
             return {
                 ...state,
                 Clients: (action.refresh) ? action.response.results : state.Clients.concat(action.response.results),
-                Refreshing: false
+                Refreshing: false,
+                HomeIsLoading: false,
             };
 
         case constants.DELETE_CLIENT:
@@ -53,7 +55,8 @@ export default function homeReducers(state = initialState, action = null) {
             return {
                 ...state,
                 ActiveData: action.response,
-                Refreshing: false
+                Refreshing: false,
+                HomeIsLoading: false,
             };
 
         case constants.CREATE_WORKOUT_LOG:

@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderColor: '#e1e3df',
         borderBottomWidth: 1,
-        borderTopWidth: 1,
+        // borderTopWidth: 1,
         flexDirection: 'row',
         alignItems: 'center',
     },

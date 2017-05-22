@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         width: 50
     },
     text: {
-        color: 'blue'
+        color: 'blue',
     }
 });
 

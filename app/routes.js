@@ -274,6 +274,8 @@ export const AppNavigator = StackNavigator({
             header: null
         },
     },
+    EditProfile: {screen: EditProfile},
+
     // PostDetail: {screen: paramsToProps(PostDetail)},
 
 

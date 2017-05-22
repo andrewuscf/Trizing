@@ -24,13 +24,14 @@ import GlobalStyle from './globalStyle';
 
 
 import AvatarImage from '../components/AvatarImage';
-import NotificationBox from '../components/NotificationBox';
+import Loading from '../components/Loading';
 import PeopleBar from '../components/PeopleBar';
 
 
 const Home = React.createClass({
     propTypes: {
         Refreshing: React.PropTypes.bool.isRequired,
+        HomeIsLoading: React.PropTypes.bool.isRequired,
     },
 
     // scrollToTopEvent(args) {
@@ -107,7 +108,7 @@ const Home = React.createClass({
 
     render() {
         const user = this.props.RequestUser;
-        if (!user) return null;
+        if (!user || this.props.HomeIsLoading) return <Loading />;
         const isTrainer = user.type == 1;
         let content = null;
         const {navigate} = this.props.navigation;
@@ -138,7 +139,7 @@ const Home = React.createClass({
                         <TouchableOpacity onPress={this._redirect.bind(null, 'CreateSchedule', null)}
                                           style={styles.link}>
                             <Text style={styles.simpleTitle}>Create Program Template</Text>
-                            <Icon name="plus" size={getFontSize(18)} style={styles.linkArrow}/>
+                            <Icon name="add" size={getFontSize(18)} style={styles.linkArrow}/>
                         </TouchableOpacity>
                     </View>
 
@@ -253,6 +254,9 @@ const Home = React.createClass({
         let userImage = user.profile.avatar;
         if (user.profile.thumbnail)
             userImage = user.profile.thumbnail;
+
+
+
         return (
             <View style={GlobalStyle.noHeaderContainer}>
                 <ScrollView ref='home_scroll'
@@ -360,10 +364,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        borderColor: '#e1e3df',
+        borderBottomWidth: 1,
     },
     avatar: {
-        borderColor: 'black',
-        borderWidth: 1,
+        // borderColor: '#e1e3df',
+        // borderBottomWidth: 1,
     },
     topItem: {
         flex: 3.3,

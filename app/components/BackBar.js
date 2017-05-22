@@ -34,14 +34,6 @@ const styles = StyleSheet.create({
     nav: {
         paddingTop: STATUSBAR_HEIGHT,
         height: STATUSBAR_HEIGHT + APPBAR_HEIGHT,
-        // shadowColor: 'black',
-        // shadowOpacity: 0.1,
-        // shadowRadius: StyleSheet.hairlineWidth,
-        // shadowOffset: {
-        //     height: StyleSheet.hairlineWidth,
-        // },
-
-
         borderColor: '#d4d4d4',
         borderBottomWidth: 1,
         flexDirection: 'row',
@@ -67,7 +59,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     textColor: {
-        color: '#333333',
+        color: 'blue',
     }
 });
 

@@ -15,9 +15,6 @@ import {GiftedChat} from 'react-native-gifted-chat';
 
 import {fetchData, API_ENDPOINT} from '../../actions/utils';
 
-import AvatarImage from '../../components/AvatarImage';
-import BackBar from '../../components/BackBar';
-
 
 const ChatRoom = React.createClass({
     propTypes: {

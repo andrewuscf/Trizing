@@ -16,9 +16,7 @@ import moment from 'moment';
 import * as CalendarActions from '../../actions/calendarActions';
 import {getFontSize, trunc} from '../../actions/utils';
 
-import BackBar from '../../components/BackBar';
 import AvatarImage from '../../components/AvatarImage';
-import SubmitButton from '../../components/SubmitButton';
 
 
 const window = Dimensions.get('window');
@@ -33,11 +31,14 @@ const CreateEvent = React.createClass({
         }
     },
 
+    componentDidMount(){
+        this.props.navigation.setParams({handleSave: this._onSubmit, saveText: 'Next'});
+    },
+
     asyncActions(start, data = {}){
         if (start) {
-            this.refs.postbutton.setState({busy: true});
+            // on fail
         } else {
-            this.refs.postbutton.setState({busy: false});
             this.props.actions.getEvents(true);
             this._back();
         }
@@ -53,6 +54,7 @@ const CreateEvent = React.createClass({
         if (this.refs.form) {
             values = this.refs.form.getValue();
             if (values) {
+                this.props.navigation.setParams({headerTitle: 'Select Users to Invite', saveText: 'Submit'});
                 this.setState({step: 2});
             }
         } else if (this.state.selected.length > 0) {
@@ -88,6 +90,8 @@ const CreateEvent = React.createClass({
         if (this.state.step == 1) {
             this._back();
         } else {
+            this.props.navigation.setParams({headerTitle: 'Create Event'});
+            this.props.navigation.setParams({saveText: 'Next'});
             this.setState({step: 1});
         }
     },
@@ -152,11 +156,6 @@ const CreateEvent = React.createClass({
         };
         return (
             <View style={styles.flexCenter}>
-                <BackBar back={this._cancel}>
-                    <Text style={{fontSize: getFontSize(24),fontFamily: 'OpenSans-Bold'}}>
-                        {this.state.step == 1 ? 'Create Event' : 'Select Users to Invite'}
-                    </Text>
-                </BackBar>
                 {this.state.step == 1 ?
                     <ScrollView style={{margin: 10}}>
                         <Form
@@ -186,16 +185,16 @@ const CreateEvent = React.createClass({
                         })}
                     </ScrollView>
                 }
-                <SubmitButton onPress={this._onSubmit} ref='postbutton'
-                              text={this.state.step == 2 ? 'Create Event' : 'Invite Users'}/>
-
             </View>
         )
     }
 });
 
-CreateEvent.navigationOptions = {
-    title: 'Create Event',
+CreateEvent.navigationOptions = ({navigation}) => {
+    const {state, setParams} = navigation;
+    return {
+        headerTitle: state.params && state.params.headerTitle ? state.params.headerTitle : 'Create Event'
+    };
 };
 
 const styles = StyleSheet.create({

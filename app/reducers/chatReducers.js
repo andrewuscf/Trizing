@@ -6,7 +6,8 @@ const initialState = {
     Rooms: [],
     Team: [],
     Refreshing: false,
-    RoomsNext: null
+    RoomsNext: null,
+    ChatIsLoading: true,
 };
 
 export default function AppReducers(state = initialState, action = null) {
@@ -16,7 +17,8 @@ export default function AppReducers(state = initialState, action = null) {
                 ...state,
                 Rooms: (action.refresh) ? action.response.results : state.Rooms.concat(action.response.results),
                 RoomsNext: action.response.next,
-                Refreshing: false
+                Refreshing: false,
+                ChatIsLoading: false,
             };
 
         case constants.SEND_MESSAGE:
