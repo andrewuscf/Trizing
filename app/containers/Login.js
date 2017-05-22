@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     Dimensions,
     Keyboard,
-    ActivityIndicator
+    ActivityIndicator,
+    findNodeHandle
 } from 'react-native';
 import {
     AccessToken,
@@ -18,6 +19,7 @@ import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import * as GlobalActions from '../actions/globalActions';
 
@@ -27,13 +29,13 @@ import GlobalStyle from './globalStyle';
 import BackBar from '../components/BackBar';
 import SubmitButton from '../components/SubmitButton';
 
-const {width} = Dimensions.get('window');
 const Form = t.form.Form;
 
 const Login = React.createClass({
     getInitialState() {
         return {
             value: null,
+            keyboard: false,
             forgotCreds: false,
             signUp: false,
             busy: false,
@@ -201,7 +203,17 @@ const Login = React.createClass({
             }
         }
         return (
-            <View style={GlobalStyle.noHeaderContainer}>
+            <KeyboardAwareScrollView behavior='padding' style={GlobalStyle.noHeaderContainer} ref="scroll"
+                                     contentContainerStyle={{flex: 1}}
+                                     resetScrollToCoords={{x: 0, y: 0}}
+                                     onKeyboardWillShow={() => {
+                                         this.setState({keyboard: true});
+                                     }}
+                                     onKeyboardWillHide={() => {
+                                         this.setState({keyboard: false});
+                                     }}
+                                     extraHeight={20}
+                                     scrollEnabled={this.state.keyboard}>
                 {this.state.forgotCreds || this.state.signUp ?
                     <BackBar back={this.back} backText='Log In'/>
                     : null
@@ -211,7 +223,7 @@ const Login = React.createClass({
                     <Image style={styles.logo} source={require('../assets/images/red-logo.png')}/>
                 </View>
 
-                <View style={styles.contentContainer}>
+                <View style={!this.state.forgotCreds ? styles.contentContainer : {justifyContent: 'center', flex: .8}}>
 
                     <Form
                         ref="form"
@@ -251,7 +263,7 @@ const Login = React.createClass({
                     : null
                 }
 
-            </View>
+            </KeyboardAwareScrollView>
         );
     }
 });
@@ -271,14 +283,13 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flex: .6,
-        margin: 25,
-        // justifyContent: 'center',
-        // alignItems: 'center',
+        justifyContent: 'flex-end',
     },
     logoView: {
         flex: .3,
         alignItems: 'center',
-        justifyContent: 'center'
+        // justifyContent: 'center',
+        justifyContent: 'flex-end',
     },
     logo: {
         height: 100,
@@ -304,7 +315,6 @@ const styles = StyleSheet.create({
         borderColor: '#1352e2',
         justifyContent: 'center',
         alignItems: 'center',
-        width: width * .80,
         paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 30,
@@ -320,28 +330,26 @@ stylesheet.formGroup = {
     ...stylesheet.formGroup,
     normal: {
         ...stylesheet.formGroup.normal,
-        borderBottomWidth: .5,
-        borderColor: '#aaaaaa',
-        // width: width * .80
+        marginRight: 20,
+        marginLeft: 20,
+        borderColor: '#d4d4d4',
     },
     error: {
         ...stylesheet.formGroup.error,
-        borderBottomWidth: .5,
-        borderColor: 'red',
-        // width: width * .80
+        marginRight: 20,
+        marginLeft: 20,
+        borderColor: '#d4d4d4',
     }
 };
 stylesheet.textbox = {
     ...stylesheet.textbox,
     normal: {
         ...stylesheet.textbox.normal,
-        borderWidth: 0,
-        marginBottom: 0,
+        backgroundColor: '#f0f0f0',
     },
     error: {
         ...stylesheet.textbox.error,
-        borderWidth: 0,
-        marginBottom: 0,
+        backgroundColor: '#f0f0f0',
     }
 };
 
