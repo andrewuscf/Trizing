@@ -271,8 +271,9 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flex: .6,
-        justifyContent: 'center',
-        alignItems: 'center',
+        margin: 25,
+        // justifyContent: 'center',
+        // alignItems: 'center',
     },
     logoView: {
         flex: .3,
@@ -288,7 +289,8 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(22),
         fontFamily: 'OpenSans-SemiBold',
         marginTop: 10,
-        marginBottom: 10
+        marginBottom: 10,
+        textAlign: 'center'
     },
     buttonText: {
         color: '#1352e2',
@@ -320,13 +322,13 @@ stylesheet.formGroup = {
         ...stylesheet.formGroup.normal,
         borderBottomWidth: .5,
         borderColor: '#aaaaaa',
-        width: width * .80
+        // width: width * .80
     },
     error: {
         ...stylesheet.formGroup.error,
         borderBottomWidth: .5,
         borderColor: 'red',
-        width: width * .80
+        // width: width * .80
     }
 };
 stylesheet.textbox = {

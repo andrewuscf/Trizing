@@ -11,7 +11,7 @@ import moment from 'moment';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-import {getFontSize, fetchData, API_ENDPOINT} from '../../actions/utils';
+import {getFontSize, fetchData, API_ENDPOINT, checkStatus} from '../../actions/utils';
 import * as CalendarActions from '../../actions/calendarActions';
 
 import PeopleBar from '../../components/PeopleBar';
@@ -32,8 +32,9 @@ const EventDetail = React.createClass({
 
     getEvent(refresh = false) {
         fetch(`${API_ENDPOINT}social/event/${this.props.eventId}/`, fetchData('GET', null, this.props.UserToken))
-            .then((response) => response.json())
+            .then((response) => console.log(response))
             .then((responseJson) => {
+            console.log(responseJson)
                 this.setState({event: responseJson})
             });
     },

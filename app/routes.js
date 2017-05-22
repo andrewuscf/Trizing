@@ -92,7 +92,6 @@ const HomeNav = StackNavigator({
     Profile: {screen: paramsToProps(Profile)},
 
 
-
     CreateQuestionnaire: {screen: CreateQuestionnaire},
 
 
@@ -119,7 +118,7 @@ const HomeNav = StackNavigator({
 
 
 }, {
-    headerMode: 'screen',
+    headerMode: 'float',
     initialRouteName: 'Home',
     navigationOptions: ({navigation}) => {
         const {state, setParams} = navigation;
@@ -131,6 +130,9 @@ const HomeNav = StackNavigator({
                 backgroundColor: 'white'
             },
             headerBackTitle: null,
+            headerTitleStyle: {
+                textAlign: 'center',
+            }
         };
     },
     cardStyle: {
@@ -149,6 +151,7 @@ const CalendarNav = StackNavigator({
     EventDetail: {screen: paramsToProps(EventDetail)},
     Profile: {screen: paramsToProps(Profile)},
 }, {
+    headerMode: 'float',
     initialRouteName: 'Calendar',
     navigationOptions: ({navigation}) => {
         const {state, setParams} = navigation;
@@ -160,6 +163,9 @@ const CalendarNav = StackNavigator({
                 backgroundColor: 'white'
             },
             headerBackTitle: null,
+            headerTitleStyle: {
+                textAlign: 'center',
+            }
         };
     },
     cardStyle: {
@@ -178,6 +184,7 @@ const ChatNav = StackNavigator({
     CreateChatRoom: {screen: paramsToProps(CreateChatRoom)},
     ChatRoom: {screen: paramsToProps(ChatRoom)},
 }, {
+    headerMode: 'float',
     initialRouteName: 'Chat',
     navigationOptions: ({navigation}) => {
         const {state, setParams} = navigation;
@@ -189,13 +196,15 @@ const ChatNav = StackNavigator({
                 backgroundColor: 'white'
             },
             headerBackTitle: null,
+            headerTitleStyle: {
+                textAlign: 'center',
+            }
         };
     },
     cardStyle: {
         backgroundColor: 'white'
     }
 });
-
 
 
 const MainTabNav = TabNavigator({
@@ -283,7 +292,7 @@ export const AppNavigator = StackNavigator({
 
     Main: {screen: MainTabNav},
 }, {
-    headerMode: 'screen',
+    headerMode: 'float',
     initialRouteName: 'SplashScreen',
     navigationOptions: ({navigation}) => {
         const {state, setParams} = navigation;
@@ -294,6 +303,9 @@ export const AppNavigator = StackNavigator({
             headerStyle: {
                 backgroundColor: 'white'
             },
+            headerTitleStyle: {
+                textAlign: 'center',
+            }
         };
     },
     cardStyle: {

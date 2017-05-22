@@ -84,9 +84,7 @@ const MyProfile = React.createClass({
             if (user.profile.thumbnail)
                 userImage = user.profile.thumbnail;
             return (
-                <ScrollView style={GlobalStyle.noHeaderContainer} ref="profile_list"
-                            refreshControl={<RefreshControl refreshing={this.props.Refreshing}
-                                                            onRefresh={this._refresh}/>}>
+                <ScrollView style={GlobalStyle.noHeaderContainer} ref="profile_list">
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
                         <AvatarImage style={styles.avatar} image={userImage}/>
                         <View style={styles.userInfo}>
