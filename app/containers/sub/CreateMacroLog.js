@@ -44,19 +44,14 @@ const CreateMacroLog = React.createClass({
         }
     },
 
-    componentDidUpdate() {
-        if (this.state.value && this.state.value.carbs && this.state.value.fats && this.state.value.protein) {
-            this.refs.postbutton.setState({disabled: false});
-        } else {
-            this.refs.postbutton.setState({disabled: true});
-        }
+    componentDidMount() {
+        this.props.navigation.setParams({handleSave: this._onSubmit});
     },
 
     asyncActions(start) {
         if (start) {
-            this.refs.postbutton.setState({busy: true});
+            // Need to setup some type of failure
         } else {
-            this.refs.postbutton.setState({busy: false});
             this.setState({success: true});
             setTimeout(() => {
                 this.setState({success: false});
@@ -117,9 +112,7 @@ const CreateMacroLog = React.createClass({
                         </Text>
                     </View>
                     :
-                    <BackBar back={this._cancel}>
-                        <Text>{this.state.date}</Text>
-                    </BackBar>
+                    null
                 }
                 <Text style={[styles.title]}>Nutrition for the day</Text>
                 <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center', paddingTop: 10}]}>
@@ -145,13 +138,19 @@ const CreateMacroLog = React.createClass({
                         value={this.state.value}
                     />
                 </View>
-                <SubmitButton disabled={!(this.state.value && this.state.value.carbs && this.state.value.fats && this.state.value.protein)}
-                              textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
-                              text='Submit'/>
             </View>
         )
     }
 });
+
+CreateMacroLog.navigationOptions = ({navigation}) => {
+    const {state, setParams} = navigation;
+    const date = (state.params.date && moment(state.params.date).isValid()) ?
+        moment(state.params.date).format("MMMM DD, YYYY") : moment().format("MMMM DD, YYYY");
+    return {
+        headerTitle: date
+    }
+};
 
 const styles = StyleSheet.create({
     flexCenter: {

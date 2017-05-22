@@ -37,12 +37,11 @@ const CreateChatRoom = React.createClass({
     },
 
 
-    asyncActions(start, data = {}){
+    asyncActions(start, chatroom= null){
         if (start) {
-            this.refs.postbutton.setState({busy: true});
+            // Need to provide messages to select users.
         } else {
-            this.refs.postbutton.setState({busy: false});
-            this.props.navigation.navigate('ChatRoom', {roomId: data.id});
+            if (chatroom) this.props.navigation.navigate('ChatRoom', {roomId: chatroom});
         }
     },
 

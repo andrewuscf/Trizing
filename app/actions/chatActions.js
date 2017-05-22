@@ -31,8 +31,8 @@ export function createChatRoom(data, asyncActions) {
             fetchData('POST', JSON.stringify(data), getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
-                dispatch({type: types.CREATE_CHAT_ROOM, response: responseJson});
-                return asyncActions(false, responseJson);
+                asyncActions(false, responseJson.id);
+                return dispatch({type: types.CREATE_CHAT_ROOM, response: responseJson});
             })
             .catch((error) => {
                 asyncActions(false);

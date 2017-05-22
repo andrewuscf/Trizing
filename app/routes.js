@@ -132,8 +132,6 @@ const HomeNav = StackNavigator({
         };
     },
     cardStyle: {
-        // flex: 1,
-        // marginTop: (Platform.OS === 'ios') ? 20 : 0,
         backgroundColor: 'white'
     }
 });
@@ -158,7 +156,8 @@ const CalendarNav = StackNavigator({
                 : null,
             headerStyle: {
                 backgroundColor: 'white'
-            }
+            },
+            headerBackTitle: null
         };
     },
     cardStyle: {
@@ -174,7 +173,7 @@ const ChatNav = StackNavigator({
             header: null,
         }
     },
-    CreateChatRoom: {screen: CreateChatRoom},
+    CreateChatRoom: {screen: paramsToProps(CreateChatRoom)},
     ChatRoom: {screen: paramsToProps(ChatRoom)},
 }, {
     initialRouteName: 'Chat',
@@ -186,7 +185,8 @@ const ChatNav = StackNavigator({
                 : null,
             headerStyle: {
                 backgroundColor: 'white'
-            }
+            },
+            headerBackTitle: null
         };
     },
     cardStyle: {
@@ -194,34 +194,6 @@ const ChatNav = StackNavigator({
     }
 });
 
-// const ProfileNav = StackNavigator({
-//     MyProfile: {
-//         path: 'profile/me',
-//         screen: paramsToProps(MyProfile),
-//         navigationOptions: {
-//             header: null,
-//         }
-//     },
-//     EditProfile: {screen: EditProfile},
-//
-//     Profile: {screen: paramsToProps(Profile)},
-// }, {
-//     initialRouteName: 'MyProfile',
-//     navigationOptions: ({navigation}) => {
-//         const {state, setParams} = navigation;
-//         return {
-//             headerRight: state.params && state.params.handleSave ?
-//                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
-//                 : null,
-//             headerStyle: {
-//                 backgroundColor: 'white'
-//             }
-//         };
-//     },
-//     cardStyle: {
-//         backgroundColor: 'white'
-//     }
-// });
 
 
 const MainTabNav = TabNavigator({
@@ -249,26 +221,6 @@ const MainTabNav = TabNavigator({
     //     navigationOptions: {
     //         header: null,
     //         tabBarIcon: (data) => <Icon size={24} color={data.tintColor} name="list"/>
-    //     }
-    // },
-    // Chat: {
-    //     screen: ChatNav,
-    //     navigationOptions: {
-    //         tabBarIcon: (data) => <Icon size={24} color={data.tintColor} name="comment"/>
-    //     }
-    // },
-    // MyProfile: {
-    //     screen: ProfileNav,
-    //     navigationOptions: {
-    //         headerStyle: {
-    //             position: 'absolute',
-    //             right: 0,
-    //             top: 0,
-    //             left: 0,
-    //             backgroundColor: 'transparent',
-    //         },
-    //         tabBarIcon: (data) => <Icon size={24} color={data.tintColor}
-    //                                     name="account-circle"/>
     //     }
     // },
 }, {
@@ -311,7 +263,6 @@ const MainTabNav = TabNavigator({
 export const AppNavigator = StackNavigator({
     SplashScreen: {
         screen: SplashScreen,
-        // headerMode: 'none',
         navigationOptions: {
             header: null,
         },
@@ -323,7 +274,6 @@ export const AppNavigator = StackNavigator({
             header: null
         },
     },
-
     // PostDetail: {screen: paramsToProps(PostDetail)},
 
 
@@ -343,8 +293,6 @@ export const AppNavigator = StackNavigator({
         };
     },
     cardStyle: {
-        // flex: 1,
-        // marginTop: (Platform.OS === 'ios') ? 20 : 0,
         backgroundColor: 'white'
     }
 });
