@@ -49,7 +49,6 @@ import CreateQuestionnaire from './containers/sub/CreateQuestionnaire';
 // Profile Pages
 import Profile from './containers/profile/Profile';
 import EditProfile from './containers/profile/EditProfile';
-import MyProfile from './containers/profile/MyProfile';
 
 
 const paramsToProps = (SomeComponent) => {
@@ -94,10 +93,6 @@ const HomeNav = StackNavigator({
     },
     CreateMacroLog: {screen: paramsToProps(CreateMacroLog)},
 
-    // MyProfile: {
-    //     path: 'profile/me',
-    //     screen: paramsToProps(MyProfile),
-    // },
     EditProfile: {screen: EditProfile},
 
     Profile: {
