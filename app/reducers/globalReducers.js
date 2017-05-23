@@ -14,7 +14,8 @@ const initialState = {
     Questionnaires: [],
     QuestionnairesNext: null,
     Schedules: [],
-    SchedulesNext: null
+    SchedulesNext: null,
+    tabBarOpen: true
 };
 
 export default function AppReducers(state = initialState, action = null) {
@@ -206,6 +207,12 @@ export default function AppReducers(state = initialState, action = null) {
                         unread_notifications: true
                     } : null
             });
+
+        case constants.TOGGLE_TAB_BAR:
+            return {
+                ...state,
+                tabBarOpen: action.result
+            }
 
         // case constants.UPDATE_WORKOUT_DAY:
         //     return {

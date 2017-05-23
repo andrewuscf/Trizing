@@ -14,6 +14,7 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconBadge from 'react-native-icon-badge';
+import ModalBox from 'react-native-modalbox';
 
 
 import * as HomeActions from '../actions/homeActions';
@@ -22,6 +23,8 @@ import * as GlobalActions from '../actions/globalActions';
 import {getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
+
+import MyProfile from '../containers/profile/MyProfile';
 
 import AvatarImage from '../components/AvatarImage';
 import Loading from '../components/Loading';
@@ -104,6 +107,23 @@ const Home = React.createClass({
             </TouchableOpacity>
         )
     },
+
+    openModal() {
+        this.refs.profile_modal.open();
+    },
+
+    closeModal() {
+        this.refs.profile_modal.close();
+    },
+
+    onModalClose() {
+        this.props.toggleTabBar(true);
+    },
+
+    onModalOpen() {
+        this.props.toggleTabBar(false);
+    },
+
 
 
     render() {
@@ -268,7 +288,7 @@ const Home = React.createClass({
                         <View style={styles.topItem}/>
                         <View style={[{flex: 3.3, justifyContent: 'center', alignItems: 'center'}]}>
                             <AvatarImage style={styles.avatar} image={userImage}
-                                         redirect={this._redirect.bind(null, 'MyProfile')}/>
+                                         redirect={this.openModal}/>
                         </View>
                         <View style={styles.topItem}>
                             {this.renderNotifications()}
@@ -279,6 +299,15 @@ const Home = React.createClass({
                         {content}
                     </View>
                 </ScrollView>
+
+                <ModalBox style={[styles.modal]} backdrop={false} ref="profile_modal"
+                          onClosed={this.onModalClose} onOpened={this.onModalOpen}
+                          entry='top' swipeToClose={true}>
+                    <MyProfile back={this.closeModal} navigation={this.props.navigation}/>
+                    <TouchableOpacity onPress={this.closeModal} style={{alignSelf: 'center'}}>
+                        <Icon name="keyboard-arrow-up" size={40} color='#333333'/>
+                    </TouchableOpacity>
+                </ModalBox>
             </View>
         )
     }
@@ -360,7 +389,7 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline'
     },
     userProfile: {
-        flex: .1,
+        flex: .15,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -368,8 +397,9 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     avatar: {
-        // borderColor: '#e1e3df',
-        // borderBottomWidth: 1,
+        height: 80,
+        width: 80,
+        borderRadius: 40
     },
     topItem: {
         flex: 3.3,
@@ -380,7 +410,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row'
-    }
+    },
+    modal: {
+        top: 0,
+        bottom: 0,
+        right: 0,
+        left: 0,
+    },
 });
 
 const stateToProps = (state) => {
@@ -398,7 +434,8 @@ const dispatchToProps = (dispatch) => {
         getNotifications: bindActionCreators(GlobalActions.getNotifications, dispatch),
         readNotification: bindActionCreators(GlobalActions.readNotification, dispatch),
         getQuestionnaires: bindActionCreators(GlobalActions.getQuestionnaires, dispatch),
-        getSchedules: bindActionCreators(GlobalActions.getSchedules, dispatch)
+        getSchedules: bindActionCreators(GlobalActions.getSchedules, dispatch),
+        toggleTabBar: bindActionCreators(GlobalActions.toggleTabBar, dispatch),
     }
 };
 

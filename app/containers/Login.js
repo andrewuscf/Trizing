@@ -60,7 +60,7 @@ const Login = React.createClass({
                             if (this.refs.form.getComponent('password'))
                                 this.refs.form.getComponent('password').refs.input.focus()
                         },
-                        placeholder: 'Username or Email Address'
+                        placeholder: 'Username or Email'
                     },
                     password: {
                         secureTextEntry: true,
@@ -157,6 +157,16 @@ const Login = React.createClass({
         );
     },
 
+    onChange(value) {
+        this.setState({value});
+    },
+
+    changeKeyboard() {
+        this.setState({
+            keyboard: !this.state.keyboard
+        })
+    },
+
 
     render() {
         if (this.state.busy) {
@@ -205,13 +215,8 @@ const Login = React.createClass({
         return (
             <KeyboardAwareScrollView behavior='padding' style={GlobalStyle.noHeaderContainer} ref="scroll"
                                      contentContainerStyle={{flex: 1}}
-                                     resetScrollToCoords={{x: 0, y: 0}}
-                                     onKeyboardWillShow={() => {
-                                         this.setState({keyboard: true});
-                                     }}
-                                     onKeyboardWillHide={() => {
-                                         this.setState({keyboard: false});
-                                     }}
+                                     onKeyboardWillShow={this.changeKeyboard}
+                                     onKeyboardWillHide={this.changeKeyboard}
                                      scrollEnabled={this.state.keyboard}>
                 {this.state.forgotCreds || this.state.signUp ?
                     <BackBar back={this.back} backText='Log In'/>
@@ -345,10 +350,12 @@ stylesheet.textbox = {
     normal: {
         ...stylesheet.textbox.normal,
         backgroundColor: '#f0f0f0',
+        borderRadius: 0,
     },
     error: {
         ...stylesheet.textbox.error,
         backgroundColor: '#f0f0f0',
+        borderRadius: 0,
     }
 };
 

@@ -1,8 +1,9 @@
 import React from 'react'
 import {Platform} from 'react-native';
-import {TabNavigator, StackNavigator, NavigationActions, TabBarBottom, DrawerNavigator} from 'react-navigation';
+import {TabNavigator, StackNavigator, TabBarBottom, DrawerNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import CustomTabBar from './components/CustomTabBar';
 import Save from './components/NavBarSave';
 
 // Main Pages
@@ -66,6 +67,16 @@ const paramsToProps = (SomeComponent) => {
 
 const navBlue = '#000000';
 
+const defaultNavigationOptions = {
+    headerStyle: {
+        backgroundColor: 'white'
+    },
+    headerBackTitle: null,
+    headerTitleStyle: {
+        textAlign: 'center',
+    }
+}
+
 
 const HomeNav = StackNavigator({
     Home: {
@@ -83,13 +94,15 @@ const HomeNav = StackNavigator({
     },
     CreateMacroLog: {screen: paramsToProps(CreateMacroLog)},
 
-    MyProfile: {
-        path: 'profile/me',
-        screen: paramsToProps(MyProfile),
-    },
+    // MyProfile: {
+    //     path: 'profile/me',
+    //     screen: paramsToProps(MyProfile),
+    // },
     EditProfile: {screen: EditProfile},
 
-    Profile: {screen: paramsToProps(Profile)},
+    Profile: {
+        screen: paramsToProps(Profile),
+    },
 
 
     CreateQuestionnaire: {screen: CreateQuestionnaire},
@@ -118,7 +131,7 @@ const HomeNav = StackNavigator({
 
 
 }, {
-    headerMode: 'float',
+    headerMode: 'screen',
     initialRouteName: 'Home',
     navigationOptions: ({navigation}) => {
         const {state, setParams} = navigation;
@@ -126,13 +139,7 @@ const HomeNav = StackNavigator({
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
                 : null,
-            headerStyle: {
-                backgroundColor: 'white'
-            },
-            headerBackTitle: null,
-            headerTitleStyle: {
-                textAlign: 'center',
-            }
+            ...defaultNavigationOptions,
         };
     },
     cardStyle: {
@@ -151,7 +158,7 @@ const CalendarNav = StackNavigator({
     EventDetail: {screen: paramsToProps(EventDetail)},
     Profile: {screen: paramsToProps(Profile)},
 }, {
-    headerMode: 'float',
+    headerMode: 'screen',
     initialRouteName: 'Calendar',
     navigationOptions: ({navigation}) => {
         const {state, setParams} = navigation;
@@ -159,13 +166,7 @@ const CalendarNav = StackNavigator({
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
                 : null,
-            headerStyle: {
-                backgroundColor: 'white'
-            },
-            headerBackTitle: null,
-            headerTitleStyle: {
-                textAlign: 'center',
-            }
+            ...defaultNavigationOptions,
         };
     },
     cardStyle: {
@@ -184,7 +185,7 @@ const ChatNav = StackNavigator({
     CreateChatRoom: {screen: paramsToProps(CreateChatRoom)},
     ChatRoom: {screen: paramsToProps(ChatRoom)},
 }, {
-    headerMode: 'float',
+    headerMode: 'screen',
     initialRouteName: 'Chat',
     navigationOptions: ({navigation}) => {
         const {state, setParams} = navigation;
@@ -192,13 +193,7 @@ const ChatNav = StackNavigator({
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
                 : null,
-            headerStyle: {
-                backgroundColor: 'white'
-            },
-            headerBackTitle: null,
-            headerTitleStyle: {
-                textAlign: 'center',
-            }
+            ...defaultNavigationOptions,
         };
     },
     cardStyle: {
@@ -235,28 +230,7 @@ const MainTabNav = TabNavigator({
     //     }
     // },
 }, {
-    tabBarComponent: props => {
-        const {navigation, navigationState} = props
-        const jumpToIndex = index => {
-            const lastPosition = navigationState.index
-            const tab = navigationState.routes[index]
-            const tabRoute = tab.routeName;
-            if (!tab.routes) {
-                navigation.dispatch(NavigationActions.navigate({routeName: tabRoute}));
-                return;
-            }
-            const firstTab = tab.routes[0].routeName;
-
-            lastPosition !== index && navigation.dispatch(NavigationActions.navigate({routeName: tabRoute}))
-            lastPosition === index && navigation.dispatch(NavigationActions.reset({
-                index: 0,
-                actions: [
-                    NavigationActions.navigate({routeName: firstTab}),
-                ],
-            }));
-        };
-        return <TabBarBottom {...props} jumpToIndex={jumpToIndex}/>
-    },
+    tabBarComponent: CustomTabBar,
     initialRouteName: 'Home',
     tabBarPosition: 'bottom',
     lazy: true,
@@ -292,7 +266,7 @@ export const AppNavigator = StackNavigator({
 
     Main: {screen: MainTabNav},
 }, {
-    headerMode: 'float',
+    headerMode: 'screen',
     initialRouteName: 'SplashScreen',
     navigationOptions: ({navigation}) => {
         const {state, setParams} = navigation;
@@ -300,12 +274,7 @@ export const AppNavigator = StackNavigator({
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
                 : null,
-            headerStyle: {
-                backgroundColor: 'white'
-            },
-            headerTitleStyle: {
-                textAlign: 'center',
-            }
+            ...defaultNavigationOptions,
         };
     },
     cardStyle: {

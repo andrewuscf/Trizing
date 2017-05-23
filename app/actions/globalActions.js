@@ -474,3 +474,8 @@ export function logSets(data, asyncActions) {
     }
 }
 
+
+export function toggleTabBar(result) {
+    return {type: types.TOGGLE_TAB_BAR, result}
+}
+

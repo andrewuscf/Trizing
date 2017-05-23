@@ -11,13 +11,7 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {
-    Menu,
-    MenuOptions,
-    MenuOption,
-    MenuTrigger,
-} from 'react-native-popup-menu';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import * as ProfileActions from '../../actions/profileActions';
 import {getUser} from '../../actions/globalActions';
@@ -28,9 +22,6 @@ import GlobalStyle from '../globalStyle';
 
 import AvatarImage from '../../components/AvatarImage';
 import Loading from '../../components/Loading';
-
-import TrainingPlan from '../sub/TrainingPlan';
-
 
 moment.updateLocale('en', {
     relativeTime: {
@@ -45,11 +36,18 @@ moment.updateLocale('en', {
 
 
 const MyProfile = React.createClass({
+    propTypes: {
+        navigation: React.PropTypes.object.isRequired
+    },
 
     getInitialState() {
         return {
             user: null,
         }
+    },
+
+    componentDidMount() {
+        console.log('MY profile mounted')
     },
 
     scrollToTopEvent(args) {
@@ -66,15 +64,6 @@ const MyProfile = React.createClass({
 
     _refresh() {
         this.props.getUser(refresh = true);
-    },
-
-    createQuestionnaire() {
-        this.props.navigation.navigate('CreateQuestionnaire');
-    },
-
-
-    _back() {
-        this.props.navigation.goBack()
     },
 
     render() {
@@ -94,16 +83,9 @@ const MyProfile = React.createClass({
                         </View>
                         <TouchableOpacity style={styles.topRightNav}
                                           onPress={this._redirect.bind(null, 'EditProfile', null)}>
-                            <Icon name="gear" size={20} color='#333333'/>
+                            <Icon name="settings" size={20} color='#333333'/>
                         </TouchableOpacity>
                     </View>
-                    {this.props.RequestUser.id == user.profile.trainer ?
-                        <TrainingPlan client={user} UserToken={this.props.UserToken}
-                                      openModal={this.createQuestionnaire}
-                                      training_plan={user.training_plan}
-                                      _redirect={this._redirect}/>
-                        : null
-                    }
                 </ScrollView>
             )
         }

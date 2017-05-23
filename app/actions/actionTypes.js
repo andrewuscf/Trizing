@@ -9,6 +9,8 @@ export const NOT_LOGGED_IN = 'NOT_LOGGED_IN';
 
 export const LOAD_REQUEST_USER = 'LOAD_REQUEST_USER';
 
+export const TOGGLE_TAB_BAR = 'TOGGLE_TAB_BAR';
+
 export const CLEAR_API_ERROR = 'CLEAR_API_ERROR';
 export const API_ERROR = 'API_ERROR';
 
