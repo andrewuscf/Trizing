@@ -91,7 +91,7 @@ const EditProfile = React.createClass({
     asyncActions(start, data = {}){
         if (!start) {
             if (data.completed && !this.props.RequestUser.profile.completed) {
-                this.props.navigation.dispatch(resetNav('Home'));
+                this.props.navigation.dispatch(resetNav('Main'));
             }
         }
     },
