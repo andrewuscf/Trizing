@@ -5,16 +5,17 @@ import {
     View,
     TouchableOpacity,
     ScrollView,
-    Dimensions,
     Alert,
     Keyboard,
     KeyboardAvoidingView,
-    Platform
+    Platform,
+    Dimensions
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import t from 'tcomb-form-native';
 import {connect} from 'react-redux';
-import CameraRollPicker from 'react-native-camera-roll-picker';
+import ImagePicker from 'react-native-image-crop-picker';
+import {Bar} from 'react-native-progress';
 import FCM from 'react-native-fcm';
 import {
     Menu,
@@ -29,22 +30,20 @@ import * as ProfileActions from '../../actions/profileActions';
 import {removeToken} from '../../actions/globalActions';
 
 import AvatarImage from '../../components/AvatarImage';
-import CameraPage from '../../components/CameraPage';
 import {EMPTY_AVATAR} from '../../assets/constants';
 import Loading from '../../components/Loading';
 import SubmitButton from '../../components/SubmitButton';
 
-const {width: deviceWidth} = Dimensions.get('window');
 
+const {width: deviceWidth} = Dimensions.get('window');
 
 const EditProfile = React.createClass({
     getInitialState() {
         let initData = {
             value: null,
-            showRoll: false,
             previewImage: null,
             imageError: false,
-            showCamera: false
+            progress: 0
         };
         if (this.props.RequestUser) {
             initData = {
@@ -86,14 +85,13 @@ const EditProfile = React.createClass({
                 }
             })
         }
+        if (prevProps.RequestUser && prevProps.RequestUser.profile.completed != this.props.RequestUser.profile.completed) {
+            this.props.navigation.dispatch(resetNav('Main'));
+        }
     },
 
-    asyncActions(start, data = {}){
-        if (!start) {
-            if (data.completed && !this.props.RequestUser.profile.completed) {
-                this.props.navigation.dispatch(resetNav('Main'));
-            }
-        }
+    asyncActions(progress){
+        this.setState({progress: progress})
     },
 
     getSelectedImages(images) {
@@ -104,26 +102,44 @@ const EditProfile = React.createClass({
     },
 
     toggleRoll() {
-        this.setState({
-            showRoll: !this.state.showRoll,
+        ImagePicker.openPicker({
+            width: 200,
+            height: 200,
+            cropping: true,
+            mediaType: 'photo',
+            includeBase64: true,
+        }).then(image => {
+            this.setState({
+                previewImage: {
+                    ...image,
+                    uri: image.path
+                }
+            });
         });
     },
 
     toggleCamera() {
-        this.setState({
-            showCamera: !this.state.showCamera,
+        ImagePicker.openCamera({
+            width: 200,
+            height: 200,
+            cropping: true,
+            mediaType: 'photo',
+            includeBase64: true,
+        }).then(image => {
+            this.setState({
+                previewImage: {
+                    ...image,
+                    uri: image.path
+                }
+            });
         });
+
     },
 
     _back() {
-        if (this.state.showRoll) {
-            this.setState({showRoll: false});
-        } else if (this.state.showCamera) {
-            this.setState({showCamera: false});
-        } else if (this.props.RequestUser.profile.completed) {
+        if (this.props.RequestUser.profile.completed) {
             this.props.navigation.goBack();
         }
-
     },
 
     _onSubmit(){
@@ -133,24 +149,33 @@ const EditProfile = React.createClass({
                 username: values.username,
                 type: values.type
             };
-            let profileData = new FormData();
-            if (this.state.previewImage) {
-                profileData.append("avatar", {
-                    ...this.state.previewImage,
-                    url: this.state.previewImage.uri,
-                    name: 'image.jpg',
-                    type: 'multipart/form-data'
-                });
-            }
-            profileData.append("first_name", values.first_name);
-            profileData.append("last_name", values.last_name);
-            profileData.append("phone_number", values.phone_number);
+            // const data = [
+            //     {name: 'username', data: values.username},
+            //     {name: 'profile', data: {name: 'avatar', filename: 'avatar.png',}}
+            // ]
+            let profileData = {
+                first_name: values.first_name,
+                last_name: values.last_name,
+                phone_number: values.phone_number,
+                avatar: {
+                    ...this.state.previewImage
+                }
+            };
             this.props.actions.updateUser(data, profileData, this.asyncActions);
         }
-        if (!this.state.previewImage && !this.props.RequestUser.profile.avatar)
+        if (!this.state.previewImage && !this.props.RequestUser.profile.avatar) {
             this.setState({imageError: true});
-        else
+            Alert.alert(
+                'You need a profile photo',
+                'Please take or select a profile photo.',
+                [
+                    {text: 'Okay'},
+                ]
+            );
+        } else {
             this.setState({imageError: false});
+        }
+
     },
 
     _logOut() {
@@ -173,20 +198,9 @@ const EditProfile = React.createClass({
         );
     },
 
-    getCameraData(data) {
-        this.setState({
-            previewImage: {
-                uri: data.mediaUri,
-                path: data.path
-            }
-        });
-        this.toggleCamera();
-    },
-
     render() {
-        const rollPickerWidth = deviceWidth;
+        console.log(this.state.progress)
         const user = this.props.RequestUser;
-
         let options = {
             // stylesheet: stylesheet,
             fields: {
@@ -234,16 +248,13 @@ const EditProfile = React.createClass({
                 });
             }
 
-            let content = null;
-            if (this.state.showRoll) {
-                content = <CameraRollPicker imageMargin={2} containerWidth={rollPickerWidth} initialListSize={1}
-                                            pageSize={1}
-                                            assetType="Photos"
-                                            callback={this.getSelectedImages} maximum={1} selected={[]}/>;
-            } else if (this.state.showCamera) {
-                content = <CameraPage passData={this.getCameraData}/>;
-            } else {
-                content = (
+            return (
+                <View style={styles.mainContainer}>
+                    {this.state.progress != 0 ?
+                        <Bar progress={this.state.progress} width={deviceWidth} height={3} borderRadius={0}/>
+                        : null
+                    }
+
                     <ScrollView ref='_scrollView' keyboardDismissMode='interactive'
                                 style={styles.mainContainer}>
                         <KeyboardAvoidingView behavior="position">
@@ -256,7 +267,7 @@ const EditProfile = React.createClass({
                                                              borderWidth: 1
                                                          } : null]}/>
                                         <Text style={{alignSelf: 'center', fontSize: getFontSize(18), paddingTop: 10}}>
-                                            {this.state.showRoll ? 'Close Camera Roll' : 'Change Profile Photo'}
+                                            Change Profile Photo
                                         </Text>
                                     </MenuTrigger>
                                     <MenuOptions
@@ -287,13 +298,6 @@ const EditProfile = React.createClass({
                                           text='Log Out'/>
                         </KeyboardAvoidingView>
                     </ScrollView>
-                )
-            }
-
-            return (
-                <View style={styles.mainContainer}>
-
-                    {content}
 
 
                 </View>
