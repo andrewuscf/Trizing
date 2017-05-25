@@ -227,7 +227,7 @@ const MainTabNav = TabNavigator({
 }, {
     tabBarComponent: CustomTabBar,
     initialRouteName: 'Home',
-    tabBarPosition: 'bottom',
+    // tabBarPosition: 'bottom',
     lazy: true,
     swipeEnabled: true,
     animationEnabled: false,
