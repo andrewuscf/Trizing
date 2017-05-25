@@ -55,15 +55,15 @@ const ChatRoom = React.createClass({
     onSendPress(messages = []) {
         const data = {room: this.props.roomId, text: messages[0].text};
         let url = `${API_ENDPOINT}social/messages/`;
+
+        this.setState((previousState) => {
+            return {
+                messages: GiftedChat.append(previousState.messages, messages),
+            };
+        });
         fetch(url, fetchData('POST', JSON.stringify(data), this.props.UserToken))
-            .then((response) => response.json())
-            .then((responseJson) => {
-                this.setState((previousState) => {
-                    return {
-                        messages: GiftedChat.append(previousState.messages, messages),
-                    };
-                });
-            });
+            // .then((response) => response.json())
+            // .then((responseJson) => {});
     },
 
     _back() {

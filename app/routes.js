@@ -1,5 +1,5 @@
 import React from 'react'
-import {Platform} from 'react-native';
+import {Platform, View} from 'react-native';
 import {TabNavigator, StackNavigator, TabBarBottom, DrawerNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -72,7 +72,9 @@ const defaultNavigationOptions = {
     },
     headerBackTitle: null,
     headerTitleStyle: {
-        textAlign: 'center',
+        // textAlign: 'center',
+        // marginRight: 56,
+        alignSelf: 'center',
     }
 }
 
@@ -133,7 +135,7 @@ const HomeNav = StackNavigator({
         return {
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
-                : null,
+                : <View />,
             ...defaultNavigationOptions,
         };
     },
@@ -160,7 +162,7 @@ const CalendarNav = StackNavigator({
         return {
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
-                : null,
+                : <View />,
             ...defaultNavigationOptions,
         };
     },
@@ -187,7 +189,7 @@ const ChatNav = StackNavigator({
         return {
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
-                : null,
+                : <View />,
             ...defaultNavigationOptions,
         };
     },
@@ -268,7 +270,7 @@ export const AppNavigator = StackNavigator({
         return {
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
-                : null,
+                : <View />,
             ...defaultNavigationOptions,
         };
     },
