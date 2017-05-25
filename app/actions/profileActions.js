@@ -8,15 +8,19 @@ import RNFetchBlob from 'react-native-fetch-blob'
 export function updateProfile(data, asyncActions) {
     return (dispatch, getState) => {
         const url = `${API_ENDPOINT}user/profile/${getState().Global.RequestUser.id}/`.toString();
+        const arrayData = [
+            {name: 'first_name', data: data.first_name},
+            {name: 'last_name', data: data.last_name},
+            {name: 'phone_number', data: data.phone_number.toString()},
+        ]
+        if (data.avatar.uri) {
+            arrayData.push({name: 'avatar', filename: 'avatar.jpg', data: data.avatar.data});
+        }
+        console.log(data)
         return RNFetchBlob.fetch('PATCH', url, {
                 Authorization: `Token ${getState().Global.UserToken}`,
                 'Content-Type': 'multipart/form-data',
-            }, [
-                {name: 'first_name', data: data.first_name},
-                {name: 'last_name', data: data.last_name},
-                {name: 'phone_number', data: data.phone_number},
-                {name: 'avatar', filename: 'avatar.jpg', data: data.avatar.data},
-            ]
+            }, arrayData
         ).uploadProgress((written, total) => {
             asyncActions((written / total));
         }).then((resp) => {
@@ -45,6 +49,7 @@ export function updateUser(data, profileData = false, asyncActions) {
                 }
             })
             .catch((error) => {
+                console.log(error)
                 return dispatch({
                     type: types.API_ERROR, error: JSON.stringify({
                         title: 'Request could not be performed.',

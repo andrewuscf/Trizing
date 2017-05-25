@@ -1,9 +1,8 @@
 import React from 'react'
 import {Platform, View} from 'react-native';
-import {TabNavigator, StackNavigator, TabBarBottom, DrawerNavigator} from 'react-navigation';
+import {TabNavigator, StackNavigator, TabBarBottom, DrawerNavigator, NavigationActions} from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import CustomTabBar from './components/CustomTabBar';
 import Save from './components/NavBarSave';
 
 // Main Pages
@@ -75,7 +74,8 @@ const defaultNavigationOptions = {
         // textAlign: 'center',
         // marginRight: 56,
         alignSelf: 'center',
-    }
+    },
+    gesturesEnabled: true
 }
 
 
@@ -227,7 +227,28 @@ const MainTabNav = TabNavigator({
     //     }
     // },
 }, {
-    tabBarComponent: CustomTabBar,
+    tabBarComponent: props => {
+        const {navigation, navigationState} = props
+        const jumpToIndex = index => {
+            const lastPosition = navigationState.index
+            const tab = navigationState.routes[index]
+            const tabRoute = tab.routeName;
+            if (!tab.routes) {
+                navigation.dispatch(NavigationActions.navigate({routeName: tabRoute}));
+                return;
+            }
+            const firstTab = tab.routes[0].routeName;
+
+            lastPosition !== index && navigation.dispatch(NavigationActions.navigate({routeName: tabRoute}))
+            lastPosition === index && navigation.dispatch(NavigationActions.reset({
+                index: 0,
+                actions: [
+                    NavigationActions.navigate({routeName: firstTab}),
+                ],
+            }));
+        };
+        return <TabBarBottom {...props} jumpToIndex={jumpToIndex}/>
+    },
     initialRouteName: 'Home',
     tabBarPosition: 'bottom',
     lazy: true,
