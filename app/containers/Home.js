@@ -305,7 +305,7 @@ const Home = React.createClass({
                           entry='top' swipeToClose={true}>
                     <MyProfile back={this.closeModal} navigation={this.props.navigation}/>
                     <TouchableOpacity onPress={this.closeModal} style={{alignSelf: 'center'}}>
-                        <Icon name="keyboard-arrow-up" size={40} color='#333333'/>
+                        <Icon name="keyboard-arrow-up" size={50} color='#333333'/>
                     </TouchableOpacity>
                 </ModalBox>
             </View>

@@ -48,9 +48,7 @@ class CustomTabBar extends Component {
 
 
         return (
-            <Animated.View style={[styles.container, {bottom: this.state.offset}]}>
-                <TabBarBottom {...this.props} jumpToIndex={jumpToIndex}/>
-            </Animated.View>
+            <TabBarBottom {...this.props} jumpToIndex={jumpToIndex} style={{bottom: this.state.offset}}/>
         );
     }
 }
