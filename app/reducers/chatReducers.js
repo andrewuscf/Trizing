@@ -13,9 +13,13 @@ const initialState = {
 export default function AppReducers(state = initialState, action = null) {
     switch (action.type) {
         case constants.LOAD_ROOMS:
+            const rooms = (action.refresh) ? action.response.results : [
+                    ...state.Rooms,
+                    ...action.response.results
+                ];
             return {
                 ...state,
-                Rooms: (action.refresh) ? action.response.results : state.Rooms.concat(action.response.results),
+                Rooms:  _.uniqBy(rooms, 'id'),
                 RoomsNext: action.response.next,
                 Refreshing: false,
                 ChatIsLoading: false,

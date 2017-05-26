@@ -38,6 +38,10 @@ const App = React.createClass({
             );
         }
 
+        if (!prevProps.RequestUser && this.props.RequestUser && this.props.RequestUser != prevProps.RequestUser) {
+            this.setUpNotifications();
+        }
+
         if (this.props.Notifications && this.props.Notifications.length && Platform.OS === 'ios') {
             let unreadcount = 0;
             this.props.Notifications.forEach((notification) => {
@@ -89,6 +93,7 @@ const App = React.createClass({
         this.notificationListener.remove();
         this.refreshTokenListener.remove();
     },
+
 
     // itemChangedFocus(route) {
     //     this.props.actions.setActiveRoute(route.name);

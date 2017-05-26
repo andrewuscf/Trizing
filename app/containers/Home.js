@@ -44,6 +44,7 @@ const Home = React.createClass({
     //     }
     // },
 
+
     componentDidMount() {
         if (!this.props.Clients.length) {
             this.getNeeded(true);
@@ -304,8 +305,8 @@ const Home = React.createClass({
                           onClosed={this.onModalClose} onOpened={this.onModalOpen}
                           entry='top' swipeToClose={true}>
                     <MyProfile back={this.closeModal} navigation={this.props.navigation}/>
-                    <TouchableOpacity onPress={this.closeModal} style={{alignSelf: 'center', borderColor: 'black', borderWidth: .5}}>
-                        <Icon name="keyboard-arrow-up" size={50} color='#333333'/>
+                    <TouchableOpacity onPress={this.closeModal} style={styles.modalClose}>
+                        <Icon name="keyboard-arrow-down" size={50} color='#333333'/>
                     </TouchableOpacity>
                 </ModalBox>
             </View>
@@ -417,6 +418,13 @@ const styles = StyleSheet.create({
         // right: 0,
         // left: 0,
     },
+    modalClose: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        // borderColor: 'black',
+        // borderWidth: .5,
+        // width: 500
+    }
 });
 
 const stateToProps = (state) => {

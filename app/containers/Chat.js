@@ -69,6 +69,7 @@ const Chat = React.createClass({
         if (this.props.Rooms.length) {
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             const dataSource = ds.cloneWithRows(this.props.Rooms);
+            console.log(this.props.Rooms)
             return (
                 <ListView
                     refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}

@@ -1,7 +1,6 @@
 import * as constants from '../actions/actionTypes';
 import _ from 'lodash';
 import React from 'react';
-import moment from 'moment';
 
 
 const initialState = {

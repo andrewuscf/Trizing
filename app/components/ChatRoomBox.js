@@ -40,6 +40,8 @@ const ChatRoomBox = React.createClass({
 
     render() {
         const room = this.props.room;
+        console.log(room)
+        return null;
         let sender = room.users[room.users.length - 1];
         if (this.props.RequestUser.id == sender.id && room.users.length > 1) {
             sender = room.users[room.users.length - 2];
