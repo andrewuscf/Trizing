@@ -7,14 +7,15 @@ import {
     RefreshControl,
     ScrollView,
     TouchableOpacity,
-    Platform
+    Platform,
+    Dimensions,
+    Animated
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconBadge from 'react-native-icon-badge';
-import ModalBox from 'react-native-modalbox';
 
 
 import * as HomeActions from '../actions/homeActions';
@@ -31,18 +32,20 @@ import Loading from '../components/Loading';
 import PeopleBar from '../components/PeopleBar';
 
 
+let deviceHeight = Dimensions.get('window').height;
+let deviceWidth = Dimensions.get('window').width;
+
 const Home = React.createClass({
     propTypes: {
         Refreshing: React.PropTypes.bool.isRequired,
         HomeIsLoading: React.PropTypes.bool.isRequired,
     },
 
-    // scrollToTopEvent(args) {
-    //     if (args.routeName == 'Home') {
-    //         const isTrue = true;
-    //         this.refs.home_scroll.scrollTo({y: 0, isTrue});
-    //     }
-    // },
+    getInitialState() {
+        return {
+            modalY: new Animated.Value(-deviceHeight)
+        }
+    },
 
 
     componentDidMount() {
@@ -109,20 +112,18 @@ const Home = React.createClass({
         )
     },
 
-    openModal() {
-        this.refs.profile_modal.open();
+    showProfile() {
+        Animated.timing(this.state.modalY, {
+            duration: 300,
+            toValue: 0
+        }).start();
     },
 
-    closeModal() {
-        this.refs.profile_modal.close();
-    },
-
-    onModalClose() {
-        this.props.toggleTabBar(true);
-    },
-
-    onModalOpen() {
-        this.props.toggleTabBar(false);
+    hideProfile() {
+        Animated.timing(this.state.modalY, {
+            duration: 300,
+            toValue: -deviceHeight
+        }).start();
     },
 
 
@@ -289,7 +290,7 @@ const Home = React.createClass({
                         <View style={styles.topItem}/>
                         <View style={[{flex: 3.3, justifyContent: 'center', alignItems: 'center'}]}>
                             <AvatarImage style={styles.avatar} image={userImage}
-                                         redirect={this.openModal}/>
+                                         redirect={this.showProfile}/>
                         </View>
                         <View style={styles.topItem}>
                             {this.renderNotifications()}
@@ -301,14 +302,12 @@ const Home = React.createClass({
                     </View>
                 </ScrollView>
 
-                <ModalBox style={[styles.modal]} backdrop={false} ref="profile_modal"
-                          onClosed={this.onModalClose} onOpened={this.onModalOpen}
-                          entry='top' swipeToClose={true}>
-                    <MyProfile back={this.closeModal} navigation={this.props.navigation}/>
-                    <TouchableOpacity onPress={this.closeModal} style={styles.modalClose}>
-                        <Icon name="keyboard-arrow-down" size={50} color='#333333'/>
+                <Animated.View style={[styles.modal,{ transform: [{translateY: this.state.modalY}]}]}>
+                    <MyProfile navigation={this.props.navigation}/>
+                    <TouchableOpacity onPress={this.hideProfile} style={styles.modalClose}>
+                        <Icon name="keyboard-arrow-up" size={50} color='#333333'/>
                     </TouchableOpacity>
-                </ModalBox>
+                </Animated.View>
             </View>
         )
     }
@@ -413,10 +412,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     modal: {
-        // top: 0,
-        // bottom: 0,
-        // right: 0,
-        // left: 0,
+        // height: deviceHeight,
+        // width: deviceWidth,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right:0,
+        bottom: 0,
+        backgroundColor: '#ededed',
+        justifyContent: 'center',
     },
     modalClose: {
         justifyContent: 'center',

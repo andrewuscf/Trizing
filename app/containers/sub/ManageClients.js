@@ -78,7 +78,11 @@ const ManageClients = React.createClass({
     },
 
     textChange(text) {
-        this.getUsersList(text);
+        if (text) {
+            this.getUsersList(text);
+        } else {
+            this.props.actions.getClients(true);
+        }
         this.setState({filterText: text});
     },
 
@@ -170,7 +174,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 50,
+        height: 60,
         marginLeft: 10,
         marginRight: 10,
         borderBottomWidth: 1,
