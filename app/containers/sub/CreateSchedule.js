@@ -36,11 +36,14 @@ const CreateSchedule = React.createClass({
         }
     },
 
+    componentDidMount() {
+        this.props.navigation.setParams({handleSave: this._onSubmit, saveText: 'Next'});
+    },
+
     asyncActions(start, data = {}){
         if (start) {
-            this.refs.postbutton.setState({busy: true});
+            // failed
         } else {
-            // this.refs.postbutton.setState({busy: false});
             const self = this;
             if (data.routeName) {
                 const resetAction = NavigationActions.reset({
@@ -89,11 +92,11 @@ const CreateSchedule = React.createClass({
                 optional: '',
                 required: '*',
             },
-            stylesheet: stylesheet,
+            // stylesheet: stylesheet,
             fields: {
                 name: {
-                    label: 'Workout Program Name',
-                    placeholder: this.props.training_plan? `This name will be displayed to your client` :`For example 'Program XY'`,
+                    label: 'Program Name',
+                    placeholder: this.props.training_plan? `This name will be displayed to your client` :`For example 'HIIT Program'`,
                     onSubmitEditing: () => this._onSubmit(),
                     autoCapitalize: 'sentences'
                 },
@@ -117,13 +120,14 @@ const CreateSchedule = React.createClass({
                         {id: null, name: 'None'}
                     ]} selectedId={this.state.template} submitChange={this.selectTemplate}/>
                 </View>
-                <SubmitButton buttonStyle={styles.button}
-                              textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
-                              text='Next Step'/>
             </View>
         )
     }
 });
+
+CreateSchedule.navigationOptions = {
+    title: 'Create Program',
+};
 
 const styles = StyleSheet.create({
     flexCenter: {
