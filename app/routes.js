@@ -134,6 +134,7 @@ const HomeNav = StackNavigator({
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
                 : <View />,
+            headerTitle: state.params && state.params.headerTitle ? state.params.headerTitle : null,
             ...defaultNavigationOptions,
         };
     },
@@ -141,6 +142,24 @@ const HomeNav = StackNavigator({
         backgroundColor: 'white'
     }
 });
+
+
+const prevGetStateHomeNav = HomeNav.router.getStateForAction;
+HomeNav.router = {
+    ...HomeNav.router,
+    getStateForAction(action, state) {
+        if (state && action.type === 'ReplaceCurrentScreen') {
+            const routes = state.routes.slice(0, state.routes.length - 1);
+            routes.push(action);
+            return {
+                ...state,
+                routes,
+                index: routes.length - 1,
+            };
+        }
+        return prevGetStateHomeNav(action, state)
+    }
+}
 
 const CalendarNav = StackNavigator({
     Calendar: {

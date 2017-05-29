@@ -14,8 +14,6 @@ import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 
 import SelectInput from '../../components/SelectInput';
-import SubmitButton from '../../components/SubmitButton';
-
 
 const Form = t.form.Form;
 
@@ -44,15 +42,13 @@ const CreateSchedule = React.createClass({
         if (start) {
             // failed
         } else {
-            const self = this;
             if (data.routeName) {
-                const resetAction = NavigationActions.reset({
-                    index: self.navigation.state.routes.length - 1,
-                    actions: [
-                        NavigationActions.navigate({ routeName: data.routeName, params: data.props})
-                    ]
+                this.props.navigation.dispatch({
+                    type: 'ReplaceCurrentScreen',
+                    routeName: data.routeName,
+                    params: data.props,
+                    key: data.routeName
                 });
-                this.props.navigation.dispatch(resetAction);
             }
         }
     },
@@ -143,60 +139,6 @@ const styles = StyleSheet.create({
     }
 });
 
-// T FORM SETUP
-const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
-
-stylesheet.formGroup = {
-    ...stylesheet.formGroup,
-    normal: {
-        ...stylesheet.formGroup.normal,
-        marginBottom: 12,
-        borderBottomWidth: .5,
-        borderColor: '#aaaaaa',
-        justifyContent: 'center',
-        alignItems: 'stretch'
-    },
-    error: {
-        ...stylesheet.formGroup.error,
-        marginBottom: 12,
-        borderBottomWidth: .5,
-        borderColor: 'red',
-        justifyContent: 'center',
-        alignItems: 'stretch'
-    }
-};
-stylesheet.textbox = {
-    ...stylesheet.textbox,
-    normal: {
-        ...stylesheet.textbox.normal,
-        borderWidth: 0,
-        marginBottom: 0,
-        textAlign: 'center'
-    },
-    error: {
-        ...stylesheet.textbox.error,
-        borderWidth: 0,
-        marginBottom: 0,
-        textAlign: 'center'
-    }
-};
-stylesheet.controlLabel = {
-    ...stylesheet.controlLabel,
-    normal: {
-        ...stylesheet.controlLabel.normal,
-        fontSize: getFontSize(25),
-        lineHeight: getFontSize(26),
-        fontFamily: 'OpenSans-Semibold',
-        textAlign: 'center'
-    },
-    error: {
-        ...stylesheet.controlLabel.error,
-        fontSize: getFontSize(25),
-        lineHeight: getFontSize(26),
-        fontFamily: 'OpenSans-Semibold',
-        textAlign: 'center'
-    }
-};
 
 
 const stateToProps = (state) => {

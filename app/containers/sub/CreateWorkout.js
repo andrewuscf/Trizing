@@ -14,8 +14,6 @@ import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 
 import SelectInput from '../../components/SelectInput';
-import SubmitButton from '../../components/SubmitButton';
-
 
 const CreateWorkout = React.createClass({
     propTypes: {
@@ -28,23 +26,22 @@ const CreateWorkout = React.createClass({
         }
     },
 
-    asyncActions(start, data = {}){
-        if (start) {
-            this.refs.postbutton.setState({busy: true});
-        } else {
-            this.refs.postbutton.setState({busy: false});
-            if (data.routeName) {
-                const resetAction = NavigationActions.reset({
-                    index: self.navigation.state.routes.length - 1,
-                    actions: [
-                        NavigationActions.navigate({ routeName: data.routeName, params: data.props})
-                    ]
-                });
-                this.props.navigation.dispatch(resetAction);
-            }
-        }
+    componentDidMount() {
+        this.props.navigation.setParams({handleSave: this._onSubmit, saveText: 'Next'});
     },
 
+    asyncActions(start, data = {}){
+        if (start) {
+            // failed
+        } else if (data.routeName) {
+            this.props.navigation.dispatch({
+                type: 'ReplaceCurrentScreen',
+                routeName: data.routeName,
+                params: data.props,
+                key: data.routeName
+            });
+        }
+    },
 
     _onSubmit() {
         let values = this.refs.form.getValue();
@@ -81,7 +78,7 @@ const CreateWorkout = React.createClass({
                 optional: '',
                 required: '*',
             },
-            stylesheet: stylesheet,
+            // stylesheet: stylesheet,
             fields: {
                 name: {
                     label: 'Workout Block Name',
@@ -90,7 +87,7 @@ const CreateWorkout = React.createClass({
                     autoCapitalize: 'sentences'
                 },
                 duration: {
-                    label: 'Weeks',
+                    label: 'Duration',
                     onSubmitEditing: () => this._onSubmit(),
                     placeholder: `Number of weeks for this block`
                 }
@@ -112,9 +109,6 @@ const CreateWorkout = React.createClass({
                         {id: null, name: 'None'}
                     ]} selectedId={this.state.template} submitChange={this.selectTemplate}/>
                 </View>
-                <SubmitButton buttonStyle={styles.button}
-                              textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
-                              text='Next Step'/>
             </View>
         )
     }
@@ -145,59 +139,7 @@ const Workout = t.struct({
     name: t.String,
     duration: Positive,
 });
-const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
 
-stylesheet.formGroup = {
-    ...stylesheet.formGroup,
-    normal: {
-        ...stylesheet.formGroup.normal,
-        marginBottom: 12,
-        borderBottomWidth: .5,
-        borderColor: '#aaaaaa',
-        justifyContent: 'center',
-        alignItems: 'stretch'
-    },
-    error: {
-        ...stylesheet.formGroup.error,
-        marginBottom: 12,
-        borderBottomWidth: .5,
-        borderColor: 'red',
-        justifyContent: 'center',
-        alignItems: 'stretch'
-    }
-};
-stylesheet.textbox = {
-    ...stylesheet.textbox,
-    normal: {
-        ...stylesheet.textbox.normal,
-        borderWidth: 0,
-        marginBottom: 0,
-        textAlign: 'center'
-    },
-    error: {
-        ...stylesheet.textbox.error,
-        borderWidth: 0,
-        marginBottom: 0,
-        textAlign: 'center'
-    }
-};
-stylesheet.controlLabel = {
-    ...stylesheet.controlLabel,
-    normal: {
-        ...stylesheet.controlLabel.normal,
-        fontSize: getFontSize(25),
-        lineHeight: getFontSize(26),
-        fontFamily: 'OpenSans-Semibold',
-        textAlign: 'center'
-    },
-    error: {
-        ...stylesheet.controlLabel.error,
-        fontSize: getFontSize(25),
-        lineHeight: getFontSize(26),
-        fontFamily: 'OpenSans-Semibold',
-        textAlign: 'center'
-    }
-};
 
 
 const stateToProps = (state) => {

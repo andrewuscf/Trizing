@@ -30,6 +30,11 @@ const EditSchedule = React.createClass({
         }
     },
 
+    componentWillMount() {
+        const schedule = _.find(this.props.Schedules, {id: this.props.scheduleId});
+        this.props.navigation.setParams({headerTitle: schedule.name});
+    },
+
     asyncActions(data = {}){
         if (data.deleted) {
             this.props.navigation.goBack();
@@ -39,6 +44,7 @@ const EditSchedule = React.createClass({
     componentDidUpdate(prevProps, prevState) {
         if (this.props.Schedules != prevProps.Schedules) {
             const schedule = _.find(this.props.Schedules, {id: this.props.scheduleId});
+            this.props.navigation.setParams({headerTitle: this.state.schedule.name});
             this.setState({schedule: schedule});
         }
     },
@@ -101,9 +107,6 @@ const EditSchedule = React.createClass({
                             contentContainerStyle={styles.contentContainerStyle}>
 
                     <View style={{marginBottom: 10}}>
-                        <Text style={styles.title}>
-                            {this.state.schedule ? this.state.schedule.name : null}
-                        </Text>
                         {steps}
                     </View>
 
@@ -122,6 +125,14 @@ const EditSchedule = React.createClass({
         )
     }
 });
+
+// EditSchedule.navigationOptions = ({navigation}) => {
+//     const {state, setParams} = navigation;
+//     console.log(state.params)
+//     return {
+//         headerTitle: state.params && state.params.headerTitle ? state.params.headerTitle : null,
+//     };
+// };
 
 const iconColor = '#8E8E8E';
 

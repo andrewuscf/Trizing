@@ -35,13 +35,10 @@ const EditWorkout = React.createClass({
         }
     },
 
-    asyncActions(start){
-        if (start) {
-            this.refs.postbutton.setState({busy: true});
-        } else {
-            this.refs.postbutton.setState({busy: false});
-            // this.props.navigation.goBack();
-        }
+    componentWillMount() {
+        const schedule = _.find(this.props.Schedules, {workouts: [{id: this.props.workoutId}]});
+        const workout = _.find(schedule.workouts, {id: this.props.workoutId});
+        this.props.navigation.setParams({headerTitle: workout.name});
     },
 
     componentDidUpdate(prevProps, prevState) {
@@ -49,6 +46,7 @@ const EditWorkout = React.createClass({
             const schedule = _.find(this.props.Schedules, {workouts: [{id: this.props.workoutId}]});
             const workout = _.find(schedule.workouts, {id: this.props.workoutId});
             this.setState({workout: workout});
+            this.props.navigation.setParams({headerTitle: workout.name});
         }
     },
 
@@ -83,9 +81,6 @@ const EditWorkout = React.createClass({
                             contentContainerStyle={styles.contentContainerStyle}>
 
                     <View style={{marginBottom: 10}}>
-                        <Text style={styles.title}>
-                            {this.state.workout ? this.state.workout.name : null}
-                        </Text>
                         {workout_days}
                     </View>
 
