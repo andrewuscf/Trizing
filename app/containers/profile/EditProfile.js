@@ -199,7 +199,6 @@ const EditProfile = React.createClass({
     },
 
     render() {
-        console.log(this.state.progress)
         const user = this.props.RequestUser;
         let options = {
             // stylesheet: stylesheet,

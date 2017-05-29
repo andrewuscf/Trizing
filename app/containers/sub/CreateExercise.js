@@ -12,6 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import t from 'tcomb-form-native';
 import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
@@ -22,6 +23,10 @@ import CreateSetBox from '../../components/CreateSetBox';
 
 
 const BlankSet = {reps: null, weight: null};
+const Form = t.form.Form;
+const Exercise = t.struct({
+    name: t.String,
+});
 
 const CreateExercise = React.createClass({
     propTypes: {
@@ -30,17 +35,19 @@ const CreateExercise = React.createClass({
     },
 
     getInitialState() {
-        let name = null;
         let sets = [BlankSet];
         if (this.props.exercise) {
-            name = this.props.exercise.name;
             sets = [...this.props.exercise.sets];
         }
         return {
             fetchedExercises: [],
-            name: name,
             sets: sets,
+            value: this.props.exercise ? {name: this.props.exercise.name} : null
         }
+    },
+
+    componentDidMount() {
+        this.props.navigation.setParams({handleSave: this._save, saveText: 'Save'});
     },
 
 
@@ -72,10 +79,6 @@ const CreateExercise = React.createClass({
         }
     },
 
-    _exerciseNameChange(text) {
-        this.setState({name: text});
-    },
-
     setSetState(index, state) {
         let sets = this.state.sets;
         sets[index] = {
@@ -85,39 +88,60 @@ const CreateExercise = React.createClass({
         this.setState({sets: sets});
     },
 
+    onChange(value) {
+        this.setState({value});
+    },
+
     _save() {
         const sets = [];
-        this.state.sets.forEach((set, index) => {
-            if (set.reps && this.state.name) {
-                const data = {
-                    day: this.props.workout_day.id,
-                    exercise: {
-                        name: this.state.name,
-                    },
-                    reps: set.reps,
-                    order: index + 1
-                };
-                if (set.weight)
-                    data['weight'] = set.weight;
-                if (!set.id) {
-                    sets.push(data);
-                } else {
-                    data['id'] = set.id;
-                    data['exercise'] = this.props.exercise.id;
-                    const old = _.find(this.props.exercise.sets, {id: set.id});
-                    if (old.reps != data.reps || old.weight != data.weight || old.order != data.order) {
-                        this.props.actions.addEditExercise(data);
+        let values = this.refs.form.getValue();
+        if (values) {
+            this.state.sets.forEach((set, index) => {
+                if (set.reps && this.state.name) {
+                    const data = {
+                        day: this.props.workout_day.id,
+                        exercise: {
+                            name: this.state.name,
+                        },
+                        reps: set.reps,
+                        order: index + 1
+                    };
+                    if (set.weight)
+                        data['weight'] = set.weight;
+                    if (!set.id) {
+                        sets.push(data);
+                    } else {
+                        data['id'] = set.id;
+                        data['exercise'] = this.props.exercise.id;
+                        const old = _.find(this.props.exercise.sets, {id: set.id});
+                        if (old.reps != data.reps || old.weight != data.weight || old.order != data.order) {
+                            this.props.actions.addEditExercise(data);
+                        }
                     }
                 }
-            }
-        });
-        if (sets.length > 0)
-            this.props.actions.addEditExercise(sets);
-        this.props.navigation.goBack();
+            });
+            if (sets.length > 0)
+                this.props.actions.addEditExercise(sets);
+            this.props.navigation.goBack();
+        }
     },
 
 
     render: function () {
+        let options = {
+            i18n: {
+                optional: '',
+                required: '*',
+            },
+            fields: {
+                name: {
+                    label: `Exercise Name`,
+                    // onSubmitEditing: () => this.refs.form.getComponent('duration').refs.input.focus(),
+                    autoCapitalize: 'words'
+                }
+            }
+        };
+
         let sets = this.state.sets.map((set, index) => {
             if (this.state.sets.length > 1)
                 return <CreateSetBox key={index} setIndex={index} setSetState={this.setSetState}
@@ -130,18 +154,13 @@ const CreateExercise = React.createClass({
             <View style={{flex: 1}}>
                 <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
                             contentContainerStyle={styles.contentContainerStyle}>
-
-                    <View style={styles.subNav}>
-                        <TextInput
-                            ref="name"
-                            style={[styles.filterInput]}
-                            underlineColorAndroid='transparent'
-                            autoCapitalize='words'
-                            autoCorrect={false}
-                            placeholderTextColor='#a7a59f'
-                            onChangeText={this._exerciseNameChange}
-                            value={this.state.name}
-                            placeholder="Enter exercise name"
+                    <View style={{margin: 10}}>
+                        <Form
+                            ref="form"
+                            type={Exercise}
+                            options={options}
+                            onChange={this.onChange}
+                            value={this.state.value}
                         />
                     </View>
                     <View>
@@ -178,27 +197,6 @@ const iconColor = '#8E8E8E';
 const styles = StyleSheet.create({
     flexCenter: {
         flex: .9,
-    },
-    filterInput: {
-        flex: 1,
-        width: 105,
-        color: '#797979',
-        fontSize: 14,
-        fontFamily: 'OpenSans-Semibold',
-        borderWidth: 0,
-        backgroundColor: 'transparent',
-        paddingLeft: 5
-    },
-    subNav: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 40,
-        marginLeft: 10,
-        marginRight: 10,
-        borderBottomWidth: 1,
-        borderColor: '#e1e3df',
     },
     edit: {
         position: 'absolute',

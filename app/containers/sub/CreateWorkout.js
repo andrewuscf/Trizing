@@ -72,6 +72,11 @@ const CreateWorkout = React.createClass({
     },
 
 
+    onChange(value) {
+        this.setState({value});
+    },
+
+
     render: function () {
         let options = {
             i18n: {

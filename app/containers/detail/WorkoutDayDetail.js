@@ -26,22 +26,30 @@ const WorkoutDayDetail = React.createClass({
     },
 
     getInitialState() {
+        return {
+            Error: null,
+            workout_day: this.getWorkoutDay(),
+        }
+    },
+
+    getWorkoutDay() {
         const schedule = _.find(this.props.Schedules, {workouts: [{workout_days: [{id: this.props.workout_day_id}]}]});
         const workout = _.find(schedule.workouts, {workout_days: [{id: this.props.workout_day_id}]});
         const workout_day = _.find(workout.workout_days, {id: this.props.workout_day_id});
-        return {
-            Error: null,
-            workout_day: workout_day,
-        }
+        return workout_day
+    },
+
+    componentWillMount() {
+        this.props.navigation.setParams({headerTitle: this.getWorkoutDay().name});
     },
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.Schedules != prevProps.Schedules) {
-            const schedule = _.find(this.props.Schedules, {workouts: [{workout_days: [{id: this.props.workout_day_id}]}]});
-            const workout = _.find(schedule.workouts, {workout_days: [{id: this.props.workout_day_id}]});
-            const workout_day = _.find(workout.workout_days, {id: this.props.workout_day_id});
-            if (workout_day)
+            const workout_day = this.getWorkoutDay()
+            if (workout_day){
                 this.setState({workout_day: workout_day})
+                this.props.navigation.setParams({headerTitle: workout_day.name})
+            }
         }
     },
 
@@ -61,8 +69,6 @@ const WorkoutDayDetail = React.createClass({
         let dataSource = ds.cloneWithRows(this.state.workout_day.exercises);
         return (
             <View style={styles.container}>
-                <Text style={[styles.title]}>{this.state.workout_day.name}</Text>
-
                 <DaysOfWeek days={this.state.workout_day.days}/>
                 <View style={styles.flexCenter} keyboardShouldPersistTaps="handled">
                     <Text style={[styles.dayTitle]}>Exercises</Text>
@@ -114,13 +120,6 @@ const styles = StyleSheet.create({
     },
     flexCenter: {
         flex: .9
-    },
-    title: {
-        fontSize: getFontSize(28),
-        fontFamily: 'OpenSans-Bold',
-        alignSelf: 'center',
-        paddingTop: 10,
-        paddingBottom: 10
     },
     dayTitle: {
         fontSize: getFontSize(26),
