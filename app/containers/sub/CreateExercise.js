@@ -97,11 +97,11 @@ const CreateExercise = React.createClass({
         let values = this.refs.form.getValue();
         if (values) {
             this.state.sets.forEach((set, index) => {
-                if (set.reps && this.state.name) {
+                if (set.reps) {
                     const data = {
                         day: this.props.workout_day.id,
                         exercise: {
-                            name: this.state.name,
+                            name: values.name,
                         },
                         reps: set.reps,
                         order: index + 1
@@ -115,14 +115,16 @@ const CreateExercise = React.createClass({
                         data['exercise'] = this.props.exercise.id;
                         const old = _.find(this.props.exercise.sets, {id: set.id});
                         if (old.reps != data.reps || old.weight != data.weight || old.order != data.order) {
-                            this.props.actions.addEditExercise(data);
+                            this.props.actions.addEditExercise(data, this.props.navigation.goBack);
                         }
                     }
                 }
             });
-            if (sets.length > 0)
-                this.props.actions.addEditExercise(sets);
-            this.props.navigation.goBack();
+            if (sets.length > 0) {
+                this.props.actions.addEditExercise(sets, this.props.navigation.goBack);
+            } else {
+                this.props.navigation.goBack();
+            }
         }
     },
 
