@@ -71,8 +71,6 @@ const defaultNavigationOptions = {
     },
     headerBackTitle: null,
     headerTitleStyle: {
-        // textAlign: 'center',
-        // marginRight: 56,
         alignSelf: 'center',
     },
     gesturesEnabled: true

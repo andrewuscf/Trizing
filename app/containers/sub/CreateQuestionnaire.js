@@ -4,58 +4,73 @@ import {
     View,
     Text,
     StyleSheet,
-    TextInput,
     TouchableOpacity,
     Keyboard
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import t from 'tcomb-form-native';
+import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 
-import SubmitButton from '../../components/SubmitButton';
+import CreateQuestionBox from '../../components/CreateQuestionBox';
 
+
+const Form = t.form.Form;
 
 const CreateQuestionnaire = React.createClass({
     getInitialState() {
         return {
             Error: null,
-            name: null,
+            value: null,
             questions: [
                 {text: null, height: 30}
             ]
         }
     },
 
+    rows: [],
+
+    componentDidMount() {
+        this.props.navigation.setParams({handleSave: this._onSubmit, saveText: 'Create'});
+    },
+
     asyncActions(start){
         if (start) {
-            this.refs.postbutton.setState({busy: true});
+            // failed
         } else {
-            this.refs.postbutton.setState({busy: false});
             this.props.navigation.goBack();
         }
     },
 
-    isValid() {
-        return this.state.name && this.state.questions[0] && this.state.questions[0].text
-    },
-
-
     _onSubmit() {
-        if (this.isValid()) {
-            Keyboard.dismiss();
+        const thisFormValues = this.refs.form.getValue();
+
+        if (thisFormValues) {
+            let completed = true;
             const data = {
-                name: this.state.name,
+                name: thisFormValues.name,
                 questions: [],
             };
-            this.state.questions.forEach((question) => {
-                if (question.text) {
-                    data.questions.push(question)
-                }
+            const rows = _.uniqBy(this.rows, function (e) {
+                if (e && e.props.number) return e.props.number;
             });
-            this.props.actions.createQuestionnaire(data, this.asyncActions)
+            for (const row of rows) {
+                if (row && row.refs.form) {
+                    const formValues = row.refs.form.getValue();
+                    if (formValues) {
+                        data.questions.push({...formValues})
+                    } else {
+                        completed = false;
+                        // break;
+                    }
+                }
+            }
+            if (completed) {
+                this.props.actions.createQuestionnaire(data, this.asyncActions);
+            }
         }
     },
 
@@ -78,103 +93,79 @@ const CreateQuestionnaire = React.createClass({
         });
     },
 
-    removeQuestion(index) {
+    removeQuestion() {
         Keyboard.dismiss();
         if (this.state.questions.length > 1) {
-            this.setState({
-                questions: this.state.questions.slice(0, index).concat(this.state.questions.slice(index + 1))
-            })
+            this.setState({questions: this.state.questions.filter((question, i)=> {
+                return i !== this.state.questions.length - 1
+            })});
         }
+    },
+
+    onChange(value) {
+        this.setState({value});
     },
 
 
     render: function () {
+        let Survey = t.struct({
+            name: t.String,
+        });
+
+        let options = {
+            fields: {
+                name: {
+                    onSubmitEditing: () => Keyboard.dismiss(),
+                    autoCapitalize: 'words',
+                    label: 'Survey Name'
+                }
+            }
+        };
+
+
         const questions = this.state.questions.map((question, x) => {
-            return (
-                <View key={x}>
-                    <Text style={styles.inputLabel}>Question {x + 1}</Text>
-                    <View style={[styles.inputWrap, {height: this.state.questions[x].height}]}>
-                        <TextInput ref={`question${x}`}
-                                   style={[styles.textInput, {height: this.state.questions[x].height}]}
-                                   multiline={true}
-                                   underlineColorAndroid='transparent'
-                                   autoCapitalize='sentences'
-                                   placeholderTextColor='#4d4d4d'
-                                   onChange={this.questionChange.bind(null, x)}
-                                   value={this.state.questions[x].text}
-                                   placeholder="Ex: What is your goal?"/>
-                    </View>
+            return <CreateQuestionBox key={x} number={x + 1} ref={(row) => this.rows.push(row)}/>
+        });
+        return (
+            <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}
+                        keyboardShouldPersistTaps="handled">
+                <View style={styles.formContainer}>
+                    <Form
+                        ref="form"
+                        type={Survey}
+                        options={options}
+                        value={this.state.value}
+                        onChange={this.onChange}
+                    />
+                    {questions}
                     {this.state.questions.length > 1 ?
                         <TouchableOpacity style={styles.removeQuestion}
-                                          onPress={this.removeQuestion.bind(null, x)} underlayColor='transparent'>
-                            <Icon name="times" size={30} color='red'/>
+                                          onPress={this.removeQuestion} underlayColor='transparent'>
+                            <Text style={styles.addQuestion}>Delete last</Text>
                         </TouchableOpacity>
                         : null
                     }
+                    <TouchableOpacity onPress={this.addQuestion} underlayColor='transparent'>
+                        <Text style={styles.addQuestion}>Add a Question</Text>
+                    </TouchableOpacity>
                 </View>
-            )
-        });
-        return (
-            <View style={{flex: 1}}>
-                <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}
-                            keyboardShouldPersistTaps="handled">
-                    <View style={styles.formContainer}>
-                        <Text style={styles.inputLabel}>Survey Name</Text>
-                        <View style={styles.inputWrap}>
-                            <TextInput ref="name" style={styles.textInput} autoCapitalize='sentences'
-                                       underlineColorAndroid='transparent'
-                                       autoCorrect={false}
-                                       onChangeText={(text) => this.setState({name: text})}
-                                       value={this.state.name}
-                                       onSubmitEditing={(event) => {
-                                           this.refs.question0.focus();
-                                       }}/>
-                        </View>
-                        {questions}
-                        <TouchableOpacity onPress={this.addQuestion} underlayColor='transparent'>
-                            <Text style={styles.addQuestion}>Add a Question</Text>
-                        </TouchableOpacity>
-                    </View>
 
-                </ScrollView>
-                <SubmitButton disabled={!this.isValid()} buttonStyle={{margin: 20}} onPress={this._onSubmit}
-                              ref='postbutton' text='Submit'/>
-            </View>
+            </ScrollView>
         )
     }
 });
 
+CreateQuestionnaire.navigationOptions = {
+    title: 'Create Survey',
+};
+
 
 const styles = StyleSheet.create({
     flexCenter: {
-        flex: 1
+        // flex: 1
     },
     formContainer: {
         margin: 10
-    },
-    inputWrap: {
-        flex: 1,
-        marginBottom: 12,
-        height: 30,
-        borderBottomWidth: .5,
-        borderColor: '#aaaaaa',
-        justifyContent: 'center',
-        alignItems: 'stretch'
-    },
-    textInput: {
-        color: 'black',
-        fontSize: 17,
-        fontFamily: 'OpenSans-Light',
-        backgroundColor: 'transparent',
-        paddingTop: 3,
-        paddingBottom: 3,
-        height: 30,
-        textAlign: 'center'
-    },
-    inputLabel: {
-        fontSize: 18,
-        fontFamily: 'OpenSans-Semibold',
-        textAlign: 'center'
     },
     addQuestion: {
         height: 35,
@@ -190,9 +181,9 @@ const styles = StyleSheet.create({
         textDecorationColor: '#b1aea5'
     },
     removeQuestion: {
-        right: 0,
-        top: 10,
-        position: 'absolute'
+        // right: 0,
+        // top: 10,
+        // position: 'absolute'
     }
 });
 

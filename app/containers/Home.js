@@ -303,10 +303,7 @@ const Home = React.createClass({
                 </ScrollView>
 
                 <Animated.View style={[styles.modal,{ transform: [{translateY: this.state.modalY}]}]}>
-                    <MyProfile navigation={this.props.navigation}/>
-                    <TouchableOpacity onPress={this.hideProfile} style={styles.modalClose}>
-                        <Icon name="keyboard-arrow-up" size={50} color='#333333'/>
-                    </TouchableOpacity>
+                    <MyProfile navigation={this.props.navigation} close={this.hideProfile}/>
                 </Animated.View>
             </View>
         )

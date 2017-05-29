@@ -37,7 +37,8 @@ moment.updateLocale('en', {
 
 const MyProfile = React.createClass({
     propTypes: {
-        navigation: React.PropTypes.object.isRequired
+        navigation: React.PropTypes.object.isRequired,
+        close: React.PropTypes.func.isRequired
     },
 
     getInitialState() {
@@ -75,6 +76,9 @@ const MyProfile = React.createClass({
             return (
                 <ScrollView style={GlobalStyle.noHeaderContainer} ref="profile_list">
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
+                        <TouchableOpacity onPress={this.props.close} style={styles.back}>
+                            <Icon name="keyboard-arrow-left" size={35} color='#333333'/>
+                        </TouchableOpacity>
                         <AvatarImage style={styles.avatar} image={userImage}/>
                         <View style={styles.userInfo}>
                             <Text style={styles.name}>
@@ -83,7 +87,7 @@ const MyProfile = React.createClass({
                         </View>
                         <TouchableOpacity style={styles.topRightNav}
                                           onPress={this._redirect.bind(null, 'EditProfile', null)}>
-                            <Icon name="settings" size={20} color='#333333'/>
+                            <Icon name="settings" size={30} color='#333333'/>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
@@ -118,7 +122,15 @@ const styles = StyleSheet.create({
     topRightNav: {
         right: 0,
         position: 'absolute',
-        padding: 15,
+        padding: 10,
+        width: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    back: {
+        left: 0,
+        position: 'absolute',
+        padding: 10,
         width: 50,
         justifyContent: 'center',
         alignItems: 'center',
