@@ -59,7 +59,7 @@ const CreateWorkoutDay = React.createClass({
     getCurrentData() {
         return {
             name: this.state.name,
-            days: this.state.days,
+            day: this.state.days[0],
             workout: this.state.workout.id
         };
     },
@@ -80,8 +80,10 @@ const CreateWorkoutDay = React.createClass({
     },
 
     selectDay(days) {
-        if (days.length < 2) {
-            this.setState({days: days});
+        if (days.length > 1) {
+            this.setState({days: [days[1]]});
+        } else {
+            this.setState({days: [days[0]]});
         }
     },
 
@@ -103,7 +105,7 @@ const CreateWorkoutDay = React.createClass({
                                placeholder="'Pull day, 'Monday' or 'Day One'"/>
                 </View>
                 <Text style={styles.inputLabel}>Day of the week</Text>
-                <DaysOfWeek daySelectedState={(days) => this.selectDay(days)} days={this.state.days}/>
+                <DaysOfWeek daySelectedState={this.selectDay} days={this.state.days}/>
             </ScrollView>
         )
     }

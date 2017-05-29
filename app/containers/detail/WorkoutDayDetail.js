@@ -11,13 +11,14 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
+import {DAYS_OF_WEEK} from '../../assets/constants';
 
 import CustomIcon from '../../components/CustomIcon';
-import DaysOfWeek from '../../components/DaysOfWeek';
 import DisplayExerciseBox from '../../components/DisplayExerciseBox';
 
 const WorkoutDayDetail = React.createClass({
@@ -45,9 +46,9 @@ const WorkoutDayDetail = React.createClass({
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.Schedules != prevProps.Schedules) {
-            const workout_day = this.getWorkoutDay()
+            const workout_day = this.getWorkoutDay();
             if (workout_day){
-                this.setState({workout_day: workout_day})
+                this.setState({workout_day: workout_day});
                 this.props.navigation.setParams({headerTitle: workout_day.name})
             }
         }
@@ -67,9 +68,14 @@ const WorkoutDayDetail = React.createClass({
             return null;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = ds.cloneWithRows(this.state.workout_day.exercises);
+
+        const dayOfWeek = _.find(DAYS_OF_WEEK, {id: this.state.workout_day.day});
         return (
             <View style={styles.container}>
-                <DaysOfWeek days={this.state.workout_day.days}/>
+                <View style={styles.dayTop}>
+                    <MaterialIcon name="today" size={30} />
+                    <Text style={styles.day}>{dayOfWeek.full_day}</Text>
+                </View>
                 <View style={styles.flexCenter} keyboardShouldPersistTaps="handled">
                     <Text style={[styles.dayTitle]}>Exercises</Text>
 
@@ -122,9 +128,11 @@ const styles = StyleSheet.create({
         flex: .9
     },
     dayTitle: {
-        fontSize: getFontSize(26),
-        fontFamily: 'OpenSans-Semibold',
-        textAlign: 'center'
+        fontSize: getFontSize(38),
+        fontFamily: 'OpenSans-Bold',
+        textAlign: 'center',
+        borderBottomWidth: .5,
+        borderColor: '#e1e3df',
     },
     footer: {
         borderTopWidth: 1,
@@ -149,6 +157,17 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    day: {
+        fontSize: getFontSize(32),
+        fontFamily: 'OpenSans-Bold',
+    },
+    dayTop: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+        alignItems: 'center',
+        padding: 20,
+
     }
 });
 

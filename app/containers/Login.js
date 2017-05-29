@@ -349,13 +349,9 @@ stylesheet.textbox = {
     ...stylesheet.textbox,
     normal: {
         ...stylesheet.textbox.normal,
-        backgroundColor: '#f0f0f0',
-        borderRadius: 0,
     },
     error: {
         ...stylesheet.textbox.error,
-        backgroundColor: '#f0f0f0',
-        borderRadius: 0,
     }
 };
 

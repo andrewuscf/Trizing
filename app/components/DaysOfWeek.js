@@ -6,11 +6,11 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import _ from 'lodash';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {getFontSize} from '../actions/utils';
 import {DAYS_OF_WEEK} from '../assets/constants';
 
-import GlobalStyle from '../containers/globalStyle';
 
 const DaysOfWeek = React.createClass({
     propTypes: {
@@ -47,6 +47,8 @@ const DaysOfWeek = React.createClass({
                     <View key={day_of_week.id}
                           style={[styles.dayOfWeek, (_.includes(this.props.days, day_of_week.id)
                               ? styles.selectedDay : null )]}>
+                        <Icon name="today" size={30}
+                              style={[(_.includes(this.props.days, day_of_week.id) ? styles.selectedDayText : styles.defaultText)]}/>
                         <Text
                             style={[(_.includes(this.props.days, day_of_week.id) ? styles.selectedDayText : styles.defaultText)]}>
                             {day_of_week.day}
@@ -60,6 +62,8 @@ const DaysOfWeek = React.createClass({
                 }}
                                   style={[styles.dayOfWeek, (_.includes(this.props.days, day_of_week.id)
                                       ? styles.selectedDay : null )]}>
+                    <Icon name="today" size={30}
+                          style={[(_.includes(this.props.days, day_of_week.id) ? styles.selectedDayText : styles.defaultText)]}/>
                     <Text
                         style={[(_.includes(this.props.days, day_of_week.id) ? styles.selectedDayText : styles.defaultText)]}>
                         {day_of_week.day}
@@ -90,17 +94,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         marginTop: 10,
         marginBottom: 10,
-        borderWidth: 0.5,
         borderColor: '#e1e3df',
     },
     dayOfWeek: {
         borderWidth: .5,
-        borderRadius: 20,
+        borderLeftWidth: 0,
         flex: .1,
-        height: 40,
-        // width: 40,
-        // marginLeft: 10,
-        borderColor: 'black',
+        borderColor: 'grey',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
 
     },
     defaultText: {
+        color: 'grey',
         fontFamily: 'OpenSans-Semibold',
     },
     selectedDayText: {
