@@ -26,9 +26,12 @@ const DisplayWorkoutDay = React.createClass({
         return (
             <TouchableOpacity onPress={this.props._toWorkoutDay.bind(null, this.props.workout_day.id)}
                               style={[styles.displayWorkoutBox, this.props.active ? styles.active : null]}>
-                <View style={{alignItems: 'center', width: 100}}>
+                <View style={{alignItems: 'center',flex:.2}}>
+                    {dayOfWeek ?
                     <Text style={styles.day}>{dayOfWeek.full_day}</Text>
-                    <Icon name="today" size={30} />
+                        :null
+                    }
+                    <Icon name="today" size={getFontSize(28)} />
                 </View>
                 <Text style={styles.simpleTitle}>{this.props.workout_day.name}</Text>
             </TouchableOpacity>
@@ -46,14 +49,18 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 10
+        padding: 10,
+
+        backgroundColor: 'white',
+        marginBottom: 5,
     },
     simpleTitle: {
+        flex: .8,
         fontSize: getFontSize(28),
         fontFamily: 'OpenSans-Bold',
         // marginLeft: 20,
-        marginTop: 10,
-        marginBottom: 10,
+        // marginTop: 10,
+        // marginBottom: 10,
         textAlign: 'center',
     },
     day: {

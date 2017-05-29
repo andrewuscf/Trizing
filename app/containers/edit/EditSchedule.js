@@ -90,11 +90,11 @@ const EditSchedule = React.createClass({
                     {this.state.schedule.training_plan ?
                         <View style={styles.eventDate}>
                             <Text style={styles.eventDateMonth}>{start_date.format("MMM").toUpperCase()}</Text>
-                            <Text style={styles.eventDateDay}>{start_date.date()}</Text>
+                            <Text style={styles.eventDay}>{start_date.date()}</Text>
                         </View>
                         : <View style={styles.eventDate}>
                             <Text style={styles.eventDateMonth}>Weeks</Text>
-                            <Text style={styles.eventDateDay}>{workout.duration}</Text>
+                            <Text style={styles.eventDay}>{workout.duration}</Text>
                         </View>
                     }
                     <Text style={styles.eventDateDay}>{workout.name}</Text>
@@ -148,28 +148,40 @@ const styles = StyleSheet.create({
         paddingBottom:10
     },
     workoutBox: {
-        backgroundColor: 'white',
-        marginBottom: 5,
-        padding: 10,
-        flexDirection: 'row',
+        flex: 1,
         margin: 5,
         borderColor: '#e1e3df',
         borderWidth: 1,
-        borderRadius: 10
+        borderRadius: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+
+        backgroundColor: 'white',
+        marginBottom: 5,
+    },
+    eventDay: {
+        fontSize: getFontSize(28),
+        fontFamily: 'OpenSans-Bold',
+        // paddingBottom: 5
     },
     eventDateDay: {
+        flex: .8,
+        fontSize: getFontSize(28),
         fontFamily: 'OpenSans-Bold',
-        fontSize: getFontSize(26),
-        color: '#4d4d4e'
+        // marginLeft: 20,
+        // marginTop: 10,
+        // marginBottom: 10,
+        textAlign: 'center',
     },
     eventDateMonth: {
         fontFamily: 'OpenSans-Bold',
-        fontSize: getFontSize(14),
+        fontSize: getFontSize(16),
         backgroundColor: 'transparent',
         color: '#4d4d4e'
     },
     eventDate: {
-        width: 50,
+        flex:.2,
         alignItems: 'center',
         justifyContent: 'center',
     },
