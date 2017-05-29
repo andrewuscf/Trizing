@@ -5,7 +5,7 @@ import {
     StyleSheet,
     Keyboard,
     ScrollView,
-    Dimensions
+    Dimensions,
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -19,30 +19,28 @@ import {getFontSize, trunc} from '../../actions/utils';
 import AvatarImage from '../../components/AvatarImage';
 
 
+
 function template(locals) {
     return (
         <View>
             {locals.inputs.title}
             {locals.inputs.event_type}
-            {locals.inputs.date}
+            <View style={{borderBottomWidth: .5, borderColor: '#aaaaaa', marginBottom: 10}}>
+                {locals.inputs.date}
+            </View>
             <View style={{flexDirection: 'row'}}>
-                <View style={{flex: .5, paddingRight: 5}}>
+                <View style={{flex: .5, marginRight: 5, borderBottomWidth: .5,
+                    borderColor: '#aaaaaa'}}>
                     {locals.inputs.start_time}
                 </View>
-                <View style={{flex: .5}}>
+                <View style={{flex: .5, borderBottomWidth: .5,
+                    borderColor: '#aaaaaa'}}>
                     {locals.inputs.end_time}
                 </View>
             </View>
         </View>
     );
 }
-
-// title: t.String,
-//     event_type: Event_types,
-//     date: t.Date,
-//     start_time: t.Date,
-//     end_time: t.Date,
-
 
 const window = Dimensions.get('window');
 
@@ -51,7 +49,13 @@ const CreateEvent = React.createClass({
     getInitialState() {
         return {
             selected: [],
-            value: null,
+            value: {
+                title: null,
+                event_type: null,
+                date: moment().toDate(),
+                start_time: moment().add(30, 'minutes').toDate(),
+                end_time: moment().add(2, 'hours').toDate(),
+            },
             step: 1
         }
     },
@@ -148,7 +152,6 @@ const CreateEvent = React.createClass({
                 required: '*',
             },
             template: template,
-            stylesheet: stylesheet,
             fields: {
                 title: {
                     label: 'Event title*',
@@ -273,59 +276,6 @@ const Event = t.struct({
     end_time: t.Date,
     // occurrence: Occurrences
 });
-const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
-
-stylesheet.formGroup = {
-    ...stylesheet.formGroup,
-    normal: {
-        ...stylesheet.formGroup.normal,
-        marginBottom: 12,
-        borderBottomWidth: .5,
-        borderColor: '#aaaaaa',
-        justifyContent: 'center',
-        alignItems: 'stretch'
-    },
-    error: {
-        ...stylesheet.formGroup.error,
-        marginBottom: 12,
-        borderBottomWidth: .5,
-        borderColor: 'red',
-        justifyContent: 'center',
-        alignItems: 'stretch'
-    }
-};
-stylesheet.textbox = {
-    ...stylesheet.textbox,
-    normal: {
-        ...stylesheet.textbox.normal,
-        borderWidth: 0,
-        marginBottom: 0,
-        textAlign: 'center'
-    },
-    error: {
-        ...stylesheet.textbox.error,
-        borderWidth: 0,
-        marginBottom: 0,
-        textAlign: 'center'
-    }
-};
-stylesheet.controlLabel = {
-    ...stylesheet.controlLabel,
-    normal: {
-        ...stylesheet.controlLabel.normal,
-        fontSize: getFontSize(25),
-        lineHeight: getFontSize(26),
-        fontFamily: 'OpenSans-Semibold',
-        textAlign: 'center'
-    },
-    error: {
-        ...stylesheet.controlLabel.error,
-        fontSize: getFontSize(25),
-        lineHeight: getFontSize(26),
-        fontFamily: 'OpenSans-Semibold',
-        textAlign: 'center'
-    }
-};
 
 
 const stateToProps = (state) => {

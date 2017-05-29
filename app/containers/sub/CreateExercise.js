@@ -139,7 +139,12 @@ const CreateExercise = React.createClass({
                 name: {
                     label: `Exercise Name`,
                     // onSubmitEditing: () => this.refs.form.getComponent('duration').refs.input.focus(),
-                    autoCapitalize: 'words'
+                    autoCapitalize: 'words',
+                    // factory: AutoInput,
+                    // config: {
+                    //     elements: this.props.objectsForAutocomplete,
+                    //     propForQuery: 'name',
+                    // },
                 }
             }
         };

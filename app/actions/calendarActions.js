@@ -31,6 +31,7 @@ export function addEditEvent(data, asyncActions = null) {
     return (dispatch, getState) => {
         return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
+                console.log(responseJson)
                 if (asyncActions) {
                     asyncActions(false);
                 }
@@ -38,9 +39,8 @@ export function addEditEvent(data, asyncActions = null) {
                     return dispatch({type: types.EDIT_EVENT, response: responseJson});
             })
             .catch((error) => {
-                if (asyncActions) {
-                    asyncActions(false);
-                }
-            }).done();
+                console.log(error);
+
+            })
     }
 }
