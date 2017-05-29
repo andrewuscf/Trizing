@@ -19,6 +19,31 @@ import {getFontSize, trunc} from '../../actions/utils';
 import AvatarImage from '../../components/AvatarImage';
 
 
+function template(locals) {
+    return (
+        <View>
+            {locals.inputs.title}
+            {locals.inputs.event_type}
+            {locals.inputs.date}
+            <View style={{flexDirection: 'row'}}>
+                <View style={{flex: .5, paddingRight: 5}}>
+                    {locals.inputs.start_time}
+                </View>
+                <View style={{flex: .5}}>
+                    {locals.inputs.end_time}
+                </View>
+            </View>
+        </View>
+    );
+}
+
+// title: t.String,
+//     event_type: Event_types,
+//     date: t.Date,
+//     start_time: t.Date,
+//     end_time: t.Date,
+
+
 const window = Dimensions.get('window');
 
 
@@ -122,6 +147,7 @@ const CreateEvent = React.createClass({
                 optional: '',
                 required: '*',
             },
+            template: template,
             stylesheet: stylesheet,
             fields: {
                 title: {
