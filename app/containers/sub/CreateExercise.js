@@ -9,7 +9,7 @@ import {
     Alert,
     ScrollView
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
@@ -131,13 +131,14 @@ const CreateExercise = React.createClass({
 
     render: function () {
         let options = {
+            auto: 'placeholders',
             i18n: {
                 optional: '',
                 required: '*',
             },
             fields: {
                 name: {
-                    label: `Exercise Name`,
+                    placeholder: `Exercise Name`,
                     // onSubmitEditing: () => this.refs.form.getComponent('duration').refs.input.focus(),
                     autoCapitalize: 'words',
                     // factory: AutoInput,
@@ -158,31 +159,27 @@ const CreateExercise = React.createClass({
                                      value={{reps: set.reps, weight: set.weight}}/>
         });
         return (
-            <View style={{flex: 1}}>
-                <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
-                            contentContainerStyle={styles.contentContainerStyle}>
-                    <View style={{margin: 10}}>
-                        <Form
-                            ref="form"
-                            type={Exercise}
-                            options={options}
-                            onChange={this.onChange}
-                            value={this.state.value}
-                        />
+            <View style={styles.box}>
+                <View style={{padding: 10}}>
+                    <Form
+                        ref="form"
+                        type={Exercise}
+                        options={options}
+                        onChange={this.onChange}
+                        value={this.state.value}
+                    />
+                    <View style={[styles.title]}>
+                        <Text style={[styles.titleSection, {flex:.2}]}>SET</Text>
+                        <Text style={[styles.titleSection, {flex:.4}]}>LBS</Text>
+                        <Text style={[styles.titleSection, {flex:.4}]}>REPS</Text>
                     </View>
                     <View>
                         {sets}
                     </View>
-                </ScrollView>
-                <View style={styles.footer}>
-
-                    <TouchableOpacity style={[styles.editBlock, {paddingLeft: 10}]}>
-                        <Icon name="trash" size={20} color={iconColor}/>
-                        <Text style={styles.editItemLabel}>Delete</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.editBlock, {paddingRight: 10}]} onPress={this._addSet}>
-                        <Icon name="bars" size={20} color={iconColor}/>
-                        <Text style={styles.editItemLabel}>Add Set</Text>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                    <TouchableOpacity style={styles.buttonBottom} onPress={this._addSet}>
+                        <Text>Add Set</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -199,21 +196,36 @@ CreateExercise.navigationOptions = ({navigation}) => {
     };
 };
 
-const iconColor = '#8E8E8E';
 
 const styles = StyleSheet.create({
-    flexCenter: {
-        flex: .9,
+    title: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 5,
     },
-    edit: {
-        position: 'absolute',
-        right: 0,
-        top: 5
+    titleSection: {
+        textAlign: 'center',
+    },
+    box: {
+        margin: 10,
+        borderWidth: .5,
+        borderColor: '#e1e3df',
+        borderRadius: 10,
     },
     save: {
         position: 'absolute',
         top: 6,
         right: 10
+    },
+    buttonBottom: {
+        flex: 1 / 3,
+        borderTopWidth: .5,
+        borderRightWidth: .5,
+        borderColor: '#e1e3df',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10
     },
     footer: {
         borderTopWidth: 1,
@@ -223,22 +235,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         flex: .1
-    },
-    editBlock: {
-        flexDirection: 'column',
-        alignItems: 'center',
-        paddingBottom: 5
-    },
-    editItemLabel: {
-        fontFamily: 'OpenSans-Semibold',
-        fontSize: getFontSize(14),
-        color: iconColor,
-        textAlign: 'center',
-    },
-    editItem: {
-        alignSelf: 'flex-start',
-        justifyContent: 'center',
-        alignItems: 'center',
     }
 });
 

@@ -18,6 +18,7 @@ import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 import {DAYS_OF_WEEK} from '../../assets/constants';
 
+import CreateExercise from '../sub/CreateExercise';
 import CustomIcon from '../../components/CustomIcon';
 import DisplayExerciseBox from '../../components/DisplayExerciseBox';
 

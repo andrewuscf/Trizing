@@ -15,6 +15,22 @@ import {getFontSize} from '../actions/utils';
 import GlobalStyle from '../containers/globalStyle';
 
 
+function template(locals, setIndex) {
+    return (
+        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{flex: .2, justifyContent: 'center', alignItems: 'center'}}>
+                <Text>{setIndex}</Text>
+            </View>
+            <View style={{flex: .4, justifyContent: 'center', alignItems: 'center'}}>
+                {locals.inputs.reps}
+            </View>
+            <View style={{flex: .4, justifyContent: 'center', alignItems: 'center'}}>
+                {locals.inputs.weight}
+            </View>
+        </View>
+    );
+}
+
 const CreateSetBox = React.createClass({
     propTypes: {
         value: React.PropTypes.object.isRequired,
@@ -49,27 +65,23 @@ const CreateSetBox = React.createClass({
                 optional: '',
                 required: '*',
             },
+            template: (locals)=> template(locals, this.props.setIndex+1),
+            auto: 'placeholders',
             stylesheet: stylesheet,
             fields: {
                 reps: {
                     onSubmitEditing: () => this.refs.form.getComponent('weight').refs.input.focus()
                 },
                 weight: {
-                    label: 'Weight (lb)'
+                    // label: 'Weight (lb)'
+                },
+                set: {
+                    // editable: false,
+                    hidden: true
                 }
             }
         };
         return (
-            <View style={styles.setContainer}>
-                <View style={styles.setTitleView}>
-                    <Text style={styles.setTitle}>Set {this.props.setIndex + 1}</Text>
-                    {typeof this.props._deleteSet === "function" ?
-                        <TouchableOpacity style={styles.edit} onPress={this._deleteSet}>
-                            <Icon name="times" size={20} color="red"/>
-                        </TouchableOpacity>
-                        : null
-                    }
-                </View>
                 <Form
                     ref="form"
                     type={Set}
@@ -77,16 +89,44 @@ const CreateSetBox = React.createClass({
                     onChange={this.onChange}
                     value={this.props.value}
                 />
-            </View>
         )
     }
 });
 
+{/*<View style={styles.setTitleView}>*/
+}
+{/*<Text style={styles.setTitle}>Set {this.props.setIndex + 1}</Text>*/
+}
+{/*{typeof this.props._deleteSet === "function" ?*/
+}
+{/*<TouchableOpacity style={styles.edit} onPress={this._deleteSet}>*/
+}
+{/*<Icon name="times" size={20} color="red"/>*/
+}
+{/*</TouchableOpacity>*/
+}
+{/*: null*/
+}
+{/*}*/
+}
+{/*</View>*/
+}
+
 
 const styles = StyleSheet.create({
     setContainer: {
-        marginTop: 10,
-        flex: 1
+        flex: 1,
+    },
+    title: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 5,
+    },
+    titleSection: {
+        textAlign: 'center',
+        // borderColor: 'black',
+        // borderWidth: .5
     },
     setTitleView: {
         borderColor: '#e1e3df',
@@ -99,6 +139,7 @@ const styles = StyleSheet.create({
     setTitle: {
         fontSize: getFontSize(22),
         lineHeight: getFontSize(26),
+        flex: 1 / 3
     },
     edit: {
         position: 'absolute',
@@ -128,6 +169,7 @@ stylesheet.formGroup = {
         paddingLeft: 10,
         borderColor: '#e1e3df',
         borderBottomWidth: 1,
+        marginRight: 5
     },
     error: {
         ...stylesheet.formGroup.error,
@@ -138,6 +180,7 @@ stylesheet.formGroup = {
         paddingLeft: 10,
         borderColor: 'red',
         borderBottomWidth: 1,
+        marginRight: 5
     }
 };
 
@@ -163,7 +206,7 @@ stylesheet.textboxView = {
         ...stylesheet.textboxView.normal,
         borderWidth: 0,
         borderRadius: 0,
-        borderBottomWidth: 1,
+        borderBottomWidth: 0,
         flex: 1,
         backgroundColor: 'transparent',
     },
@@ -171,7 +214,7 @@ stylesheet.textboxView = {
         ...stylesheet.textboxView.error,
         borderWidth: 0,
         borderRadius: 0,
-        borderBottomWidth: 1,
+        borderBottomWidth: 0,
         flex: 1,
         backgroundColor: 'transparent',
     }
