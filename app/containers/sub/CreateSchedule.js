@@ -8,7 +8,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
-import { NavigationActions } from 'react-navigation';
+import {NavigationActions} from 'react-navigation';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
@@ -39,17 +39,13 @@ const CreateSchedule = React.createClass({
     },
 
     asyncActions(start, data = {}){
-        if (start) {
-            // failed
-        } else {
-            if (data.routeName) {
-                this.props.navigation.dispatch({
-                    type: 'ReplaceCurrentScreen',
-                    routeName: data.routeName,
-                    params: data.props,
-                    key: data.routeName
-                });
-            }
+        if (!start && data.routeName) {
+            this.props.navigation.dispatch({
+                type: 'ReplaceCurrentScreen',
+                routeName: data.routeName,
+                params: data.props,
+                key: data.routeName
+            });
         }
     },
 
@@ -92,7 +88,7 @@ const CreateSchedule = React.createClass({
             fields: {
                 name: {
                     label: 'Program Name',
-                    placeholder: this.props.training_plan? `This name will be displayed to your client` :`For example 'HIIT Program'`,
+                    placeholder: this.props.training_plan ? `This name will be displayed to your client` : `For example 'HIIT Program'`,
                     onSubmitEditing: () => this._onSubmit(),
                     autoCapitalize: 'sentences'
                 },
@@ -138,7 +134,6 @@ const styles = StyleSheet.create({
         fontFamily: 'OpenSans-Bold',
     }
 });
-
 
 
 const stateToProps = (state) => {

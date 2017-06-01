@@ -29,10 +29,10 @@ const CreateSetBox = React.createClass({
                     <Text>{this.props.setIndex + 1}</Text>
                 </View>
                 <View style={{flex: .4, justifyContent: 'center', alignItems: 'center'}}>
-                    {locals.inputs.reps}
+                    {locals.inputs.weight}
                 </View>
                 <View style={{flex: .4, justifyContent: 'center', alignItems: 'center'}}>
-                    {locals.inputs.weight}
+                    {locals.inputs.reps}
                 </View>
                 <TouchableOpacity style={{flex: .1, justifyContent: 'center', alignItems: 'center'}}
                                   onPress={this._deleteSet}>
@@ -72,16 +72,10 @@ const CreateSetBox = React.createClass({
             auto: 'placeholders',
             stylesheet: stylesheet,
             fields: {
-                reps: {
-                    onSubmitEditing: () => this.refs.form.getComponent('weight').refs.input.focus()
-                },
                 weight: {
+                    onSubmitEditing: () => this.refs.form.getComponent('reps').refs.input.focus()
                     // label: 'Weight (lb)'
                 },
-                set: {
-                    // editable: false,
-                    hidden: true
-                }
             }
         };
         return (

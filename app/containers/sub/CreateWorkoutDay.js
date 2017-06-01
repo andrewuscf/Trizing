@@ -69,10 +69,13 @@ const CreateWorkoutDay = React.createClass({
     },
 
     asyncActions(start, data = {}){
-        if (start) {
-            // Fail
-        } else {
-            this.props.navigation.goBack()
+        if (!start && data.routeName) {
+            this.props.navigation.dispatch({
+                type: 'ReplaceCurrentScreen',
+                routeName: data.routeName,
+                params: data.props,
+                key: data.routeName
+            });
         }
     },
 

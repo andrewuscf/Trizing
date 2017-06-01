@@ -32,7 +32,7 @@ const EditSchedule = React.createClass({
 
     componentWillMount() {
         const schedule = _.find(this.props.Schedules, {id: this.props.scheduleId});
-        this.props.navigation.setParams({headerTitle: schedule.name});
+        if (schedule) this.props.navigation.setParams({headerTitle: schedule.name});
     },
 
     asyncActions(data = {}){

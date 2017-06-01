@@ -384,7 +384,6 @@ export function addEditWorkoutDay(data, asyncActions = null) {
     return (dispatch, getState) => {
         return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-            console.log(responseJson)
                 if (method == 'POST')
                     dispatch({type: types.CREATE_WORKOUT_DAY, response: responseJson});
                 else
