@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Platform} from 'react-native';
+import {getFontSize} from '../actions/utils';
 
 
 const Save = React.createClass({
@@ -29,6 +30,8 @@ const styles = StyleSheet.create({
     },
     text: {
         color: 'blue',
+        fontSize: getFontSize(24),
+        fontFamily: 'OpenSans-Semibold',
     }
 });
 

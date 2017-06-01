@@ -9,7 +9,6 @@ import {
     Alert,
     ScrollView
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
@@ -17,9 +16,7 @@ import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
 
-import {getFontSize} from '../../actions/utils';
-
-import CreateSetBox from '../../components/CreateSetBox';
+import CreateSetBox from '../../components/trainer/CreateSetBox';
 
 
 const BlankSet = {reps: null, weight: null};
@@ -169,9 +166,10 @@ const CreateExercise = React.createClass({
                         value={this.state.value}
                     />
                     <View style={[styles.title]}>
-                        <Text style={[styles.titleSection, {flex:.2}]}>SET</Text>
+                        <Text style={[styles.titleSection, {flex:.1}]}>SET</Text>
                         <Text style={[styles.titleSection, {flex:.4}]}>LBS</Text>
                         <Text style={[styles.titleSection, {flex:.4}]}>REPS</Text>
+                        <View style={{flex:.1}}/>
                     </View>
                     <View>
                         {sets}
@@ -209,7 +207,7 @@ const styles = StyleSheet.create({
     },
     box: {
         margin: 10,
-        borderWidth: .5,
+        borderWidth: 1,
         borderColor: '#e1e3df',
         borderRadius: 10,
     },

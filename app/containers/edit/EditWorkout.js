@@ -70,7 +70,10 @@ const EditWorkout = React.createClass({
             </View>
         );
         if (this.state.workout && this.state.workout.workout_days.length) {
-            workout_days = this.state.workout.workout_days.map((workout_day, index) => {
+            const ordered = _.orderBy(this.state.workout.workout_days, (workout_day)=>{
+                return workout_day.day
+            });
+            workout_days = ordered.map((workout_day, index) => {
                 return <DisplayWorkoutDay key={index} _toWorkoutDay={this._toWorkoutDay} workout_day={workout_day}
                                           dayIndex={index}/>
             });

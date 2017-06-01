@@ -55,13 +55,9 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     simpleTitle: {
-        flex: .8,
+        flex: .6,
         fontSize: getFontSize(28),
         fontFamily: 'OpenSans-Bold',
-        // marginLeft: 20,
-        // marginTop: 10,
-        // marginBottom: 10,
-        textAlign: 'center',
     },
     day: {
         fontSize: getFontSize(18),

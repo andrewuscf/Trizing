@@ -20,7 +20,7 @@ import {DAYS_OF_WEEK} from '../../assets/constants';
 
 import CreateExercise from '../sub/CreateExercise';
 import CustomIcon from '../../components/CustomIcon';
-import DisplayExerciseBox from '../../components/DisplayExerciseBox';
+import DisplayExerciseBox from '../../components/trainer/DisplayExerciseBox';
 
 const WorkoutDayDetail = React.createClass({
     propTypes: {
@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
     day: {
         fontSize: getFontSize(32),
         fontFamily: 'OpenSans-Bold',
+        paddingLeft: 20
     },
     dayTop: {
         flexDirection: 'row',

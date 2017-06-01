@@ -7,29 +7,11 @@ import {
     Keyboard,
     Alert
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
 
-import {getFontSize} from '../actions/utils';
-import GlobalStyle from '../containers/globalStyle';
-
-
-function template(locals, setIndex) {
-    return (
-        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-            <View style={{flex: .2, justifyContent: 'center', alignItems: 'center'}}>
-                <Text>{setIndex}</Text>
-            </View>
-            <View style={{flex: .4, justifyContent: 'center', alignItems: 'center'}}>
-                {locals.inputs.reps}
-            </View>
-            <View style={{flex: .4, justifyContent: 'center', alignItems: 'center'}}>
-                {locals.inputs.weight}
-            </View>
-        </View>
-    );
-}
+import {getFontSize} from '../../actions/utils';
 
 const CreateSetBox = React.createClass({
     propTypes: {
@@ -37,6 +19,27 @@ const CreateSetBox = React.createClass({
         setIndex: React.PropTypes.number.isRequired,
         setSetState: React.PropTypes.func.isRequired,
         _deleteSet: React.PropTypes.func
+    },
+
+
+    template(locals) {
+        return (
+            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                <View style={{flex: .1, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text>{this.props.setIndex + 1}</Text>
+                </View>
+                <View style={{flex: .4, justifyContent: 'center', alignItems: 'center'}}>
+                    {locals.inputs.reps}
+                </View>
+                <View style={{flex: .4, justifyContent: 'center', alignItems: 'center'}}>
+                    {locals.inputs.weight}
+                </View>
+                <TouchableOpacity style={{flex: .1, justifyContent: 'center', alignItems: 'center'}}
+                                  onPress={this._deleteSet}>
+                    <Icon name="remove-circle" size={20} color="red"/>
+                </TouchableOpacity>
+            </View>
+        );
     },
 
     onChange(value) {
@@ -65,7 +68,7 @@ const CreateSetBox = React.createClass({
                 optional: '',
                 required: '*',
             },
-            template: (locals)=> template(locals, this.props.setIndex+1),
+            template: (locals) => this.template(locals),
             auto: 'placeholders',
             stylesheet: stylesheet,
             fields: {
@@ -82,36 +85,16 @@ const CreateSetBox = React.createClass({
             }
         };
         return (
-                <Form
-                    ref="form"
-                    type={Set}
-                    options={options}
-                    onChange={this.onChange}
-                    value={this.props.value}
-                />
+            <Form
+                ref="form"
+                type={Set}
+                options={options}
+                onChange={this.onChange}
+                value={this.props.value}
+            />
         )
     }
 });
-
-{/*<View style={styles.setTitleView}>*/
-}
-{/*<Text style={styles.setTitle}>Set {this.props.setIndex + 1}</Text>*/
-}
-{/*{typeof this.props._deleteSet === "function" ?*/
-}
-{/*<TouchableOpacity style={styles.edit} onPress={this._deleteSet}>*/
-}
-{/*<Icon name="times" size={20} color="red"/>*/
-}
-{/*</TouchableOpacity>*/
-}
-{/*: null*/
-}
-{/*}*/
-}
-{/*</View>*/
-}
-
 
 const styles = StyleSheet.create({
     setContainer: {
@@ -125,8 +108,6 @@ const styles = StyleSheet.create({
     },
     titleSection: {
         textAlign: 'center',
-        // borderColor: 'black',
-        // borderWidth: .5
     },
     setTitleView: {
         borderColor: '#e1e3df',
