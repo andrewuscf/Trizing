@@ -7,6 +7,13 @@ import {
     TouchableOpacity,
     Keyboard,
 } from 'react-native';
+import {
+    Menu,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+} from 'react-native-popup-menu';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import {getFontSize} from '../../actions/utils';
 
@@ -14,7 +21,8 @@ import {getFontSize} from '../../actions/utils';
 const DisplayExerciseBox = React.createClass({
     propTypes: {
         exercise: React.PropTypes.object.isRequired,
-        _editExercise: React.PropTypes.func
+        deleteSet: React.PropTypes.func.isRequired,
+        _editExercise: React.PropTypes.func.isRequired
     },
 
     _redirect: function () {
@@ -23,8 +31,12 @@ const DisplayExerciseBox = React.createClass({
             this.props._editExercise(this.props.exercise);
     },
 
-    onEdit(){
-
+    _onDelete(){
+        console.log(this.props.exercise)
+        this.props.exercise.sets.forEach((set)=>{
+            this.props.deleteSet(set.id);
+        });
+        // this.props.actions.deleteSet(setId);
     },
 
 
@@ -43,10 +55,21 @@ const DisplayExerciseBox = React.createClass({
                     </View>
                 </View>
             )
-        })
+        });
         return (
             <TouchableOpacity style={styles.displayWorkoutBox} onPress={this._redirect}>
-                <Text style={styles.simpleTitle}>{this.props.exercise.name}</Text>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <Text style={styles.simpleTitle}>{this.props.exercise.name}</Text>
+                    <Menu style={{}}>
+                        <MenuTrigger>
+                            <MaterialIcon name="menu" size={25}/>
+                        </MenuTrigger>
+                        <MenuOptions customStyles={optionsStyles}>
+                            <MenuOption onSelect={this._redirect} text='Edit'/>
+                            <MenuOption onSelect={this._onDelete} text='Delete'/>
+                        </MenuOptions>
+                    </Menu>
+                </View>
                 <View style={styles.bottom}>
                     <View style={[styles.title]}>
                         <Text style={[styles.titleSection, {flex:.2}]}>SET</Text>
@@ -59,6 +82,30 @@ const DisplayExerciseBox = React.createClass({
         )
     }
 });
+
+
+
+const optionsStyles = {
+    optionsContainer: {
+        // backgroundColor: 'green',
+        paddingTop: 5,
+    },
+    optionsWrapper: {
+        // backgroundColor: 'purple',
+    },
+    optionWrapper: {
+        // backgroundColor: 'yellow',
+        margin: 5,
+        // borderBottomWidth: 1, borderColor: 'grey'
+    },
+    optionTouchable: {
+        // underlayColor: 'gold',
+        activeOpacity: 70,
+    },
+    optionText: {
+        // color: 'brown',
+    },
+};
 
 
 const styles = StyleSheet.create({
@@ -80,7 +127,6 @@ const styles = StyleSheet.create({
     simpleTitle: {
         fontSize: getFontSize(26),
         fontFamily: 'OpenSans-Bold',
-        margin: 10,
     },
     title: {
         flexDirection: 'row',

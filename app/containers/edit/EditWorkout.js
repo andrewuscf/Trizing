@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
@@ -91,15 +91,15 @@ const EditWorkout = React.createClass({
                 </ScrollView>
                 <View style={styles.footer}>
                     <TouchableOpacity style={[styles.editBlock, {paddingLeft: 10}]}>
-                        <Icon name="trash" size={20} color={iconColor}/>
+                        <MaterialIcon name="delete-forever" size={20} color={iconColor}/>
                         <Text style={styles.editItemLabel}>Delete</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.editBlock, {paddingLeft: 15}]} onPress={this._createWorkoutDay}>
-                        <Icon name="plus-circle" size={20} color={iconColor}/>
+                        <MaterialIcon name="add-circle" size={20} color={iconColor}/>
                         <Text style={styles.editItemLabel}>Add Workout Day</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.editBlock, {paddingRight: 10}]}>
-                        <Icon name="sticky-note" size={20} color={iconColor}/>
+                        <MaterialIcon name="note-add" size={20} color={iconColor}/>
                         <Text style={styles.editItemLabel}>Add Note</Text>
                     </TouchableOpacity>
                 </View>

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -113,11 +113,11 @@ const EditSchedule = React.createClass({
                 </ScrollView>
                 <View style={styles.footer}>
                     <TouchableOpacity style={[styles.editBlock, {paddingLeft: 10}]} onPress={this._deleteSchedule}>
-                        <Icon name="trash" size={20} color={iconColor}/>
+                        <MaterialIcon name="delete-forever" size={20} color={iconColor}/>
                         <Text style={styles.editItemLabel}>Delete</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.editBlock, {paddingRight: 10}]} onPress={this._createWorkoutDay}>
-                        <Icon name="plus-circle" size={20} color={iconColor}/>
+                        <MaterialIcon name="add-circle" size={20} color={iconColor}/>
                         <Text style={styles.editItemLabel}>Add Block</Text>
                     </TouchableOpacity>
                 </View>

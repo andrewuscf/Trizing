@@ -203,6 +203,10 @@ const EditProfile = React.createClass({
         let options = {
             // stylesheet: stylesheet,
             fields: {
+                type: {
+                    nullOption: {value: '', text: 'Choose a Profile Type'},
+                    error: `Please select a type`
+                },
                 username: {
                     onSubmitEditing: () => this.refs.form.getComponent('first_name').refs.input.focus(),
                     autoCapitalize: 'words'

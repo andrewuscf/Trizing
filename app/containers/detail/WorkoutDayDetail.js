@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
 
@@ -18,7 +17,6 @@ import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 import {DAYS_OF_WEEK} from '../../assets/constants';
 
-import CreateExercise from '../sub/CreateExercise';
 import CustomIcon from '../../components/CustomIcon';
 import DisplayExerciseBox from '../../components/trainer/DisplayExerciseBox';
 
@@ -48,7 +46,7 @@ const WorkoutDayDetail = React.createClass({
     componentDidUpdate(prevProps, prevState) {
         if (this.props.Schedules != prevProps.Schedules) {
             const workout_day = this.getWorkoutDay();
-            if (workout_day){
+            if (workout_day) {
                 this.setState({workout_day: workout_day});
                 this.props.navigation.setParams({headerTitle: workout_day.name})
             }
@@ -74,7 +72,7 @@ const WorkoutDayDetail = React.createClass({
         return (
             <View style={styles.container}>
                 <View style={styles.dayTop}>
-                    <MaterialIcon name="today" size={30} />
+                    <MaterialIcon name="today" size={30}/>
                     <Text style={styles.day}>{dayOfWeek.full_day}</Text>
                 </View>
                 <View style={styles.flexCenter} keyboardShouldPersistTaps="handled">
@@ -92,7 +90,9 @@ const WorkoutDayDetail = React.createClass({
                                   enableEmptySections={true}
                                   dataSource={dataSource}
                                   renderRow={(exercise, sectionID, rowID) =>
-                                      <DisplayExerciseBox exercise={exercise} _editExercise={this._editExercise}/>
+                                      <DisplayExerciseBox exercise={exercise}
+                                                          _editExercise={this._editExercise}
+                                                          deleteSet={this.props.actions.deleteSet}/>
                                   }
                         />
                     }
@@ -101,7 +101,7 @@ const WorkoutDayDetail = React.createClass({
                 <View style={styles.footer}>
 
                     <TouchableOpacity style={[styles.editBlock, {paddingLeft: 10}]}>
-                        <Icon name="trash" size={20} color={iconColor}/>
+                        <MaterialIcon name="delete-forever" size={20} color={iconColor}/>
                         <Text style={styles.editItemLabel}>Delete</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.editBlock, {paddingLeft: 15}]} onPress={this._addExercise}>
@@ -109,7 +109,7 @@ const WorkoutDayDetail = React.createClass({
                         <Text style={styles.editItemLabel}>Add Exercise</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.editBlock, {paddingRight: 10}]}>
-                        <Icon name="sticky-note" size={20} color={iconColor}/>
+                        <MaterialIcon name="note-add" size={20} color={iconColor}/>
                         <Text style={styles.editItemLabel}>Add Note</Text>
                     </TouchableOpacity>
 

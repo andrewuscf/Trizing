@@ -158,18 +158,19 @@ const CreateExercise = React.createClass({
         return (
             <View style={styles.box}>
                 <View style={{padding: 10}}>
-                    <Form
-                        ref="form"
-                        type={Exercise}
-                        options={options}
-                        onChange={this.onChange}
-                        value={this.state.value}
-                    />
+                    {!this.props.exercise ?
+                        <Form
+                            ref="form"
+                            type={Exercise}
+                            options={options}
+                            onChange={this.onChange}
+                            value={this.state.value}
+                        /> : null}
                     <View style={[styles.title]}>
-                        <Text style={[styles.titleSection, {flex:.1}]}>SET</Text>
-                        <Text style={[styles.titleSection, {flex:.4}]}>LBS</Text>
-                        <Text style={[styles.titleSection, {flex:.4}]}>REPS</Text>
-                        <View style={{flex:.1}}/>
+                        <Text style={[styles.titleSection, {flex: .1}]}>SET</Text>
+                        <Text style={[styles.titleSection, {flex: .4}]}>LBS</Text>
+                        <Text style={[styles.titleSection, {flex: .4}]}>REPS</Text>
+                        <View style={{flex: .1}}/>
                     </View>
                     <View>
                         {sets}
@@ -187,10 +188,14 @@ const CreateExercise = React.createClass({
 
 CreateExercise.navigationOptions = ({navigation}) => {
     const {state, setParams} = navigation;
+    let title = null;
+    if (state.params && state.params.exercise) {
+        title = state.params.exercise.name
+    } else if (state.params && state.params.workout_day) {
+        title = state.params.workout_day.name
+    }
     return {
-        headerTitle: state.params && state.params.workout_day ?
-            state.params.workout_day.name
-            : null,
+        headerTitle: title
     };
 };
 

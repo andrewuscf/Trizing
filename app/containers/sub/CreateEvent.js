@@ -159,6 +159,8 @@ const CreateEvent = React.createClass({
                 },
                 event_type: {
                     label: 'Type*',
+                    nullOption: {value: '', text: 'Choose an Event Type'},
+                    error: `Please select a event type`
                 },
                 date: {
                     mode: 'date',
