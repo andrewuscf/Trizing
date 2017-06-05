@@ -26,10 +26,10 @@ const styles = StyleSheet.create({
         height: Platform.OS === 'ios' ? 44 : 56,
         alignItems: 'center',
         justifyContent: 'center',
-        width: 50
+        width: 60
     },
     text: {
-        color: 'blue',
+        color: '#00AFA3',
         fontSize: getFontSize(24),
         fontFamily: 'OpenSans-Semibold',
     }

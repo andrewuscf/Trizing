@@ -63,7 +63,7 @@ const paramsToProps = (SomeComponent) => {
     }
 };
 
-const navBlue = '#000000';
+const lightGreen = '#00AFA3';
 
 const defaultNavigationOptions = {
     headerStyle: {
@@ -276,7 +276,7 @@ const MainTabNav = TabNavigator({
     },
     tabBarOptions: {
         showLabel: false,
-        activeTintColor: navBlue
+        activeTintColor: lightGreen
     }
 });
 

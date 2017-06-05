@@ -7,11 +7,13 @@ import {
     RefreshControl,
     Platform,
     ListView,
+    Alert
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
+import ActionButton from 'react-native-action-button';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
@@ -61,6 +63,20 @@ const WorkoutDayDetail = React.createClass({
         this.props.navigation.navigate('CreateExercise', {workout_day: this.state.workout_day, exercise: exercise});
     },
 
+    _deleteWorkoutDay() {
+        Alert.alert(
+            'Delete Training Day',
+            `Are you sure you want delete this training day?`,
+            [
+                {text: 'Cancel', style: 'cancel'},
+                {
+                    text: 'Delete',
+                    onPress: () => console.log('Delete training day')
+                },
+            ]
+        );
+    },
+
 
     render: function () {
         if (!this.state.workout_day)
@@ -75,58 +91,49 @@ const WorkoutDayDetail = React.createClass({
                     <MaterialIcon name="today" size={30}/>
                     <Text style={styles.day}>{dayOfWeek.full_day}</Text>
                 </View>
-                <View style={styles.flexCenter} keyboardShouldPersistTaps="handled">
-                    <Text style={[styles.dayTitle]}>Exercises</Text>
+                <Text style={[styles.dayTitle]}>Exercises</Text>
 
-                    {!this.state.workout_day.exercises.length ?
-                        <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
-                            <Text>Create Exercises!</Text>
-                        </View> :
+                {!this.state.workout_day.exercises.length ?
+                    <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
+                        <Text>Create Exercises!</Text>
+                    </View> :
 
-                        <ListView ref='workout_day_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                                  keyboardShouldPersistTaps="handled"
-                                  refreshControl={<RefreshControl refreshing={this.props.Refreshing}
-                                                                  onRefresh={this.refresh}/>}
-                                  enableEmptySections={true}
-                                  dataSource={dataSource}
-                                  renderRow={(exercise, sectionID, rowID) =>
-                                      <DisplayExerciseBox exercise={exercise}
-                                                          _editExercise={this._editExercise}
-                                                          deleteSet={this.props.actions.deleteSet}/>
-                                  }
-                        />
-                    }
-                </View>
+                    <ListView ref='workout_day_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                              keyboardShouldPersistTaps="handled"
+                              refreshControl={<RefreshControl refreshing={this.props.Refreshing}
+                                                              onRefresh={this.refresh}/>}
+                              enableEmptySections={true}
+                              dataSource={dataSource}
+                              renderRow={(exercise, sectionID, rowID) =>
+                                  <DisplayExerciseBox exercise={exercise}
+                                                      _editExercise={this._editExercise}
+                                                      deleteSet={this.props.actions.deleteSet}/>
+                              }
+                    />
+                }
 
-                <View style={styles.footer}>
+                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
+                    <ActionButton.Item buttonColor='#F22525' title="Delete"
+                                       onPress={this._deleteWorkoutDay}>
+                        <MaterialIcon name="delete-forever" color="white" size={22}/>
+                    </ActionButton.Item>
+                    <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={() => console.log('add note')}>
+                        <MaterialIcon name="note-add" color="white" size={22}/>
+                    </ActionButton.Item>
+                    <ActionButton.Item buttonColor='#3498db' title="Add Exercise"
+                                       onPress={this._addExercise}>
+                        <CustomIcon name="weight" color="white" size={22}/>
+                    </ActionButton.Item>
+                </ActionButton>
 
-                    <TouchableOpacity style={[styles.editBlock, {paddingLeft: 10}]}>
-                        <MaterialIcon name="delete-forever" size={20} color={iconColor}/>
-                        <Text style={styles.editItemLabel}>Delete</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.editBlock, {paddingLeft: 15}]} onPress={this._addExercise}>
-                        <CustomIcon name="weight" size={20} color={iconColor}/>
-                        <Text style={styles.editItemLabel}>Add Exercise</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.editBlock, {paddingRight: 10}]}>
-                        <MaterialIcon name="note-add" size={20} color={iconColor}/>
-                        <Text style={styles.editItemLabel}>Add Note</Text>
-                    </TouchableOpacity>
-
-                </View>
             </View>
         );
     }
 });
 
-const iconColor = '#8E8E8E';
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    flexCenter: {
-        flex: .9
     },
     dayTitle: {
         fontSize: getFontSize(38),
@@ -134,30 +141,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         borderBottomWidth: .5,
         borderColor: '#e1e3df',
-    },
-    footer: {
-        borderTopWidth: 1,
-        borderColor: '#e1e3df',
-        alignItems: 'center',
-        minHeight: 40,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        flex: .1
-    },
-    editBlock: {
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    editItemLabel: {
-        fontFamily: 'OpenSans-Semibold',
-        fontSize: getFontSize(14),
-        color: iconColor,
-        textAlign: 'center',
-    },
-    editItem: {
-        alignSelf: 'flex-start',
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     day: {
         fontSize: getFontSize(32),

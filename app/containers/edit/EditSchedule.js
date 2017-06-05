@@ -13,6 +13,7 @@ import {connect} from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
 import moment from 'moment';
+import ActionButton from 'react-native-action-button';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
@@ -111,30 +112,21 @@ const EditSchedule = React.createClass({
                     </View>
 
                 </ScrollView>
-                <View style={styles.footer}>
-                    <TouchableOpacity style={[styles.editBlock, {paddingLeft: 10}]} onPress={this._deleteSchedule}>
-                        <MaterialIcon name="delete-forever" size={20} color={iconColor}/>
-                        <Text style={styles.editItemLabel}>Delete</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.editBlock, {paddingRight: 10}]} onPress={this._createWorkoutDay}>
-                        <MaterialIcon name="add-circle" size={20} color={iconColor}/>
-                        <Text style={styles.editItemLabel}>Add Block</Text>
-                    </TouchableOpacity>
-                </View>
+
+                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" >
+                    <ActionButton.Item buttonColor='#F22525' title="Delete"
+                                       onPress={this._deleteSchedule}>
+                        <MaterialIcon name="delete-forever" color="white" size={22}/>
+                    </ActionButton.Item>
+                    <ActionButton.Item buttonColor='#3498db' title="Add Block"
+                                       onPress={this._createWorkoutDay}>
+                        <MaterialIcon name="add" color="white" size={22}/>
+                    </ActionButton.Item>
+                </ActionButton>
             </View>
         )
     }
 });
-
-// EditSchedule.navigationOptions = ({navigation}) => {
-//     const {state, setParams} = navigation;
-//     console.log(state.params)
-//     return {
-//         headerTitle: state.params && state.params.headerTitle ? state.params.headerTitle : null,
-//     };
-// };
-
-const iconColor = '#8E8E8E';
 
 const styles = StyleSheet.create({
     flexCenter: {
@@ -163,15 +155,11 @@ const styles = StyleSheet.create({
     eventDay: {
         fontSize: getFontSize(28),
         fontFamily: 'OpenSans-Bold',
-        // paddingBottom: 5
     },
     eventDateDay: {
         flex: .8,
         fontSize: getFontSize(28),
         fontFamily: 'OpenSans-Bold',
-        // marginLeft: 20,
-        // marginTop: 10,
-        // marginBottom: 10,
         textAlign: 'center',
     },
     eventDateMonth: {
@@ -184,35 +172,6 @@ const styles = StyleSheet.create({
         flex:.2,
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    footer: {
-        borderTopWidth: 1,
-        borderColor: '#e1e3df',
-        alignItems: 'center',
-        minHeight: 40,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-        left: 0,
-    },
-    editBlock: {
-        flexDirection: 'column',
-        alignItems: 'center',
-        marginBottom: 5,
-        marginTop: 5,
-    },
-    editItemLabel: {
-        fontFamily: 'OpenSans-Semibold',
-        fontSize: getFontSize(14),
-        color: iconColor,
-        textAlign: 'center',
-    },
-    editItem: {
-        alignSelf: 'flex-start',
-        justifyContent: 'center',
-        alignItems: 'center',
     }
 });
 

@@ -14,8 +14,9 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import IconBadge from 'react-native-icon-badge';
+import ActionButton from 'react-native-action-button';
 
 
 import * as HomeActions from '../actions/homeActions';
@@ -33,7 +34,6 @@ import PeopleBar from '../components/PeopleBar';
 
 
 let deviceHeight = Dimensions.get('window').height;
-let deviceWidth = Dimensions.get('window').width;
 
 const Home = React.createClass({
     propTypes: {
@@ -106,7 +106,7 @@ const Home = React.createClass({
                         }
 
                     /> :
-                    <Icon name="notifications" size={getFontSize(50)}/>
+                    <MaterialIcon name="notifications" size={getFontSize(50)}/>
                 }
             </TouchableOpacity>
         )
@@ -125,7 +125,6 @@ const Home = React.createClass({
             toValue: -deviceHeight
         }).start();
     },
-
 
 
     render() {
@@ -153,16 +152,11 @@ const Home = React.createClass({
                                       <TouchableOpacity style={styles.link}
                                                         onPress={this._redirect.bind(null, 'EditSchedule', {scheduleId: schedule.id})}>
                                           <Text style={styles.simpleTitle}>{schedule.name}</Text>
-                                          <Icon name="keyboard-arrow-right" size={getFontSize(18)}
-                                                style={styles.linkArrow}/>
+                                          <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
+                                                        style={styles.linkArrow}/>
                                       </TouchableOpacity>
                                   }
                         />
-                        <TouchableOpacity onPress={this._redirect.bind(null, 'CreateSchedule', null)}
-                                          style={styles.link}>
-                            <Text style={styles.simpleTitle}>Create Program Template</Text>
-                            <Icon name="add" size={getFontSize(18)} style={styles.linkArrow}/>
-                        </TouchableOpacity>
                     </View>
 
                     <View style={[styles.box]}>
@@ -173,16 +167,11 @@ const Home = React.createClass({
                                       <TouchableOpacity style={styles.link}
                                                         onPress={this._redirect.bind(null, 'AnswersDisplay', {questionnaire: questionnaire})}>
                                           <Text style={styles.simpleTitle}>{questionnaire.name}</Text>
-                                          <Icon name="keyboard-arrow-right" size={getFontSize(18)}
-                                                style={styles.linkArrow}/>
+                                          <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
+                                                        style={styles.linkArrow}/>
                                       </TouchableOpacity>
                                   }
                         />
-                        <TouchableOpacity onPress={this._redirect.bind(null, 'CreateQuestionnaire', null)}
-                                          style={styles.link}>
-                            <Text style={styles.simpleTitle}>Create Survey</Text>
-                            <Icon name="add" size={getFontSize(18)} style={styles.linkArrow}/>
-                        </TouchableOpacity>
                     </View>
                 </View>
             )
@@ -201,7 +190,7 @@ const Home = React.createClass({
                         {data.macro_plan_day ?
                             <View style={[styles.box, {marginBottom: 5, marginTop: 0}]}>
                                 <View style={styles.todayTitle}>
-                                    <Icon size={24} color='black' name="date-range"/>
+                                    <MaterialIcon size={24} color='black' name="date-range"/>
                                     <Text style={styles.textTitle}>{`Today`}</Text>
                                 </View>
 
@@ -227,8 +216,8 @@ const Home = React.createClass({
                                         onPress={this._redirect.bind(null, 'CreateMacroLog', {macro_plan_day: data.macro_plan_day})}
                                         style={styles.link}>
                                         <Text style={styles.simpleTitle}>Log Today</Text>
-                                        <Icon name="keyboard-arrow-right" size={getFontSize(18)}
-                                              style={styles.linkArrow}/>
+                                        <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
+                                                      style={styles.linkArrow}/>
                                     </TouchableOpacity>
                                     : null
                                 }
@@ -266,7 +255,7 @@ const Home = React.createClass({
                         <TouchableOpacity onPress={this._redirect.bind(null, 'ManageClients', null)}
                                           style={styles.link}>
                             <Text style={styles.simpleTitle}>Find a trainer</Text>
-                            <Icon name="keyboard-arrow-right" size={getFontSize(18)} style={styles.linkArrow}/>
+                            <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)} style={styles.linkArrow}/>
                         </TouchableOpacity>
                     </View>
                 )
@@ -276,7 +265,6 @@ const Home = React.createClass({
         let userImage = user.profile.avatar;
         if (user.profile.thumbnail)
             userImage = user.profile.thumbnail;
-
 
 
         return (
@@ -302,9 +290,23 @@ const Home = React.createClass({
                     </View>
                 </ScrollView>
 
-                <Animated.View style={[styles.modal,{ transform: [{translateY: this.state.modalY}]}]}>
+                <Animated.View style={[styles.modal, {transform: [{translateY: this.state.modalY}]}]}>
                     <MyProfile navigation={this.props.navigation} close={this.hideProfile}/>
                 </Animated.View>
+
+                {isTrainer ?
+                    <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" >
+                        <ActionButton.Item buttonColor='#9b59b6' title="New Program template"
+                                           onPress={this._redirect.bind(null, 'CreateSchedule', null)}>
+                            <MaterialIcon name="add" color="white" size={22}/>
+                        </ActionButton.Item>
+                        <ActionButton.Item buttonColor='#3498db' title="New Survey"
+                                           onPress={this._redirect.bind(null, 'CreateQuestionnaire', null)}>
+                            <MaterialIcon name="add" color="white" size={22}/>
+                        </ActionButton.Item>
+                    </ActionButton>
+                    : null
+                }
             </View>
         )
     }
@@ -414,7 +416,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left: 0,
-        right:0,
+        right: 0,
         bottom: 0,
         backgroundColor: '#ededed',
         justifyContent: 'center',

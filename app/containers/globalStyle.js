@@ -28,6 +28,9 @@ const GlobalStyle = StyleSheet.create({
         marginRight: 20,
         marginLeft: 20,
     },
+    lightBlueText: {
+        color: '#00AFA3'
+    }
 });
 
 export default GlobalStyle;
