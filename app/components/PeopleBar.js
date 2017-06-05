@@ -11,7 +11,6 @@ const PeopleBar = React.createClass({
     propTypes: {
         people: React.PropTypes.array.isRequired,
         navigate: React.PropTypes.func.isRequired,
-        manageClients: React.PropTypes.func,
         action: React.PropTypes.func,
         selected: React.PropTypes.array
     },
@@ -45,16 +44,6 @@ const PeopleBar = React.createClass({
                 <ScrollView style={styles.peopleList} contentContainerStyle={styles.checkContentContainer}
                             showsHorizontalScrollIndicator={false} horizontal={true}>
 
-                    {this.props.manageClients ?
-                        <View style={{alignItems: 'center'}}>
-                            <TouchableOpacity onPress={this.props.manageClients} style={styles.manageClients}>
-                                <Icon name="user-plus" color='#bfbfbf' size={22}/>
-                            </TouchableOpacity>
-                            <Text style={styles.userText}>Manage Clients</Text>
-                        </View>
-                        : null
-                    }
-
                     {list}
                 </ScrollView>
             </View>
@@ -67,7 +56,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderColor: '#e1e3df',
         borderBottomWidth: 1,
-        // borderTopWidth: 1,
         flexDirection: 'row',
         alignItems: 'center',
     },

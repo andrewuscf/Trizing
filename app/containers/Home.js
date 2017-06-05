@@ -95,7 +95,7 @@ const Home = React.createClass({
                 {unread_count ?
                     <IconBadge
                         MainElement={
-                            <Icon name="notifications" size={getFontSize(50)}/>
+                            <MaterialIcon name="notifications" size={getFontSize(50)}/>
                         }
                         BadgeElement={
                             <Text style={{color: '#FFFFFF'}}>{unread_count}</Text>
@@ -141,8 +141,7 @@ const Home = React.createClass({
             }));
             content = (
                 <View>
-                    <PeopleBar navigate={navigate} people={this.props.Clients}
-                               manageClients={() => navigate('ManageClients')}/>
+                    <PeopleBar navigate={navigate} people={this.props.Clients}/>
 
                     <View style={[styles.box]}>
                         <Text style={styles.textTitle}>Program Templates</Text>
@@ -266,7 +265,6 @@ const Home = React.createClass({
         if (user.profile.thumbnail)
             userImage = user.profile.thumbnail;
 
-
         return (
             <View style={GlobalStyle.noHeaderContainer}>
                 <ScrollView ref='home_scroll'
@@ -294,14 +292,18 @@ const Home = React.createClass({
                     <MyProfile navigation={this.props.navigation} close={this.hideProfile}/>
                 </Animated.View>
 
-                {isTrainer ?
+                {isTrainer && this.state.modalY !=0 ?
                     <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" >
+                        <ActionButton.Item buttonColor='#FD795B' title="Manage Clients"
+                                           onPress={() => navigate('ManageClients')}>
+                            <MaterialIcon name="person-add" color="white" size={22}/>
+                        </ActionButton.Item>
                         <ActionButton.Item buttonColor='#9b59b6' title="New Program template"
-                                           onPress={this._redirect.bind(null, 'CreateSchedule', null)}>
+                                           onPress={() => navigate('CreateSchedule')}>
                             <MaterialIcon name="add" color="white" size={22}/>
                         </ActionButton.Item>
                         <ActionButton.Item buttonColor='#3498db' title="New Survey"
-                                           onPress={this._redirect.bind(null, 'CreateQuestionnaire', null)}>
+                                           onPress={() => navigate('CreateQuestionnaire')}>
                             <MaterialIcon name="add" color="white" size={22}/>
                         </ActionButton.Item>
                     </ActionButton>

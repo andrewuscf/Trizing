@@ -269,7 +269,7 @@ const MainTabNav = TabNavigator({
     initialRouteName: 'Home',
     tabBarPosition: 'bottom',
     lazy: true,
-    swipeEnabled: true,
+    swipeEnabled: false,
     animationEnabled: false,
     navigationOptions: {
         header: null,
