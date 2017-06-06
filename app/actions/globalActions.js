@@ -5,6 +5,8 @@ import {AsyncStorage, Platform} from 'react-native';
 import {LoginManager} from 'react-native-fbsdk';
 import momentTz from 'moment-timezone';
 import _ from 'lodash';
+import {ImageCache} from "react-native-img-cache";
+
 
 import {getClients, getActiveData} from './homeActions';
 
@@ -47,6 +49,7 @@ export function setDeviceForNotification(token) {
 
 export function removeToken(token) {
     return (dispatch) => {
+        ImageCache.get().clear();
         AsyncStorage.removeItem('USER_TOKEN');
         LoginManager.logOut();
         if (token) dispatch(removeDeviceNotification(token));

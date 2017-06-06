@@ -1,5 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {CachedImage} from "react-native-img-cache";
 
 const AvatarImage = React.createClass({
     propTypes: {
@@ -7,7 +8,7 @@ const AvatarImage = React.createClass({
         redirect: React.PropTypes.func
     },
 
-    onPress(userId) {
+    onPress() {
         if (this.props.redirect) {
             this.props.redirect();
         }
@@ -18,14 +19,14 @@ const AvatarImage = React.createClass({
         if (this.props.redirect) {
             return (
                 <TouchableOpacity onPress={this.onPress}>
-                    <Image style={[styles.avatar, this.props.style]} source={{uri: this.props.image}}/>
+                    <CachedImage style={[styles.avatar, this.props.style]} source={{uri: this.props.image}}/>
                 </TouchableOpacity>
             );
         }
         // Deal with no image inside component rather than parent.
         if (this.props.image) {
             return (
-                <Image style={[styles.avatar, this.props.style]} source={{uri: this.props.image}}/>
+                <CachedImage style={[styles.avatar, this.props.style]} source={{uri: this.props.image}}/>
             );
         }
         return null;

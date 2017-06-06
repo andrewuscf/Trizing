@@ -12,6 +12,8 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import ActionButton from 'react-native-action-button';
 
 import * as ChatActions from '../actions/chatActions';
 
@@ -22,16 +24,7 @@ import ChatRoomBox from '../components/ChatRoomBox';
 import Loading from '../components/Loading';
 
 const Chat = React.createClass({
-
-    scrollToTopEvent(args) {
-        // if (args.routeName == 'Chat') {
-        //     const isTrue = true;
-        //     this.refs.todayscroll.scrollTo({y: 0, true});
-        // }
-    },
-
     componentDidMount() {
-        // this.addListenerOn(this.props.events, 'scrollToTopEvent', this.scrollToTopEvent);
         if (!this.props.Rooms.length) {
             this.props.actions.getChatRooms();
         }
@@ -54,45 +47,47 @@ const Chat = React.createClass({
         this.props.navigation.navigate('CreateChatRoom');
     },
 
-    renderHeader() {
-        return (
-            <TouchableOpacity style={styles.header} onPress={this.newChat}>
-                <Icon name="send" size={30} color='#b1aea5' style={{marginTop: 2}}/>
-                <Text style={styles.newChatText}>New Message</Text>
-            </TouchableOpacity>
-        )
-    },
-
 
     render() {
         if (this.props.ChatIsLoading) return <Loading />;
         if (this.props.Rooms.length) {
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             const dataSource = ds.cloneWithRows(this.props.Rooms);
-            console.log(this.props.Rooms)
             return (
-                <ListView
-                    refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
-                    style={GlobalStyle.noHeaderContainer} enableEmptySections={true}
-                    removeClippedSubviews={false}
-                    renderHeader={this.renderHeader}
-                    dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={Dimensions.get('window').height}
-                    renderRow={(room, i) => <ChatRoomBox key={i} room={room} RequestUser={this.props.RequestUser}
-                                                         _redirect={this._redirect}/>}
-                />
+                <View style={GlobalStyle.noHeaderContainer}>
+                    <ListView
+                        refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
+                        style={styles.scrollContainer} enableEmptySections={true}
+                        removeClippedSubviews={false}
+                        dataSource={dataSource} onEndReached={this.onEndReached}
+                        onEndReachedThreshold={Dimensions.get('window').height}
+                        renderRow={(room, i) => <ChatRoomBox key={i} room={room} RequestUser={this.props.RequestUser}
+                                                             _redirect={this._redirect}/>}
+                    />
+                    <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
+                        <ActionButton.Item buttonColor='#FD795B' title="New Chat"
+                                           onPress={this.newChat}>
+                            <MaterialIcon name="event-available" color="white" size={22}/>
+                        </ActionButton.Item>
+                    </ActionButton>
+                </View>
             );
         }
         return (
             <ScrollView contentContainerStyle={styles.scrollContainer} style={GlobalStyle.noHeaderContainer}
                         refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}>
-                {this.renderHeader()}
                 <View style={styles.noRequests}>
-                    <Icon name="comment-o" size={60}
-                          color='#b1aea5'/>
+                    <Icon name="message" size={60} color='#b1aea5'/>
                     <Text style={styles.noRequestTitle}>
                         You should chat with your trainer or fellow clients.
                     </Text>
                 </View>
+                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
+                    <ActionButton.Item buttonColor='#FD795B' title="New Chat"
+                                       onPress={this.newChat}>
+                        <MaterialIcon name="event-available" color="white" size={22}/>
+                    </ActionButton.Item>
+                </ActionButton>
             </ScrollView>
         );
     }

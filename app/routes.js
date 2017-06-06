@@ -168,7 +168,7 @@ const CalendarNav = StackNavigator({
             header: null,
         }
     },
-    CreateEvent: {screen: CreateEvent},
+    CreateEvent: {screen: paramsToProps(CreateEvent)},
     EventDetail: {screen: paramsToProps(EventDetail)},
     Profile: {screen: paramsToProps(Profile)},
 }, {

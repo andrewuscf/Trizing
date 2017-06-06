@@ -41,16 +41,16 @@ const ChatRoomBox = React.createClass({
     render() {
         const room = this.props.room;
         console.log(room)
-        return null;
+        // return null;
         let sender = room.users[room.users.length - 1];
         if (this.props.RequestUser.id == sender.id && room.users.length > 1) {
             sender = room.users[room.users.length - 2];
         }
-        let image = sender.profile.thumbnail ? sender.profile.thumbnail : sender.profile.avatar
+        let image = sender.profile.thumbnail ? sender.profile.thumbnail : sender.profile.avatar;
         return (
             <TouchableHighlight style={styles.container} onPress={this._toRoom} underlayColor='white'>
                 <View style={styles.inner}>
-                    <AvatarImage image={sender.profile.avatar}/>
+                    <AvatarImage image={image}/>
                     <View style={styles.details}>
                         <Text style={styles.name}>{sender.profile.first_name} {sender.profile.last_name[0]}.</Text>
                         {(room.last_message && room.last_message.message) ?

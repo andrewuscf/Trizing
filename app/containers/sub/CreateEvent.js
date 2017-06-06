@@ -46,12 +46,15 @@ const window = Dimensions.get('window');
 
 
 const CreateEvent = React.createClass({
+    propTypes: {
+        event_type: React.PropTypes.string.isRequired,
+    },
+
     getInitialState() {
         return {
             selected: [],
             value: {
                 title: null,
-                event_type: null,
                 date: moment().toDate(),
                 start_time: moment().add(30, 'minutes').toDate(),
                 end_time: moment().add(2, 'hours').toDate(),
@@ -101,7 +104,7 @@ const CreateEvent = React.createClass({
             endDate.set('hour', endTime.get('hour')).set('minute', endTime.get('minute')).set('second', 0);
             const data = {
                 title: values.title,
-                event_type: values.event_type,
+                event_type: this.props.event_type,
                 invited: this.state.selected,
                 occurrences: [
                     {
@@ -156,11 +159,6 @@ const CreateEvent = React.createClass({
                 title: {
                     label: 'Event title*',
                     onSubmitEditing: () => Keyboard.dismiss()
-                },
-                event_type: {
-                    label: 'Type*',
-                    nullOption: {value: '', text: 'Choose an Event Type'},
-                    error: `Please select a event type`
                 },
                 date: {
                     mode: 'date',
@@ -260,10 +258,6 @@ let myFormatFunction = (format, date) => {
 
 // T FORM SETUP
 const Form = t.form.Form;
-const Event_types = t.enums({
-    chk: 'Check In',
-    eve: 'Group Event'
-});
 // const Occurrences = t.enums({
 //     0: 'One Time',
 //     1: 'Each Day',
@@ -272,7 +266,6 @@ const Event_types = t.enums({
 // });
 const Event = t.struct({
     title: t.String,
-    event_type: Event_types,
     date: t.Date,
     start_time: t.Date,
     end_time: t.Date,

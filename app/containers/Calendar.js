@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import ActionButton from 'react-native-action-button';
 
 import * as CalendarActions from '../actions/calendarActions';
 
@@ -23,13 +24,6 @@ import Loading from '../components/Loading';
 
 
 const Calendar = React.createClass({
-    scrollToTopEvent(args) {
-        if (args.routeName == 'Calendar') {
-            const isTrue = true;
-            this.refs.calendar_list.scrollTo({y: 0, isTrue});
-        }
-    },
-
     componentDidMount() {
         if (!this.props.Events.length) {
             this.props.actions.getEvents();
@@ -44,57 +38,73 @@ const Calendar = React.createClass({
             this.props.actions.getEvents();
     },
 
-    goToCreate() {
-        this.props.navigation.navigate('CreateEvent');
+    goToCreate(type) {
+        this.props.navigation.navigate('CreateEvent', {event_type: type});
     },
-
-    renderHeader() {
-        if (this.props.RequestUser.type == 1)
-            return (
-                <TouchableOpacity style={styles.header} onPress={this.goToCreate}>
-                    <Icon name="calendar-plus-o" size={30}
-                          color='#b1aea5'/>
-                    <Text style={styles.createEventText}>Create New Event</Text>
-                </TouchableOpacity>
-            );
-        return null;
-    },
-
 
     render() {
+        const isTrainer = this.props.RequestUser.type == 1;
         if (this.props.CalendarIsLoading) return <Loading />;
+        let content = null;
+        let subMenu = null;
         if (!this.props.Events.length) {
-            return (
-                <ScrollView contentContainerStyle={styles.scrollContainer} ref="calendar_list" style={GlobalStyle.noHeaderContainer}
-                      refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}>
-                    {this.renderHeader()}
+            content = (
+                <ScrollView contentContainerStyle={styles.scrollContainer} ref="calendar_list"
+                            style={GlobalStyle.noHeaderContainer}
+                            refreshControl={<RefreshControl refreshing={this.props.Refreshing}
+                                                            onRefresh={this._refresh}/>}>
                     <View style={styles.noRequests}>
-                        <Icon name="calendar-o" size={60}
-                              color='#b1aea5'/>
+                        <MaterialIcon name="today" size={60} color='#b1aea5'/>
                         <Text style={styles.noRequestTitle}>
-                            {this.props.RequestUser.type == 1 ?
-                                'You have no upcoming events.'
-                                : "Your trainer needs to invite you to events."
-                            }
+                            No events. Create one.
                         </Text>
                     </View>
                 </ScrollView>
             );
+        } else {
+            content = (
+                <ListView ref="calendar_list"
+                          refreshControl={<RefreshControl refreshing={this.props.Refreshing}
+                                                          onRefresh={this._refresh}/>}
+                          style={styles.scrollContainer}
+                          enableEmptySections={true}
+                          dataSource={dataSource} onEndReached={this.onEndReached}
+                          onEndReachedThreshold={Dimensions.get('window').height}
+                          renderRow={(occurrence, i) => <EventBox occurrence={occurrence}
+                                                                  navigate={this.props.navigation.navigate}/>}
+                />
+            )
+        }
+        if (isTrainer) {
+            subMenu = (
+                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
+                    <ActionButton.Item buttonColor='#FD795B' title="New Client Check-In"
+                                       onPress={() => this.goToCreate('chk')}>
+                        <MaterialIcon name="event-available" color="white" size={22}/>
+                    </ActionButton.Item>
+                    <ActionButton.Item buttonColor='#9b59b6' title="New Event"
+                                       onPress={() => this.goToCreate('eve')}>
+                        <MaterialIcon name="event" color="white" size={22}/>
+                    </ActionButton.Item>
+                </ActionButton>
+            )
+        } else {
+            subMenu = (
+                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
+                    <ActionButton.Item buttonColor='#9b59b6' title="New Event"
+                                       onPress={() => this.goToCreate('eve')}>
+                        <MaterialIcon name="event" color="white" size={22}/>
+                    </ActionButton.Item>
+                </ActionButton>
+            )
         }
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         const dataSource = ds.cloneWithRows(this.props.Events);
         return (
-            <ListView ref="calendar_list"
-                      refreshControl={<RefreshControl refreshing={this.props.Refreshing}
-                                                      onRefresh={this._refresh}/>}
-                      style={GlobalStyle.noHeaderContainer}
-                      enableEmptySections={true}
-                      renderHeader={this.renderHeader}
-                      dataSource={dataSource} onEndReached={this.onEndReached}
-                      onEndReachedThreshold={Dimensions.get('window').height}
-                      renderRow={(occurrence, i) => <EventBox occurrence={occurrence}
-                                                              navigate={this.props.navigation.navigate}/>}
-            />
+            <View style={GlobalStyle.noHeaderContainer}>
+                {content}
+                {subMenu}
+            </View>
         );
     }
 });

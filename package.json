@@ -22,6 +22,7 @@
     "react-native-gifted-chat": "^0.1.4",
     "react-native-icon-badge": "^1.1.1",
     "react-native-image-crop-picker": "^0.13.1",
+    "react-native-img-cache": "^1.4.0",
     "react-native-keyboard-aware-scroll-view": "^0.2.9",
     "react-native-pathjs-charts": "0.0.27",
     "react-native-popup-menu": "^0.7.3",
