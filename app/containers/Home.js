@@ -58,7 +58,6 @@ const Home = React.createClass({
     getNeeded(refresh = false) {
         if (this.props.RequestUser.type == 1) {
             this.props.actions.getClients(refresh);
-            // this.props.getQuestionnaires(refresh);
         } else {
             this.props.actions.getActiveData(refresh);
         }
@@ -91,7 +90,7 @@ const Home = React.createClass({
         }).length;
         return (
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Notifications')}
-                              style={[{padding: 10, paddingRight: 20}]}>
+                              style={[{padding: 10, paddingTop: 0, paddingRight: 20}]}>
                 {unread_count ?
                     <IconBadge
                         MainElement={
@@ -134,40 +133,21 @@ const Home = React.createClass({
         let content = null;
         const {navigate} = this.props.navigation;
         if (isTrainer) {
-            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-            const QuestionnaireDS = ds.cloneWithRows(this.props.Questionnaires);
             content = (
                 <View>
                     <PeopleBar navigate={navigate} people={this.props.Clients}/>
                     <View style={styles.templateSection}>
-                        <Text style={styles.templateText}>Templates</Text>
-
                         <View style={{flexDirection: 'row',}}>
                             <TouchableOpacity style={[styles.itemBox]} onPress={() => navigate('ProgramList')}>
                                 <CustomIcon name="barbell" size={getFontSize(45)}/>
                                 <Text style={styles.itemText}>Programs</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.itemBox]}>
+                            <TouchableOpacity style={[styles.itemBox, {borderRightWidth: 0}]}
+                            onPress={() => navigate('SurveyList')}>
                                 <MaterialIcon name="question-answer" size={getFontSize(45)}/>
                                 <Text style={styles.itemText}>Surveys</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
-
-
-                    <View style={[styles.box]}>
-                        <Text style={styles.textTitle}>Surveys</Text>
-                        <ListView ref='survey_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                                  style={styles.container} enableEmptySections={true} dataSource={QuestionnaireDS}
-                                  renderRow={(questionnaire) =>
-                                      <TouchableOpacity style={styles.link}
-                                                        onPress={this._redirect.bind(null, 'AnswersDisplay', {questionnaire: questionnaire})}>
-                                          <Text style={styles.simpleTitle}>{questionnaire.name}</Text>
-                                          <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
-                                                        style={styles.linkArrow}/>
-                                      </TouchableOpacity>
-                                  }
-                        />
                     </View>
                 </View>
             )
@@ -295,14 +275,6 @@ const Home = React.createClass({
                                            onPress={() => navigate('ManageClients')}>
                             <MaterialIcon name="person-add" color="white" size={22}/>
                         </ActionButton.Item>
-                        <ActionButton.Item buttonColor='#9b59b6' title="New Program template"
-                                           onPress={() => navigate('CreateSchedule')}>
-                            <MaterialIcon name="add" color="white" size={22}/>
-                        </ActionButton.Item>
-                        <ActionButton.Item buttonColor='#3498db' title="New Survey"
-                                           onPress={() => navigate('CreateQuestionnaire')}>
-                            <MaterialIcon name="add" color="white" size={22}/>
-                        </ActionButton.Item>
                     </ActionButton>
                     : null
                 }
@@ -424,25 +396,15 @@ const styles = StyleSheet.create({
     },
     templateSection: {
         borderColor: '#e1e3df',
-        borderWidth: 1,
+        borderBottomWidth: 1,
         alignItems: 'center',
-        margin: 10,
-        borderRadius: 10,
-    },
-    templateText: {
-        fontSize: getFontSize(26),
-        fontFamily: 'OpenSans-Bold',
-        paddingTop: 10,
-        paddingBottom: 10
     },
     itemBox: {
         flex: .5,
         justifyContent: 'center',
         alignItems: 'center',
         borderColor: '#e1e3df',
-        borderWidth: .5,
-        borderTopWidth: 0,
-        borderLeftWidth: 0,
+        borderRightWidth: .5,
         paddingTop: 10,
         paddingBottom: 10,
     },
@@ -456,8 +418,6 @@ const styles = StyleSheet.create({
 const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
-        Questionnaires: state.Global.Questionnaires,
-        Schedules: state.Global.Schedules,
         ...state.Home
     };
 };
@@ -467,7 +427,6 @@ const dispatchToProps = (dispatch) => {
         actions: bindActionCreators(HomeActions, dispatch),
         getNotifications: bindActionCreators(GlobalActions.getNotifications, dispatch),
         readNotification: bindActionCreators(GlobalActions.readNotification, dispatch),
-        // getQuestionnaires: bindActionCreators(GlobalActions.getQuestionnaires, dispatch),
         toggleTabBar: bindActionCreators(GlobalActions.toggleTabBar, dispatch),
     }
 };

@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import _ from 'lodash';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
 
@@ -20,7 +19,7 @@ import * as GlobalActions from '../../actions/globalActions';
 import GlobalStyle from '../globalStyle';
 import {getFontSize} from '../../actions/utils';
 
-const ProgramList = React.createClass({
+const SurveyList = React.createClass({
     propTypes: {
         // Refreshing: React.PropTypes.bool.isRequired,
     },
@@ -32,7 +31,7 @@ const ProgramList = React.createClass({
 
     getNeeded(refresh = false) {
         if (this.props.RequestUser.type == 1) {
-            this.props.getSchedules('?template=true', refresh);
+            this.props.getQuestionnaires(refresh);
         }
     },
 
@@ -53,17 +52,15 @@ const ProgramList = React.createClass({
         const isTrainer = this.props.RequestUser.type == 1;
         const {navigate} = this.props.navigation;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        const SchedulesDs = ds.cloneWithRows(_.filter(this.props.Schedules, function (o) {
-            return !o.training_plan;
-        }));
+        const QuestionnaireDS = ds.cloneWithRows(this.props.Questionnaires);
         return (
             <View style={{flex: 1}}>
-                <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                          enableEmptySections={true} dataSource={SchedulesDs}
-                          renderRow={(schedule) =>
+                <ListView ref='survey_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                          style={styles.container} enableEmptySections={true} dataSource={QuestionnaireDS}
+                          renderRow={(questionnaire) =>
                               <TouchableOpacity style={styles.link}
-                                                onPress={this._redirect.bind(null, 'EditSchedule', {scheduleId: schedule.id})}>
-                                  <Text style={styles.simpleTitle}>{schedule.name}</Text>
+                                                onPress={this._redirect.bind(null, 'AnswersDisplay', {questionnaire: questionnaire})}>
+                                  <Text style={styles.simpleTitle}>{questionnaire.name}</Text>
                                   <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
                                                 style={styles.linkArrow}/>
                               </TouchableOpacity>
@@ -71,8 +68,8 @@ const ProgramList = React.createClass({
                 />
                 {isTrainer ?
                     <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
-                        <ActionButton.Item buttonColor='#9b59b6' title="New Program template"
-                                           onPress={() => navigate('CreateSchedule')}>
+                        <ActionButton.Item buttonColor='#3498db' title="New Survey"
+                                           onPress={() => navigate('CreateQuestionnaire')}>
                             <MaterialIcon name="add" color="white" size={22}/>
                         </ActionButton.Item>
                     </ActionButton>
@@ -109,14 +106,14 @@ const styles = StyleSheet.create({
 const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
-        Schedules: state.Global.Schedules,
+        Questionnaires: state.Global.Questionnaires,
     };
 };
 
 const dispatchToProps = (dispatch) => {
     return {
-        getSchedules: bindActionCreators(GlobalActions.getSchedules, dispatch),
+        getQuestionnaires: bindActionCreators(GlobalActions.getQuestionnaires, dispatch),
     }
 };
 
-export default connect(stateToProps, dispatchToProps)(ProgramList);
+export default connect(stateToProps, dispatchToProps)(SurveyList);

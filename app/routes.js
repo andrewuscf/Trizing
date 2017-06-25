@@ -52,6 +52,7 @@ import EditProfile from './containers/profile/EditProfile';
 
 // Trainer Pages
 import ProgramList from './containers/trainer/ProgramList';
+import SurveyList from './containers/trainer/SurveyList';
 
 const paramsToProps = (SomeComponent) => {
 // turns this.props.navigation.state.params into this.params.<x>
@@ -129,6 +130,7 @@ const HomeNav = StackNavigator({
 
 
     ProgramList: {screen: ProgramList},
+    SurveyList: {screen: SurveyList},
 
 
 }, {
