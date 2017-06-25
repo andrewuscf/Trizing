@@ -50,6 +50,9 @@ import Profile from './containers/profile/Profile';
 import EditProfile from './containers/profile/EditProfile';
 
 
+// Trainer Pages
+import ProgramList from './containers/trainer/ProgramList';
+
 const paramsToProps = (SomeComponent) => {
 // turns this.props.navigation.state.params into this.params.<x>
     return class extends React.Component {
@@ -123,6 +126,9 @@ const HomeNav = StackNavigator({
     WorkoutDaySession: {screen: paramsToProps(WorkoutDaySession)},
 
     EventDetail: {screen: paramsToProps(EventDetail)},
+
+
+    ProgramList: {screen: ProgramList},
 
 
 }, {
@@ -286,7 +292,6 @@ export const AppNavigator = StackNavigator({
         navigationOptions: {
             header: null,
         },
-
     },
     Login: {
         screen: Login,

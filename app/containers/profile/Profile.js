@@ -44,7 +44,6 @@ moment.updateLocale('en', {
 
 
 const Profile = React.createClass({
-
     propTypes: {
         id: React.PropTypes.number.isRequired,
     },

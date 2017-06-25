@@ -29,6 +29,7 @@ import GlobalStyle from './globalStyle';
 import MyProfile from '../containers/profile/MyProfile';
 
 import AvatarImage from '../components/AvatarImage';
+import CustomIcon from '../components/CustomIcon';
 import Loading from '../components/Loading';
 import PeopleBar from '../components/PeopleBar';
 
@@ -57,8 +58,7 @@ const Home = React.createClass({
     getNeeded(refresh = false) {
         if (this.props.RequestUser.type == 1) {
             this.props.actions.getClients(refresh);
-            this.props.getSchedules('?template=true', refresh);
-            this.props.getQuestionnaires(refresh);
+            // this.props.getQuestionnaires(refresh);
         } else {
             this.props.actions.getActiveData(refresh);
         }
@@ -136,27 +136,24 @@ const Home = React.createClass({
         if (isTrainer) {
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             const QuestionnaireDS = ds.cloneWithRows(this.props.Questionnaires);
-            const SchedulesDs = ds.cloneWithRows(_.filter(this.props.Schedules, function (o) {
-                return !o.training_plan;
-            }));
             content = (
                 <View>
                     <PeopleBar navigate={navigate} people={this.props.Clients}/>
+                    <View style={styles.templateSection}>
+                        <Text style={styles.templateText}>Templates</Text>
 
-                    <View style={[styles.box]}>
-                        <Text style={styles.textTitle}>Program Templates</Text>
-                        <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                                  style={styles.container} enableEmptySections={true} dataSource={SchedulesDs}
-                                  renderRow={(schedule) =>
-                                      <TouchableOpacity style={styles.link}
-                                                        onPress={this._redirect.bind(null, 'EditSchedule', {scheduleId: schedule.id})}>
-                                          <Text style={styles.simpleTitle}>{schedule.name}</Text>
-                                          <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
-                                                        style={styles.linkArrow}/>
-                                      </TouchableOpacity>
-                                  }
-                        />
+                        <View style={{flexDirection: 'row',}}>
+                            <TouchableOpacity style={[styles.itemBox]} onPress={() => navigate('ProgramList')}>
+                                <CustomIcon name="barbell" size={getFontSize(45)}/>
+                                <Text style={styles.itemText}>Programs</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.itemBox]}>
+                                <MaterialIcon name="question-answer" size={getFontSize(45)}/>
+                                <Text style={styles.itemText}>Surveys</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
+
 
                     <View style={[styles.box]}>
                         <Text style={styles.textTitle}>Surveys</Text>
@@ -292,8 +289,8 @@ const Home = React.createClass({
                     <MyProfile navigation={this.props.navigation} close={this.hideProfile}/>
                 </Animated.View>
 
-                {isTrainer && this.state.modalY !=0 ?
-                    <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" >
+                {isTrainer && this.state.modalY != 0 ?
+                    <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
                         <ActionButton.Item buttonColor='#FD795B' title="Manage Clients"
                                            onPress={() => navigate('ManageClients')}>
                             <MaterialIcon name="person-add" color="white" size={22}/>
@@ -322,7 +319,7 @@ const styles = StyleSheet.create({
     },
     contentContainerStyle: {
         flex: 1,
-        flexDirection: 'column'
+        flexDirection: 'column',
     },
     row: {
         flexDirection: 'row',
@@ -413,22 +410,46 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     modal: {
-        // height: deviceHeight,
-        // width: deviceWidth,
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: '#ededed',
+        backgroundColor: 'white',
         justifyContent: 'center',
     },
     modalClose: {
         justifyContent: 'center',
         alignItems: 'center',
-        // borderColor: 'black',
-        // borderWidth: .5,
-        // width: 500
+    },
+    templateSection: {
+        borderColor: '#e1e3df',
+        borderWidth: 1,
+        alignItems: 'center',
+        margin: 10,
+        borderRadius: 10,
+    },
+    templateText: {
+        fontSize: getFontSize(26),
+        fontFamily: 'OpenSans-Bold',
+        paddingTop: 10,
+        paddingBottom: 10
+    },
+    itemBox: {
+        flex: .5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#e1e3df',
+        borderWidth: .5,
+        borderTopWidth: 0,
+        borderLeftWidth: 0,
+        paddingTop: 10,
+        paddingBottom: 10,
+    },
+    itemText: {
+        fontSize: getFontSize(24),
+        backgroundColor: 'transparent',
+        fontFamily: 'OpenSans-Semibold',
     }
 });
 
@@ -446,8 +467,7 @@ const dispatchToProps = (dispatch) => {
         actions: bindActionCreators(HomeActions, dispatch),
         getNotifications: bindActionCreators(GlobalActions.getNotifications, dispatch),
         readNotification: bindActionCreators(GlobalActions.readNotification, dispatch),
-        getQuestionnaires: bindActionCreators(GlobalActions.getQuestionnaires, dispatch),
-        getSchedules: bindActionCreators(GlobalActions.getSchedules, dispatch),
+        // getQuestionnaires: bindActionCreators(GlobalActions.getQuestionnaires, dispatch),
         toggleTabBar: bindActionCreators(GlobalActions.toggleTabBar, dispatch),
     }
 };

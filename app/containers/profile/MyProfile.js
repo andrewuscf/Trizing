@@ -21,6 +21,8 @@ import GlobalStyle from '../globalStyle';
 
 
 import AvatarImage from '../../components/AvatarImage';
+import CustomBack from '../../components/CustomBack';
+import CustomIcon from '../../components/CustomIcon';
 import Loading from '../../components/Loading';
 
 moment.updateLocale('en', {
@@ -76,19 +78,16 @@ const MyProfile = React.createClass({
             return (
                 <ScrollView style={GlobalStyle.noHeaderContainer} ref="profile_list">
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
-                        <TouchableOpacity onPress={this.props.close} style={styles.back}>
-                            <Icon name="keyboard-arrow-left" size={35} color='#333333'/>
-                        </TouchableOpacity>
+                        <CustomBack  back={this.props.close} right={<TouchableOpacity style={styles.topRightNav}
+                                                                                      onPress={this._redirect.bind(null, 'EditProfile', null)}>
+                            <CustomIcon name="settings" size={getFontSize(30)} color='#333333'/>
+                        </TouchableOpacity>}/>
                         <AvatarImage style={styles.avatar} image={userImage}/>
                         <View style={styles.userInfo}>
                             <Text style={styles.name}>
                                 {trunc(`${user.profile.first_name} ${user.profile.last_name}`, 26)}
                             </Text>
                         </View>
-                        <TouchableOpacity style={styles.topRightNav}
-                                          onPress={this._redirect.bind(null, 'EditProfile', null)}>
-                            <Icon name="settings" size={30} color='#333333'/>
-                        </TouchableOpacity>
                     </View>
                 </ScrollView>
             )
@@ -103,9 +102,11 @@ const styles = StyleSheet.create({
         height: 80,
         width: 80,
         borderRadius: 40,
+        marginTop: -30,
     },
     userDetail: {
-        paddingTop: 20,
+        // marginTop: -10,
+        // paddingTop: 20,
         paddingBottom: 20,
         backgroundColor: 'white',
         justifyContent: 'center',
@@ -120,8 +121,8 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(22)
     },
     topRightNav: {
-        right: 0,
-        position: 'absolute',
+        // right: 0,
+        // position: 'absolute',
         padding: 10,
         width: 50,
         justifyContent: 'center',

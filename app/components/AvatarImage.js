@@ -8,7 +8,7 @@ const AvatarImage = React.createClass({
         redirect: React.PropTypes.func
     },
 
-    onPress() {
+    onPress(userId) {
         if (this.props.redirect) {
             this.props.redirect();
         }

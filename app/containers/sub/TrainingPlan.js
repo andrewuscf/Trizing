@@ -263,15 +263,15 @@ const TrainingPlan = React.createClass({
                 <View style={[styles.tabbarView, GlobalStyle.simpleBottomBorder]}>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(1)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 1)}>
-                        <CustomIcon name="food" size={30} color={this.isSelected(1) ? selectedIcon : defaultIcon}/>
+                        <CustomIcon name="food" size={getFontSize(35)} color={this.isSelected(1) ? selectedIcon : defaultIcon}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(2)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 2)}>
-                        <CustomIcon name="weight" size={30} color={this.isSelected(2) ? selectedIcon : defaultIcon}/>
+                        <CustomIcon name="weight" size={getFontSize(35)} color={this.isSelected(2) ? selectedIcon : defaultIcon}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(3)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 3)}>
-                        <Icon name="bar-chart" size={25} color={this.isSelected(3) ? selectedIcon : defaultIcon}/>
+                        <CustomIcon name="pie-chart" size={getFontSize(25)} color={this.isSelected(3) ? selectedIcon : defaultIcon}/>
                     </TouchableOpacity>
                 </View>
 
