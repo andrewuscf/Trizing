@@ -19,6 +19,8 @@ import * as GlobalActions from '../../actions/globalActions';
 import GlobalStyle from '../globalStyle';
 import {getFontSize} from '../../actions/utils';
 
+import CustomIcon from '../../components/CustomIcon';
+
 const SurveyList = React.createClass({
     propTypes: {
         // Refreshing: React.PropTypes.bool.isRequired,
@@ -70,7 +72,7 @@ const SurveyList = React.createClass({
                     <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
                         <ActionButton.Item buttonColor='#3498db' title="New Survey"
                                            onPress={() => navigate('CreateQuestionnaire')}>
-                            <MaterialIcon name="add" color="white" size={22}/>
+                            <CustomIcon name="new-note" color="white" size={getFontSize(30)}/>
                         </ActionButton.Item>
                     </ActionButton>
                     : null

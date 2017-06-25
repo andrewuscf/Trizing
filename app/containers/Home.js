@@ -140,7 +140,7 @@ const Home = React.createClass({
                         <View style={{flexDirection: 'row',}}>
                             <TouchableOpacity style={[styles.itemBox]} onPress={() => navigate('ProgramList')}>
                                 <CustomIcon name="barbell" size={getFontSize(45)}/>
-                                <Text style={styles.itemText}>Programs</Text>
+                                <Text style={styles.itemText}>Workouts</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.itemBox, {borderRightWidth: 0}]}
                             onPress={() => navigate('SurveyList')}>
@@ -273,7 +273,7 @@ const Home = React.createClass({
                     <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
                         <ActionButton.Item buttonColor='#FD795B' title="Manage Clients"
                                            onPress={() => navigate('ManageClients')}>
-                            <MaterialIcon name="person-add" color="white" size={22}/>
+                            <CustomIcon name="users" color="white" size={getFontSize(30)}/>
                         </ActionButton.Item>
                     </ActionButton>
                     : null

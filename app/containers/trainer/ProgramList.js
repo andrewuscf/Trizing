@@ -15,10 +15,10 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
 
 import * as GlobalActions from '../../actions/globalActions';
-
-
 import GlobalStyle from '../globalStyle';
 import {getFontSize} from '../../actions/utils';
+
+import CustomIcon from '../../components/CustomIcon';
 
 const ProgramList = React.createClass({
     propTypes: {
@@ -71,9 +71,9 @@ const ProgramList = React.createClass({
                 />
                 {isTrainer ?
                     <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
-                        <ActionButton.Item buttonColor='#9b59b6' title="New Program template"
+                        <ActionButton.Item buttonColor='#9b59b6' title="New Workout template"
                                            onPress={() => navigate('CreateSchedule')}>
-                            <MaterialIcon name="add" color="white" size={22}/>
+                            <CustomIcon name="barbell" color="white" size={getFontSize(30)}/>
                         </ActionButton.Item>
                     </ActionButton>
                     : null
