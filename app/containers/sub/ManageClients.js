@@ -40,6 +40,11 @@ const ManageClients = React.createClass({
         }
     },
 
+    componentDidMount(){
+        const isTrainer = this.props.RequestUser.type == 1;
+        this.props.navigation.setParams({headerTitle: isTrainer ? 'Manage Clients': 'Trainers'});
+    },
+
     refresh() {
         this.props.actions.getClients(true);
     },
@@ -151,9 +156,6 @@ const ManageClients = React.createClass({
     }
 });
 
-ManageClients.navigationOptions = {
-    title: 'Manage Clients',
-};
 
 const styles = StyleSheet.create({
     container: {

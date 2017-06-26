@@ -71,7 +71,7 @@ const ProgramList = React.createClass({
                 />
                 {isTrainer ?
                     <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
-                        <ActionButton.Item buttonColor='#9b59b6' title="New Workout template"
+                        <ActionButton.Item buttonColor='#3498db' title="New Workout template"
                                            onPress={() => navigate('CreateSchedule')}>
                             <CustomIcon name="barbell" color="white" size={getFontSize(30)}/>
                         </ActionButton.Item>

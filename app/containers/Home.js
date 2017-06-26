@@ -66,14 +66,6 @@ const Home = React.createClass({
         }
     },
 
-
-    _refresh() {
-        this.getNeeded(true);
-    },
-
-    onEndReached() {
-    },
-
     _redirect(routeName, props = null) {
         this.props.navigation.navigate(routeName, props);
     },
@@ -135,7 +127,12 @@ const Home = React.createClass({
         if (isTrainer) {
             content = (
                 <View>
-                    <PeopleBar navigate={navigate} people={this.props.Clients}/>
+                    {this.props.Clients.length ?
+                        <PeopleBar navigate={navigate} people={this.props.Clients}/>
+                        : <View style={styles.emptyClients}>
+                            <Text style={styles.emptyClientsText}>Get started by adding new clients.</Text>
+                        </View>
+                    }
                     <View style={styles.templateSection}>
                         <View style={{flexDirection: 'row',}}>
                             <TouchableOpacity style={[styles.itemBox]} onPress={() => navigate('ProgramList')}>
@@ -143,7 +140,7 @@ const Home = React.createClass({
                                 <Text style={styles.itemText}>Workouts</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.itemBox, {borderRightWidth: 0}]}
-                            onPress={() => navigate('SurveyList')}>
+                                              onPress={() => navigate('SurveyList')}>
                                 <MaterialIcon name="question-answer" size={getFontSize(45)}/>
                                 <Text style={styles.itemText}>Surveys</Text>
                             </TouchableOpacity>
@@ -226,13 +223,24 @@ const Home = React.createClass({
                 )
             } else {
                 content = (
-                    <View style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
-                        <Text style={styles.textTitle}>You have no trainer</Text>
-                        <TouchableOpacity onPress={this._redirect.bind(null, 'ManageClients', null)}
-                                          style={styles.link}>
-                            <Text style={styles.simpleTitle}>Find a trainer</Text>
-                            <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)} style={styles.linkArrow}/>
-                        </TouchableOpacity>
+                    <View>
+                        <View style={styles.emptyClients}>
+                            <Text style={styles.emptyClientsText}>Get started by finding a trainer</Text>
+                            <Text style={styles.emptyClientsText}>or workout program.</Text>
+                        </View>
+                        <View style={styles.templateSection}>
+                            <View style={{flexDirection: 'row',}}>
+                                <TouchableOpacity style={[styles.itemBox]}
+                                                  onPress={this._redirect.bind(null, 'ManageClients', null)}>
+                                    <CustomIcon name="users" size={getFontSize(45)}/>
+                                    <Text style={styles.itemText}>Find a trainer</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.itemBox, {borderRightWidth: 0}]} onPress={() => navigate('ProgramList')}>
+                                    <CustomIcon name="barbell" size={getFontSize(45)}/>
+                                    <Text style={styles.itemText}>Workouts</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
                 )
             }
@@ -246,7 +254,7 @@ const Home = React.createClass({
             <View style={GlobalStyle.noHeaderContainer}>
                 <ScrollView ref='home_scroll'
                             refreshControl={<RefreshControl refreshing={this.props.Refreshing}
-                                                            onRefresh={this._refresh}/>}
+                                                            onRefresh={()=>this.getNeeded(true)}/>}
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
 
                     <View style={styles.userProfile}>
@@ -350,14 +358,6 @@ const styles = StyleSheet.create({
     linkArrow: {
         flex: 1
     },
-    listItemText: {
-        color: '#4d4d4e',
-        fontSize: getFontSize(22),
-        lineHeight: getFontSize(26),
-        backgroundColor: 'transparent',
-        fontFamily: 'OpenSans-Semibold',
-        textDecorationLine: 'underline'
-    },
     userProfile: {
         flex: .15,
         flexDirection: 'row',
@@ -390,10 +390,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         justifyContent: 'center',
     },
-    modalClose: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     templateSection: {
         borderColor: '#e1e3df',
         borderBottomWidth: 1,
@@ -412,6 +408,18 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(24),
         backgroundColor: 'transparent',
         fontFamily: 'OpenSans-Semibold',
+    },
+    emptyClients: {
+        height:50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: '#e1e3df',
+        borderBottomWidth: 1
+    },
+    emptyClientsText: {
+        fontSize: getFontSize(24),
+        fontFamily: 'OpenSans-Semibold',
+        color: 'rgba(0, 175, 163, 1)'
     }
 });
 
