@@ -98,6 +98,7 @@ const CreateWorkout = React.createClass({
                 }
             }
         };
+        const scheduleWorkouts = _.find(this.props.Schedules, {id: this.props.scheduleId}).workouts;
         return (
             <View style={styles.flexCenter}>
                 <View style={{margin: 10}}>
@@ -108,9 +109,9 @@ const CreateWorkout = React.createClass({
                         onChange={this.onChange}
                         value={this.state.value}
                     />
-                    <Text>Use Template:</Text>
+                    <Text>Copy existing workout:</Text>
                     <SelectInput ref='workout_templates' options={[
-                        ..._.filter(this.props.Workouts, function (o) {return !o.training_plan;}),
+                        ..._.filter(scheduleWorkouts, function (o) {return !o.training_plan;}),
                         {id: null, name: 'None'}
                     ]} selectedId={this.state.template} submitChange={this.selectTemplate}/>
                 </View>
@@ -145,10 +146,10 @@ const Workout = t.struct({
     duration: Positive,
 });
 
-
-
 const stateToProps = (state) => {
-    return state.Global;
+    return {
+        Schedules: state.Global.Schedules
+    };
 };
 
 const dispatchToProps = (dispatch) => {
