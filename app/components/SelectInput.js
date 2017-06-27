@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Modal, ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {Component} from 'react';
+import {Modal, ScrollView, View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import _ from 'lodash';
 
 import {getFontSize} from '../actions/utils';
@@ -13,8 +13,8 @@ const SelectInput = React.createClass({
         }
         return {
             showOverlay: false, // show overlay for selecting value
-            value: index != -1 ? this.props.options[index].id: null,
-            selected: index != -1 ? this.props.options[index].name: null
+            value: index != -1 ? this.props.options[index].id : null,
+            selected: index != -1 ? this.props.options[index].name : null
         };
     },
 
@@ -44,7 +44,8 @@ const SelectInput = React.createClass({
                 let id = this.props.options[i].id,
                     label = this.props.options[i].name;
                 optionslist.push(
-                    <TouchableOpacity activeOpacity={1} key={i} style={styles.itemView} onPress={this.selectOption.bind(this, id, label)}>
+                    <TouchableOpacity activeOpacity={1} key={i} style={styles.itemView}
+                                      onPress={this.selectOption.bind(this, id, label)}>
                         <Text style={styles.itemText}>{label}</Text>
                     </TouchableOpacity>
                 );
@@ -54,14 +55,18 @@ const SelectInput = React.createClass({
                 <Modal
                     animationType={"slide"}
                     transparent={true}
-                    onRequestClose={()=>{}}
+                    onRequestClose={() => {
+                    }}
                     visible={this.state.showOverlay}>
-                    <ScrollView style={styles.popup} contentContainerStyle={styles.popupContainer}>
-                        <TouchableOpacity activeOpacity={1} style={styles.closeableArea} onPress={this.toggleOverlay}></TouchableOpacity>
-                        <View style={styles.card}>
+                    <View style={styles.popup}>
+                        <ScrollView  contentContainerStyle={styles.popupContainer}>
                             {optionslist}
-                        </View>
-                    </ScrollView>
+                        </ScrollView>
+                        <TouchableOpacity activeOpacity={1} style={[styles.itemView, {marginTop: 10, marginBottom: 10, borderRadius: 10}]}
+                                          onPress={this.toggleOverlay}>
+                            <Text style={styles.itemText}>Cancel</Text>
+                        </TouchableOpacity>
+                    </View>
                 </Modal>
             );
         } else {
@@ -74,7 +79,8 @@ const SelectInput = React.createClass({
             <View style={this.props.style}>
                 <TouchableOpacity activeOpacity={1} onPress={this.toggleOverlay}>
                     <View style={styles.selectView}>
-                        <Text style={styles.selectText}>{this.state.selected? this.state.selected: 'Select One'}</Text>
+                        <Text
+                            style={styles.selectText}>{this.state.selected ? this.state.selected : 'Select One'}</Text>
                     </View>
                 </TouchableOpacity>
                 {this._renderOverlay()}
@@ -99,16 +105,13 @@ var styles = StyleSheet.create({
         right: 0,
         bottom: 0
     },
-    card: {
-        position: 'relative',
-        backgroundColor: '#fff'
-    },
     itemView: {
         borderBottomWidth: 1,
         borderBottomColor: '#e1e3df',
+        backgroundColor: '#fff',
         marginLeft: 10,
         marginRight: 10,
-        padding: 15
+        padding: 15,
     },
     itemText: {
         textAlign: 'center',
