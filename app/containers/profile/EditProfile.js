@@ -94,13 +94,6 @@ const EditProfile = React.createClass({
         this.setState({progress: progress})
     },
 
-    getSelectedImages(images) {
-        this.setState({
-            previewImage: images[0]
-        });
-        this.toggleRoll();
-    },
-
     toggleRoll() {
         ImagePicker.openPicker({
             width: 200,
@@ -277,7 +270,7 @@ const EditProfile = React.createClass({
                                         optionsContainerStyle={{alignSelf: 'center', width: 300, marginTop: 120}}>
                                         <MenuOption
                                             style={[styles.menuOption, {borderBottomWidth: 1, borderColor: 'grey'}]}
-                                            onSelect={() => this.toggleRoll()} text='From Camera Roll'/>
+                                            onSelect={this.toggleRoll} text='From Camera Roll'/>
                                         <MenuOption style={[styles.menuOption]}
                                                     onSelect={() => this.toggleCamera()}>
                                             <Text>Take New Photo</Text>
