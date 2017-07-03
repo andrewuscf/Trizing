@@ -189,16 +189,16 @@ const styles = StyleSheet.create({
         height: 80,
         width: 80,
         borderRadius: 40,
+        marginLeft: 20,
+        marginRight: 20
     },
     userDetail: {
-        paddingTop: 20,
         paddingBottom: 20,
         backgroundColor: 'white',
-        justifyContent: 'center',
-        alignItems: 'center'
+        flexDirection: 'row'
     },
     userInfo: {
-        marginTop: 10
+        // marginTop: 10,
     },
     name: {
         paddingTop: 5,

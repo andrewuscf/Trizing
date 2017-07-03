@@ -13,6 +13,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import GlobalStyle from '../globalStyle';
 
@@ -300,7 +301,22 @@ const TrainingPlan = React.createClass({
                                       }
                                   }}
                         />
-                        : null
+                        : (
+                            <View>
+                                <TouchableOpacity style={[styles.emptyContainer, styles.link]}
+                                                  onPress={this.props._redirect.bind(null, 'WorkoutLogs', {userId: this.props.client.id})}>
+                                    <Text style={styles.mainText}>Workout Logs</Text>
+                                    <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
+                                                  style={styles.linkArrow}/>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.emptyContainer, styles.link]}
+                                                  onPress={this.props._redirect.bind(null, 'WorkoutLogs', {userId: this.props.client.id})}>
+                                    <Text style={styles.mainText}>Nutrition Logs</Text>
+                                    <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
+                                                  style={styles.linkArrow}/>
+                                </TouchableOpacity>
+                            </View>
+                        )
                     }
                 </View>
 
@@ -356,12 +372,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingLeft: 15,
-        // paddingRight: 15,
         paddingTop: 15,
         paddingBottom: 15,
         flexDirection: 'row',
         backgroundColor: 'white',
-        // minHeight: 20
     },
     emptyContainer: {
         flex: 1,
@@ -370,7 +384,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
         backgroundColor: 'white',
         alignItems: 'center',
-        // margin: 10,
         padding: 10
     },
     pickersText: {
@@ -400,6 +413,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingTop: 20,
         fontFamily: 'OpenSans-Semibold'
+    },
+    link: {
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        flexDirection: 'row'
     }
 });
 
