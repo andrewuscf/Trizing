@@ -319,7 +319,6 @@ const TrainingPlan = React.createClass({
                         )
                     }
                 </View>
-
             </View>
         )
     }
