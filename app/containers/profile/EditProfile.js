@@ -3,13 +3,12 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity,
     ScrollView,
     Alert,
     Keyboard,
-    KeyboardAvoidingView,
     Platform,
-    Dimensions
+    Dimensions,
+    TouchableOpacity
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import t from 'tcomb-form-native';
@@ -23,6 +22,7 @@ import {
     MenuOption,
     MenuTrigger,
 } from 'react-native-popup-menu';
+import _ from 'lodash';
 
 import {getFontSize, resetNav} from '../../actions/utils';
 
@@ -32,7 +32,6 @@ import {removeToken} from '../../actions/globalActions';
 import AvatarImage from '../../components/AvatarImage';
 import {EMPTY_AVATAR} from '../../assets/constants';
 import Loading from '../../components/Loading';
-import SubmitButton from '../../components/SubmitButton';
 
 
 const {width: deviceWidth} = Dimensions.get('window');
@@ -194,7 +193,7 @@ const EditProfile = React.createClass({
     render() {
         const user = this.props.RequestUser;
         let options = {
-            // stylesheet: stylesheet,
+            stylesheet: stylesheet,
             fields: {
                 type: {
                     nullOption: {value: '', text: 'Choose a Profile Type'},
@@ -253,46 +252,48 @@ const EditProfile = React.createClass({
 
                     <ScrollView ref='_scrollView' keyboardDismissMode='interactive'
                                 style={styles.mainContainer}>
-                        <KeyboardAvoidingView behavior="position">
-                            <View style={styles.mainContent}>
-                                <Menu style={{justifyContent: 'center', alignItems: 'center'}}>
-                                    <MenuTrigger>
-                                        <AvatarImage image={userImage}
-                                                     style={[styles.avatar, this.state.imageError ? {
-                                                             borderColor: 'red',
-                                                             borderWidth: 1
-                                                         } : null]}/>
-                                        <Text style={{alignSelf: 'center', fontSize: getFontSize(18), paddingTop: 10}}>
-                                            Change Profile Photo
-                                        </Text>
-                                    </MenuTrigger>
-                                    <MenuOptions
-                                        optionsContainerStyle={{alignSelf: 'center', width: 300, marginTop: 120}}>
-                                        <MenuOption
-                                            style={[styles.menuOption, {borderBottomWidth: 1, borderColor: 'grey'}]}
-                                            onSelect={this.toggleRoll} text='From Camera Roll'/>
-                                        <MenuOption style={[styles.menuOption]}
-                                                    onSelect={() => this.toggleCamera()}>
-                                            <Text>Take New Photo</Text>
-                                        </MenuOption>
+                        <View style={styles.mainContent}>
+                            <Menu style={{justifyContent: 'center', alignItems: 'center', paddingBottom: 50}}>
+                                <MenuTrigger>
+                                    <AvatarImage image={userImage}
+                                                 style={[styles.avatar, this.state.imageError ? {
+                                                         borderColor: 'red',
+                                                         borderWidth: 1
+                                                     } : null]}/>
+                                    <Text style={{alignSelf: 'center', fontSize: getFontSize(18), paddingTop: 10}}>
+                                        Change Profile Photo
+                                    </Text>
+                                </MenuTrigger>
+                                <MenuOptions
+                                    optionsContainerStyle={{alignSelf: 'center', width: 300, marginTop: 120}}>
+                                    <MenuOption
+                                        style={[styles.menuOption, {borderBottomWidth: 1, borderColor: 'grey'}]}
+                                        onSelect={this.toggleRoll} text='From Camera Roll'/>
+                                    <MenuOption style={[styles.menuOption]}
+                                                onSelect={this.toggleCamera}>
+                                        <Text>Take New Photo</Text>
+                                    </MenuOption>
 
-                                    </MenuOptions>
-                                </Menu>
+                                </MenuOptions>
+                            </Menu>
 
-                                <Form
-                                    ref="form"
-                                    type={Profile}
-                                    options={options}
-                                    value={this.state.value}
-                                    onChange={this.onChange}
-                                />
+                            <Text>Profile</Text>
 
+                            <Form
+                                ref="form"
+                                type={Profile}
+                                options={options}
+                                value={this.state.value}
+                                onChange={this.onChange}
+                            />
 
-                            </View>
-                            <SubmitButton buttonStyle={styles.button}
-                                          textStyle={styles.submitText} onPress={this._logOut}
-                                          text='Log Out'/>
-                        </KeyboardAvoidingView>
+                            <Text>Account</Text>
+
+                            <TouchableOpacity style={styles.element} onPress={this._logOut}>
+                                <Text style={styles.elementFont}>Log out</Text>
+                            </TouchableOpacity>
+
+                        </View>
                     </ScrollView>
 
 
@@ -315,18 +316,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white'
     },
-    backNav: {
-        minHeight: 50,
-        borderBottomWidth: .5,
-        borderBottomColor: 'rgba(0,0,0,.15)',
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    backNavButton: {
-        paddingLeft: 10,
-        width: 100
-    },
     mainContent: {
         margin: 10
     },
@@ -334,7 +323,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         height: 120,
         width: 120,
-        borderRadius: 60
+        borderRadius: 60,
     },
     button: {
         margin: 20
@@ -342,20 +331,28 @@ const styles = StyleSheet.create({
     submitText: {
         color: 'white',
         fontSize: 15,
-        fontFamily: 'OpenSans-Bold',
-    },
-    save: {
-        borderWidth: 1,
-        borderColor: 'red',
-        height: Platform.OS === 'ios' ? 44 : 56,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 50
+        // fontFamily: 'Monsterrat-Bold',
     },
     menuOption: {
         height: 50,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    element: {
+        borderColor: '#e1e3df',
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
+        // height: 36,
+        // marginTop: 30,
+        paddingTop: 10,
+        paddingBottom: 10,
+        justifyContent: 'center',
+    },
+    elementFont: {
+        fontSize: 17,
+        fontWeight: '500',
+        // paddingBottom: 10,
+        // paddingTop: 10
     }
 });
 
@@ -366,6 +363,78 @@ const ACCOUNT_Type = t.enums({
     1: 'Trainer',
     2: 'Client'
 });
+
+
+const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
+
+stylesheet.formGroup = {
+    ...stylesheet.formGroup,
+    normal: {
+        ...stylesheet.formGroup.normal,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderColor: '#e1e3df',
+        borderBottomWidth: 1,
+    },
+    error: {
+        ...stylesheet.formGroup.error,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderColor: 'red',
+        borderBottomWidth: 1,
+    }
+};
+
+stylesheet.textbox = {
+    ...stylesheet.textbox,
+    normal: {
+        ...stylesheet.textbox.normal,
+        borderWidth: 0,
+        marginBottom: 0,
+        textAlign: 'center'
+    },
+    error: {
+        ...stylesheet.textbox.error,
+        borderWidth: 0,
+        marginBottom: 0,
+        textAlign: 'center'
+    }
+};
+
+stylesheet.textboxView = {
+    ...stylesheet.textboxView,
+    normal: {
+        ...stylesheet.textboxView.normal,
+        borderWidth: 0,
+        borderRadius: 0,
+        borderBottomWidth: 0,
+        flex: 1,
+        backgroundColor: 'transparent',
+    },
+    error: {
+        ...stylesheet.textboxView.error,
+        borderWidth: 0,
+        borderRadius: 0,
+        borderBottomWidth: 0,
+        flex: 1,
+        backgroundColor: 'transparent',
+    }
+};
+
+stylesheet.controlLabel = {
+    ...stylesheet.controlLabel,
+    normal: {
+        ...stylesheet.controlLabel.normal,
+        flex: 2
+    },
+    error: {
+        ...stylesheet.controlLabel.error,
+        flex: 2
+    }
+};
 
 const stateToProps = (state) => {
     return {

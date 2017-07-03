@@ -62,6 +62,8 @@ const Calendar = React.createClass({
                 </ScrollView>
             );
         } else {
+            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            const dataSource = ds.cloneWithRows(this.props.Events);
             content = (
                 <ListView ref="calendar_list"
                           refreshControl={<RefreshControl refreshing={this.props.Refreshing}
@@ -98,8 +100,6 @@ const Calendar = React.createClass({
                 </ActionButton>
             )
         }
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        const dataSource = ds.cloneWithRows(this.props.Events);
         return (
             <View style={GlobalStyle.noHeaderContainer}>
                 {content}
