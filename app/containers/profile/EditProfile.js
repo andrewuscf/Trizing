@@ -6,7 +6,6 @@ import {
     ScrollView,
     Alert,
     Keyboard,
-    Platform,
     Dimensions,
     TouchableOpacity
 } from 'react-native';
@@ -23,6 +22,7 @@ import {
     MenuTrigger,
 } from 'react-native-popup-menu';
 import _ from 'lodash';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import {getFontSize, resetNav} from '../../actions/utils';
 
@@ -250,17 +250,16 @@ const EditProfile = React.createClass({
                         : null
                     }
 
-                    <ScrollView ref='_scrollView' keyboardDismissMode='interactive'
-                                style={styles.mainContainer}>
+                    <KeyboardAwareScrollView ref='_scrollView' keyboardDismissMode='interactive' style={styles.mainContainer}>
                         <View style={styles.mainContent}>
-                            <Menu style={{justifyContent: 'center', alignItems: 'center', paddingBottom: 50}}>
+                            <Menu style={{justifyContent: 'center', alignItems: 'center', paddingBottom: 30}}>
                                 <MenuTrigger>
                                     <AvatarImage image={userImage}
                                                  style={[styles.avatar, this.state.imageError ? {
                                                          borderColor: 'red',
                                                          borderWidth: 1
                                                      } : null]}/>
-                                    <Text style={{alignSelf: 'center', fontSize: getFontSize(18), paddingTop: 10}}>
+                                    <Text style={styles.changePhotoText}>
                                         Change Profile Photo
                                     </Text>
                                 </MenuTrigger>
@@ -277,7 +276,7 @@ const EditProfile = React.createClass({
                                 </MenuOptions>
                             </Menu>
 
-                            <Text>Profile</Text>
+                            <Text style={styles.sectionTitle}>Profile</Text>
 
                             <Form
                                 ref="form"
@@ -287,14 +286,14 @@ const EditProfile = React.createClass({
                                 onChange={this.onChange}
                             />
 
-                            <Text>Account</Text>
+                            <Text style={styles.sectionTitle}>Account</Text>
 
                             <TouchableOpacity style={styles.element} onPress={this._logOut}>
                                 <Text style={styles.elementFont}>Log out</Text>
                             </TouchableOpacity>
 
                         </View>
-                    </ScrollView>
+                    </KeyboardAwareScrollView>
 
 
                 </View>
@@ -331,7 +330,6 @@ const styles = StyleSheet.create({
     submitText: {
         color: 'white',
         fontSize: 15,
-        // fontFamily: 'Monsterrat-Bold',
     },
     menuOption: {
         height: 50,
@@ -341,9 +339,6 @@ const styles = StyleSheet.create({
     element: {
         borderColor: '#e1e3df',
         borderBottomWidth: 1,
-        borderTopWidth: 1,
-        // height: 36,
-        // marginTop: 30,
         paddingTop: 10,
         paddingBottom: 10,
         justifyContent: 'center',
@@ -351,8 +346,17 @@ const styles = StyleSheet.create({
     elementFont: {
         fontSize: 17,
         fontWeight: '500',
-        // paddingBottom: 10,
-        // paddingTop: 10
+    },
+    sectionTitle: {
+        fontSize: getFontSize(30),
+        fontWeight: '600',
+        paddingBottom: 10,
+    },
+    changePhotoText: {
+        alignSelf: 'center',
+        fontSize: getFontSize(18),
+        paddingTop: 10,
+        fontWeight: '600',
     }
 });
 

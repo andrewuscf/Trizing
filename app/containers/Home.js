@@ -367,9 +367,9 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     avatar: {
-        height: 80,
-        width: 80,
-        borderRadius: 40
+        height: 60,
+        width: 60,
+        borderRadius: 30
     },
     topItem: {
         flex: 3.3,

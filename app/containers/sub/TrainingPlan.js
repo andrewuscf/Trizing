@@ -301,22 +301,7 @@ const TrainingPlan = React.createClass({
                                       }
                                   }}
                         />
-                        : (
-                            <View>
-                                <TouchableOpacity style={[styles.emptyContainer, styles.link]}
-                                                  onPress={this.props._redirect.bind(null, 'WorkoutLogs', {userId: this.props.client.id})}>
-                                    <Text style={styles.mainText}>Workout Logs</Text>
-                                    <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
-                                                  style={styles.linkArrow}/>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={[styles.emptyContainer, styles.link]}
-                                                  onPress={this.props._redirect.bind(null, 'WorkoutLogs', {userId: this.props.client.id})}>
-                                    <Text style={styles.mainText}>Nutrition Logs</Text>
-                                    <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
-                                                  style={styles.linkArrow}/>
-                                </TouchableOpacity>
-                            </View>
-                        )
+                        : null
                     }
                 </View>
             </View>

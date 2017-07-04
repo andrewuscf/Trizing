@@ -83,11 +83,6 @@ const MyProfile = React.createClass({
                             <CustomIcon name="settings" size={getFontSize(30)} color='#333333'/>
                         </TouchableOpacity>}/>
                         <AvatarImage style={styles.avatar} image={userImage}/>
-                        <View style={styles.userInfo}>
-                            <Text style={styles.name}>
-                                {trunc(`${user.profile.first_name} ${user.profile.last_name}`, 26)}
-                            </Text>
-                        </View>
                     </View>
                 </ScrollView>
             )
@@ -105,24 +100,12 @@ const styles = StyleSheet.create({
         marginTop: -30,
     },
     userDetail: {
-        // marginTop: -10,
-        // paddingTop: 20,
         paddingBottom: 20,
         backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center'
     },
-    userInfo: {
-        marginTop: 10
-    },
-    name: {
-        paddingTop: 5,
-        fontFamily: 'OpenSans-Bold',
-        fontSize: getFontSize(22)
-    },
     topRightNav: {
-        // right: 0,
-        // position: 'absolute',
         padding: 10,
         width: 50,
         justifyContent: 'center',
