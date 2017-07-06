@@ -48,9 +48,29 @@ const ProgramList = React.createClass({
         this.props.navigation.navigate(routeName, props);
     },
 
+    renderRow(schedule) {
+        console.log(schedule)
+        return (
+            <TouchableOpacity style={styles.link}
+                              onPress={this._redirect.bind(null, 'EditSchedule', {scheduleId: schedule.id})}>
+                <View style={styles.leftSection}>
+                    <Text style={styles.simpleTitle}>{schedule.name}</Text>
+                    <View style={styles.row}>
+                        <MaterialIcon name="timer" size={getFontSize(18)} style={styles.timerIcon}/>
+                        <Text style={styles.smallText}>
+                            {schedule.full_duration} {schedule.full_duration === 1 ? 'week' : 'weeks'}
+                        </Text>
+                    </View>
+                </View>
+                <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
+                              style={styles.linkArrow}/>
+            </TouchableOpacity>
+        )
+    },
+
 
     render() {
-        const isTrainer = this.props.RequestUser.type == 1;
+        const isTrainer = this.props.RequestUser.type === 1;
         const {navigate} = this.props.navigation;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         const SchedulesDs = ds.cloneWithRows(_.filter(this.props.Schedules, function (o) {
@@ -60,14 +80,7 @@ const ProgramList = React.createClass({
             <View style={{flex: 1}}>
                 <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                           enableEmptySections={true} dataSource={SchedulesDs}
-                          renderRow={(schedule) =>
-                              <TouchableOpacity style={styles.link}
-                                                onPress={this._redirect.bind(null, 'EditSchedule', {scheduleId: schedule.id})}>
-                                  <Text style={styles.simpleTitle}>{schedule.name}</Text>
-                                  <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
-                                                style={styles.linkArrow}/>
-                              </TouchableOpacity>
-                          }
+                          renderRow={this.renderRow}
                 />
                 {isTrainer ?
                     <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
@@ -86,14 +99,26 @@ const ProgramList = React.createClass({
 
 const styles = StyleSheet.create({
     row: {
-        flexDirection: 'row',
+        flexDirection: 'row'
+    },
+    timerIcon: {
+        color: '#b1aea5',
+        alignSelf: 'center',
+        paddingRight: 5
     },
     simpleTitle: {
+        fontSize: getFontSize(24),
+        fontFamily: 'OpenSans-Semibold',
+    },
+    smallText: {
         fontSize: getFontSize(18),
         color: '#b1aea5',
         fontFamily: 'OpenSans-Semibold',
+    },
+    leftSection: {
+        flex: .9,
         margin: 10,
-        flex: 17
+        // flexDirection: 'row'
     },
     link: {
         flexDirection: 'row',
@@ -102,7 +127,7 @@ const styles = StyleSheet.create({
         borderColor: '#e1e3df',
     },
     linkArrow: {
-        flex: 1
+        flex: .1
     }
 });
 

@@ -7,11 +7,9 @@ import {
     RefreshControl,
     ScrollView,
     Dimensions,
-    TouchableOpacity
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
 
@@ -20,6 +18,8 @@ import * as ChatActions from '../actions/chatActions';
 import {getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
+
+import CustomIcon from '../components/CustomIcon';
 import ChatRoomBox from '../components/ChatRoomBox';
 import Loading from '../components/Loading';
 
@@ -67,7 +67,7 @@ const Chat = React.createClass({
                     <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
                         <ActionButton.Item buttonColor='#FD795B' title="New Chat"
                                            onPress={this.newChat}>
-                            <MaterialIcon name="event-available" color="white" size={22}/>
+                            <CustomIcon name="new-note" color="white" size={22}/>
                         </ActionButton.Item>
                     </ActionButton>
                 </View>
@@ -77,7 +77,7 @@ const Chat = React.createClass({
             <ScrollView contentContainerStyle={styles.scrollContainer} style={GlobalStyle.noHeaderContainer}
                         refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}>
                 <View style={styles.noRequests}>
-                    <Icon name="message" size={60} color='#b1aea5'/>
+                    <MaterialIcon name="message" size={60} color='#b1aea5'/>
                     <Text style={styles.noRequestTitle}>
                         You should chat with your trainer or fellow clients.
                     </Text>
@@ -85,7 +85,7 @@ const Chat = React.createClass({
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
                     <ActionButton.Item buttonColor='#FD795B' title="New Chat"
                                        onPress={this.newChat}>
-                        <MaterialIcon name="event-available" color="white" size={22}/>
+                        <CustomIcon name="new-note" color="white" size={22}/>
                     </ActionButton.Item>
                 </ActionButton>
             </ScrollView>
