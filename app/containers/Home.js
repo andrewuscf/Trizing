@@ -3,11 +3,9 @@ import {
     StyleSheet,
     Text,
     View,
-    ListView,
     RefreshControl,
     ScrollView,
     TouchableOpacity,
-    Platform,
     Dimensions,
     Animated
 } from 'react-native';
@@ -17,6 +15,7 @@ import _ from 'lodash';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import IconBadge from 'react-native-icon-badge';
 import ActionButton from 'react-native-action-button';
+import moment from 'moment';
 
 
 import * as HomeActions from '../actions/homeActions';
@@ -44,14 +43,15 @@ const Home = React.createClass({
 
     getInitialState() {
         return {
-            modalY: new Animated.Value(-deviceHeight)
+            modalY: new Animated.Value(-deviceHeight),
+            dataDate: moment()
         }
     },
 
 
     componentDidMount() {
         if (!this.props.Clients.length) {
-            this.getNeeded(true);
+            this.getNeeded();
         }
     },
 
@@ -117,6 +117,22 @@ const Home = React.createClass({
         }).start();
     },
 
+    addDay() {
+        const newDate = this.state.dataDate.add(1, 'day');
+        this.setState({
+            dataDate: newDate
+        });
+        this.props.actions.getActiveData(false, newDate.format("YYYY-MM-DD"))
+    },
+
+    subtractDay() {
+        const newDate = this.state.dataDate.subtract(1, 'day');
+        this.setState({
+            dataDate: newDate
+        });
+        this.props.actions.getActiveData(false, newDate.format("YYYY-MM-DD"))
+    },
+
 
     render() {
         const user = this.props.RequestUser;
@@ -124,6 +140,7 @@ const Home = React.createClass({
         const isTrainer = user.type == 1;
         let content = null;
         const {navigate} = this.props.navigation;
+        const today = moment();
         if (isTrainer) {
             content = (
                 <View>
@@ -150,100 +167,112 @@ const Home = React.createClass({
             )
         } else {
             const data = this.props.ActiveData;
-            if (data && (data.macro_plan_day || data.training_day)) {
-                let calories = 0;
-                if (data.macro_plan_day) {
-                    const fats = (data.macro_plan_day.fats) ? data.macro_plan_day.fats : 0;
-                    const protein = (data.macro_plan_day.protein) ? data.macro_plan_day.protein : 0;
-                    const carbs = (data.macro_plan_day.carbs) ? data.macro_plan_day.carbs : 0;
-                    calories = (9 * fats) + (4 * protein) + (4 * carbs);
-                }
-                content = (
-                    <View>
-                        {data.macro_plan_day ?
-                            <View style={[styles.box, {marginBottom: 5, marginTop: 0}]}>
-                                <View style={styles.todayTitle}>
-                                    <MaterialIcon size={24} color='black' name="date-range"/>
-                                    <Text style={styles.textTitle}>{`Today`}</Text>
-                                </View>
-
-                                <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
-                                    <View style={styles.details}>
-                                        <Text style={styles.sectionTitle}>Fats</Text>
-                                        <Text style={styles.smallText}>{`${data.macro_plan_day.fats}g`}</Text>
-                                    </View>
-                                    <View style={styles.details}>
-                                        <Text style={styles.sectionTitle}>Carbs</Text>
-                                        <Text style={styles.smallText}>{`${data.macro_plan_day.carbs}g`}</Text>
-                                    </View>
-                                    <View style={styles.details}>
-                                        <Text style={styles.sectionTitle}>Protein</Text>
-                                        <Text style={styles.smallText}>{`${data.macro_plan_day.protein}g`}</Text>
-                                    </View>
-                                </View>
-                                <Text style={styles.formCalories}>
-                                    Calories: {calories}
-                                </Text>
-                                {!data.macro_plan_day.logged_today ?
-                                    <TouchableOpacity
-                                        onPress={this._redirect.bind(null, 'CreateMacroLog', {macro_plan_day: data.macro_plan_day})}
-                                        style={styles.link}>
-                                        <Text style={styles.simpleTitle}>Log Today</Text>
-                                        <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
-                                                      style={styles.linkArrow}/>
-                                    </TouchableOpacity>
-                                    : null
-                                }
-                            </View>
-                            : <View
-                                style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
-                                <Text style={styles.textTitle}>No Nutrition Plan Today</Text>
-                            </View>
-                        }
-                        {data.training_day ?
-                            <TouchableOpacity activeOpacity={.6} style={[styles.box, {
-                                marginBottom: 5,
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }]} onPress={this._toLogWorkout}>
-                                <Text style={styles.textTitle}>{`Today's Workout`}</Text>
-                                <Text style={styles.h2Title}>{data.training_day.name}</Text>
-                                <Text>Exercises: {data.training_day.exercises.length}</Text>
-                                <Text>Start Workout</Text>
-
-                            </TouchableOpacity>
-                            :
-                            <View
-                                style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
-                                <Text style={styles.textTitle}>No Workout Today</Text>
-                            </View>
-                        }
-
-                    </View>
-                )
-            } else {
-                content = (
-                    <View>
+            let calories = 0;
+            let fats = 0;
+            let protein = 0;
+            let carbs = 0;
+            if (data && data.macro_plan_day) {
+                fats = (data.macro_plan_day.fats) ? data.macro_plan_day.fats : 0;
+                protein = (data.macro_plan_day.protein) ? data.macro_plan_day.protein : 0;
+                carbs = (data.macro_plan_day.carbs) ? data.macro_plan_day.carbs : 0;
+                calories = (9 * fats) + (4 * protein) + (4 * carbs);
+            }
+            content = (
+                <View>
+                    {!data ?
                         <View style={styles.emptyClients}>
                             <Text style={styles.emptyClientsText}>Get started by finding a trainer</Text>
                             <Text style={styles.emptyClientsText}>or workout program.</Text>
                         </View>
-                        <View style={styles.templateSection}>
-                            <View style={{flexDirection: 'row',}}>
-                                <TouchableOpacity style={[styles.itemBox]}
-                                                  onPress={this._redirect.bind(null, 'ManageClients', null)}>
-                                    <CustomIcon name="users" size={getFontSize(45)}/>
-                                    <Text style={styles.itemText}>Find a trainer</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={[styles.itemBox, {borderRightWidth: 0}]} onPress={() => navigate('ProgramList')}>
-                                    <CustomIcon name="barbell" size={getFontSize(45)}/>
-                                    <Text style={styles.itemText}>Workouts</Text>
-                                </TouchableOpacity>
-                            </View>
+                        : null
+                    }
+                    <View style={styles.templateSection}>
+                        <View style={{flexDirection: 'row',}}>
+                            <TouchableOpacity style={[styles.itemBox]}
+                                              onPress={this._redirect.bind(null, 'ManageClients', null)}>
+                                <CustomIcon name="users" size={getFontSize(45)}/>
+                                <Text style={styles.itemText}>Find a trainer</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.itemBox, {borderRightWidth: 0}]}
+                                              onPress={() => navigate('ProgramList')}>
+                                <CustomIcon name="barbell" size={getFontSize(45)}/>
+                                <Text style={styles.itemText}>Workouts</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                )
-            }
+                    <View style={[styles.todayTitle, {justifyContent: 'space-between'}]}>
+                        <TouchableOpacity onPress={this.subtractDay}>
+                            <MaterialIcon name="keyboard-arrow-left" size={getFontSize(34)}
+                                          style={[{marginLeft: 10}]}/>
+                        </TouchableOpacity>
+                        <View style={styles.todayTitle}>
+                            <MaterialIcon size={24} color='black' name="date-range"/>
+                            <Text style={styles.textTitle}>
+                                {this.state.dataDate.isSame(today, 'd')? 'Today': this.state.dataDate.format('dddd, MMM DD')}
+                            </Text>
+                        </View>
+                        <TouchableOpacity onPress={this.addDay}>
+                            <MaterialIcon name="keyboard-arrow-right" size={getFontSize(34)}
+                                          style={[{marginRight: 10}]}/>
+                        </TouchableOpacity>
+                    </View>
+                    {data && data.macro_plan_day ?
+                        <View style={[styles.box, {marginBottom: 5, marginTop: 0}]}>
+
+                            <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
+                                <View style={styles.details}>
+                                    <Text style={styles.sectionTitle}>Fats</Text>
+                                    <Text style={styles.smallText}>{`${fats}g`}</Text>
+                                </View>
+                                <View style={styles.details}>
+                                    <Text style={styles.sectionTitle}>Carbs</Text>
+                                    <Text style={styles.smallText}>{`${carbs}g`}</Text>
+                                </View>
+                                <View style={styles.details}>
+                                    <Text style={styles.sectionTitle}>Protein</Text>
+                                    <Text style={styles.smallText}>{`${protein}g`}</Text>
+                                </View>
+                            </View>
+                            <Text style={styles.formCalories}>
+                                Calories: {calories}
+                            </Text>
+                            {!data.macro_plan_day.logged_today ?
+                                <TouchableOpacity
+                                    onPress={this._redirect.bind(null, 'CreateMacroLog', {macro_plan_day: data.macro_plan_day})}
+                                    style={styles.link}>
+                                    <Text style={styles.simpleTitle}>Log Today</Text>
+                                    <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
+                                                  style={styles.linkArrow}/>
+                                </TouchableOpacity>
+                                : null
+                            }
+                        </View>
+                        : <View
+                            style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
+                            <Text style={styles.textTitle}>No Nutrition Plan Today</Text>
+                        </View>
+                    }
+                    {data && data.training_day ?
+                        <TouchableOpacity activeOpacity={.6} style={[styles.box, {
+                            marginBottom: 5,
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }]} onPress={this._toLogWorkout}>
+                            <Text style={styles.textTitle}>{`Today's Workout`}</Text>
+                            <Text style={styles.h2Title}>{data.training_day.name}</Text>
+                            <Text>Exercises: {data.training_day.exercises.length}</Text>
+                            <Text>Start Workout</Text>
+
+                        </TouchableOpacity>
+                        :
+                        <View
+                            style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
+                            <Text style={styles.textTitle}>No Workout</Text>
+                        </View>
+                    }
+
+                </View>
+            )
 
         }
         let userImage = user.profile.avatar;
@@ -254,14 +283,14 @@ const Home = React.createClass({
             <View style={GlobalStyle.noHeaderContainer}>
                 <ScrollView ref='home_scroll'
                             refreshControl={<RefreshControl refreshing={this.props.Refreshing}
-                                                            onRefresh={()=>this.getNeeded(true)}/>}
+                                                            onRefresh={() => this.getNeeded(true)}/>}
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
 
                     <View style={styles.userProfile}>
                         <View style={styles.topItem}/>
                         <View style={[{flex: 3.3, justifyContent: 'center', alignItems: 'center'}]}>
                             <AvatarImage style={styles.avatar} image={userImage}
-                                         redirect={this.showProfile}/>
+                                         redirect={this.showProfile} cache={true}/>
                         </View>
                         <View style={styles.topItem}>
                             {this.renderNotifications()}
@@ -367,9 +396,9 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     avatar: {
-        height: 60,
-        width: 60,
-        borderRadius: 30
+        height: 80,
+        width: 80,
+        borderRadius: 40
     },
     topItem: {
         flex: 3.3,
@@ -410,7 +439,7 @@ const styles = StyleSheet.create({
         fontFamily: 'OpenSans-Semibold',
     },
     emptyClients: {
-        height:50,
+        height: 50,
         alignItems: 'center',
         justifyContent: 'center',
         borderColor: '#e1e3df',

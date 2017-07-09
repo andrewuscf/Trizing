@@ -32,7 +32,7 @@ const PeopleBar = React.createClass({
                     <AvatarImage
                         style={[styles.avatar,
                             (this.props.selected && _.includes(this.props.selected, user.id)) ? styles.selected : null]}
-                        image={image}
+                        image={image} cache={true}
                         redirect={this.goToProfile.bind(null, user.id)}/>
                     <Text style={styles.userText}>{trunc(user.username, 6)}</Text>
                 </View>

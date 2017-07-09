@@ -114,11 +114,11 @@ const EditSchedule = React.createClass({
                 </ScrollView>
 
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" >
-                    <ActionButton.Item buttonColor='#F22525' title="Delete"
+                    <ActionButton.Item buttonColor='#F22525' title="Delete" hideShadow={true}
                                        onPress={this._deleteSchedule}>
                         <MaterialIcon name="delete-forever" color="white" size={22}/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#3498db' title="Add Block"
+                    <ActionButton.Item buttonColor='#3498db' title="Add Block" hideShadow={true}
                                        onPress={this._createWorkoutDay}>
                         <MaterialIcon name="add" color="white" size={22}/>
                     </ActionButton.Item>

@@ -101,6 +101,7 @@ const EditProfile = React.createClass({
             mediaType: 'photo',
             includeBase64: true,
         }).then(image => {
+            console.log(image)
             this.setState({
                 previewImage: {
                     ...image,
@@ -226,6 +227,7 @@ const EditProfile = React.createClass({
             } else if (user.profile.avatar) {
                 userImage = user.profile.avatar;
             }
+            console.log(userImage)
 
             let Profile = t.struct({
                 username: t.String,
@@ -432,11 +434,11 @@ stylesheet.controlLabel = {
     ...stylesheet.controlLabel,
     normal: {
         ...stylesheet.controlLabel.normal,
-        flex: 2
+        flex: 1
     },
     error: {
         ...stylesheet.controlLabel.error,
-        flex: 2
+        flex: 1
     }
 };
 

@@ -82,7 +82,7 @@ const MyProfile = React.createClass({
                                                                                       onPress={this._redirect.bind(null, 'EditProfile', null)}>
                             <CustomIcon name="settings" size={getFontSize(30)} color='#333333'/>
                         </TouchableOpacity>}/>
-                        <AvatarImage style={styles.avatar} image={userImage}/>
+                        <AvatarImage style={styles.avatar} image={userImage} cache={true}/>
                     </View>
                 </ScrollView>
             )

@@ -5,7 +5,8 @@ import {CachedImage} from "react-native-img-cache";
 const AvatarImage = React.createClass({
     propTypes: {
         image: React.PropTypes.string,
-        redirect: React.PropTypes.func
+        redirect: React.PropTypes.func,
+        cache: React.PropTypes.bool,
     },
 
     onPress(userId) {
@@ -19,14 +20,22 @@ const AvatarImage = React.createClass({
         if (this.props.redirect) {
             return (
                 <TouchableOpacity onPress={this.onPress}>
-                    <CachedImage style={[styles.avatar, this.props.style]} source={{uri: this.props.image}}/>
+                    {this.props.cache ?
+                        <CachedImage style={[styles.avatar, this.props.style]} source={{uri: this.props.image}}/> :
+                        <Image style={[styles.avatar, this.props.style]} source={{uri: this.props.image}}/>
+                    }
                 </TouchableOpacity>
             );
         }
         // Deal with no image inside component rather than parent.
         if (this.props.image) {
+            if (this.props.cache) {
+                return (
+                    <CachedImage style={[styles.avatar, this.props.style]} source={{uri: this.props.image}}/>
+                )
+            }
             return (
-                <CachedImage style={[styles.avatar, this.props.style]} source={{uri: this.props.image}}/>
+                <Image style={[styles.avatar, this.props.style]} source={{uri: this.props.image}}/>
             );
         }
         return null;

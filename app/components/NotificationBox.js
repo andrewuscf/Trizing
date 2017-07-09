@@ -91,7 +91,7 @@ const NotificationBox = React.createClass({
         return (
             <TouchableOpacity activeOpacity={1} onPress={this.onPress}>
                 <View style={[GlobalStyle.simpleBottomBorder, styles.container]}>
-                    <AvatarImage goToProfile={this.goToProfile.bind(null, action.actor.id)} image={image}/>
+                    <AvatarImage goToProfile={this.goToProfile.bind(null, action.actor.id)} image={image} cache={true}/>
                     <View style={styles.noteInfo}>
                         <Text style={styles.notifText}>
                             <Text style={styles.firstName}>{action.actor.profile.first_name} </Text>

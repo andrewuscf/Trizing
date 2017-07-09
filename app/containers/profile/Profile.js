@@ -135,10 +135,29 @@ const Profile = React.createClass({
                 <ScrollView style={GlobalStyle.noHeaderContainer} ref="profile_list">
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
                         <AvatarImage style={styles.avatar} image={userImage}/>
-                        <View style={styles.userInfo}>
+                        <View>
                             <Text style={styles.name}>
                                 {trunc(`${user.profile.first_name} ${user.profile.last_name}`, 26)}
                             </Text>
+                            {(this.state.request && this.state.request.to_user == this.props.RequestUser.id) ?
+                                <View style={styles.requestSection}>
+                                    {this.state.request.from_user.type == 1 ?
+                                        <Text style={styles.requestText}>Wants to be your trainer</Text> :
+                                        <Text style={styles.requestText}>Wants to be your client</Text>
+                                    }
+                                    <View style={styles.requestButtonSection}>
+                                        <TouchableOpacity style={[styles.requestButtons, styles.accept]}
+                                                          onPress={this._respond.bind(null, true)}>
+                                            <Icon name="check" size={20} color='white'/>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={[styles.requestButtons, styles.deny]}
+                                                          onPress={this._respond.bind(null, false)}>
+                                            <Icon name="times" size={20} color='red'/>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                : null
+                            }
                         </View>
                         <Menu style={{right: 0, position: 'absolute'}}>
                             <MenuTrigger style={styles.topRightNav}>
@@ -148,26 +167,6 @@ const Profile = React.createClass({
                                 <MenuOption onSelect={() => this.reportUser()} text='Report user'/>
                             </MenuOptions>
                         </Menu>
-
-                        {(this.state.request && this.state.request.to_user == this.props.RequestUser.id) ?
-                            <View style={styles.requestSection}>
-                                {this.state.request.from_user.type == 1 ?
-                                    <Text style={styles.requestText}>Wants to be your trainer</Text> :
-                                    <Text style={styles.requestText}>Wants to be your client</Text>
-                                }
-                                <View style={styles.requestButtonSection}>
-                                    <TouchableOpacity style={[styles.requestButtons, styles.accept]}
-                                                      onPress={this._respond.bind(null, true)}>
-                                        <Icon name="check" size={20} color='white'/>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={[styles.requestButtons, styles.deny]}
-                                                      onPress={this._respond.bind(null, false)}>
-                                        <Icon name="times" size={20} color='red'/>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                            : null
-                        }
                     </View>
                     {this.props.RequestUser.id == user.profile.trainer ?
                         <TrainingPlan client={user} UserToken={this.props.UserToken}
@@ -197,9 +196,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         flexDirection: 'row'
     },
-    userInfo: {
-        // marginTop: 10,
-    },
     name: {
         paddingTop: 5,
         fontFamily: 'OpenSans-Bold',
@@ -214,8 +210,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     requestSection: {
-        justifyContent: 'center',
-        alignItems: 'center',
         paddingTop: 10
     },
     requestText: {
