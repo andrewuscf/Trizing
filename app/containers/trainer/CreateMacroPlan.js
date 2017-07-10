@@ -6,21 +6,32 @@ import {
     StyleSheet,
     Keyboard,
     TouchableOpacity,
+    TextInput,
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
+import {API_ENDPOINT, fetchData, getFontSize, checkStatus} from '../../actions/utils';
+
+import MacroBoxDay from '../../components/MacroBoxDay';
+import SubmitButton from '../../components/SubmitButton';
 
 
-const CreateNote = React.createClass({
+const CreateMacroPlan = React.createClass({
     propTypes: {
-        training_planId: React.PropTypes.number.isRequired,
+        training_plan: React.PropTypes.number.isRequired,
+        addMacroPlan: React.PropTypes.func.isRequired
     },
 
     getInitialState() {
         return {
             disabled: false,
+            name: null,
+            protein: null,
+            macro_plan_days: [{weight: null, fats: null, carbs: null, days: []}],
+            selectedDays: []
         }
     },
 
@@ -35,7 +46,7 @@ const CreateNote = React.createClass({
     },
 
     goBack() {
-        this.setState({disabled:false});
+        this.setState({disabled: false});
         this.props.navigation.goBack();
     },
 
@@ -46,25 +57,101 @@ const CreateNote = React.createClass({
             .then(checkStatus)
             .then((responseJson) => {
                 if (responseJson.id) {
-                    this.setState({
-                        macro_plans: [
-                            responseJson,
-                            ...this.state.macro_plans
-                        ]
-                    });
+                    this.props.addMacroPlan(responseJson);
+                    this.goBack();
                 }
-            });
+            }).catch(error=>console.log(error))
     },
 
     _save() {
+        Keyboard.dismiss();
+        if (this.verify()) {
+            // const data = this.state
+            const validPlanDays = _.filter(this.state.macro_plan_days, (day) => {
+                if (day.protein && day.carbs && day.fats && day.days.length > 0)
+                    return day
+            });
+            this.createMacroPlan({
+                ...this.state,
+                macro_plan_days: validPlanDays,
+                training_plan: this.props.training_plan
+            });
+        } else {
+            if (!this.state.name) {
+                this.refs.name.focus();
+            }
+        }
+    },
 
+    getDayState(planDayIndex, state) {
+        let macro_plan_days = this.state.macro_plan_days;
+        macro_plan_days[planDayIndex] = state;
+
+        let selectedDays = [];
+        this.state.macro_plan_days.forEach((macro_plan_day) => {
+            selectedDays = selectedDays.concat(macro_plan_day.days);
+        });
+        this.setState({
+            macro_plan_days: macro_plan_days,
+            selectedDays: selectedDays
+        });
+    },
+
+    verify() {
+        return !!(this.state.name && this.state.macro_plan_days[0] && this.state.macro_plan_days[0].protein
+        && this.state.macro_plan_days[0].carbs && this.state.macro_plan_days[0].fats
+        && this.state.macro_plan_days[0].days.length > 0)
+
+    },
+
+    addDay() {
+        Keyboard.dismiss();
+        this.setState({
+            macro_plan_days: [
+                ...this.state.macro_plan_days,
+                {weight: null, fats: null, carbs: null, days: []}
+            ]
+        });
+    },
+
+    _removeDay(index) {
+        Keyboard.dismiss();
+        if (this.state.macro_plan_days.length > 1) {
+            this.setState({
+                macro_plan_days: this.state.macro_plan_days.slice(0, index).concat(this.state.macro_plan_days.slice(index + 1))
+            })
+        }
     },
 
 
     render: function () {
+        const macro_plan_days = this.state.macro_plan_days.map((question, x) => {
+            return <MacroBoxDay key={x} getDayState={this.getDayState} planDayIndex={x}
+                                canDelete={this.state.macro_plan_days.length > 1}
+                                _removeDay={this._removeDay}
+                                selectedDays={x !== 0 ? this.state.selectedDays : []}/>;
+        });
+
         return (
-            <View style={{flex: 1}}>
-            </View>
+            <ScrollView style={styles.container}>
+                <View style={styles.inputWrap}>
+                    <TextInput ref="name" style={styles.textInput} autoCapitalize='sentences'
+                               underlineColorAndroid='transparent'
+                               autoCorrect={false}
+                               onChangeText={(text) => this.setState({name: text})}
+                               value={this.state.name}
+                               placeholderTextColor="#4d4d4d"
+                               placeholder="Nutrition Plan Name"/>
+                </View>
+                {macro_plan_days}
+                {this.state.selectedDays.length < 7 ?
+                    <TouchableOpacity onPress={this.addDay}>
+                        <Text style={styles.addAnotherDay}>Add Day</Text>
+                    </TouchableOpacity>
+                    : null
+                }
+
+            </ScrollView>
         )
     }
 });
@@ -72,29 +159,42 @@ const CreateNote = React.createClass({
 const iconColor = '#8E8E8E';
 
 const styles = StyleSheet.create({
-    flexCenter: {
-        flex: .9,
+    inputWrap: {
+        marginBottom: 12,
+        height: 30,
+        borderBottomWidth: .5,
+        borderColor: '#aaaaaa',
+        flex: 1
     },
-    footer: {
-        borderTopWidth: 1,
-        borderColor: '#e1e3df',
-        alignItems: 'center',
-        minHeight: 40,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        flex: .1
-    }
+    textInput: {
+        color: 'black',
+        fontSize: 17,
+        fontFamily: 'OpenSans-Light',
+        backgroundColor: 'transparent',
+        paddingTop: 3,
+        paddingBottom: 3,
+        height: 30,
+        textAlign: 'center',
+    },
+    addAnotherDay: {
+        height: 35,
+        marginTop: 5,
+        marginBottom: 8,
+        color: '#b1aea5',
+        fontSize: getFontSize(22),
+        lineHeight: getFontSize(26),
+        backgroundColor: 'transparent',
+        fontFamily: 'OpenSans-Semibold',
+        alignSelf: 'center',
+        textDecorationLine: 'underline',
+        textDecorationColor: '#b1aea5'
+    },
 });
 
-
 const stateToProps = (state) => {
-    return state.Global;
-};
-
-const dispatchToProps = (dispatch) => {
     return {
-        actions: bindActionCreators(GlobalActions, dispatch)
-    }
+        UserToken: state.Global.UserToken,
+    };
 };
 
-export default connect(stateToProps, dispatchToProps)(CreateNote);
+export default connect(stateToProps, null)(CreateMacroPlan);

@@ -56,21 +56,13 @@ const TrainingPlan = React.createClass({
             this.getClientSchedules(true);
     },
 
-    createMacroPlan(data) {
-        let jsondata = JSON.stringify(data);
-        fetch(`${API_ENDPOINT}training/macros/`,
-            fetchData('POST', jsondata, this.props.UserToken))
-            .then(checkStatus)
-            .then((responseJson) => {
-                if (responseJson.id) {
-                    this.setState({
-                        macro_plans: [
-                            responseJson,
-                            ...this.state.macro_plans
-                        ]
-                    });
-                }
-            });
+    addMacroPlan(data) {
+        this.setState({
+            macro_plans: [
+                data,
+                ...this.state.macro_plans
+            ]
+        });
     },
 
     deleteMacroPlan(id) {
@@ -194,6 +186,7 @@ const TrainingPlan = React.createClass({
 
     renderCreateBar(rowCount){
         let textSection = null;
+        let bottomContent = null;
         if (rowCount < 1) {
             if (this.state.tab === 1) {
                 textSection = <Text style={styles.emptyTitle}>No Nutrition plans. Create One!</Text>;
@@ -202,11 +195,22 @@ const TrainingPlan = React.createClass({
             }
         }
         if (this.state.tab === 1 || this.state.tab === 2) {
-            return (
+            bottomContent = (
                 <View>
                     {this.state.tab === 1 ?
-                        <MacroBox createMacroPlan={this.createMacroPlan}
-                                  training_plan={this.props.training_plan.id}/>
+                        <TouchableOpacity style={[styles.createContainer]}
+                                          activeOpacity={0.8}
+                                          onPress={() => this.props._redirect('CreateMacroPlan', {
+                                              training_plan: this.props.training_plan.id,
+                                              addMacroPlan: this.addMacroPlan
+                                          })}>
+                            <View style={styles.center}>
+                                <Icon name="plus" size={30} color='#1352e2'/>
+                                <View style={styles.details}>
+                                    <Text style={styles.mainText}>Create New</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
                         :
                         <TouchableOpacity style={styles.emptyContainer}
                                           onPress={this.props._redirect.bind(null, 'CreateSchedule',
@@ -219,23 +223,8 @@ const TrainingPlan = React.createClass({
                 </View>
             )
         }
-        return null;
-    },
-
-    render() {
-        if (!this.props.Questionnaires && !this.props.Schedules.length && !this.state.macro_plans)
-            return <Loading />;
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        let dataSource = null;
-        if (this.state.tab === 1 && this.state.macro_plans) {
-            dataSource = ds.cloneWithRows(this.state.macro_plans);
-        } else if (this.state.tab === 2) {
-            dataSource = ds.cloneWithRows(_.filter(this.props.Schedules, schedule => {
-                return schedule.training_plan === this.state.training_plan.id;
-            }))
-        }
         return (
-            <View style={GlobalStyle.container}>
+            <View>
                 {this.props.Questionnaires.length ?
                     <View style={[styles.pickersView, GlobalStyle.simpleBottomBorder]}>
                         <View style={{flexDirection: 'row', flex: .7}}>
@@ -245,10 +234,10 @@ const TrainingPlan = React.createClass({
                         </View>
                         {this.props.training_plan.answered ?
                             <TouchableOpacity style={{flex: .3, padding: 5}}
-                                onPress={this.props._redirect.bind(null, 'AnswersDisplay', {
-                                    questionnaire: _.find(this.props.Questionnaires, {id: this.props.training_plan.questionnaire}),
-                                    client: this.props.client
-                                })}>
+                                              onPress={this.props._redirect.bind(null, 'AnswersDisplay', {
+                                                  questionnaire: _.find(this.props.Questionnaires, {id: this.props.training_plan.questionnaire}),
+                                                  client: this.props.client
+                                              })}>
                                 <Text style={{fontSize: getFontSize(18)}}>View Answers</Text>
                             </TouchableOpacity>
                             : null
@@ -263,47 +252,62 @@ const TrainingPlan = React.createClass({
                 <View style={[styles.tabbarView, GlobalStyle.simpleBottomBorder]}>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(1)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 1)}>
-                        <CustomIcon name="food" size={getFontSize(35)} color={this.isSelected(1) ? selectedIcon : defaultIcon}/>
+                        <CustomIcon name="food" size={getFontSize(35)}
+                                    color={this.isSelected(1) ? selectedIcon : defaultIcon}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(2)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 2)}>
-                        <CustomIcon name="weight" size={getFontSize(35)} color={this.isSelected(2) ? selectedIcon : defaultIcon}/>
+                        <CustomIcon name="weight" size={getFontSize(35)}
+                                    color={this.isSelected(2) ? selectedIcon : defaultIcon}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(3)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 3)}>
-                        <CustomIcon name="pie-chart" size={getFontSize(25)} color={this.isSelected(3) ? selectedIcon : defaultIcon}/>
+                        <CustomIcon name="pie-chart" size={getFontSize(25)}
+                                    color={this.isSelected(3) ? selectedIcon : defaultIcon}/>
                     </TouchableOpacity>
                 </View>
-
-                <View style={styles.singleColumn}>
-                    {dataSource ?
-                        <ListView ref='content' removeClippedSubviews={(Platform.OS !== 'ios')}
-                                  showsVerticalScrollIndicator={false}
-                                  renderHeader={this.renderCreateBar.bind(null, dataSource.getRowCount())}
-                                  keyboardShouldPersistTaps="handled"
-                                  style={styles.listContainer} enableEmptySections={true} dataSource={dataSource}
-                                  onEndReached={this._onEndReached}
-                                  onEndReachedThreshold={Dimensions.get('window').height}
-                                  renderRow={(object) => {
-                                      if (this.state.tab === 1) {
-                                          return <MacroBox plan={object}
-                                                           selected={object.id === this.state.training_plan.macro_plan}
-                                                           training_plan={this.props.training_plan.id}
-                                                           select={this.selectMacroPlan}
-                                                           deleteMacroPlan={this.deleteMacroPlan}/>
-                                      } else if (this.state.tab === 2) {
-                                          return <WorkoutProgramBox
-                                              selected={object.id === this.state.training_plan.schedule}
-                                              select={this.selectTrainingPlan}
-                                              schedule={object} _redirect={this.props._redirect}
-                                              deleteSchedule={this.deleteSchedule}/>
-                                      }
-                                  }}
-                        />
-                        : null
-                    }
-                </View>
+                {bottomContent}
             </View>
+        );
+    },
+
+    render() {
+        if (!this.props.Questionnaires && !this.props.Schedules.length && !this.state.macro_plans)
+            return <Loading />;
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        let dataSource = null;
+        if (this.state.tab === 1 && this.state.macro_plans) {
+            dataSource = ds.cloneWithRows(this.state.macro_plans);
+        } else if (this.state.tab === 2) {
+            dataSource = ds.cloneWithRows(_.filter(this.props.Schedules, schedule => {
+                return schedule.training_plan === this.state.training_plan.id;
+            }))
+        } else {
+            dataSource = ds.cloneWithRows([]);
+        }
+        return (
+            <ListView ref='content' removeClippedSubviews={(Platform.OS !== 'ios')}
+                      showsVerticalScrollIndicator={false}
+                      renderHeader={this.renderCreateBar.bind(null, dataSource.getRowCount())}
+                      keyboardShouldPersistTaps="handled"
+                      style={GlobalStyle.container} enableEmptySections={true} dataSource={dataSource}
+                      onEndReached={this._onEndReached}
+                      onEndReachedThreshold={Dimensions.get('window').height}
+                      renderRow={(object) => {
+                          if (this.state.tab === 1) {
+                              return <MacroBox plan={object}
+                                               selected={object.id === this.state.training_plan.macro_plan}
+                                               select={this.selectMacroPlan}
+                                               deleteMacroPlan={this.deleteMacroPlan}/>
+                          } else if (this.state.tab === 2) {
+                              return <WorkoutProgramBox
+                                  selected={object.id === this.state.training_plan.schedule}
+                                  select={this.selectTrainingPlan}
+                                  schedule={object} _redirect={this.props._redirect}
+                                  deleteSchedule={this.deleteSchedule}/>
+                          }
+                      }}
+            />
         )
     }
 });
@@ -332,13 +336,6 @@ const styles = StyleSheet.create({
         borderBottomColor: '#1352e2',
         marginLeft: 5,
         marginRight: 5,
-    },
-    singleColumn: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-    listContainer: {
-        flex: 1
     },
     helpText: {
         textAlign: 'center',
@@ -401,7 +398,23 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'space-between',
         flexDirection: 'row'
-    }
+    },
+    createContainer: {
+        flex: 1,
+        borderBottomWidth: 1,
+        borderColor: '#e1e3df',
+        marginTop: 10,
+        backgroundColor: 'white'
+    },
+    center: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        margin: 10
+    },
+    details: {
+        flexDirection: 'column',
+        paddingLeft: 18
+    },
 });
 
 const stateToProps = (state) => {
