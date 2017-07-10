@@ -81,6 +81,7 @@ const MacroPlanDetail = React.createClass({
         return (
             <ListView ref='daily_logs' removeClippedSubviews={(Platform.OS !== 'ios')}
                       keyboardShouldPersistTaps="handled"
+                      showsVerticalScrollIndicator={false}
                       refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh}/>}
                       renderHeader={this.renderHeader}
                       style={styles.container} enableEmptySections={true}

@@ -87,6 +87,7 @@ const AnswerQuestionnaire = React.createClass({
                 }
                 <ListView ref='questionnaire_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                           keyboardShouldPersistTaps="handled"
+                          showsVerticalScrollIndicator={false}
                           style={[styles.container, {margin: 20}]} enableEmptySections={true}
                           dataSource={dataSource}
                           renderRow={(question, sectionID, rowID) =>

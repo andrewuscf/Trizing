@@ -55,7 +55,7 @@ const Chat = React.createClass({
             const dataSource = ds.cloneWithRows(this.props.Rooms);
             return (
                 <View style={GlobalStyle.noHeaderContainer}>
-                    <ListView
+                    <ListView showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
                         style={styles.scrollContainer} enableEmptySections={true}
                         removeClippedSubviews={false}

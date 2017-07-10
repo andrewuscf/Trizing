@@ -57,7 +57,7 @@ const SurveyList = React.createClass({
         const QuestionnaireDS = ds.cloneWithRows(this.props.Questionnaires);
         return (
             <View style={{flex: 1}}>
-                <ListView ref='survey_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                <ListView ref='survey_list' removeClippedSubviews={(Platform.OS !== 'ios')} showsVerticalScrollIndicator={false}
                           style={styles.container} enableEmptySections={true} dataSource={QuestionnaireDS}
                           renderRow={(questionnaire) =>
                               <TouchableOpacity style={styles.link}

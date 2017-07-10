@@ -67,6 +67,7 @@ const AnswersDisplay = React.createClass({
                 </View>
                 <ListView ref='answer_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                           keyboardShouldPersistTaps="handled"
+                          showsVerticalScrollIndicator={false}
                           style={[styles.container, {margin: 20}]} enableEmptySections={true}
                           dataSource={dataSource}
                           renderRow={this.renderRow}

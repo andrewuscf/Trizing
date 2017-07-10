@@ -106,6 +106,7 @@ const WorkoutDayDetail = React.createClass({
                                                               onRefresh={this.refresh}/>}
                               enableEmptySections={true}
                               dataSource={dataSource}
+                              showsVerticalScrollIndicator={false}
                               contentContainerStyle={{paddingBottom: 10}}
                               renderRow={(exercise, sectionID, rowID) =>
                                   <DisplayExerciseBox exercise={exercise}

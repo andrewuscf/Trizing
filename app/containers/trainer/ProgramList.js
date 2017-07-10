@@ -78,7 +78,7 @@ const ProgramList = React.createClass({
         return (
             <View style={{flex: 1}}>
                 <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                          enableEmptySections={true} dataSource={SchedulesDs}
+                          enableEmptySections={true} dataSource={SchedulesDs} showsVerticalScrollIndicator={false}
                           renderRow={this.renderRow}
                 />
                 {isTrainer ?

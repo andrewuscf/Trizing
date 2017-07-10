@@ -103,6 +103,7 @@ const WorkoutDaySession = React.createClass({
         let dataSource = ds.cloneWithRows(this.props.workout_day.exercises);
         return (
             <ListView ref='exercise_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                      showsVerticalScrollIndicator={false}
                       keyboardShouldPersistTaps="handled"
                       renderHeader={this.renderHeader}
                       renderFooter={this.renderFooter}

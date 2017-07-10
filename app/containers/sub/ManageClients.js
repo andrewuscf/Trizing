@@ -141,6 +141,7 @@ const ManageClients = React.createClass({
         return (
             <ListView ref='peoplelist' removeClippedSubviews={(Platform.OS !== 'ios')}
                       keyboardShouldPersistTaps="handled"
+                      showsVerticalScrollIndicator={false}
                       refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
                       renderHeader={this.renderSearchBar}
                       style={styles.container} enableEmptySections={true}

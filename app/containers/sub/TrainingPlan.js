@@ -279,6 +279,7 @@ const TrainingPlan = React.createClass({
                 <View style={styles.singleColumn}>
                     {dataSource ?
                         <ListView ref='content' removeClippedSubviews={(Platform.OS !== 'ios')}
+                                  showsVerticalScrollIndicator={false}
                                   renderHeader={this.renderCreateBar.bind(null, dataSource.getRowCount())}
                                   keyboardShouldPersistTaps="handled"
                                   style={styles.listContainer} enableEmptySections={true} dataSource={dataSource}

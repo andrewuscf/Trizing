@@ -51,7 +51,7 @@ const Notifications = React.createClass({
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             const dataSource = ds.cloneWithRows(this.props.Notifications);
             return (
-                <ListView
+                <ListView showsVerticalScrollIndicator={false}
                     refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
                     style={styles.container} enableEmptySections={true}
                     initialListSize={5}

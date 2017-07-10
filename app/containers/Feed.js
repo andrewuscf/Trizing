@@ -122,6 +122,7 @@ const Feed = React.createClass({
         return (
             <ListView ref='posts_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                       renderHeader={this.renderCreatePost}
+                      showsVerticalScrollIndicator={false}
                       keyboardShouldPersistTaps="handled"
                       refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
                       style={[GlobalStyle.noHeaderContainer,styles.feedContainer]}
@@ -129,7 +130,7 @@ const Feed = React.createClass({
                       onEndReached={this.onEndReached}
                       renderRow={(post) => <PostBox
                           updateLike={this.props.actions.updateLike}
-                          liked={_.indexOf(post.liked_by, this.props.RequestUser.id) != -1}
+                          liked={_.indexOf(post.liked_by, this.props.RequestUser.id) !== -1}
                           post={post} navigate={this.props.navigation.navigate}/>}
             />
         )

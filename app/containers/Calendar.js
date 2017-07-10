@@ -66,6 +66,7 @@ const Calendar = React.createClass({
             const dataSource = ds.cloneWithRows(this.props.Events);
             content = (
                 <ListView ref="calendar_list"
+                          showsVerticalScrollIndicator={false}
                           refreshControl={<RefreshControl refreshing={this.props.Refreshing}
                                                           onRefresh={this._refresh}/>}
                           style={styles.scrollContainer}
