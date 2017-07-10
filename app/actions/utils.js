@@ -1,8 +1,8 @@
 'use strict';
 import {NavigationActions} from 'react-navigation';
 
-// export const SITE = 'https://trizing-staging.herokuapp.com/';
-export const SITE = 'http://localhost:8000/';
+export const SITE = 'https://trizing-staging.herokuapp.com/';
+// export const SITE = 'http://localhost:8000/';
 
 export const API_ENDPOINT = `${SITE}api/v1/`;
 
@@ -34,7 +34,7 @@ export function fetchData(method, body = null, token = null, headers = null, get
 }
 
 export function checkStatus(response) {
-    if (response.status == 204){
+    if (response.status === 204){
         return {deleted: true}
     }
     return response.json();
