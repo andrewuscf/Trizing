@@ -322,9 +322,9 @@ const styles = StyleSheet.create({
     },
     avatar: {
         alignSelf: 'center',
-        height: 120,
-        width: 120,
-        borderRadius: 60,
+        height: 80,
+        width: 80,
+        borderRadius: 40,
     },
     button: {
         margin: 20

@@ -44,7 +44,8 @@ const Home = React.createClass({
     getInitialState() {
         return {
             modalY: new Animated.Value(-deviceHeight),
-            dataDate: moment()
+            dataDate: moment(),
+            open: false,
         }
     },
 
@@ -108,6 +109,7 @@ const Home = React.createClass({
             duration: 300,
             toValue: 0
         }).start();
+        this.setState({open: true});
     },
 
     hideProfile() {
@@ -115,6 +117,7 @@ const Home = React.createClass({
             duration: 300,
             toValue: -deviceHeight
         }).start();
+        this.setState({open: false});
     },
 
     addDay() {
@@ -137,7 +140,7 @@ const Home = React.createClass({
     render() {
         const user = this.props.RequestUser;
         if (!user || this.props.HomeIsLoading) return <Loading />;
-        const isTrainer = user.type == 1;
+        const isTrainer = user.type === 1;
         let content = null;
         const {navigate} = this.props.navigation;
         const today = moment();
@@ -208,7 +211,7 @@ const Home = React.createClass({
                         <View style={styles.todayTitle}>
                             <MaterialIcon size={24} color='black' name="date-range"/>
                             <Text style={styles.textTitle}>
-                                {this.state.dataDate.isSame(today, 'd')? 'Today': this.state.dataDate.format('dddd, MMM DD')}
+                                {this.state.dataDate.isSame(today, 'd') ? 'Today' : this.state.dataDate.format('dddd, MMM DD')}
                             </Text>
                         </View>
                         <TouchableOpacity onPress={this.addDay}>
@@ -238,7 +241,10 @@ const Home = React.createClass({
                             </Text>
                             {!data.macro_plan_day.logged_today ?
                                 <TouchableOpacity
-                                    onPress={this._redirect.bind(null, 'CreateMacroLog', {macro_plan_day: data.macro_plan_day})}
+                                    onPress={this._redirect.bind(null, 'CreateMacroLog', {
+                                        macro_plan_day: data.macro_plan_day,
+                                        date: this.state.dataDate
+                                    })}
                                     style={styles.link}>
                                     <Text style={styles.simpleTitle}>Log Today</Text>
                                     <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
@@ -306,7 +312,7 @@ const Home = React.createClass({
                     <MyProfile navigation={this.props.navigation} close={this.hideProfile}/>
                 </Animated.View>
 
-                {isTrainer && this.state.modalY != 0 ?
+                {isTrainer && !this.state.open ?
                     <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
                         <ActionButton.Item buttonColor='#FD795B' title="Manage Clients"
                                            onPress={() => navigate('ManageClients')}>

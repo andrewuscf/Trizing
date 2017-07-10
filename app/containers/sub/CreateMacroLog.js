@@ -28,14 +28,13 @@ let myFormatFunction = (format, date) => {
 const CreateMacroLog = React.createClass({
     propTypes: {
         macro_plan_day: React.PropTypes.object.isRequired,
-        date: React.PropTypes.string,
+        date: React.PropTypes.object.isRequired,
     },
 
     getInitialState() {
         return {
             value: null,
-            date: (this.props.date && moment(this.props.date).isValid()) ?
-                moment(this.props.date).format("MMMM DD YYYY") : moment().format("MMMM DD YYYY"),
+            date: this.props.date ? this.props.date.format("MMMM DD YYYY") : moment().format("MMMM DD YYYY"),
             success: false
         }
     },
@@ -133,8 +132,7 @@ const CreateMacroLog = React.createClass({
 
 CreateMacroLog.navigationOptions = ({navigation}) => {
     const {state, setParams} = navigation;
-    const date = (state.params.date && moment(state.params.date).isValid()) ?
-        moment(state.params.date).format("MMMM DD, YYYY") : moment().format("MMMM DD, YYYY");
+    const date = state.params.date ? state.params.date.format("MMMM DD, YYYY") : moment().format("MMMM DD, YYYY");
     return {
         headerTitle: date
     }
