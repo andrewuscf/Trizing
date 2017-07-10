@@ -22,7 +22,6 @@ const MacroBox = React.createClass({
     propTypes: {
         plan: React.PropTypes.object,
         training_plan: React.PropTypes.number.isRequired,
-        _redirect: React.PropTypes.func.isRequired,
         select: React.PropTypes.func,
         selected: React.PropTypes.bool
     },

@@ -81,7 +81,7 @@ const TrainingPlan = React.createClass({
                     let macro_plans = this.state.macro_plans;
                     const macroIndex = _.findIndex(macro_plans, {id: id});
                     this.setState({
-                        macro_plans: (macroIndex != -1) ?
+                        macro_plans: (macroIndex !== -1) ?
                             macro_plans.slice(0, macroIndex).concat(macro_plans.slice(macroIndex + 1)) : macro_plans
                     });
                 }
@@ -131,12 +131,12 @@ const TrainingPlan = React.createClass({
 
     _onTabPress(tab) {
         const userSchedules = _.filter(this.props.Schedules, schedule => {
-            return schedule.training_plan == this.state.training_plan.id;
+            return schedule.training_plan === this.state.training_plan.id;
         });
-        if (tab != this.state.tab) {
-            if (tab == 1 && !this.state.macro_plans) {
+        if (tab !== this.state.tab) {
+            if (tab === 1 && !this.state.macro_plans) {
                 this.getMacros();
-            } else if (tab == 2 && !userSchedules.length) {
+            } else if (tab === 2 && !userSchedules.length) {
                 this.getClientSchedules();
             }
             this.setState({tab: tab});
@@ -144,21 +144,21 @@ const TrainingPlan = React.createClass({
     },
 
     _refresh() {
-        if (this.state.tab == 1)
+        if (this.state.tab === 1)
             this.getMacros(true);
-        else if (this.state.tab == 2)
+        else if (this.state.tab === 2)
             this.getClientSchedules(true);
     },
 
     _onEndReached() {
-        if (this.state.tab == 1 && this.state.macro_plansNext)
+        if (this.state.tab === 1 && this.state.macro_plansNext)
             this.getMacros();
-        else if (this.state.tab == 2 && this.state.schedule_next)
+        else if (this.state.tab === 2 && this.state.schedule_next)
             this.getClientSchedules();
     },
 
     isSelected(tab) {
-        return tab == this.state.tab
+        return tab === this.state.tab
     },
 
     selectQuestionnaire(id) {
@@ -195,19 +195,18 @@ const TrainingPlan = React.createClass({
     renderCreateBar(rowCount){
         let textSection = null;
         if (rowCount < 1) {
-            if (this.state.tab == 1) {
+            if (this.state.tab === 1) {
                 textSection = <Text style={styles.emptyTitle}>No Nutrition plans. Create One!</Text>;
-            } else if (this.state.tab == 2) {
+            } else if (this.state.tab === 2) {
                 textSection = <Text style={styles.emptyTitle}>No workout programs. Create one!</Text>;
             }
         }
-        if (this.state.tab == 1 || this.state.tab == 2) {
+        if (this.state.tab === 1 || this.state.tab === 2) {
             return (
                 <View>
-                    {this.state.tab == 1 ?
+                    {this.state.tab === 1 ?
                         <MacroBox createMacroPlan={this.createMacroPlan}
-                                  training_plan={this.props.training_plan.id}
-                                  _redirect={this.props._redirect}/>
+                                  training_plan={this.props.training_plan.id}/>
                         :
                         <TouchableOpacity style={styles.emptyContainer}
                                           onPress={this.props._redirect.bind(null, 'CreateSchedule',
@@ -228,11 +227,11 @@ const TrainingPlan = React.createClass({
             return <Loading />;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = null;
-        if (this.state.tab == 1 && this.state.macro_plans) {
+        if (this.state.tab === 1 && this.state.macro_plans) {
             dataSource = ds.cloneWithRows(this.state.macro_plans);
-        } else if (this.state.tab == 2) {
+        } else if (this.state.tab === 2) {
             dataSource = ds.cloneWithRows(_.filter(this.props.Schedules, schedule => {
-                return schedule.training_plan == this.state.training_plan.id;
+                return schedule.training_plan === this.state.training_plan.id;
             }))
         }
         return (
@@ -286,16 +285,15 @@ const TrainingPlan = React.createClass({
                                   onEndReached={this._onEndReached}
                                   onEndReachedThreshold={Dimensions.get('window').height}
                                   renderRow={(object) => {
-                                      if (this.state.tab == 1) {
+                                      if (this.state.tab === 1) {
                                           return <MacroBox plan={object}
-                                                           selected={object.id == this.state.training_plan.macro_plan}
+                                                           selected={object.id === this.state.training_plan.macro_plan}
                                                            training_plan={this.props.training_plan.id}
                                                            select={this.selectMacroPlan}
-                                                           deleteMacroPlan={this.deleteMacroPlan}
-                                                           _redirect={this.props._redirect}/>
-                                      } else if (this.state.tab == 2) {
+                                                           deleteMacroPlan={this.deleteMacroPlan}/>
+                                      } else if (this.state.tab === 2) {
                                           return <WorkoutProgramBox
-                                              selected={object.id == this.state.training_plan.schedule}
+                                              selected={object.id === this.state.training_plan.schedule}
                                               select={this.selectTrainingPlan}
                                               schedule={object} _redirect={this.props._redirect}
                                               deleteSchedule={this.deleteSchedule}/>
