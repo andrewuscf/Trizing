@@ -31,9 +31,13 @@ const EditSchedule = React.createClass({
         }
     },
 
-    componentWillMount() {
+    componentDidMount() {
         const schedule = _.find(this.props.Schedules, {id: this.props.scheduleId});
-        if (schedule) this.props.navigation.setParams({headerTitle: schedule.name});
+        console.log(this.props.Schedules)
+        if (schedule) {
+            this.props.navigation.setParams({headerTitle: schedule.name});
+            this.setState({schedule: schedule});
+        }
     },
 
     asyncActions(data = {}){
@@ -43,17 +47,18 @@ const EditSchedule = React.createClass({
     },
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.Schedules != prevProps.Schedules) {
+        if (this.props.Schedules !== prevProps.Schedules) {
+            console.log(this.props.Schedules, 'UPDATED')
             const schedule = _.find(this.props.Schedules, {id: this.props.scheduleId});
-            this.props.navigation.setParams({headerTitle: this.state.schedule.name});
+            console.log(schedule)
+            this.props.navigation.setParams({headerTitle: schedule.name});
             this.setState({schedule: schedule});
         }
     },
 
-    _createWorkoutDay() {
-        if (this.state.schedule) {
-            this.props.navigation.navigate('CreateWorkout', {scheduleId: this.props.scheduleId});
-        }
+    _createWorkout() {
+        console.log(this.state.schedule)
+        this.props.navigation.navigate('CreateWorkout', {scheduleId: this.props.scheduleId});
     },
 
     _toWorkoutDay(workoutId) {
@@ -114,13 +119,13 @@ const EditSchedule = React.createClass({
 
                 </ScrollView>
 
-                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" >
-                    <ActionButton.Item buttonColor='#F22525' title="Delete" hideShadow={true}
+                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
+                    <ActionButton.Item buttonColor='#F22525' title="Delete"
                                        onPress={this._deleteSchedule}>
                         <MaterialIcon name="delete-forever" color="white" size={22}/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#3498db' title="Add Block" hideShadow={true}
-                                       onPress={this._createWorkoutDay}>
+                    <ActionButton.Item buttonColor='#3498db' title="Add Block"
+                                       onPress={this._createWorkout}>
                         <MaterialIcon name="add" color="white" size={22}/>
                     </ActionButton.Item>
                 </ActionButton>
@@ -137,8 +142,8 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(28),
         fontFamily: 'OpenSans-Bold',
         alignSelf: 'center',
-        paddingTop:10,
-        paddingBottom:10
+        paddingTop: 10,
+        paddingBottom: 10
     },
     workoutBox: {
         flex: 1,
@@ -170,7 +175,7 @@ const styles = StyleSheet.create({
         color: '#4d4d4e'
     },
     eventDate: {
-        flex:.2,
+        flex: .2,
         alignItems: 'center',
         justifyContent: 'center',
     }

@@ -100,13 +100,13 @@ const EditWorkout = React.createClass({
                     {workout_days}
                 </ScrollView>
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
-                    <ActionButton.Item buttonColor='#F22525' title="Delete" onPress={this._deleteWorkout} hideShadow={true}>
+                    <ActionButton.Item buttonColor='#F22525' title="Delete" onPress={this._deleteWorkout}>
                         <MaterialIcon name="delete-forever" color="white" size={22}/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={()=> console.log('add note')} hideShadow={true}>
+                    <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={()=> console.log('add note')}>
                         <MaterialIcon name="note-add" color="white" size={22}/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#3498db' title="Add Training Day" hideShadow={true}
+                    <ActionButton.Item buttonColor='#3498db' title="Add Training Day"
                                        onPress={this._createWorkoutDay}>
                         <MaterialIcon name="add" color="white" size={22}/>
                     </ActionButton.Item>
