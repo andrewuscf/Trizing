@@ -90,9 +90,10 @@ const CreateExercise = React.createClass({
     },
 
     _save() {
-        const sets = [];
-        let values = this.refs.form.getValue();
-        if (values) {
+        if (this.refs.form) {
+            // Created an exercise.
+            const sets = [];
+            let values = this.refs.form.getValue();
             this.state.sets.forEach((set, index) => {
                 if (set.reps) {
                     const data = {
@@ -103,15 +104,34 @@ const CreateExercise = React.createClass({
                         reps: set.reps,
                         order: index + 1
                     };
+                    if (set.weight) data['weight'] = set.weight;
+                    sets.push(data);
+                }
+            });
+            if (sets.length > 0) {
+                this.props.actions.addEditExercise(sets, this.props.navigation.goBack);
+            } else {
+                this.props.navigation.goBack();
+            }
+        } else if (this.props.exercise) {
+            // Updating already created exercise.
+            const sets = [];
+            this.state.sets.forEach((set, index) => {
+                if (set.reps) {
+                    const data = {
+                        day: this.props.workout_day.id,
+                        exercise: this.props.exercise.id,
+                        reps: set.reps,
+                        order: index + 1
+                    };
                     if (set.weight)
                         data['weight'] = set.weight;
                     if (!set.id) {
                         sets.push(data);
                     } else {
                         data['id'] = set.id;
-                        data['exercise'] = this.props.exercise.id;
                         const old = _.find(this.props.exercise.sets, {id: set.id});
-                        if (old.reps != data.reps || old.weight != data.weight || old.order != data.order) {
+                        if (old.reps !== data.reps || old.weight !== data.weight || old.order !== data.order) {
                             this.props.actions.addEditExercise(data, this.props.navigation.goBack);
                         }
                     }
