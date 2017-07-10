@@ -141,7 +141,7 @@ const HomeNav = StackNavigator({
         return {
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
-                      disabled={state.params.disabled ? state.params.disabled : null}/>
+                      disabled={state.params.disabled ? state.params.disabled : false}/>
                 : <View />,
             headerTitle: state.params && state.params.headerTitle ? state.params.headerTitle : null,
             ...defaultNavigationOptions,
@@ -188,7 +188,7 @@ const CalendarNav = StackNavigator({
         return {
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
-                      disabled={state.params.disabled ? state.params.disabled : null}/>
+                      disabled={state.params.disabled ? state.params.disabled : false}/>
                 : <View />,
             ...defaultNavigationOptions,
         };
@@ -216,7 +216,7 @@ const ChatNav = StackNavigator({
         return {
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
-                      disabled={state.params.disabled ? state.params.disabled : null}/>
+                      disabled={state.params.disabled ? state.params.disabled : false}/>
                 : <View />,
             ...defaultNavigationOptions,
         };
@@ -318,7 +318,7 @@ export const AppNavigator = StackNavigator({
         return {
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
-                      disabled={state.params.disabled ? state.params.disabled : null}/>
+                      disabled={state.params.disabled ? state.params.disabled : false}/>
                 : <View />,
             ...defaultNavigationOptions,
         };
