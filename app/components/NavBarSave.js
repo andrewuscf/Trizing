@@ -7,11 +7,20 @@ const Save = React.createClass({
     propTypes: {
         save: React.PropTypes.func.isRequired,
         text: React.PropTypes.string,
+        disabled: React.PropTypes.bool
+    },
+
+    save() {
+        if (this.props.disabled === null) {
+            this.props.save();
+        } else if (!this.props.disabled) {
+            this.props.save();
+        }
     },
 
     render() {
         return (
-            <TouchableOpacity style={styles.container} onPress={this.props.save}>
+            <TouchableOpacity style={styles.container} onPress={this.save}>
                 <Text style={styles.text}>
                     {this.props.text ? this.props.text : 'Save'}
                 </Text>

@@ -39,12 +39,19 @@ const CreateExercise = React.createClass({
         return {
             fetchedExercises: [],
             sets: sets,
-            value: this.props.exercise ? {name: this.props.exercise.name} : null
+            value: this.props.exercise ? {name: this.props.exercise.name} : null,
+            disabled: false,
         }
     },
 
     componentDidMount() {
-        this.props.navigation.setParams({handleSave: this._save, saveText: 'Save'});
+        this.props.navigation.setParams({handleSave: this._save, saveText: 'Save', disabled: this.state.disabled});
+    },
+
+    componentDidUpdate(prevProps, prevState){
+        if (prevState.disabled !== this.state.disabled) {
+            this.props.navigation.setParams({handleSave: this._save, saveText: 'Save', disabled: this.state.disabled});
+        }
     },
 
 
@@ -89,7 +96,13 @@ const CreateExercise = React.createClass({
         this.setState({value});
     },
 
+    goBack() {
+        this.setState({disabled:false});
+        this.props.navigation.goBack();
+    },
+
     _save() {
+        this.setState({disabled:true});
         if (this.refs.form) {
             // Created an exercise.
             const sets = [];
@@ -109,9 +122,9 @@ const CreateExercise = React.createClass({
                 }
             });
             if (sets.length > 0) {
-                this.props.actions.addEditExercise(sets, this.props.navigation.goBack);
+                this.props.actions.addEditExercise(sets, this.goBack);
             } else {
-                this.props.navigation.goBack();
+                this.goBack();
             }
         } else if (this.props.exercise) {
             // Updating already created exercise.
@@ -132,15 +145,15 @@ const CreateExercise = React.createClass({
                         data['id'] = set.id;
                         const old = _.find(this.props.exercise.sets, {id: set.id});
                         if (old.reps !== data.reps || old.weight !== data.weight || old.order !== data.order) {
-                            this.props.actions.addEditExercise(data, this.props.navigation.goBack);
+                            this.props.actions.addEditExercise(data, this.goBack);
                         }
                     }
                 }
             });
             if (sets.length > 0) {
-                this.props.actions.addEditExercise(sets, this.props.navigation.goBack);
+                this.props.actions.addEditExercise(sets, this.goBack);
             } else {
-                this.props.navigation.goBack();
+                this.goBack();
             }
         }
     },

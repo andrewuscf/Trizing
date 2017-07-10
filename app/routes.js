@@ -140,7 +140,8 @@ const HomeNav = StackNavigator({
         const {state, setParams} = navigation;
         return {
             headerRight: state.params && state.params.handleSave ?
-                <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
+                <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
+                      disabled={state.params.disabled ? state.params.disabled : null}/>
                 : <View />,
             headerTitle: state.params && state.params.headerTitle ? state.params.headerTitle : null,
             ...defaultNavigationOptions,
@@ -186,7 +187,8 @@ const CalendarNav = StackNavigator({
         const {state, setParams} = navigation;
         return {
             headerRight: state.params && state.params.handleSave ?
-                <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
+                <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
+                      disabled={state.params.disabled ? state.params.disabled : null}/>
                 : <View />,
             ...defaultNavigationOptions,
         };
@@ -213,7 +215,8 @@ const ChatNav = StackNavigator({
         const {state, setParams} = navigation;
         return {
             headerRight: state.params && state.params.handleSave ?
-                <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
+                <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
+                      disabled={state.params.disabled ? state.params.disabled : null}/>
                 : <View />,
             ...defaultNavigationOptions,
         };
@@ -314,7 +317,8 @@ export const AppNavigator = StackNavigator({
         const {state, setParams} = navigation;
         return {
             headerRight: state.params && state.params.handleSave ?
-                <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}/>
+                <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
+                      disabled={state.params.disabled ? state.params.disabled : null}/>
                 : <View />,
             ...defaultNavigationOptions,
         };
