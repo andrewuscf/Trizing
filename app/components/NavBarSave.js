@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         height: Platform.OS === 'ios' ? 44 : 56,
         alignItems: 'center',
         justifyContent: 'center',
-        width: 60
+        width: 50
     },
     text: {
         color: '#00AFA3',

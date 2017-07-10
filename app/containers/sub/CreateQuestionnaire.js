@@ -34,7 +34,7 @@ const CreateQuestionnaire = React.createClass({
     rows: [],
 
     componentDidMount() {
-        this.props.navigation.setParams({handleSave: this._onSubmit, saveText: 'Create'});
+        this.props.navigation.setParams({handleSave: this._onSubmit});
     },
 
     asyncActions(start){

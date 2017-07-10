@@ -56,12 +56,12 @@ const CreateWorkoutDay = React.createClass({
     },
 
     componentDidMount() {
-        this.props.navigation.setParams({handleSave: this._addExercise, saveText: 'Next'});
+        this.props.navigation.setParams({handleSave: this._addExercise});
     },
 
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.Schedules != prevProps.Schedules) {
+        if (this.props.Schedules !== prevProps.Schedules) {
             const schedule = _.find(this.props.Schedules, {workouts: [{id: this.props.workoutId}]});
             const workout = _.find(schedule.workouts, {id: this.props.workoutId});
             this.setState({workout: workout});

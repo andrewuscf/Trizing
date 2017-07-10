@@ -16,7 +16,7 @@ import _ from 'lodash';
 import ActionButton from 'react-native-action-button';
 
 import * as GlobalActions from '../../actions/globalActions';
-import {getFontSize} from '../../actions/utils';
+import {getFontSize, trunc} from '../../actions/utils';
 import {DAYS_OF_WEEK} from '../../assets/constants';
 
 import CustomIcon from '../../components/CustomIcon';
@@ -37,20 +37,21 @@ const WorkoutDayDetail = React.createClass({
     getWorkoutDay() {
         const schedule = _.find(this.props.Schedules, {workouts: [{workout_days: [{id: this.props.workout_day_id}]}]});
         const workout = _.find(schedule.workouts, {workout_days: [{id: this.props.workout_day_id}]});
-        const workout_day = _.find(workout.workout_days, {id: this.props.workout_day_id});
-        return workout_day
+        return _.find(workout.workout_days, {id: this.props.workout_day_id});
     },
 
     componentWillMount() {
-        this.props.navigation.setParams({headerTitle: this.getWorkoutDay().name});
+        const dayOfWeek = _.find(DAYS_OF_WEEK, {id: this.state.workout_day.day});
+        this.props.navigation.setParams({headerTitle: `${trunc(this.getWorkoutDay().name, 14)} (${dayOfWeek.full_day})`});
     },
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.Schedules != prevProps.Schedules) {
+        if (this.props.Schedules !== prevProps.Schedules) {
             const workout_day = this.getWorkoutDay();
             if (workout_day) {
                 this.setState({workout_day: workout_day});
-                this.props.navigation.setParams({headerTitle: workout_day.name})
+                const dayOfWeek = _.find(DAYS_OF_WEEK, {id: this.state.workout_day.day});
+                this.props.navigation.setParams({headerTitle: `${trunc(workout_day.name, 14)} (${dayOfWeek.full_day})`})
             }
         }
     },
@@ -78,20 +79,21 @@ const WorkoutDayDetail = React.createClass({
     },
 
 
+    renderHeader() {
+        return (
+            <Text style={[styles.dayTitle]}>Exercises</Text>
+        )
+    },
+
+
     render: function () {
         if (!this.state.workout_day)
             return null;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = ds.cloneWithRows(this.state.workout_day.exercises);
 
-        const dayOfWeek = _.find(DAYS_OF_WEEK, {id: this.state.workout_day.day});
         return (
             <View style={styles.container}>
-                <View style={styles.dayTop}>
-                    <MaterialIcon name="today" size={30}/>
-                    <Text style={styles.day}>{dayOfWeek.full_day}</Text>
-                </View>
-                <Text style={[styles.dayTitle]}>Exercises</Text>
 
                 {!this.state.workout_day.exercises.length ?
                     <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
@@ -104,6 +106,7 @@ const WorkoutDayDetail = React.createClass({
                                                               onRefresh={this.refresh}/>}
                               enableEmptySections={true}
                               dataSource={dataSource}
+                              contentContainerStyle={{paddingBottom: 10}}
                               renderRow={(exercise, sectionID, rowID) =>
                                   <DisplayExerciseBox exercise={exercise}
                                                       _editExercise={this._editExercise}
@@ -112,12 +115,13 @@ const WorkoutDayDetail = React.createClass({
                     />
                 }
 
-                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" hideShadow={true}>
+                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" hideShadow={true} offsetX={10} offsetY={20}>
                     <ActionButton.Item buttonColor='#F22525' title="Delete"
                                        onPress={this._deleteWorkoutDay}>
                         <MaterialIcon name="delete-forever" color="white" size={22}/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={() => console.log('add note')} hideShadow={true}>
+                    <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={() => console.log('add note')}
+                                       hideShadow={true}>
                         <MaterialIcon name="note-add" color="white" size={22}/>
                     </ActionButton.Item>
                     <ActionButton.Item buttonColor='#3498db' title="Add Exercise" hideShadow={true}
@@ -136,8 +140,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     dayTitle: {
-        fontSize: getFontSize(38),
-        fontFamily: 'OpenSans-Bold',
+        fontSize: getFontSize(30),
+        fontFamily: 'OpenSans-SemiBold',
         textAlign: 'center',
         borderBottomWidth: .5,
         borderColor: '#e1e3df',
@@ -152,6 +156,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         alignItems: 'center',
         padding: 20,
+        paddingBottom: 10,
 
     }
 });

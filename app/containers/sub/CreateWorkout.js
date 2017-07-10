@@ -27,7 +27,7 @@ const CreateWorkout = React.createClass({
     },
 
     componentDidMount() {
-        this.props.navigation.setParams({handleSave: this._onSubmit, saveText: 'Next'});
+        this.props.navigation.setParams({handleSave: this._onSubmit});
     },
 
     asyncActions(start, data = {}){

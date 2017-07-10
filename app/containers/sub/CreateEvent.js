@@ -86,7 +86,7 @@ const CreateEvent = React.createClass({
         if (this.refs.form) {
             values = this.refs.form.getValue();
             if (values) {
-                this.props.navigation.setParams({headerTitle: 'Select Users to Invite', saveText: 'Submit'});
+                this.props.navigation.setParams({headerTitle: 'Select Users to Invite', saveText: null});
                 this.setState({step: 2});
             }
         } else if (this.state.selected.length > 0) {
@@ -119,7 +119,7 @@ const CreateEvent = React.createClass({
     },
 
     _cancel() {
-        if (this.state.step == 1) {
+        if (this.state.step === 1) {
             this._back();
         } else {
             this.props.navigation.setParams({headerTitle: 'Create Event'});

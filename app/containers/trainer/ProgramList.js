@@ -31,7 +31,7 @@ const ProgramList = React.createClass({
     },
 
     getNeeded(refresh = false) {
-        if (this.props.RequestUser.type == 1) {
+        if (this.props.RequestUser.type === 1) {
             this.props.getSchedules('?template=true', refresh);
         }
     },
@@ -49,7 +49,6 @@ const ProgramList = React.createClass({
     },
 
     renderRow(schedule) {
-        console.log(schedule)
         return (
             <TouchableOpacity style={styles.link}
                               onPress={this._redirect.bind(null, 'EditSchedule', {scheduleId: schedule.id})}>
