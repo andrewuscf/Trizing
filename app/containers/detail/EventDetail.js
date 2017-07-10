@@ -50,7 +50,7 @@ const EventDetail = React.createClass({
             end_time = moment.utc(occurrence.end_time).local();
         }
         return (
-            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
+            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle} showsVerticalScrollIndicator={false}>
                 {start_time ?
                     <Text style={styles.eventDate}>
                         {start_time.format('ddd MMM DD, h:mm A ')} - {end_time.format('h:mm A')}

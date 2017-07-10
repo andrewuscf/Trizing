@@ -64,7 +64,7 @@ const Notifications = React.createClass({
             );
         }
         return (
-            <ScrollView contentContainerStyle={styles.scrollContainer}
+            <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}>
                 <View style={styles.noRequests}>
                     <Icon name="comments-o" size={60}

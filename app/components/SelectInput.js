@@ -59,7 +59,7 @@ const SelectInput = React.createClass({
                     }}
                     visible={this.state.showOverlay}>
                     <View style={styles.popup}>
-                        <ScrollView  contentContainerStyle={styles.popupContainer}>
+                        <ScrollView  contentContainerStyle={styles.popupContainer} showsVerticalScrollIndicator={false}>
                             {optionslist}
                         </ScrollView>
                         <TouchableOpacity activeOpacity={1} style={[styles.itemView, {marginTop: 10, marginBottom: 10, borderRadius: 10}]}

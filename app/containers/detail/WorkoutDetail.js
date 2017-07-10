@@ -33,7 +33,7 @@ const WorkoutDetail = React.createClass({
         });
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
-                        contentContainerStyle={styles.contentContainerStyle}>
+                        contentContainerStyle={styles.contentContainerStyle} showsVerticalScrollIndicator={false}>
                 <View style={{marginBottom: 10}}>
                     {workout_days}
                 </View>

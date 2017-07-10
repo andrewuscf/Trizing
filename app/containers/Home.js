@@ -281,7 +281,7 @@ const Home = React.createClass({
 
         return (
             <View style={GlobalStyle.noHeaderContainer}>
-                <ScrollView ref='home_scroll'
+                <ScrollView ref='home_scroll' showsVerticalScrollIndicator={false}
                             refreshControl={<RefreshControl refreshing={this.props.Refreshing}
                                                             onRefresh={() => this.getNeeded(true)}/>}
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>

@@ -36,6 +36,7 @@ const CreateNote = React.createClass({
         return (
             <View style={{flex: 1}}>
                 <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
+                            showsVerticalScrollIndicator={false}
                             contentContainerStyle={styles.contentContainerStyle}>
 
                     <View style={{marginBottom: 10}}>

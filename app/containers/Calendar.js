@@ -51,6 +51,7 @@ const Calendar = React.createClass({
             content = (
                 <ScrollView contentContainerStyle={styles.scrollContainer} ref="calendar_list"
                             style={GlobalStyle.noHeaderContainer}
+                            showsVerticalScrollIndicator={false}
                             refreshControl={<RefreshControl refreshing={this.props.Refreshing}
                                                             onRefresh={this._refresh}/>}>
                     <View style={styles.noRequests}>

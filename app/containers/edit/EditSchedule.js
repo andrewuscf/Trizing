@@ -105,6 +105,7 @@ const EditSchedule = React.createClass({
         return (
             <View style={styles.flexCenter}>
                 <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
+                            showsVerticalScrollIndicator={false}
                             contentContainerStyle={styles.contentContainerStyle}>
 
                     <View style={{marginBottom: 10}}>

@@ -186,7 +186,7 @@ const CreateEvent = React.createClass({
         return (
             <View style={styles.flexCenter}>
                 {this.state.step == 1 ?
-                    <ScrollView style={{margin: 10}}>
+                    <ScrollView style={{margin: 10}} showsVerticalScrollIndicator={false}>
                         <Form
                             ref="form"
                             type={Event}
@@ -196,7 +196,7 @@ const CreateEvent = React.createClass({
                         />
                     </ScrollView>
                     :
-                    <ScrollView style={{paddingTop: 20}}
+                    <ScrollView style={{paddingTop: 20}} showsVerticalScrollIndicator={false}
                                 contentContainerStyle={{flexWrap: 'wrap', flexDirection: 'row'}}>
                         {this.props.Clients.map((client, i) => {
                             let image = client.profile.thumbnail ? client.profile.thumbnail : client.profile.avatar;

@@ -132,16 +132,16 @@ const Profile = React.createClass({
             if (user.profile.thumbnail)
                 userImage = user.profile.thumbnail;
             return (
-                <ScrollView style={GlobalStyle.noHeaderContainer} ref="profile_list">
+                <ScrollView style={GlobalStyle.noHeaderContainer} ref="profile_list" showsVerticalScrollIndicator={false}>
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
                         <AvatarImage style={styles.avatar} image={userImage}/>
                         <View>
                             <Text style={styles.name}>
                                 {trunc(`${user.profile.first_name} ${user.profile.last_name}`, 26)}
                             </Text>
-                            {(this.state.request && this.state.request.to_user == this.props.RequestUser.id) ?
+                            {(this.state.request && this.state.request.to_user === this.props.RequestUser.id) ?
                                 <View style={styles.requestSection}>
-                                    {this.state.request.from_user.type == 1 ?
+                                    {this.state.request.from_user.type === 1 ?
                                         <Text style={styles.requestText}>Wants to be your trainer</Text> :
                                         <Text style={styles.requestText}>Wants to be your client</Text>
                                     }

@@ -18,7 +18,7 @@ const PostDetail = React.createClass({
     render: function () {
         const post = this.props.post;
         return (
-            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
+            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle} showsVerticalScrollIndicator={false}>
                 <Text style={styles.title}>{post.text}</Text>
             </ScrollView>
         )

@@ -84,6 +84,7 @@ const CreateChatRoom = React.createClass({
             <View style={styles.flexCenter}>
 
                 <ScrollView style={{paddingTop: 20}}
+                            showsVerticalScrollIndicator={false}
                             contentContainerStyle={{flexWrap: 'wrap', flexDirection: 'row'}}>
                     {source.map((client, i) => {
                         let image = client.profile.thumbnail ? client.profile.thumbnail : client.profile.avatar;

@@ -76,7 +76,7 @@ const MyProfile = React.createClass({
             if (user.profile.thumbnail)
                 userImage = user.profile.thumbnail;
             return (
-                <ScrollView style={GlobalStyle.noHeaderContainer} ref="profile_list">
+                <ScrollView style={GlobalStyle.noHeaderContainer} ref="profile_list" showsVerticalScrollIndicator={false}>
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
                         <CustomBack  back={this.props.close} right={<TouchableOpacity style={styles.topRightNav}
                                                                                       onPress={this._redirect.bind(null, 'EditProfile', null)}>

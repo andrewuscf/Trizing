@@ -75,6 +75,7 @@ const Chat = React.createClass({
         }
         return (
             <ScrollView contentContainerStyle={styles.scrollContainer} style={GlobalStyle.noHeaderContainer}
+                        showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}>
                 <View style={styles.noRequests}>
                     <MaterialIcon name="message" size={60} color='#b1aea5'/>

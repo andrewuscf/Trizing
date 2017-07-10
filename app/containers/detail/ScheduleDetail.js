@@ -48,7 +48,7 @@ const ScheduleDetail = React.createClass({
         });
         return (
             <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
-                        contentContainerStyle={styles.contentContainerStyle}>
+                        contentContainerStyle={styles.contentContainerStyle} showsVerticalScrollIndicator={false}>
 
                 <View style={{marginBottom: 10}}>
                     {steps}

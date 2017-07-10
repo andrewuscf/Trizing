@@ -128,6 +128,7 @@ const CreateQuestionnaire = React.createClass({
         });
         return (
             <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}
+                        showsVerticalScrollIndicator={false}
                         keyboardShouldPersistTaps="handled">
                 <View style={styles.formContainer}>
                     <Form
