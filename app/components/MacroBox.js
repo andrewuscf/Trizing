@@ -5,7 +5,8 @@ import {
     StyleSheet,
     TouchableOpacity,
     Alert,
-    Keyboard
+    Keyboard,
+    ScrollView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
@@ -90,8 +91,15 @@ const MacroBox = React.createClass({
                         <Icon name="times" size={20} color="red"/>
                     </TouchableOpacity>
                 </View>
-                <Modal isVisible={this.state.showDetails} style={{justifyContent: 'center', backgroundColor: 'white'}}>
-                    {planDays}
+                <Modal isVisible={this.state.showDetails} style={{justifyContent: 'center'}}>
+                    <ScrollView style={styles.innerModal}>
+                        {planDays}
+                    </ScrollView>
+                    <TouchableOpacity onPress={this._onPress} activeOpacity={1}>
+                        <View style={styles.closeButton}>
+                            <Text style={{color: 'grey'}}>Close</Text>
+                        </View>
+                    </TouchableOpacity>
                 </Modal>
             </TouchableOpacity>
         );
@@ -132,7 +140,24 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 0,
         top: 10
-    }
+    },
+    innerModal: {
+        backgroundColor: 'white',
+        borderTopLeftRadius: 4,
+        borderTopRightRadius: 4,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+        padding: 5,
+        marginBottom: 20
+    },
+    closeButton: {
+        backgroundColor: 'white',
+        padding: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 4,
+        borderTopWidth: .5,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+    },
 });
 
 export default MacroBox;

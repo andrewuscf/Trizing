@@ -93,7 +93,8 @@ const MacroBoxDay = React.createClass({
             });
         }
         return (
-            <View style={[GlobalStyle.simpleBottomBorder, {paddingBottom: 10}, this.props.active ? styles.activeBorder: null]}>
+            <View
+                style={[GlobalStyle.simpleBottomBorder, {paddingBottom: 10}, this.props.active ? styles.activeBorder : null]}>
                 <View style={[styles.inputWrap, styles.row]}>
                     {days}
                 </View>
@@ -169,8 +170,8 @@ const styles = StyleSheet.create({
     },
     inputWrap: {
         flex: 1,
+        marginTop: 10,
         marginBottom: 10,
-        // minHeight: 50,
         alignItems: 'center',
         justifyContent: 'center'
     },

@@ -145,8 +145,8 @@ const CreateMacroPlan = React.createClass({
                 </View>
                 {macro_plan_days}
                 {this.state.selectedDays.length < 7 ?
-                    <TouchableOpacity onPress={this.addDay}>
-                        <Text style={styles.addAnotherDay}>Add Day</Text>
+                    <TouchableOpacity onPress={this.addDay} style={styles.addButton}>
+                        <Text style={styles.addAnotherDay}>Add Days</Text>
                     </TouchableOpacity>
                     : null
                 }
@@ -177,18 +177,23 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     addAnotherDay: {
-        height: 35,
-        marginTop: 5,
-        marginBottom: 8,
         color: '#b1aea5',
         fontSize: getFontSize(22),
         lineHeight: getFontSize(26),
         backgroundColor: 'transparent',
         fontFamily: 'OpenSans-Semibold',
-        alignSelf: 'center',
         textDecorationLine: 'underline',
         textDecorationColor: '#b1aea5'
     },
+    addButton: {
+        borderWidth: 1,
+        borderColor: 'black',
+        borderRadius: 20,
+        margin: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: 50
+    }
 });
 
 const stateToProps = (state) => {
