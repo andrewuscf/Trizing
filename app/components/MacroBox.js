@@ -10,6 +10,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 import _ from 'lodash';
+import Modal from 'react-native-modal';
 
 import {getFontSize} from '../actions/utils';
 
@@ -89,7 +90,9 @@ const MacroBox = React.createClass({
                         <Icon name="times" size={20} color="red"/>
                     </TouchableOpacity>
                 </View>
-                {this.state.showDetails ? planDays : null}
+                <Modal isVisible={this.state.showDetails} style={{justifyContent: 'center', backgroundColor: 'white'}}>
+                    {planDays}
+                </Modal>
             </TouchableOpacity>
         );
     }
