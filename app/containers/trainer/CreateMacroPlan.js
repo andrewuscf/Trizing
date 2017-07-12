@@ -11,6 +11,7 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
+import t from 'tcomb-form-native';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {API_ENDPOINT, fetchData, getFontSize, checkStatus} from '../../actions/utils';
@@ -18,6 +19,12 @@ import {API_ENDPOINT, fetchData, getFontSize, checkStatus} from '../../actions/u
 import MacroBoxDay from '../../components/MacroBoxDay';
 import SubmitButton from '../../components/SubmitButton';
 
+
+const Form = t.form.Form;
+
+let MacroPlan = t.struct({
+    name: t.String,
+});
 
 const CreateMacroPlan = React.createClass({
     propTypes: {
@@ -28,10 +35,19 @@ const CreateMacroPlan = React.createClass({
     getInitialState() {
         return {
             disabled: false,
-            name: null,
-            protein: null,
+            value: null,
             macro_plan_days: [{weight: null, fats: null, carbs: null, days: []}],
-            selectedDays: []
+            selectedDays: [],
+            options: {
+                auto: 'placeholder',
+                fields: {
+                    name: {
+                        placeholder: 'Nutrition Plan Name',
+                        maxLength: 35,
+                        autoCapitalize: 'sentences'
+                    },
+                }
+            }
         }
     },
 
@@ -60,12 +76,13 @@ const CreateMacroPlan = React.createClass({
                     this.props.addMacroPlan(responseJson);
                     this.goBack();
                 }
-            }).catch(error=>console.log(error))
+            }).catch(error => console.log(error))
     },
 
     _save() {
         Keyboard.dismiss();
-        if (this.verify()) {
+        let values = this.refs.form.getValue();
+        if (this.verify() && values) {
             // const data = this.state
             const validPlanDays = _.filter(this.state.macro_plan_days, (day) => {
                 if (day.protein && day.carbs && day.fats && day.days.length > 0)
@@ -73,13 +90,10 @@ const CreateMacroPlan = React.createClass({
             });
             this.createMacroPlan({
                 ...this.state,
+                name: values.name,
                 macro_plan_days: validPlanDays,
                 training_plan: this.props.training_plan
             });
-        } else {
-            if (!this.state.name) {
-                this.refs.name.focus();
-            }
         }
     },
 
@@ -98,7 +112,7 @@ const CreateMacroPlan = React.createClass({
     },
 
     verify() {
-        return !!(this.state.name && this.state.macro_plan_days[0] && this.state.macro_plan_days[0].protein
+        return !!(this.state.macro_plan_days[0] && this.state.macro_plan_days[0].protein
         && this.state.macro_plan_days[0].carbs && this.state.macro_plan_days[0].fats
         && this.state.macro_plan_days[0].days.length > 0)
 
@@ -123,6 +137,9 @@ const CreateMacroPlan = React.createClass({
         }
     },
 
+    onChange(value) {
+        this.setState({value});
+    },
 
     render: function () {
         const macro_plan_days = this.state.macro_plan_days.map((question, x) => {
@@ -134,16 +151,13 @@ const CreateMacroPlan = React.createClass({
 
         return (
             <ScrollView style={styles.container}>
-                <View style={styles.inputWrap}>
-                    <TextInput ref="name" style={styles.textInput} autoCapitalize='sentences'
-                               underlineColorAndroid='transparent'
-                               autoCorrect={false}
-                               onChangeText={(text) => this.setState({name: text})}
-                               maxLength={35}
-                               value={this.state.name}
-                               placeholderTextColor="#4d4d4d"
-                               placeholder="Nutrition Plan Name"/>
-                </View>
+                <Form
+                    ref="form"
+                    type={MacroPlan}
+                    options={this.state.options}
+                    onChange={this.onChange}
+                    value={this.state.value}
+                />
                 {macro_plan_days}
                 {this.state.selectedDays.length < 7 ?
                     <TouchableOpacity onPress={this.addDay} style={styles.addButton}>
