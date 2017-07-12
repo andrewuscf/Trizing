@@ -92,7 +92,7 @@ const MacroBox = React.createClass({
                     </TouchableOpacity>
                 </View>
                 <Modal isVisible={this.state.showDetails} style={{justifyContent: 'center'}}>
-                    <ScrollView style={styles.innerModal}>
+                    <ScrollView style={styles.innerModal} showsVerticalScrollIndicator={false}>
                         {planDays}
                     </ScrollView>
                     <TouchableOpacity onPress={this._onPress} activeOpacity={1}>
