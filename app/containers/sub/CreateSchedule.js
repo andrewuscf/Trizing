@@ -90,6 +90,7 @@ const CreateSchedule = React.createClass({
                     label: 'Program Name',
                     placeholder: this.props.training_plan ? `This name will be displayed to your client` : `For example 'HIIT Program'`,
                     onSubmitEditing: () => this._onSubmit(),
+                    maxLength: 100,
                     autoCapitalize: 'sentences'
                 },
             }

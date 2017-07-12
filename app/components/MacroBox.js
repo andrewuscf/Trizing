@@ -123,7 +123,9 @@ const styles = StyleSheet.create({
     },
     details: {
         flexDirection: 'column',
-        paddingLeft: 18
+        paddingLeft: 18,
+        flexWrap: 'wrap',
+        flex:1
     },
     date: {
         fontSize: getFontSize(15),
@@ -134,12 +136,14 @@ const styles = StyleSheet.create({
         lineHeight: getFontSize(26),
         backgroundColor: 'transparent',
         color: '#4d4d4e',
-        fontFamily: 'OpenSans-Semibold'
+        fontFamily: 'OpenSans-Semibold',
+        marginBottom: 5,
+        flex:.9
     },
     edit: {
-        position: 'absolute',
-        right: 0,
-        top: 10
+        flex:.05,
+        paddingLeft:10,
+        paddingRight:10
     },
     innerModal: {
         backgroundColor: 'white',

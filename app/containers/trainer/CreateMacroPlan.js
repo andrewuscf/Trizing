@@ -139,6 +139,7 @@ const CreateMacroPlan = React.createClass({
                                underlineColorAndroid='transparent'
                                autoCorrect={false}
                                onChangeText={(text) => this.setState({name: text})}
+                               maxLength={35}
                                value={this.state.name}
                                placeholderTextColor="#4d4d4d"
                                placeholder="Nutrition Plan Name"/>
