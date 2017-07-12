@@ -50,10 +50,14 @@ const TrainingPlan = React.createClass({
     },
 
     componentDidMount() {
-        if (this.state.tab == 1)
+        if (this.state.tab === 1)
             this.getMacros(true);
-        else if (this.state.tab == 2)
+        else if (this.state.tab === 2)
             this.getClientSchedules(true);
+
+        if (!this.props.Questionnaires.length) {
+            this.props.getQuestionnaires();
+        }
     },
 
     addMacroPlan(data) {

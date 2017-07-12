@@ -169,7 +169,7 @@ const Profile = React.createClass({
                             </MenuOptions>
                         </Menu>
                     </View>
-                        {this.props.RequestUser.id == user.profile.trainer ?
+                        {this.props.RequestUser.id === user.profile.trainer ?
                             <TrainingPlan client={user} UserToken={this.props.UserToken}
                                           openModal={this.createQuestionnaire}
                                           training_plan={user.training_plan}
@@ -193,6 +193,7 @@ const styles = StyleSheet.create({
         marginRight: 20
     },
     userDetail: {
+        paddingTop: 10,
         paddingBottom: 20,
         backgroundColor: 'white',
         flexDirection: 'row'
