@@ -34,13 +34,6 @@ const Feed = React.createClass({
         }
     },
 
-    scrollToTopEvent(args) {
-        if (args.routeName == 'Feed') {
-            const isTrue = true;
-            this.refs.posts_list.scrollTo({y: 0, isTrue});
-        }
-    },
-
     componentDidMount() {
         if (!this.props.Posts.length) {
             this.props.actions.getFeed(true);

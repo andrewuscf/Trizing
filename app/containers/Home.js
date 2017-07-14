@@ -239,19 +239,16 @@ const Home = React.createClass({
                             <Text style={styles.formCalories}>
                                 Calories: {calories}
                             </Text>
-                            {!data.macro_plan_day.logged_today ?
-                                <TouchableOpacity
-                                    onPress={this._redirect.bind(null, 'CreateMacroLog', {
-                                        macro_plan_day: data.macro_plan_day,
-                                        date: this.state.dataDate
-                                    })}
-                                    style={styles.link}>
-                                    <Text style={styles.simpleTitle}>Log Today</Text>
-                                    <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
-                                                  style={styles.linkArrow}/>
-                                </TouchableOpacity>
-                                : null
-                            }
+                            <TouchableOpacity
+                                onPress={this._redirect.bind(null, 'CreateMacroLog', {
+                                    macro_plan_day: data.macro_plan_day,
+                                    date: this.state.dataDate
+                                })}
+                                style={styles.link}>
+                                <Text style={styles.simpleTitle}>Log Today</Text>
+                                <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
+                                              style={styles.linkArrow}/>
+                            </TouchableOpacity>
                         </View>
                         : <View
                             style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>

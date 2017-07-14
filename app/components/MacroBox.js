@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -16,7 +16,6 @@ import Modal from 'react-native-modal';
 import {getFontSize} from '../actions/utils';
 
 import MacroBoxDay from './MacroBoxDay';
-import SubmitButton from './SubmitButton';
 
 
 const MacroBox = React.createClass({
@@ -125,7 +124,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         paddingLeft: 18,
         flexWrap: 'wrap',
-        flex:1
+        flex: 1
     },
     date: {
         fontSize: getFontSize(15),
@@ -138,12 +137,12 @@ const styles = StyleSheet.create({
         color: '#4d4d4e',
         fontFamily: 'OpenSans-Semibold',
         marginBottom: 5,
-        flex:.9
+        flex: .9
     },
     edit: {
-        flex:.05,
-        paddingLeft:10,
-        paddingRight:10
+        flex: .05,
+        paddingLeft: 10,
+        paddingRight: 10
     },
     innerModal: {
         backgroundColor: 'white',

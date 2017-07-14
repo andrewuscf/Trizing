@@ -1,23 +1,18 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     ScrollView,
-    View,
     Text,
     StyleSheet,
     Keyboard,
     TouchableOpacity,
-    TextInput,
 } from 'react-native';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import t from 'tcomb-form-native';
 
-import * as GlobalActions from '../../actions/globalActions';
 import {API_ENDPOINT, fetchData, getFontSize, checkStatus} from '../../actions/utils';
 
 import MacroBoxDay from '../../components/MacroBoxDay';
-import SubmitButton from '../../components/SubmitButton';
 
 
 const Form = t.form.Form;

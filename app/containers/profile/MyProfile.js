@@ -1,22 +1,18 @@
 import React from 'react';
 import {
     StyleSheet,
-    Text,
     View,
-    Alert,
     TouchableOpacity,
     ScrollView,
-    RefreshControl
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import * as ProfileActions from '../../actions/profileActions';
 import {getUser} from '../../actions/globalActions';
 
-import {trunc, getFontSize} from '../../actions/utils';
+import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../actions/utils';
 import GlobalStyle from '../globalStyle';
 
 
@@ -46,18 +42,29 @@ const MyProfile = React.createClass({
     getInitialState() {
         return {
             user: null,
+            duration: 'month',
+            macro_response: null,
+            refreshing: false,
         }
     },
 
     componentDidMount() {
-        console.log('MY profile mounted')
+        // this.getMacroLogs()
     },
 
-    scrollToTopEvent(args) {
-        if (args.routeName == 'MyProfile') {
-            const isTrue = true;
-            this.refs.profile_list.scrollTo({y: 0, isTrue});
-        }
+
+    getMacroLogs() {
+        // macros/logs/
+        fetch(`${API_ENDPOINT}training/macros/logs/?duration=${this.state.duration}`,
+            fetchData('GET', null, this.props.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+            console.log(responseJson)
+                this.setState({
+                    macro_response: responseJson,
+                    refreshing: false
+                })
+            });
     },
 
 
@@ -76,10 +83,11 @@ const MyProfile = React.createClass({
             if (user.profile.thumbnail)
                 userImage = user.profile.thumbnail;
             return (
-                <ScrollView style={GlobalStyle.noHeaderContainer} ref="profile_list" showsVerticalScrollIndicator={false}>
+                <ScrollView style={GlobalStyle.noHeaderContainer} ref="profile_list"
+                            showsVerticalScrollIndicator={false}>
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
-                        <CustomBack  back={this.props.close} right={<TouchableOpacity style={styles.topRightNav}
-                                                                                      onPress={this._redirect.bind(null, 'EditProfile', null)}>
+                        <CustomBack back={this.props.close} right={<TouchableOpacity style={styles.topRightNav}
+                                                                                     onPress={this._redirect.bind(null, 'EditProfile', null)}>
                             <CustomIcon name="settings" size={getFontSize(30)} color='#333333'/>
                         </TouchableOpacity>}/>
                         <AvatarImage style={styles.avatar} image={userImage} cache={true}/>

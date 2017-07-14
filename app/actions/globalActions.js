@@ -441,24 +441,27 @@ export function deleteSet(id) {
 }
 
 
-export function addEditMacroLog(data, asyncActions = null) {
-    asyncActions(true);
-    let url = `${API_ENDPOINT}training/macros/logs/`;
-    let method = 'POST';
-    if (data.id) {
-        url = `${API_ENDPOINT}training/macro/log/${data.id}/`;
-        method = 'PATCH';
-    }
-    return (dispatch, getState) => {
-        return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
-            .then((responseJson) => {
-                if (method == 'POST')
-                    return dispatch({type: types.CREATE_MACRO_LOG, response: responseJson});
-                else
-                    return dispatch({type: types.EDIT_MACRO_LOG, response: responseJson});
-            }).done(() => asyncActions(false));
-    }
-}
+// export function addEditMacroLog(data, asyncActions) {
+//     let url = `${API_ENDPOINT}training/macros/logs/`;
+//     let method = 'POST';
+//     if (data.id) {
+//         url = `${API_ENDPOINT}training/macro/log/${data.id}/`;
+//         method = 'PATCH';
+//     }
+//     return (dispatch, getState) => {
+//         return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
+//             .then((responseJson) => {
+//             console.log(responseJson)
+//                 if (responseJson.id) asyncActions(true);
+//                 else asyncActions(false);
+//
+//                 if (method === 'POST')
+//                     return dispatch({type: types.CREATE_MACRO_LOG, response: responseJson});
+//                 else
+//                     return dispatch({type: types.EDIT_MACRO_LOG, response: responseJson});
+//             }).catch((error) => asyncActions(false));
+//     }
+// }
 
 export function logSets(data, asyncActions) {
     asyncActions(true);

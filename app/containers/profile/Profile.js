@@ -56,14 +56,6 @@ const Profile = React.createClass({
         }
     },
 
-    scrollToTopEvent(args) {
-        if (args.routeName == 'Profile') {
-            const isTrue = true;
-            this.refs.profile_list.scrollTo({y: 0, isTrue});
-        }
-    },
-
-
     componentDidMount() {
         this.getUser();
     },

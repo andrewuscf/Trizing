@@ -1,16 +1,20 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
+    ListView,
+    Platform
 } from 'react-native';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import moment from 'moment';
+import DropdownAlert from 'react-native-dropdownalert';
 
-import * as GlobalActions from '../../actions/globalActions';
-import {getFontSize} from '../../actions/utils';
+
+import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../actions/utils';
+
+import MacroLogBox from '../../components/MacroLogBox';
 
 
 const Form = t.form.Form;
@@ -21,9 +25,6 @@ let MacroLog = t.struct({
     protein: t.Number
 });
 
-let myFormatFunction = (format, date) => {
-    return moment(date).format(format);
-};
 
 const CreateMacroLog = React.createClass({
     propTypes: {
@@ -34,36 +35,71 @@ const CreateMacroLog = React.createClass({
     getInitialState() {
         return {
             value: null,
-            date: this.props.date ? this.props.date.format("MMMM DD YYYY") : moment().format("MMMM DD YYYY"),
-            success: false
+            macro_response: {
+                results: [],
+                next: null
+            },
+            refreshing: false,
+            disabled: false,
         }
     },
 
     componentDidMount() {
         this.props.navigation.setParams({handleSave: this._onSubmit});
+        this.getMacroLogs()
     },
 
-    asyncActions(start) {
-        if (start) {
-            // Need to setup some type of failure
+    getMacroLogs() {
+        fetch(`${API_ENDPOINT}training/macros/logs/?date=${this.props.date.format("YYYY-MM-DD")}`,
+            fetchData('GET', null, this.props.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+                this.setState({
+                    macro_response: responseJson,
+                    refreshing: false
+                })
+            });
+    },
+
+    asyncActions(sucess) {
+        if (sucess) {
+            this.dropdown.alertWithType('success', 'Success', 'You have logged your daily nutrition.')
         } else {
-            this.setState({success: true});
-            setTimeout(() => {
-                this.setState({success: false});
-                this.props.navigation.goBack();
-            }, 2000);
+            this.dropdown.alertWithType('error', 'Error', "Couldn't log nutrition.")
         }
+        this.setState({disabled: false});
     },
 
 
     _onSubmit() {
         let values = this.refs.form.getValue();
-        if (values) {
+        if (!this.state.disabled && values) {
+            this.setState({disabled: true});
             values = {
                 ...values,
-                macro_plan_day: this.props.macro_plan_day.id
+                macro_plan_day: this.props.macro_plan_day.id,
+                date: this.props.date.format("YYYY-MM-DD")
             };
-            this.props.actions.addEditMacroLog(values, this.asyncActions);
+
+            fetch(`${API_ENDPOINT}training/macros/logs/`,
+                fetchData('POST', JSON.stringify(values), this.props.UserToken)).then(checkStatus)
+                .then((responseJson) => {
+                    if (responseJson.id) {
+                        this.asyncActions(true);
+                        this.setState({
+                            macro_response: {
+                                ...this.state.macro_response,
+                                results: [
+                                    responseJson,
+                                    ...this.state.macro_response.results
+                                ]
+                            }
+                        })
+                    } else {
+                        this.asyncActions(false);
+                    }
+
+                }).catch((error) => this.asyncActions(false));
         }
     },
 
@@ -71,7 +107,7 @@ const CreateMacroLog = React.createClass({
         this.setState({value});
     },
 
-    render: function () {
+    renderHeader() {
         let options = {
             fields: {
                 fats: {
@@ -91,16 +127,7 @@ const CreateMacroLog = React.createClass({
         const carbs = (this.props.macro_plan_day.carbs) ? this.props.macro_plan_day.carbs : 0;
         // calories = (9 * fats) + (4 * protein) + (4 * carbs);
         return (
-            <View style={styles.flexCenter}>
-                {this.state.success ?
-                    <View style={{flex: .1, backgroundColor: 'green', alignItems: 'center', justifyContent: 'center'}}>
-                        <Text style={{color: 'white', fontSize: getFontSize(24)}}>
-                            Success
-                        </Text>
-                    </View>
-                    :
-                    null
-                }
+            <View>
                 <Text style={[styles.title]}>Nutrition for the day</Text>
                 <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center', paddingTop: 10}]}>
                     <View style={styles.details}>
@@ -125,6 +152,26 @@ const CreateMacroLog = React.createClass({
                         value={this.state.value}
                     />
                 </View>
+                <Text>Logs</Text>
+            </View>
+        )
+    },
+
+    renderRow(log, set, key) {
+        return <MacroLogBox log={log} isLast={key == this.state.macro_response.results.length-1}/>
+    },
+
+    render() {
+
+        const ListData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows(this.state.macro_response.results);
+        return (
+            <View style={styles.flexCenter}>
+                <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                          enableEmptySections={true} dataSource={ListData} showsVerticalScrollIndicator={false}
+                          renderHeader={this.renderHeader}
+                          renderRow={this.renderRow}
+                />
+                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
         )
     }
@@ -169,17 +216,14 @@ const styles = StyleSheet.create({
         paddingBottom: 3,
         alignItems: 'center'
     },
+
 });
 
 
 const stateToProps = (state) => {
-    return state.Global;
-};
-
-const dispatchToProps = (dispatch) => {
     return {
-        actions: bindActionCreators(GlobalActions, dispatch)
-    }
+        UserToken: state.Global.UserToken
+    };
 };
 
-export default connect(stateToProps, dispatchToProps)(CreateMacroLog);
+export default connect(stateToProps, null)(CreateMacroLog);
