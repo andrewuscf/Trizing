@@ -10,6 +10,7 @@ import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import moment from 'moment';
 import DropdownAlert from 'react-native-dropdownalert';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 
 import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../actions/utils';
@@ -61,9 +62,10 @@ const CreateMacroLog = React.createClass({
             });
     },
 
-    asyncActions(sucess) {
-        if (sucess) {
-            this.dropdown.alertWithType('success', 'Success', 'You have logged your daily nutrition.')
+    asyncActions(success) {
+        if (success) {
+            this.dropdown.alertWithType('success', 'Success', 'You have logged your daily nutrition.');
+            this.setState({value: null});
         } else {
             this.dropdown.alertWithType('error', 'Error', "Couldn't log nutrition.")
         }
@@ -72,7 +74,7 @@ const CreateMacroLog = React.createClass({
 
 
     _onSubmit() {
-        let values = this.refs.form.getValue();
+        let values = this.form.getValue();
         if (!this.state.disabled && values) {
             this.setState({disabled: true});
             values = {
@@ -111,10 +113,10 @@ const CreateMacroLog = React.createClass({
         let options = {
             fields: {
                 fats: {
-                    onSubmitEditing: () => this.refs.form.getComponent('carbs').refs.input.focus()
+                    onSubmitEditing: () => this.form.getComponent('carbs').refs.input.focus()
                 },
                 carbs: {
-                    onSubmitEditing: () => this.refs.form.getComponent('protein').refs.input.focus()
+                    onSubmitEditing: () => this.form.getComponent('protein').refs.input.focus()
                 },
                 protein: {
                     onSubmitEditing: () => this._onSubmit()
@@ -128,7 +130,6 @@ const CreateMacroLog = React.createClass({
         // calories = (9 * fats) + (4 * protein) + (4 * carbs);
         return (
             <View>
-                <Text style={[styles.title]}>Nutrition for the day</Text>
                 <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center', paddingTop: 10}]}>
                     <View style={styles.details}>
                         <Text style={styles.sectionTitle}>Fats</Text>
@@ -145,14 +146,15 @@ const CreateMacroLog = React.createClass({
                 </View>
                 <View style={{margin: 10}}>
                     <Form
-                        ref="form"
+                        ref={(form)=> this.form = form}
                         type={MacroLog}
                         options={options}
                         onChange={this.onChange}
                         value={this.state.value}
                     />
                 </View>
-                <Text>Logs</Text>
+                {this.totals()}
+                <Text style={styles.title}>Logs</Text>
             </View>
         )
     },
@@ -161,18 +163,53 @@ const CreateMacroLog = React.createClass({
         return <MacroLogBox log={log} isLast={key == this.state.macro_response.results.length-1}/>
     },
 
+    totals(){
+        let fats = 0;
+        let carbs = 0;
+        let protein = 0;
+        this.state.macro_response.results.forEach((log)=> {
+            fats += log.fats;
+            carbs += log.carbs;
+            protein += log.protein;
+        });
+        let calories =  (9 * fats) + (4 * protein) + (4 * carbs);
+        return (
+            <View>
+                <Text style={styles.title}>Daily Total</Text>
+                <View style={styles.totalBox}>
+                    <View>
+                        <Text>Fats</Text>
+                        <Text>{fats}</Text>
+                    </View>
+                    <View>
+                        <Text>Carbs</Text>
+                        <Text>{carbs}</Text>
+                    </View>
+                    <View>
+                        <Text>Protein</Text>
+                        <Text>{protein}</Text>
+                    </View>
+                    <View>
+                        <Text>Calories</Text>
+                        <Text>{calories}</Text>
+                    </View>
+                </View>
+            </View>
+        )
+    },
+
     render() {
 
         const ListData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows(this.state.macro_response.results);
         return (
-            <View style={styles.flexCenter}>
+            <KeyboardAwareScrollView style={styles.flexCenter}>
                 <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                           enableEmptySections={true} dataSource={ListData} showsVerticalScrollIndicator={false}
                           renderHeader={this.renderHeader}
                           renderRow={this.renderRow}
                 />
                 <DropdownAlert ref={(ref) => this.dropdown = ref}/>
-            </View>
+            </KeyboardAwareScrollView>
         )
     }
 });
@@ -197,8 +234,8 @@ const styles = StyleSheet.create({
     title: {
         fontSize: getFontSize(26),
         fontFamily: 'OpenSans-Bold',
-        textAlign: 'center',
-        marginTop: 20
+        marginLeft: 10,
+        color: '#1DBC8A',
     },
     row: {
         flexDirection: 'row',
@@ -216,7 +253,14 @@ const styles = StyleSheet.create({
         paddingBottom: 3,
         alignItems: 'center'
     },
-
+    totalBox: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        marginRight: 10,
+        marginLeft: 10,
+        flexDirection:'row',
+        justifyContent:'space-between'
+    }
 });
 
 

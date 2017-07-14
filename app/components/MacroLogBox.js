@@ -17,6 +17,7 @@ export default React.createClass({
     render() {
         const macroLog = this.props.log;
         console.log(this.props.isLast)
+        let calories =  (9 * macroLog.fats) + (4 * macroLog.protein) + (4 * macroLog.carbs);
         return (
             <View style={[styles.box, this.props.isLast ? {borderBottomWidth: 1}: null ]}>
                 <View>
@@ -30,6 +31,10 @@ export default React.createClass({
                 <View>
                     <Text>Protein</Text>
                     <Text>{macroLog.protein}</Text>
+                </View>
+                <View>
+                    <Text>Calories</Text>
+                    <Text>{calories}</Text>
                 </View>
             </View>
         );
