@@ -22,7 +22,7 @@ import {
     MenuTrigger,
 } from 'react-native-popup-menu';
 import _ from 'lodash';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {getFontSize, resetNav} from '../../actions/utils';
 
@@ -84,7 +84,7 @@ const EditProfile = React.createClass({
                 }
             })
         }
-        if (prevProps.RequestUser && prevProps.RequestUser.profile.completed != this.props.RequestUser.profile.completed) {
+        if (prevProps.RequestUser && prevProps.RequestUser.profile.completed !== this.props.RequestUser.profile.completed) {
             this.props.navigation.dispatch(resetNav('Main'));
         }
     },
@@ -227,8 +227,6 @@ const EditProfile = React.createClass({
             } else if (user.profile.avatar) {
                 userImage = user.profile.avatar;
             }
-            console.log(userImage)
-
             let Profile = t.struct({
                 username: t.String,
                 first_name: t.String,
@@ -247,54 +245,52 @@ const EditProfile = React.createClass({
 
             return (
                 <View style={styles.mainContainer}>
-                    {this.state.progress != 0 ?
+                    {this.state.progress !== 0 ?
                         <Bar progress={this.state.progress} width={deviceWidth} height={3} borderRadius={0}/>
                         : null
                     }
 
-                    <KeyboardAwareScrollView ref='_scrollView' keyboardDismissMode='interactive' style={styles.mainContainer}>
-                        <View style={styles.mainContent}>
-                            <Menu style={{justifyContent: 'center', alignItems: 'center', paddingBottom: 30}}>
-                                <MenuTrigger>
-                                    <AvatarImage image={userImage}
-                                                 style={[styles.avatar, this.state.imageError ? {
-                                                         borderColor: 'red',
-                                                         borderWidth: 1
-                                                     } : null]}/>
-                                    <Text style={styles.changePhotoText}>
-                                        Change Profile Photo
-                                    </Text>
-                                </MenuTrigger>
-                                <MenuOptions
-                                    optionsContainerStyle={{alignSelf: 'center', width: 300, marginTop: 120}}>
-                                    <MenuOption
-                                        style={[styles.menuOption, {borderBottomWidth: 1, borderColor: 'grey'}]}
-                                        onSelect={this.toggleRoll} text='From Camera Roll'/>
-                                    <MenuOption style={[styles.menuOption]}
-                                                onSelect={this.toggleCamera}>
-                                        <Text>Take New Photo</Text>
-                                    </MenuOption>
+                    <KeyboardAwareScrollView ref='_scrollView' keyboardDismissMode='interactive'
+                                             style={styles.mainContainer}>
+                        <Menu style={styles.menuStyling}>
+                            <MenuTrigger>
+                                <AvatarImage image={userImage}
+                                             style={[styles.avatar, this.state.imageError ? {
+                                                 borderColor: 'red',
+                                                 borderWidth: 1
+                                             } : null]}/>
+                                <Text style={styles.changePhotoText}>
+                                    Change Profile Photo
+                                </Text>
+                            </MenuTrigger>
+                            <MenuOptions
+                                optionsContainerStyle={{alignSelf: 'center', width: 300, marginTop: 120}}>
+                                <MenuOption
+                                    style={[styles.menuOption, {borderBottomWidth: 1, borderColor: 'grey'}]}
+                                    onSelect={this.toggleRoll} text='From Camera Roll'/>
+                                <MenuOption style={[styles.menuOption]}
+                                            onSelect={this.toggleCamera}>
+                                    <Text>Take New Photo</Text>
+                                </MenuOption>
 
-                                </MenuOptions>
-                            </Menu>
+                            </MenuOptions>
+                        </Menu>
 
-                            <Text style={styles.sectionTitle}>Profile</Text>
+                        <View style={styles.hr}/>
 
-                            <Form
-                                ref="form"
-                                type={Profile}
-                                options={options}
-                                value={this.state.value}
-                                onChange={this.onChange}
-                            />
+                        <Form
+                            ref="form"
+                            type={Profile}
+                            options={options}
+                            value={this.state.value}
+                            onChange={this.onChange}
+                        />
 
-                            <Text style={styles.sectionTitle}>Account</Text>
 
-                            <TouchableOpacity style={styles.element} onPress={this._logOut}>
-                                <Text style={styles.elementFont}>Log out</Text>
-                            </TouchableOpacity>
+                        <TouchableOpacity style={styles.element} onPress={this._logOut}>
+                            <Text style={styles.elementFont}>Log out</Text>
+                        </TouchableOpacity>
 
-                        </View>
                     </KeyboardAwareScrollView>
 
 
@@ -317,8 +313,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white'
     },
-    mainContent: {
-        margin: 10
+    menuStyling: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: 30,
+        marginTop: 20
     },
     avatar: {
         alignSelf: 'center',
@@ -326,12 +325,9 @@ const styles = StyleSheet.create({
         width: 80,
         borderRadius: 40,
     },
-    button: {
-        margin: 20
-    },
-    submitText: {
-        color: 'white',
-        fontSize: 15,
+    hr: {
+        borderColor: '#e1e3df',
+        borderBottomWidth: 1,
     },
     menuOption: {
         height: 50,
@@ -341,13 +337,17 @@ const styles = StyleSheet.create({
     element: {
         borderColor: '#e1e3df',
         borderBottomWidth: 1,
+        borderTopWidth: 1,
         paddingTop: 10,
         paddingBottom: 10,
         justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 30
     },
     elementFont: {
         fontSize: 17,
         fontWeight: '500',
+        color: '#3478f6'
     },
     sectionTitle: {
         fontSize: getFontSize(30),
@@ -382,6 +382,8 @@ stylesheet.formGroup = {
         flexDirection: 'row',
         borderColor: '#e1e3df',
         borderBottomWidth: 1,
+        marginLeft: 10,
+        marginBottom: 0
     },
     error: {
         ...stylesheet.formGroup.error,
