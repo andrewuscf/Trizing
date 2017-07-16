@@ -6,7 +6,8 @@ import {
     Alert,
     Keyboard,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    Platform
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import t from 'tcomb-form-native';
@@ -31,6 +32,7 @@ import {removeToken} from '../../actions/globalActions';
 import AvatarImage from '../../components/AvatarImage';
 import {EMPTY_AVATAR} from '../../assets/constants';
 import Loading from '../../components/Loading';
+import {ModalPicker} from '../../components/ModalPicker';
 
 
 const {width: deviceWidth} = Dimensions.get('window');
@@ -197,7 +199,7 @@ const EditProfile = React.createClass({
             fields: {
                 type: {
                     nullOption: {value: '', text: 'Choose a Profile Type'},
-                    error: `Please select a type`
+                    factory: Platform.OS == 'ios' ? ModalPicker : null,
                 },
                 username: {
                     onSubmitEditing: () => this.refs.form.getComponent('first_name').refs.input.focus(),
@@ -381,12 +383,9 @@ stylesheet.formGroup = {
         flexDirection: 'row',
         borderColor: '#e1e3df',
         borderBottomWidth: 1,
-        marginLeft: 10,
-        marginBottom: 0
     },
     error: {
         ...stylesheet.formGroup.error,
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
@@ -431,17 +430,28 @@ stylesheet.textboxView = {
     }
 };
 
-stylesheet.controlLabel = {
-    ...stylesheet.controlLabel,
-    normal: {
-        ...stylesheet.controlLabel.normal,
-        flex: 1
-    },
-    error: {
-        ...stylesheet.controlLabel.error,
-        flex: 1
-    }
-};
+
+stylesheet.pickerTouchable.normal.flex = 1;
+stylesheet.pickerTouchable.normal.justifyContent = 'center';
+stylesheet.pickerTouchable.error.flex = 1;
+stylesheet.pickerTouchable.error.justifyContent = 'center';
+
+stylesheet.pickerContainer.normal.borderWidth = 0;
+stylesheet.pickerContainer.normal.flex = 1;
+stylesheet.pickerContainer.normal.marginBottom = 0;
+
+stylesheet.pickerContainer.error.borderWidth = 0;
+stylesheet.pickerContainer.error.flex = 1;
+stylesheet.pickerContainer.error.marginBottom = 0;
+stylesheet.pickerValue.error.color = '#a94442';
+
+stylesheet.pickerValue.normal.textAlign = 'center';
+stylesheet.pickerValue.error.textAlign = 'center';
+
+stylesheet.controlLabel.normal.flex = 1;
+stylesheet.controlLabel.error.flex = 1;
+stylesheet.controlLabel.normal.marginLeft = 5;
+stylesheet.controlLabel.error.marginLeft = 5;
 
 const stateToProps = (state) => {
     return {

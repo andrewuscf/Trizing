@@ -85,24 +85,47 @@ export class ModalPicker extends t.form.Select {
     getTemplate() {
         return (locals) => {
             const selectedOption = locals.options.find(option => option.value === locals.value);
-            return (<View>
-                <TouchableOpacity style={[styles.button, locals.hasError ? {borderColor:  '#a94442'} : null]}
-                                  onPress={() => {
-                                      this.refs.modal.setVisible(true)
-                                  }}>
-                    <Text style={styles.buttonText}>{selectedOption.text}</Text>
-                </TouchableOpacity>
-                <StandaloneModal ref="modal">
-                    <View style={styles.innerModal}>
-                        <View style={styles.bottom}>
-                            <Text style={styles.okText} onPress={() => {
-                                this.refs.modal.setVisible(false)
-                            }}>Done</Text>
-                            <CollapsiblePickerIOS locals={locals}/>
+
+            const {stylesheet} = locals;
+            let touchableStyle = stylesheet.pickerTouchable.normal;
+            let pickerValue = stylesheet.pickerValue.normal;
+            if (locals.hasError) {
+                touchableStyle = stylesheet.pickerTouchable.error;
+                pickerValue = stylesheet.pickerValue.error;
+            }
+
+            let formGroupStyle = stylesheet.formGroup.normal;
+            let controlLabelStyle = stylesheet.controlLabel.normal;
+
+            if (locals.hasError) {
+                formGroupStyle = stylesheet.formGroup.error;
+                controlLabelStyle = stylesheet.controlLabel.error;
+            }
+            const label = locals.label ? <Text style={controlLabelStyle} onPress={() => {
+                this.refs.modal.setVisible(true)
+            }}>{locals.label}</Text> : null;
+            return (
+                <View style={formGroupStyle}>
+                    {label}
+                    <TouchableOpacity style={[touchableStyle]} onPress={() => {
+                        this.refs.modal.setVisible(true)
+                    }}>
+                        <Text style={pickerValue}>
+                            {selectedOption.text}
+                        </Text>
+                    </TouchableOpacity>
+                    <StandaloneModal ref="modal">
+                        <View style={styles.innerModal}>
+                            <View style={styles.bottom}>
+                                <Text style={styles.okText} onPress={() => {
+                                    this.refs.modal.setVisible(false)
+                                }}>Done</Text>
+                                <CollapsiblePickerIOS locals={locals}/>
+                            </View>
                         </View>
-                    </View>
-                </StandaloneModal>
-            </View>);
+                    </StandaloneModal>
+                </View>
+            );
         };
     }
 }
@@ -129,22 +152,6 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         paddingBottom: 10,
         fontSize: getFontSize(22),
-        // fontFamily: 'Gotham-Black',
         color: 'blue'
     },
-    button: {
-        height: 36,
-        paddingVertical: (Platform.OS === 'ios') ? 7 : 0,
-        paddingHorizontal: 7,
-        borderRadius: 4,
-        borderColor: '#cccccc',
-        borderWidth: 1,
-        marginBottom: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    buttonText: {
-        color: '#000000',
-        fontSize: 17,
-    }
 });

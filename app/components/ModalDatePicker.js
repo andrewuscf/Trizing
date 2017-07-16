@@ -162,22 +162,6 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         paddingBottom: 10,
         fontSize: getFontSize(22),
-        // fontFamily: 'Gotham-Black',
         color: 'blue'
-    },
-    button: {
-        height: 36,
-        paddingVertical: (Platform.OS === 'ios') ? 7 : 0,
-        paddingHorizontal: 7,
-        borderRadius: 4,
-        borderColor: '#cccccc',
-        borderWidth: 1,
-        marginBottom: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    buttonText: {
-        color: '#000000',
-        fontSize: 17,
     }
 });

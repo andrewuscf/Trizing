@@ -291,17 +291,8 @@ stylesheet.textboxView = {
     }
 };
 
-stylesheet.controlLabel = {
-    ...stylesheet.controlLabel,
-    normal: {
-        ...stylesheet.controlLabel.normal,
-        flex: 1
-    },
-    error: {
-        ...stylesheet.controlLabel.error,
-        flex: 1
-    }
-};
+stylesheet.controlLabel.normal.flex = 1;
+stylesheet.controlLabel.error.flex = 1;
 
 
 let myFormatFunction = (format, date) => {
