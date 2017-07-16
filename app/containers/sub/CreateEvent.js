@@ -152,7 +152,6 @@ const CreateEvent = React.createClass({
                 title: {
                     placeholder: 'Event Name',
                     onSubmitEditing: () => Keyboard.dismiss(),
-                    // stylesheet: t.form.Form.stylesheet
                 },
                 date: {
                     label: 'Date*',
