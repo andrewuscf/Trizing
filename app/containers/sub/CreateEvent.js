@@ -6,6 +6,7 @@ import {
     Keyboard,
     ScrollView,
     Dimensions,
+    Platform
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -16,28 +17,22 @@ import moment from 'moment';
 import * as CalendarActions from '../../actions/calendarActions';
 import {getFontSize, trunc} from '../../actions/utils';
 
-import AvatarImage from '../../components/AvatarImage';
-
+import {ModalDatePicker} from '../../components/ModalDatePicker';
+import PersonBox from '../../components/PersonBox';
 
 
 function template(locals) {
     return (
         <View>
-            {locals.inputs.title}
+            <View style={{marginBottom: 20}}>
+                {locals.inputs.title}
+            </View>
             {locals.inputs.event_type}
-            <View style={{borderBottomWidth: .5, borderColor: '#aaaaaa', marginBottom: 10}}>
+            <View style={{borderColor: '#e1e3df', borderTopWidth: 1}}>
                 {locals.inputs.date}
             </View>
-            <View style={{flexDirection: 'row'}}>
-                <View style={{flex: .5, marginRight: 5, borderBottomWidth: .5,
-                    borderColor: '#aaaaaa'}}>
-                    {locals.inputs.start_time}
-                </View>
-                <View style={{flex: .5, borderBottomWidth: .5,
-                    borderColor: '#aaaaaa'}}>
-                    {locals.inputs.end_time}
-                </View>
-            </View>
+            {locals.inputs.start_time}
+            {locals.inputs.end_time}
         </View>
     );
 }
@@ -130,7 +125,7 @@ const CreateEvent = React.createClass({
 
     selectUser(userId) {
         const index = _.indexOf(this.state.selected, userId);
-        if (index != -1) {
+        if (index !== -1) {
             this.setState({
                 selected: [...this.state.selected.slice(0, index), ...this.state.selected.slice(index + 1)]
             });
@@ -150,43 +145,48 @@ const CreateEvent = React.createClass({
 
     render() {
         let options = {
-            i18n: {
-                optional: '',
-                required: '*',
-            },
+            auto: 'none',
             template: template,
+            stylesheet: stylesheet,
             fields: {
                 title: {
-                    label: 'Event title*',
-                    onSubmitEditing: () => Keyboard.dismiss()
+                    placeholder: 'Event Name',
+                    onSubmitEditing: () => Keyboard.dismiss(),
+                    // stylesheet: t.form.Form.stylesheet
                 },
                 date: {
+                    label: 'Date*',
                     mode: 'date',
                     minimumDate: moment().toDate(),
                     config: {
                         format: (date) => myFormatFunction("MMMM DD YYYY", date),
-                    }
+                    },
+                    factory: Platform.OS == 'ios' ? ModalDatePicker : null,
                 },
                 start_time: {
+                    label: 'Start Time*',
                     mode: 'time',
                     minuteInterval: 10,
                     config: {
                         format: (date) => myFormatFunction("h:mma", date),
-                    }
+                    },
+                    factory: Platform.OS == 'ios' ? ModalDatePicker : null,
                 },
                 end_time: {
+                    label: 'End Time*',
                     mode: 'time',
                     config: {
                         format: (date) => myFormatFunction("h:mma", date),
                         minuteInterval: 10,
-                    }
+                    },
+                    factory: Platform.OS == 'ios' ? ModalDatePicker : null,
                 }
             }
         };
         return (
             <View style={styles.flexCenter}>
-                {this.state.step == 1 ?
-                    <ScrollView style={{margin: 10}} showsVerticalScrollIndicator={false}>
+                {this.state.step === 1 ?
+                    <ScrollView showsVerticalScrollIndicator={false}>
                         <Form
                             ref="form"
                             type={Event}
@@ -196,21 +196,11 @@ const CreateEvent = React.createClass({
                         />
                     </ScrollView>
                     :
-                    <ScrollView style={{paddingTop: 20}} showsVerticalScrollIndicator={false}
-                                contentContainerStyle={{flexWrap: 'wrap', flexDirection: 'row'}}>
+                    <ScrollView style={{paddingTop: 20}} showsVerticalScrollIndicator={false}>
                         {this.props.Clients.map((client, i) => {
-                            let image = client.profile.thumbnail ? client.profile.thumbnail : client.profile.avatar;
-                            return (
-                                <View style={styles.inviteBox} key={i}>
-                                    <AvatarImage style={[styles.avatar,
-                                        (_.includes(this.state.selected, client.id)) ? styles.selected : null]}
-                                                 image={image}
-                                                 redirect={this.selectUser.bind(null, client.id)}/>
-                                    <Text style={styles.userText}>
-                                        {trunc(`${client.profile.first_name} ${client.profile.last_name[0]}`.toUpperCase(), 13)}
-                                    </Text>
-                                </View>
-                            )
+                            return <PersonBox key={i} navigate={this.props.navigation.navigate} person={client}
+                                              selected={_.includes(this.state.selected, client.id)}
+                                              selectUser={this.selectUser.bind(null, client.id)}/>;
                         })}
                     </ScrollView>
                 }
@@ -229,28 +219,90 @@ CreateEvent.navigationOptions = ({navigation}) => {
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
+        backgroundColor: '#f1f1f3'
     },
     selected: {
         borderWidth: 2,
         borderColor: 'red',
     },
-    avatar: {
-        height: 80,
-        width: 80,
-        borderRadius: 40
-    },
-    inviteBox: {
-        width: window.width / 3,
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 10
-    },
-    userText: {
-        fontSize: getFontSize(18),
-        marginTop: 5,
-        fontFamily: 'OpenSans-SemiBold',
-    },
 });
+
+const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
+
+// {borderBottomWidth: .5, borderColor: '#aaaaaa', marginBottom: 10}
+
+stylesheet.formGroup = {
+    ...stylesheet.formGroup,
+    normal: {
+        ...stylesheet.formGroup.normal,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderColor: '#e1e3df',
+        borderBottomWidth: 1,
+        marginBottom: 0,
+        backgroundColor: 'white'
+    },
+    error: {
+        ...stylesheet.formGroup.error,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderColor: 'red',
+        borderBottomWidth: 1,
+        marginBottom: 0
+    }
+};
+
+stylesheet.textbox = {
+    ...stylesheet.textbox,
+    normal: {
+        ...stylesheet.textbox.normal,
+        borderWidth: 0,
+        marginBottom: 0,
+    },
+    error: {
+        ...stylesheet.textbox.error,
+        borderWidth: 0,
+        marginBottom: 0,
+    }
+};
+
+stylesheet.textboxView = {
+    ...stylesheet.textboxView,
+    normal: {
+        ...stylesheet.textboxView.normal,
+        borderWidth: 0,
+        borderRadius: 0,
+        borderBottomWidth: 0,
+        flex: 1,
+        backgroundColor: 'transparent',
+        minHeight: 50,
+    },
+    error: {
+        ...stylesheet.textboxView.error,
+        borderWidth: 0,
+        borderRadius: 0,
+        borderBottomWidth: 0,
+        flex: 1,
+        backgroundColor: 'transparent',
+        minHeight: 50,
+    }
+};
+
+stylesheet.controlLabel = {
+    ...stylesheet.controlLabel,
+    normal: {
+        ...stylesheet.controlLabel.normal,
+        flex: 1
+    },
+    error: {
+        ...stylesheet.controlLabel.error,
+        flex: 1
+    }
+};
+
 
 let myFormatFunction = (format, date) => {
     return moment(date).format(format);

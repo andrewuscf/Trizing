@@ -4,14 +4,18 @@ import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {getFontSize} from '../actions/utils';
+import GlobalStyle from '../containers/globalStyle';
+
 import AvatarImage from './AvatarImage';
 
 const PersonBox = React.createClass({
     propTypes: {
         person: React.PropTypes.object.isRequired,
-        RequestUser: React.PropTypes.object.isRequired,
-        removeClient: React.PropTypes.func.isRequired,
-        sendRequest: React.PropTypes.func.isRequired,
+        RequestUser: React.PropTypes.object,
+        removeClient: React.PropTypes.func,
+        sendRequest: React.PropTypes.func,
+        selectUser: React.PropTypes.func,
+        selected: React.PropTypes.bool,
         navigate: React.PropTypes.func.isRequired,
     },
 
@@ -22,7 +26,7 @@ const PersonBox = React.createClass({
     },
 
     _action() {
-        if (this.props.RequestUser.id != this.props.person.profile.trainer) {
+        if (this.props.RequestUser.id !== this.props.person.profile.trainer) {
             this.props.sendRequest({to_user: this.props.person.id});
             this.setState({invited: true});
         }
@@ -41,7 +45,11 @@ const PersonBox = React.createClass({
     },
 
     goToProfile() {
-        this.props.navigate('Profile', {id:this.props.person.id});
+        if (typeof this.props.selectUser !== 'undefined') {
+            this.props.selectUser();
+        } else {
+            this.props.navigate('Profile', {id:this.props.person.id});
+        }
     },
 
 
@@ -55,9 +63,10 @@ const PersonBox = React.createClass({
                     <Text style={styles.userName}>{person.username}</Text>
                     <Text style={styles.title}>{person.profile.first_name} {person.profile.last_name[0]}.</Text>
                 </View>
-                {!this.state.invited ?
-                    person.id != trainer.id ?
-                        trainer.id == person.profile.trainer ?
+                {this.props.selected? <Icon name="circle" size={20} style={GlobalStyle.lightBlueText}/>: null}
+                {!this.state.invited && typeof this.props.sendRequest !== 'undefined' ?
+                    person.id !== trainer.id ?
+                        trainer.id === person.profile.trainer ?
                             <TouchableOpacity activeOpacity={1} onPress={this._removeClient} style={styles.addUser}>
                                 <Icon name="minus-circle" size={30} color='red'/>
                             </TouchableOpacity> :
@@ -82,8 +91,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 10,
         backgroundColor: 'white',
-        marginLeft: 10,
-        marginRight: 10,
+        // marginLeft: 10,
+        // marginRight: 10,
         marginTop: 20
     },
     text: {
