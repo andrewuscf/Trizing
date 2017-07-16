@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import React from 'react';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -7,7 +7,6 @@ import {getFontSize} from '../actions/utils';
 
 import GlobalStyle from '../containers/globalStyle';
 
-import AvatarImage from './AvatarImage';
 
 const EventBox = React.createClass({
     propTypes: {
@@ -36,32 +35,30 @@ const EventBox = React.createClass({
         });
     },
 
-    _onActions() {
-        // console.log('on actions')
-    },
-
 
     render() {
         const occurrence = this.props.occurrence;
         const event = this.props.occurrence.event;
-        let image = event.user.profile.thumbnail ? event.user.profile.thumbnail : event.user.profile.avatar;
         let start_time = moment.utc(occurrence.start_time).local();
+        let end_time = moment.utc(occurrence.end_time).local();
         const attending = event.invited.map((user, i) => {
             return <Text key={i} style={styles.invitedUser}>{i == 0 ? `${user.username}` : `, ${user.username}`}</Text>
         });
+        const color = event.event_type.abbr === 'eve' ? '#9b59b6' : '#FD795B';
         return (
             <TouchableOpacity activeOpacity={.5} onPress={this._onPress}
                               style={[GlobalStyle.simpleBottomBorder, styles.container]}>
                 <View style={styles.eventDate}>
-                    <Text style={styles.eventDateMonth}>{start_time.format("MMM").toUpperCase()}</Text>
-                    <Text style={styles.eventDateDay}>{start_time.date()}</Text>
+                    <Text>{start_time.format('h:mma')}</Text>
+                    <Text style={styles.invitedUser}>{end_time.format('h:mma')}</Text>
+                </View>
+                <View style={{flex: .1, justifyContent: 'center',}}>
+                    <View style={{borderColor: color, borderTopWidth: 2, transform: [{rotate: '90deg'}]}}/>
                 </View>
                 <View style={styles.noteInfo}>
                     <View style={styles.noteText}>
                         <Text style={styles.notifText}>
-                            <Text style={styles.firstName}>{event.event_type.label}: {event.title}
-                                <Text style={styles.smallText}> @ {start_time.format('h:mma')}</Text>
-                            </Text>
+                            <Text style={styles.firstName}>{event.title}</Text>
                         </Text>
                         <View style={{flexDirection: 'row'}}>
                             <Icon name="users" size={12} style={styles.userIcon}/>
@@ -89,40 +86,20 @@ const styles = StyleSheet.create({
     },
     noteInfo: {
         flexDirection: 'column',
-        flex: 1,
+        flex: .7,
         flexWrap: 'wrap'
     },
     firstName: {
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'OpenSans-SemiBold',
         color: '#393839'
-    },
-    smallText: {
-        fontFamily: 'OpenSans-Light',
-        color: '#4d4d4e'
     },
     noteText: {
         flexWrap: 'wrap',
         flex: 1,
     },
-    noteAction: {
-        textDecorationLine: 'underline',
-        color: '#393839'
-    },
-    eventDateDay: {
-        fontFamily: 'OpenSans-Bold',
-        fontSize: getFontSize(26),
-        color: '#4d4d4e'
-    },
-    eventDateMonth: {
-        fontFamily: 'OpenSans-Bold',
-        fontSize: getFontSize(14),
-        backgroundColor: 'transparent',
-        color: '#4d4d4e'
-    },
     eventDate: {
-        width: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
+        flex: .2,
+        alignItems: 'flex-end',
     },
     invitedUser: {
         fontFamily: 'OpenSans-Light',

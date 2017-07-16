@@ -7,12 +7,13 @@ import {
     RefreshControl,
     ScrollView,
     Dimensions,
-    TouchableOpacity
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
+import _ from 'lodash';
+import moment from 'moment';
 
 import * as CalendarActions from '../actions/calendarActions';
 
@@ -42,8 +43,40 @@ const Calendar = React.createClass({
         this.props.navigation.navigate('CreateEvent', {event_type: type});
     },
 
+
+    renderRow(occurrence) {
+        return <EventBox occurrence={occurrence} navigate={this.props.navigation.navigate}/>;
+    },
+
+    renderSectionHeader: function (sectionData, category) {
+        if (!sectionData.length) return null;
+        return <View style={[GlobalStyle.simpleBottomBorder]}><Text style={styles.sectionTitle}>{category}</Text></View>;
+    },
+
+    convertToMap() {
+        const eventMap = {};
+        // _.orderBy(this.state.events, 'start_time')
+        _.orderBy(this.props.Events, 'start_time').forEach((occurrence) => {
+            const date = moment.utc(occurrence.start_time).local();
+            let firstDayOfWeek = date.format('ddd, MMMM DD');
+
+            const today = moment();
+            if (date.isSame(today, 'd')) {
+                firstDayOfWeek = `Today - ${firstDayOfWeek}`
+            } else if (date.isSame(today.add(1, 'd'), 'd')) {
+                firstDayOfWeek = `Tomorrow - ${firstDayOfWeek}`
+            }
+            if (!eventMap[firstDayOfWeek]) {
+                eventMap[firstDayOfWeek] = [];
+            }
+            eventMap[firstDayOfWeek].push(occurrence);
+        });
+        return eventMap;
+
+    },
+
     render() {
-        const isTrainer = this.props.RequestUser.type == 1;
+        const isTrainer = this.props.RequestUser.type === 1;
         if (this.props.CalendarIsLoading) return <Loading />;
         let content = null;
         let subMenu = null;
@@ -63,8 +96,11 @@ const Calendar = React.createClass({
                 </ScrollView>
             );
         } else {
-            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-            const dataSource = ds.cloneWithRows(this.props.Events);
+            const ds = new ListView.DataSource({
+                rowHasChanged: (r1, r2) => r1 !== r2,
+                sectionHeaderHasChanged: (s1, s2) => s1 !== s2
+            });
+            const dataSource = ds.cloneWithRowsAndSections(this.convertToMap());
             content = (
                 <ListView ref="calendar_list"
                           showsVerticalScrollIndicator={false}
@@ -74,8 +110,8 @@ const Calendar = React.createClass({
                           enableEmptySections={true}
                           dataSource={dataSource} onEndReached={this.onEndReached}
                           onEndReachedThreshold={Dimensions.get('window').height}
-                          renderRow={(occurrence, i) => <EventBox occurrence={occurrence}
-                                                                  navigate={this.props.navigation.navigate}/>}
+                          renderRow={this.renderRow}
+                          renderSectionHeader={this.renderSectionHeader}
                 />
             )
         }
@@ -115,6 +151,7 @@ const Calendar = React.createClass({
 const styles = StyleSheet.create({
     scrollContainer: {
         flex: 1,
+        backgroundColor: '#f1f1f3'
     },
     noRequests: {
         flex: 1,
@@ -141,11 +178,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    createEventText: {
+    sectionTitle: {
+        paddingTop:5,
+        paddingBottom: 5,
+        paddingLeft: 10,
         fontSize: getFontSize(22),
-        color: '#b1aeb9',
-        fontFamily: 'OpenSans-Semibold',
-        paddingLeft: 10
+        fontFamily: 'OpenSans-Bold',
     }
 });
 
