@@ -94,15 +94,16 @@ const NotificationBox = React.createClass({
                     <AvatarImage goToProfile={this.goToProfile.bind(null, action.actor.id)} image={image} cache={true}/>
                     <View style={styles.noteInfo}>
                         <Text style={styles.notifText}>
-                            <Text style={styles.firstName}>{action.actor.profile.first_name} </Text>
+                            <Text style={styles.firstName}>
+                                {action.actor.profile.first_name} {action.actor.profile.last_name}
+                                <Text style={styles.noteVerb}> {action.verb}
+                                    {action.action_object && action.action_object.event_type ?
+                                        <Text style={styles.noteAction}> {action.action_object.title}</Text>
+                                        : null
+                                    }
+                                </Text>
+                            </Text>
 
-                        </Text>
-                        <Text style={styles.noteVerb}>
-                            {action.verb}
-                            {action.action_object && action.action_object.event_type ?
-                                <Text style={styles.noteAction}> {action.action_object.title}</Text>
-                                : null
-                            }
                         </Text>
                         <View style={styles.timeStamp}>
                             <Text style={styles.timeStampText}>{moment(action.timestamp).fromNow(false)}</Text>
@@ -136,7 +137,6 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(18),
         lineHeight: getFontSize(26),
         flexWrap: 'wrap',
-        // fontSize: getFontSize(22),
     },
     noteInfo: {
         flexDirection: 'column',
