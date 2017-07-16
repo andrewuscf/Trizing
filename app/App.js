@@ -1,11 +1,5 @@
 import React from 'react';
 import {
-    StyleSheet,
-    Text,
-    View,
-    Navigator,
-    AsyncStorage,
-    BackAndroid,
     Platform,
     Alert
 } from 'react-native';
@@ -13,9 +7,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import FCM, {
     FCMEvent,
-    RemoteNotificationResult,
-    WillPresentNotificationResult,
-    NotificationType
 } from 'react-native-fcm';
 import {MenuContext} from 'react-native-popup-menu';
 

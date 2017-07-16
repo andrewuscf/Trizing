@@ -42,7 +42,7 @@ const WorkoutDayDetail = React.createClass({
 
     componentWillMount() {
         const dayOfWeek = _.find(DAYS_OF_WEEK, {id: this.state.workout_day.day});
-        this.props.navigation.setParams({headerTitle: `${trunc(this.getWorkoutDay().name, 14)} (${dayOfWeek.full_day})`});
+        this.props.navigation.setParams({headerTitle: `${trunc(this.getWorkoutDay().name, 14)} (${dayOfWeek.day})`});
     },
 
     componentDidUpdate(prevProps, prevState) {
@@ -51,7 +51,7 @@ const WorkoutDayDetail = React.createClass({
             if (workout_day) {
                 this.setState({workout_day: workout_day});
                 const dayOfWeek = _.find(DAYS_OF_WEEK, {id: this.state.workout_day.day});
-                this.props.navigation.setParams({headerTitle: `${trunc(workout_day.name, 14)} (${dayOfWeek.full_day})`})
+                this.props.navigation.setParams({headerTitle: `${trunc(workout_day.name, 14)} (${dayOfWeek.day})`})
             }
         }
     },

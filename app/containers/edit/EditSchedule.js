@@ -33,7 +33,6 @@ const EditSchedule = React.createClass({
 
     componentDidMount() {
         const schedule = _.find(this.props.Schedules, {id: this.props.scheduleId});
-        console.log(this.props.Schedules)
         if (schedule) {
             this.props.navigation.setParams({headerTitle: schedule.name});
             this.setState({schedule: schedule});
@@ -48,16 +47,13 @@ const EditSchedule = React.createClass({
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.Schedules !== prevProps.Schedules) {
-            console.log(this.props.Schedules, 'UPDATED')
             const schedule = _.find(this.props.Schedules, {id: this.props.scheduleId});
-            console.log(schedule)
             this.props.navigation.setParams({headerTitle: schedule.name});
             this.setState({schedule: schedule});
         }
     },
 
     _createWorkout() {
-        console.log(this.state.schedule)
         this.props.navigation.navigate('CreateWorkout', {scheduleId: this.props.scheduleId});
     },
 

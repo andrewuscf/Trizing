@@ -1,20 +1,23 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     ScrollView,
     View,
     Text,
     StyleSheet,
-    TouchableOpacity,
-    Alert
+    Alert,
+    ListView,
+    Platform
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
 import ActionButton from 'react-native-action-button';
+import moment from 'moment';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
+import GlobalStyle from '../../containers/globalStyle';
 
 import DisplayWorkoutDay from '../../components/DisplayWorkoutDay';
 
@@ -77,33 +80,64 @@ const EditWorkout = React.createClass({
     },
 
 
-    render: function () {
-        let workout_days = (
-            <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
-                <Text>You have no workout days! Create Some!</Text>
+    renderHeader() {
+        const workout = this.state.workout;
+        const created = moment.utc(workout.created_at).local().format('MMMM DD YYYY');
+        return (
+            <View style={[GlobalStyle.simpleBottomBorder, styles.headerContainer]}>
+                <Text style={styles.smallBold}>Duration:
+                    <Text style={styles.notBold}> {workout.duration} Weeks</Text>
+                </Text>
+                <Text style={styles.smallBold}>Created: <Text style={styles.notBold}>{created}</Text></Text>
             </View>
-        );
+        )
+    },
+
+    renderRow(workout_day, index) {
+        const intIndex = parseInt(index);
+        return <DisplayWorkoutDay key={intIndex} _toWorkoutDay={this._toWorkoutDay} workout_day={workout_day}
+                                  dayIndex={intIndex}/>
+    },
+
+    renderFooter(rowCount) {
+        if (rowCount !== 0) return null;
+        return (
+            <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
+                <MaterialIcon name="today" style={[styles.notBold, {fontSize: getFontSize(50), paddingBottom: 20}]}/>
+                <Text style={[styles.notBold, {fontSize: getFontSize(28)}]}>Get started by</Text>
+                <Text style={[styles.notBold, {fontSize: getFontSize(28)}]}>creating workout days</Text>
+            </View>
+        )
+    },
+
+
+    render: function () {
+        let workout_days = [];
         if (this.state.workout && this.state.workout.workout_days.length) {
-            const ordered = _.orderBy(this.state.workout.workout_days, (workout_day) => {
+            workout_days = _.orderBy(this.state.workout.workout_days, (workout_day) => {
                 return workout_day.day
             });
-            workout_days = ordered.map((workout_day, index) => {
-                return <DisplayWorkoutDay key={index} _toWorkoutDay={this._toWorkoutDay} workout_day={workout_day}
-                                          dayIndex={index}/>
-            });
         }
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        let dataSource = ds.cloneWithRows(workout_days);
         return (
-            <View style={{flex: 1}}>
-                <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
-                            showsVerticalScrollIndicator={false}
-                            contentContainerStyle={styles.contentContainerStyle}>
-                    {workout_days}
-                </ScrollView>
+            <View style={{flex: 1, backgroundColor: '#f1f1f3'}}>
+                <ListView removeClippedSubviews={(Platform.OS !== 'ios')}
+                          keyboardShouldPersistTaps="handled"
+                          showsVerticalScrollIndicator={false}
+                          style={[styles.flexCenter]}
+                          contentContainerStyle={{paddingBottom: 20}}
+                          enableEmptySections={true}
+                          dataSource={dataSource}
+                          renderHeader={this.renderHeader}
+                          renderRow={this.renderRow}
+                          renderFooter={this.renderFooter.bind(null, dataSource.getRowCount())}
+                />
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
                     <ActionButton.Item buttonColor='#F22525' title="Delete" onPress={this._deleteWorkout}>
                         <MaterialIcon name="delete-forever" color="white" size={22}/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={()=> console.log('add note')}>
+                    <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={() => console.log('add note')}>
                         <MaterialIcon name="note-add" color="white" size={22}/>
                     </ActionButton.Item>
                     <ActionButton.Item buttonColor='#3498db' title="Add Training Day"
@@ -121,7 +155,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     contentContainerStyle: {
-        margin: 10
+        // margin: 10
     },
     title: {
         fontSize: getFontSize(28),
@@ -129,6 +163,21 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         paddingTop: 10,
         paddingBottom: 10
+    },
+    headerContainer: {
+        paddingTop: 20,
+        paddingBottom: 20,
+        backgroundColor: 'white'
+    },
+    smallBold: {
+        fontSize: getFontSize(18),
+        fontFamily: 'OpenSans-Bold',
+        paddingLeft: 10,
+        paddingBottom: 5
+    },
+    notBold: {
+        color: 'grey',
+        fontFamily: 'OpenSans-Semibold',
     }
 });
 

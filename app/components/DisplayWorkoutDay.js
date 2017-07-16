@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -6,10 +6,15 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import FontIcon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
 
 import {getFontSize} from '../actions/utils';
 import {DAYS_OF_WEEK} from '../assets/constants';
+import GlobalStyle from '../containers/globalStyle';
+
+
+import CustomIcon from '../components/CustomIcon';
 
 
 const DisplayWorkoutDay = React.createClass({
@@ -25,15 +30,21 @@ const DisplayWorkoutDay = React.createClass({
         const dayOfWeek = _.find(DAYS_OF_WEEK, {id: this.props.workout_day.day});
         return (
             <TouchableOpacity onPress={this.props._toWorkoutDay.bind(null, this.props.workout_day.id)}
-                              style={[styles.displayWorkoutBox, this.props.active ? styles.active : null]}>
-                <View style={{alignItems: 'center',flex:.2}}>
-                    {dayOfWeek ?
-                    <Text style={styles.day}>{dayOfWeek.full_day}</Text>
-                        :null
-                    }
-                    <Icon name="today" size={getFontSize(28)} />
+                              style={[styles.displayWorkoutBox, GlobalStyle.simpleBottomBorder, GlobalStyle.simpleTopBorder]}>
+                <View style={styles.titleView}>
+                    <Text style={styles.simpleTitle}>{this.props.workout_day.name}</Text>
+                    {this.props.active ? <FontIcon name="circle" size={20} style={GlobalStyle.lightBlueText}/> : null}
                 </View>
-                <Text style={styles.simpleTitle}>{this.props.workout_day.name}</Text>
+                <View style={styles.dateSection}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', flex: .3}}>
+                        <Icon name="today" style={styles.day}/><Text style={styles.day}> {dayOfWeek.full_day}</Text>
+                    </View>
+                    <View style={{flexDirection: 'row', alignItems: 'center', flex: .7}}>
+                        <CustomIcon name="weight" style={styles.day}/>
+                        <Text style={[styles.day]}> {this.props.workout_day.exercises.length} {this.props.workout_day.exercises.length === 1 ? 'Exercise' : 'Exercises'}
+                        </Text>
+                    </View>
+                </View>
             </TouchableOpacity>
         )
     }
@@ -43,30 +54,37 @@ const DisplayWorkoutDay = React.createClass({
 const styles = StyleSheet.create({
     displayWorkoutBox: {
         flex: 1,
-        margin: 5,
+        marginTop: 5,
         borderColor: '#e1e3df',
-        borderWidth: 1,
-        borderRadius: 10,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        padding: 10,
+        backgroundColor: 'white',
+    },
+    dateSection: {
+        marginLeft: 5,
+        marginRight: 5,
+        marginTop: 5,
+        paddingTop: 5,
+        borderColor: '#e1e3df',
+        borderTopWidth: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 10,
-
-        backgroundColor: 'white',
-        marginBottom: 5,
+    },
+    titleView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     simpleTitle: {
-        flex: .6,
         fontSize: getFontSize(28),
         fontFamily: 'OpenSans-Bold',
     },
     day: {
         fontSize: getFontSize(18),
         fontFamily: 'OpenSans-Semibold',
-        paddingBottom: 5
+        color: 'grey'
     },
-    active: {
-        borderColor: 'green',
-    }
 });
 
 

@@ -4,7 +4,6 @@ import {
     Text,
     View,
     TouchableOpacity,
-    RefreshControl,
     ListView,
     Platform,
     Dimensions
@@ -24,7 +23,6 @@ import {API_ENDPOINT, fetchData, getFontSize, checkStatus} from '../../actions/u
 import CustomIcon from '../../components/CustomIcon';
 import Loading from '../../components/Loading';
 import MacroBox from '../../components/MacroBox';
-import QuestionnaireBox from '../../components/QuestionnaireBox';
 import SelectInput from '../../components/SelectInput';
 import WorkoutProgramBox from '../../components/WorkoutProgramBox';
 
