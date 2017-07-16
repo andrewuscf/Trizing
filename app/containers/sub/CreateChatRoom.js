@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
-    Keyboard,
     ScrollView,
     Dimensions
 } from 'react-native';
@@ -15,6 +14,7 @@ import * as chatActions from '../../actions/chatActions';
 import {getFontSize, trunc} from '../../actions/utils';
 
 import AvatarImage from '../../components/AvatarImage';
+import PersonBox from '../../components/PersonBox';
 
 
 const window = Dimensions.get('window');
@@ -35,7 +35,7 @@ const CreateChatRoom = React.createClass({
     },
 
 
-    asyncActions(start, chatroom= null){
+    asyncActions(start, chatroom = null){
         if (start) {
             // Need to provide messages to select users.
         } else {
@@ -76,32 +76,20 @@ const CreateChatRoom = React.createClass({
 
     render: function () {
         let source = this.props.Clients;
-        if (this.props.RequestUser.type == 2) {
+        if (this.props.RequestUser.type === 2) {
             source = this.props.Team
         }
 
         return (
-            <View style={styles.flexCenter}>
 
-                <ScrollView style={{paddingTop: 20}}
-                            showsVerticalScrollIndicator={false}
-                            contentContainerStyle={{flexWrap: 'wrap', flexDirection: 'row'}}>
-                    {source.map((client, i) => {
-                        let image = client.profile.thumbnail ? client.profile.thumbnail : client.profile.avatar;
-                        return (
-                            <View style={styles.inviteBox} key={i}>
-                                <AvatarImage style={[styles.avatar,
-                                    (_.includes(this.state.selected, client.id)) ? styles.selected : null]}
-                                             image={image}
-                                             redirect={this.selectUser.bind(null, client.id)}/>
-                                <Text style={styles.userText}>
-                                    {trunc(`${client.profile.first_name} ${client.profile.last_name[0]}`.toUpperCase(), 13)}
-                                </Text>
-                            </View>
-                        )
-                    })}
-                </ScrollView>
-            </View>
+            <ScrollView style={styles.flexCenter} showsVerticalScrollIndicator={false}>
+                {source.map((client, i) => {
+                    return <PersonBox key={i} navigate={this.props.navigation.navigate} person={client}
+                                      selected={_.includes(this.state.selected, client.id)}
+                                      selectUser={this.selectUser.bind(null, client.id)}/>;
+
+                })}
+            </ScrollView>
         )
     }
 });
@@ -118,23 +106,7 @@ const styles = StyleSheet.create({
     selected: {
         borderWidth: 2,
         borderColor: 'red',
-    },
-    avatar: {
-        height: 80,
-        width: 80,
-        borderRadius: 40
-    },
-    inviteBox: {
-        width: window.width / 3,
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 10
-    },
-    userText: {
-        fontSize: getFontSize(18),
-        marginTop: 5,
-        fontFamily: 'OpenSans-SemiBold',
-    },
+    }
 });
 
 CreateChatRoom.navigationOptions = ({navigation}) => {

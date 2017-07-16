@@ -250,7 +250,8 @@ stylesheet.formGroup = {
         flexDirection: 'row',
         borderColor: 'red',
         borderBottomWidth: 1,
-        marginBottom: 0
+        marginBottom: 0,
+        backgroundColor: 'white'
     }
 };
 
@@ -259,12 +260,16 @@ stylesheet.textbox = {
     normal: {
         ...stylesheet.textbox.normal,
         borderWidth: 0,
+        marginTop: 5,
         marginBottom: 0,
+        fontSize: 24
     },
     error: {
         ...stylesheet.textbox.error,
         borderWidth: 0,
+        marginTop: 5,
         marginBottom: 0,
+        fontSize: 24
     }
 };
 

@@ -80,31 +80,28 @@ const CreateSchedule = React.createClass({
 
     render: function () {
         let options = {
-            i18n: {
-                optional: '',
-                required: '*',
-            },
-            // stylesheet: stylesheet,
+            stylesheet: stylesheet,
             fields: {
                 name: {
                     label: 'Program Name',
-                    placeholder: this.props.training_plan ? `This name will be displayed to your client` : `For example 'HIIT Program'`,
+                    placeholder: this.props.training_plan ? `This name will be displayed to your client` : `'HIIT Program'`,
                     onSubmitEditing: () => this._onSubmit(),
-                    maxLength: 100,
-                    autoCapitalize: 'sentences'
+                    maxLength: 40,
+                    autoCapitalize: 'sentences',
+                    multiline: true,
                 },
             }
         };
         return (
             <View style={styles.flexCenter}>
-                <View style={{margin: 10}}>
-                    <Form
-                        ref="form"
-                        type={Schedule}
-                        options={options}
-                        onChange={this.onChange}
-                        value={this.state.value}
-                    />
+                <Form
+                    ref="form"
+                    type={Schedule}
+                    options={options}
+                    onChange={this.onChange}
+                    value={this.state.value}
+                />
+                <View style={styles.templateSection}>
                     <Text>Use Template:</Text>
                     <SelectInput ref='schedule_templates' options={[
                         ..._.filter(this.props.Schedules, function (o) {
@@ -122,9 +119,70 @@ CreateSchedule.navigationOptions = {
     title: 'Create Program',
 };
 
+const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
+
+stylesheet.formGroup = {
+    ...stylesheet.formGroup,
+    normal: {
+        ...stylesheet.formGroup.normal,
+        paddingTop: 20,
+        backgroundColor: 'white',
+        borderColor: '#e1e3df',
+        borderBottomWidth: 1,
+    },
+    error: {
+        ...stylesheet.formGroup.error,
+        paddingTop: 20,
+        backgroundColor: 'white',
+        borderColor: '#e1e3df',
+        borderBottomWidth: 1,
+    }
+};
+//
+stylesheet.textbox = {
+    ...stylesheet.textbox,
+    normal: {
+        ...stylesheet.textbox.normal,
+        borderWidth: 0,
+        marginTop: 5,
+        marginBottom: 0,
+        fontSize: 24,
+        minHeight: 80,
+    },
+    error: {
+        ...stylesheet.textbox.error,
+        borderWidth: 0,
+        marginTop: 5,
+        marginBottom: 0,
+        fontSize: 24
+    }
+};
+
+stylesheet.textboxView = {
+    ...stylesheet.textboxView,
+    normal: {
+        ...stylesheet.textboxView.normal,
+        borderWidth: 0,
+        borderRadius: 0,
+        backgroundColor: 'transparent',
+        minHeight: 80,
+    },
+    error: {
+        ...stylesheet.textboxView.error,
+        borderWidth: 0,
+        borderRadius: 0,
+        backgroundColor: 'transparent',
+        minHeight: 80,
+    }
+};
+
+stylesheet.controlLabel.normal.marginLeft = 5;
+stylesheet.controlLabel.error.marginLeft = 5;
+
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
+        backgroundColor: '#f1f1f3'
     },
     button: {
         margin: 20,
@@ -133,6 +191,15 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 15,
         fontFamily: 'OpenSans-Bold',
+    },
+    templateSection:{
+        padding: 10,
+        backgroundColor: 'white',
+        borderColor: '#e1e3df',
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     }
 });
 
