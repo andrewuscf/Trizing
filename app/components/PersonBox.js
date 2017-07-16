@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         // marginLeft: 10,
         // marginRight: 10,
-        marginTop: 20
+        // marginTop: 20
     },
     text: {
         paddingLeft: 18,

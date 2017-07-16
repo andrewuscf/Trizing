@@ -196,7 +196,7 @@ const CreateEvent = React.createClass({
                         />
                     </ScrollView>
                     :
-                    <ScrollView style={{paddingTop: 20}} showsVerticalScrollIndicator={false}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
                         {this.props.Clients.map((client, i) => {
                             return <PersonBox key={i} navigate={this.props.navigation.navigate} person={client}
                                               selected={_.includes(this.state.selected, client.id)}
