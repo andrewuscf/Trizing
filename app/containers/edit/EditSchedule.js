@@ -1,12 +1,13 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
-    ScrollView,
     View,
     Text,
     StyleSheet,
     TouchableOpacity,
     Keyboard,
-    Alert
+    Alert,
+    ListView,
+    Platform
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -17,6 +18,9 @@ import ActionButton from 'react-native-action-button';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
+
+
+import CustomIcon from '../../components/CustomIcon';
 
 
 const EditSchedule = React.createClass({
@@ -76,45 +80,64 @@ const EditSchedule = React.createClass({
         );
     },
 
+    renderHeader() {
+        return null;
+    },
+
+    renderRow(workout, index) {
+        const parseIndex = parseInt(index);
+        let start_date = moment.utc(workout.dates.start_date).local();
+        return (
+            <TouchableOpacity key={parseIndex} onPress={this._toWorkoutDay.bind(null, workout.id)}
+                              style={[styles.workoutBox]}>
+
+                <View style={styles.titleView}>
+                    <Text style={styles.simpleTitle}>{workout.name}</Text>
+                </View>
+
+                <View style={styles.dateSection}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', flex: .3}}>
+                        <CustomIcon name="stopwatch" style={styles.day}/>
+                        {this.state.schedule.training_plan ?
+                            <Text style={styles.day}> {start_date.format("MMM DD")}</Text>
+                            :
+                            <Text style={styles.day}> {workout.duration} {workout.duration === 1 ? 'week': 'weeks'}</Text>
+                        }
+                    </View>
+                </View>
+
+            </TouchableOpacity>
+        );
+    },
+
+    renderFooter(rowCount) {
+        if (rowCount !== 0) return null;
+        return (
+            <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
+                <MaterialIcon name="today" style={[styles.notBold, {fontSize: getFontSize(50), paddingBottom: 20}]}/>
+                <Text style={[styles.notBold, {fontSize: getFontSize(28)}]}>Get started by</Text>
+                <Text style={[styles.notBold, {fontSize: getFontSize(28)}]}>creating workout blocks</Text>
+            </View>
+        )
+    },
+
 
     render: function () {
-        let steps = (
-            <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
-                <Text>You have no workout blocks. Create Some!</Text>
-            </View>
-        );
-        if (this.state.schedule && this.state.schedule.workouts.length) {
-            steps = _.orderBy(this.state.schedule.workouts, ['order']).map((workout, index) => {
-                let start_date = moment.utc(workout.dates.start_date).local();
-                return <TouchableOpacity key={index} onPress={this._toWorkoutDay.bind(null, workout.id)}
-                                         style={[styles.workoutBox]}>
-
-                    {this.state.schedule.training_plan ?
-                        <View style={styles.eventDate}>
-                            <Text style={styles.eventDateMonth}>{start_date.format("MMM").toUpperCase()}</Text>
-                            <Text style={styles.eventDay}>{start_date.date()}</Text>
-                        </View>
-                        : <View style={styles.eventDate}>
-                            <Text style={styles.eventDateMonth}>Weeks</Text>
-                            <Text style={styles.eventDay}>{workout.duration}</Text>
-                        </View>
-                    }
-                    <Text style={styles.eventDateDay}>{workout.name}</Text>
-                </TouchableOpacity>
-            });
-        }
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        let dataSource = ds.cloneWithRows(_.orderBy(this.state.schedule.workouts, ['order']));
         return (
             <View style={styles.flexCenter}>
-                <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
-                            showsVerticalScrollIndicator={false}
-                            contentContainerStyle={styles.contentContainerStyle}>
-
-                    <View style={{marginBottom: 10}}>
-                        {steps}
-                    </View>
-
-                </ScrollView>
-
+                <ListView removeClippedSubviews={(Platform.OS !== 'ios')}
+                          keyboardShouldPersistTaps="handled"
+                          showsVerticalScrollIndicator={false}
+                          style={[styles.flexCenter]}
+                          contentContainerStyle={{paddingBottom: 20}}
+                          enableEmptySections={true}
+                          dataSource={dataSource}
+                          renderHeader={this.renderHeader}
+                          renderRow={this.renderRow}
+                          renderFooter={this.renderFooter.bind(null, dataSource.getRowCount())}
+                />
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
                     <ActionButton.Item buttonColor='#F22525' title="Delete"
                                        onPress={this._deleteSchedule}>
@@ -133,6 +156,7 @@ const EditSchedule = React.createClass({
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
+        backgroundColor: '#f1f1f3'
     },
     title: {
         fontSize: getFontSize(28),
@@ -143,38 +167,41 @@ const styles = StyleSheet.create({
     },
     workoutBox: {
         flex: 1,
-        margin: 5,
+        marginTop: 5,
         borderColor: '#e1e3df',
-        borderWidth: 1,
-        borderRadius: 10,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        padding: 10,
+        backgroundColor: 'white',
+    },
+    notBold: {
+        color: 'grey',
+        fontFamily: 'OpenSans-Semibold',
+    },
+    dateSection: {
+        marginLeft: 5,
+        marginRight: 5,
+        marginTop: 5,
+        paddingTop: 5,
+        borderColor: '#e1e3df',
+        borderTopWidth: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 10,
-
-        backgroundColor: 'white',
-        marginBottom: 5,
     },
-    eventDay: {
-        fontSize: getFontSize(28),
-        fontFamily: 'OpenSans-Bold',
-    },
-    eventDateDay: {
-        flex: .8,
-        fontSize: getFontSize(28),
-        fontFamily: 'OpenSans-Bold',
-        textAlign: 'center',
-    },
-    eventDateMonth: {
-        fontFamily: 'OpenSans-Bold',
-        fontSize: getFontSize(16),
-        backgroundColor: 'transparent',
-        color: '#4d4d4e'
-    },
-    eventDate: {
-        flex: .2,
+    titleView: {
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
-    }
+        justifyContent: 'space-between'
+    },
+    simpleTitle: {
+        fontSize: getFontSize(28),
+        fontFamily: 'OpenSans-Bold',
+    },
+    day: {
+        fontSize: getFontSize(18),
+        fontFamily: 'OpenSans-Semibold',
+        color: 'grey'
+    },
 });
 
 
