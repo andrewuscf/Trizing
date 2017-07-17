@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
-    TextInput,
     TouchableOpacity,
     Keyboard,
 } from 'react-native';
@@ -25,6 +24,16 @@ const DisplayExerciseBox = React.createClass({
         _editExercise: React.PropTypes.func.isRequired
     },
 
+    getInitialState() {
+        return {
+            showDetails: false,
+        }
+    },
+
+    toggleDetails() {
+        this.setState({showDetails: !this.state.showDetails})
+    },
+
     _redirect: function () {
         Keyboard.dismiss();
         if (this.props._editExercise)
@@ -32,16 +41,14 @@ const DisplayExerciseBox = React.createClass({
     },
 
     _onDelete(){
-        console.log(this.props.exercise)
-        this.props.exercise.sets.forEach((set)=>{
+        this.props.exercise.sets.forEach((set) => {
             this.props.deleteSet(set.id);
         });
-        // this.props.actions.deleteSet(setId);
     },
 
 
     render: function () {
-        const sets = this.props.exercise.sets.map((set, index)=>{
+        const sets = this.props.exercise.sets.map((set, index) => {
             return (
                 <View key={index} style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{flex: .2, justifyContent: 'center', alignItems: 'center'}}>
@@ -57,12 +64,12 @@ const DisplayExerciseBox = React.createClass({
             )
         });
         return (
-            <TouchableOpacity style={styles.displayWorkoutBox} onPress={this._redirect}>
+            <TouchableOpacity style={styles.displayWorkoutBox} onPress={this.toggleDetails}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <Text style={styles.simpleTitle}>{this.props.exercise.name}</Text>
                     <Menu style={{}}>
                         <MenuTrigger>
-                            <MaterialIcon name="menu" size={25}/>
+                            <MaterialIcon name="linear-scale" size={25}/>
                         </MenuTrigger>
                         <MenuOptions customStyles={optionsStyles}>
                             <MenuOption onSelect={this._redirect} text='Edit'/>
@@ -70,41 +77,41 @@ const DisplayExerciseBox = React.createClass({
                         </MenuOptions>
                     </Menu>
                 </View>
-                <View style={styles.bottom}>
-                    <View style={[styles.title]}>
-                        <Text style={[styles.titleSection, {flex:.2}]}>SET</Text>
-                        <Text style={[styles.titleSection, {flex:.4}]}>LBS</Text>
-                        <Text style={[styles.titleSection, {flex:.4}]}>REPS</Text>
-                    </View>
-                    {sets}
+                <View style={styles.dateSection}>
+                    {!this.state.showDetails ?
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <Text style={styles.day}>{sets.length} {sets.length === 1 ? 'set': 'sets'}</Text>
+                        </View>
+                        : null
+                    }
                 </View>
+                {this.state.showDetails ?
+                    <View style={styles.bottom}>
+                        <View style={[styles.title]}>
+                            <Text style={[styles.titleSection, {flex: .2}]}>SET</Text>
+                            <Text style={[styles.titleSection, {flex: .4}]}>LBS</Text>
+                            <Text style={[styles.titleSection, {flex: .4}]}>REPS</Text>
+                        </View>
+                        {sets}
+                    </View> : null}
             </TouchableOpacity>
         )
     }
 });
 
 
-
 const optionsStyles = {
     optionsContainer: {
-        // backgroundColor: 'green',
         paddingTop: 5,
     },
-    optionsWrapper: {
-        // backgroundColor: 'purple',
-    },
+    optionsWrapper: {},
     optionWrapper: {
-        // backgroundColor: 'yellow',
         margin: 5,
-        // borderBottomWidth: 1, borderColor: 'grey'
     },
     optionTouchable: {
-        // underlayColor: 'gold',
         activeOpacity: 70,
     },
-    optionText: {
-        // color: 'brown',
-    },
+    optionText: {},
 };
 
 
@@ -112,11 +119,9 @@ const styles = StyleSheet.create({
     displayWorkoutBox: {
         flex: 1,
         borderColor: '#e1e3df',
-        borderRadius: 5,
-        borderWidth: 1,
-        margin: 5,
-        marginBottom: 0,
-        padding:10
+        borderBottomWidth: 1,
+        padding: 10,
+        backgroundColor: 'white'
     },
     top: {
         justifyContent: 'space-between',
@@ -125,7 +130,7 @@ const styles = StyleSheet.create({
         marginRight: 20,
     },
     simpleTitle: {
-        fontSize: getFontSize(26),
+        fontSize: getFontSize(28),
         fontFamily: 'OpenSans-Bold',
     },
     title: {
@@ -142,6 +147,21 @@ const styles = StyleSheet.create({
     edit: {
         // marginRight: 20
         // margin: 20,
+    },
+    dateSection: {
+        marginLeft: 5,
+        marginRight: 5,
+        marginTop: 5,
+        paddingTop: 5,
+        borderColor: '#e1e3df',
+        borderTopWidth: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    day: {
+        fontSize: getFontSize(18),
+        fontFamily: 'OpenSans-Semibold',
+        color: 'grey'
     },
 });
 

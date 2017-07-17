@@ -107,7 +107,7 @@ const WorkoutDayDetail = React.createClass({
                               enableEmptySections={true}
                               dataSource={dataSource}
                               showsVerticalScrollIndicator={false}
-                              contentContainerStyle={{paddingBottom: 10}}
+                              contentContainerStyle={{paddingBottom: 20}}
                               renderRow={(exercise, sectionID, rowID) =>
                                   <DisplayExerciseBox exercise={exercise}
                                                       _editExercise={this._editExercise}
@@ -138,6 +138,7 @@ const WorkoutDayDetail = React.createClass({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#f1f1f3'
     },
     dayTitle: {
         fontSize: getFontSize(30),
