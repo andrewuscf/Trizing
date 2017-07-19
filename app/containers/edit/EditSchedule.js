@@ -123,6 +123,7 @@ const EditSchedule = React.createClass({
 
 
     render: function () {
+        if (!this.state.schedule) return null;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = ds.cloneWithRows(_.orderBy(this.state.schedule.workouts, ['order']));
         return (
