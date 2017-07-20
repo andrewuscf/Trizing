@@ -66,13 +66,13 @@ const MacroBoxDay = React.createClass({
         if (day_plan) {
             days = DAYS_OF_WEEK.map((day_of_week) => {
                 return (
-                    <TouchableOpacity key={day_of_week.id}
+                    <View key={day_of_week.id}
                                       style={[styles.dayOfWeek, (_.includes(day_plan.days, day_of_week.id)
                                           ? styles.selectedDay : null )]}>
                         <Text style={[(_.includes(day_plan.days, day_of_week.id) ? styles.selectedDayText : null)]}>
                             {day_of_week.day}
                         </Text>
-                    </TouchableOpacity>
+                    </View>
                 )
             });
         } else {
@@ -196,10 +196,8 @@ const styles = StyleSheet.create({
     },
     dayOfWeek: {
         flex: .1,
-        borderWidth: .5,
         borderRadius: 20,
         height: 40,
-        // width: 40,
         marginLeft: 5,
         marginRight: 5,
         borderColor: 'black',

@@ -1,7 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     ListView,
     Platform
@@ -9,6 +8,7 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import * as GlobalActions from '../../actions/globalActions';
 
@@ -23,7 +23,7 @@ const AnswerQuestionnaire = React.createClass({
 
     getInitialState() {
         return {
-            success: false
+            disabled: false
         }
     },
 
@@ -33,19 +33,21 @@ const AnswerQuestionnaire = React.createClass({
 
     rows: [],
 
-    asyncActions(start) {
-        if (start) {
-            // fail
-        } else {
-            this.setState({success: true});
+    asyncActions(success) {
+        if (success) {
+            this.dropdown.alertWithType('success', 'Success', 'Submitted survey.');
             setTimeout(() => {
-                this.setState({success: false});
                 this.props.navigation.goBack();
             }, 2000);
+        } else {
+            this.dropdown.alertWithType('error', 'Error', "Couldn't log submit.")
         }
+        this.setState({disabled: false});
     },
 
     onPress() {
+        if (this.state.disabled) return;
+
         let completed = true;
         let answers = [];
         const rows = _.uniqBy(this.rows, function (e) {
@@ -66,6 +68,7 @@ const AnswerQuestionnaire = React.createClass({
             }
         }
         if (completed) {
+            this.setState({disabled: true});
             this.props.actions.answerQuestionnaire(answers, this.asyncActions);
         }
     },
@@ -76,15 +79,6 @@ const AnswerQuestionnaire = React.createClass({
         let dataSource = ds.cloneWithRows(this.props.questionnaire.questions);
         return (
             <View style={styles.container}>
-                {this.state.success ?
-                    <View style={{flex: .2, backgroundColor: 'green', alignItems: 'center', justifyContent: 'center'}}>
-                        <Text style={{color: 'white', fontSize: getFontSize(24)}}>
-                            Success
-                        </Text>
-                    </View>
-                    :
-                    null
-                }
                 <ListView ref='questionnaire_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                           keyboardShouldPersistTaps="handled"
                           showsVerticalScrollIndicator={false}
@@ -94,6 +88,7 @@ const AnswerQuestionnaire = React.createClass({
                               <AnswerQuestionBox ref={(row) => this.rows.push(row)}
                                                  question={question} number={parseInt(rowID) + 1}/>}
                 />
+                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
         );
     }
@@ -124,16 +119,12 @@ const styles = StyleSheet.create({
     }
 });
 
-const stateToProps = (state) => {
-    return {};
-};
-
 const dispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(GlobalActions, dispatch),
     }
 };
 
-export default connect(stateToProps, dispatchToProps)(AnswerQuestionnaire);
+export default connect(null, dispatchToProps)(AnswerQuestionnaire);
 
 

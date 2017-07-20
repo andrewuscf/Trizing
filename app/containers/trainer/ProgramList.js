@@ -48,6 +48,26 @@ const ProgramList = React.createClass({
         this.props.navigation.navigate(routeName, props);
     },
 
+    convertToMap: function () {
+        const chatMap = {'Workout Templates': [], 'Messages': []};
+        this.props.ChatRooms.forEach((chatroom) => {
+            if (chatroom.team || chatroom.activity) {
+                chatMap['Group Chats'].push(chatroom);
+            } else {
+                chatMap['Messages'].push(chatroom);
+            }
+        });
+        return chatMap;
+
+    },
+
+    renderSectionHeader: function (sectionData, category) {
+        if (!sectionData.length) return null;
+
+        return <Text style={styles.sectionTitle}>{category}</Text>;
+    },
+
+
     renderRow(schedule) {
         return (
             <TouchableOpacity style={styles.link}
@@ -94,6 +114,11 @@ const ProgramList = React.createClass({
         )
     }
 });
+
+ProgramList.navigationOptions = {
+    title: 'Workout Programs',
+};
+
 
 
 const styles = StyleSheet.create({

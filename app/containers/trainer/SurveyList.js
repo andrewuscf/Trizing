@@ -82,6 +82,11 @@ const SurveyList = React.createClass({
     }
 });
 
+SurveyList.navigationOptions = {
+    title: 'Surveys',
+};
+
+
 
 const styles = StyleSheet.create({
     row: {

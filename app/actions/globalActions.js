@@ -272,13 +272,12 @@ export function createQuestionnaire(data, asyncActions) {
 }
 
 export function answerQuestionnaire(data, asyncActions) {
-    asyncActions(true);
     let JSONDATA = JSON.stringify(data);
     return (dispatch, getState) => {
         return fetch(`${API_ENDPOINT}training/questionnaires/responses/`,
             fetchData('POST', JSONDATA, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                asyncActions(false);
+                if (responseJson.id) asyncActions(true);
                 return dispatch({type: types.CREATE_QUESTIONNAIRE, response: responseJson});
             })
             .catch((error) => {
