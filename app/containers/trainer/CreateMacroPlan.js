@@ -5,6 +5,7 @@ import {
     StyleSheet,
     Keyboard,
     TouchableOpacity,
+    View
 } from 'react-native';
 import {connect} from 'react-redux';
 import _ from 'lodash';
@@ -146,13 +147,15 @@ const CreateMacroPlan = React.createClass({
 
         return (
             <ScrollView style={styles.container}>
-                <Form
-                    ref="form"
-                    type={MacroPlan}
-                    options={this.state.options}
-                    onChange={this.onChange}
-                    value={this.state.value}
-                />
+                <View style={{margin: 10}}>
+                    <Form
+                        ref="form"
+                        type={MacroPlan}
+                        options={this.state.options}
+                        onChange={this.onChange}
+                        value={this.state.value}
+                    />
+                </View>
                 {macro_plan_days}
                 {this.state.selectedDays.length < 7 ?
                     <TouchableOpacity onPress={this.addDay} style={styles.addButton}>
@@ -166,7 +169,11 @@ const CreateMacroPlan = React.createClass({
     }
 });
 
-const iconColor = '#8E8E8E';
+
+CreateMacroPlan.navigationOptions = {
+    title: 'New Nutrition Plan',
+};
+
 
 const styles = StyleSheet.create({
     inputWrap: {

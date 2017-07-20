@@ -57,9 +57,9 @@ const AnswersDisplay = React.createClass({
         let dataSource = ds.cloneWithRows(this.props.questionnaire.questions);
         return (
             <View style={styles.container}>
-                <View style={[{padding: 20}]}>
+                <View style={[{padding: 20, paddingBottom: 0}]}>
                     {this.props.client ?
-                        <Text style={[{fontSize: getFontSize(14), paddingTop: 5, color: 'grey'}]}>
+                        <Text style={[{fontSize: getFontSize(20), paddingTop: 5, color: 'grey'}]}>
                             Answered by: {this.props.client.profile.first_name} {this.props.client.profile.last_name}
                         </Text>
                         : null
@@ -68,7 +68,7 @@ const AnswersDisplay = React.createClass({
                 <ListView ref='answer_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                           keyboardShouldPersistTaps="handled"
                           showsVerticalScrollIndicator={false}
-                          style={[styles.container, {margin: 20}]} enableEmptySections={true}
+                          style={[styles.container, {margin: 10}]} enableEmptySections={true}
                           dataSource={dataSource}
                           renderRow={this.renderRow}
                 />
@@ -91,10 +91,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    content: {
-        flex: .2,
-        margin: 20,
-    },
     buttonStyle: {
         position: 'absolute',
         bottom: 0,
@@ -102,13 +98,11 @@ const styles = StyleSheet.create({
         left: 0,
     },
     questionText: {
-        fontSize: getFontSize(22),
+        fontSize: getFontSize(26),
         paddingBottom: 5
         // color: 'grey'
     },
     box: {
-        borderWidth: 1,
-        borderColor: 'grey',
         padding: 10,
         marginBottom: 10
     },
@@ -117,7 +111,7 @@ const styles = StyleSheet.create({
         borderColor: '#e1e3df',
     },
     answerText: {
-        fontSize: getFontSize(20),
+        fontSize: getFontSize(22),
         color: 'blue',
         paddingTop: 10
     }

@@ -67,8 +67,8 @@ const MacroBoxDay = React.createClass({
             days = DAYS_OF_WEEK.map((day_of_week) => {
                 return (
                     <View key={day_of_week.id}
-                                      style={[styles.dayOfWeek, (_.includes(day_plan.days, day_of_week.id)
-                                          ? styles.selectedDay : null )]}>
+                          style={[styles.dayOfWeek, (_.includes(day_plan.days, day_of_week.id)
+                              ? styles.selectedDay : null )]}>
                         <Text style={[(_.includes(day_plan.days, day_of_week.id) ? styles.selectedDayText : null)]}>
                             {day_of_week.day}
                         </Text>
@@ -94,7 +94,9 @@ const MacroBoxDay = React.createClass({
         }
         return (
             <View
-                style={[GlobalStyle.simpleBottomBorder, {paddingBottom: 10}, this.props.active ? styles.activeBorder : null]}>
+                style={[GlobalStyle.simpleBottomBorder, GlobalStyle.simpleTopBorder, {
+                    marginBottom: 10,
+                }, this.props.active ? styles.activeBorder : null]}>
                 <View style={[styles.inputWrap, styles.row]}>
                     {days}
                 </View>
