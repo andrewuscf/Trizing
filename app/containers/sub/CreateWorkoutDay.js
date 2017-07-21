@@ -1,18 +1,14 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
-    ScrollView,
     View,
     Text,
     StyleSheet,
-    TouchableOpacity,
-    Keyboard,
-    Alert
 } from 'react-native';
 import _ from 'lodash';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {NavigationActions} from 'react-navigation';
 import t from 'tcomb-form-native';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import * as GlobalActions from '../../actions/globalActions';
 
@@ -51,7 +47,8 @@ const CreateWorkoutDay = React.createClass({
         return {
             value: null,
             days: [],
-            workout: workout
+            workout: workout,
+            disabled: false
         }
     },
 
@@ -66,16 +63,22 @@ const CreateWorkoutDay = React.createClass({
             const workout = _.find(schedule.workouts, {id: this.props.workoutId});
             this.setState({workout: workout});
         }
+        if (prevState.disabled !== this.state.disabled) {
+            this.props.navigation.setParams({handleSave: this._addExercise, disabled: this.state.disabled});
+        }
     },
 
-    asyncActions(start, data = {}){
-        if (!start && data.routeName) {
+    asyncActions(success, data = {}){
+        this.setState({disabled: false});
+        if (success && data.props) {
             this.props.navigation.dispatch({
                 type: 'ReplaceCurrentScreen',
-                routeName: data.routeName,
+                routeName: 'WorkoutDayDetail',
                 params: data.props,
-                key: data.routeName
+                key: 'WorkoutDayDetail'
             });
+        } else {
+            this.dropdown.alertWithType('error', 'Error', "Couldn't create workout day.")
         }
     },
 
@@ -83,11 +86,12 @@ const CreateWorkoutDay = React.createClass({
         let values = this.refs.form.getValue();
         if (values) {
             if (this.state.days.length) {
+                this.setState({disabled: true});
                 const data = {
                     name: values.name,
                     day: this.state.days[0],
                     workout: this.state.workout.id
-                }
+                };
                 this.props.actions.addEditWorkoutDay(data, this.asyncActions)
             } else {
 
@@ -122,6 +126,7 @@ const CreateWorkoutDay = React.createClass({
                 </View>
                 <Text style={styles.inputLabel}>Day of the week</Text>
                 <DaysOfWeek daySelectedState={this.selectDay} days={this.state.days}/>
+                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
         )
     }

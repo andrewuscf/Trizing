@@ -1,14 +1,12 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Image,
     Text,
     StyleSheet,
     TouchableOpacity,
-    Dimensions,
     Keyboard,
     ActivityIndicator,
-    findNodeHandle
 } from 'react-native';
 import {
     AccessToken,
@@ -217,6 +215,7 @@ const Login = React.createClass({
                                      contentContainerStyle={{flex: 1}}
                                      onKeyboardWillShow={this.changeKeyboard}
                                      onKeyboardWillHide={this.changeKeyboard}
+                                     showsVerticalScrollIndicator={false}
                                      scrollEnabled={this.state.keyboard}>
                 {this.state.forgotCreds || this.state.signUp ?
                     <BackBar back={this.back} backText='Log In'/>

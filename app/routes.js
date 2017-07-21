@@ -78,6 +78,7 @@ const defaultNavigationOptions = {
     headerTitleStyle: {
         alignSelf: 'center',
     },
+    headerTintColor: lightGreen,
     gesturesEnabled: true
 }
 
@@ -310,9 +311,6 @@ export const AppNavigator = StackNavigator({
         },
     },
     EditProfile: {screen: EditProfile},
-
-    // PostDetail: {screen: paramsToProps(PostDetail)},
-
 
     Main: {screen: MainTabNav},
 }, {

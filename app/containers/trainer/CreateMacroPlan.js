@@ -13,6 +13,8 @@ import t from 'tcomb-form-native';
 
 import {API_ENDPOINT, fetchData, getFontSize, checkStatus} from '../../actions/utils';
 
+
+import InputAccessory from '../../components/InputAccessory';
 import MacroBoxDay from '../../components/MacroBoxDay';
 
 
@@ -146,25 +148,28 @@ const CreateMacroPlan = React.createClass({
         });
 
         return (
-            <ScrollView style={styles.container}>
-                <View style={{margin: 10}}>
-                    <Form
-                        ref="form"
-                        type={MacroPlan}
-                        options={this.state.options}
-                        onChange={this.onChange}
-                        value={this.state.value}
-                    />
-                </View>
-                {macro_plan_days}
-                {this.state.selectedDays.length < 7 ?
-                    <TouchableOpacity onPress={this.addDay} style={styles.addButton}>
-                        <Text style={styles.addAnotherDay}>Add Days</Text>
-                    </TouchableOpacity>
-                    : null
-                }
+            <View style={styles.container}>
+                <ScrollView style={styles.container}>
+                    <View style={{margin: 10}}>
+                        <Form
+                            ref="form"
+                            type={MacroPlan}
+                            options={this.state.options}
+                            onChange={this.onChange}
+                            value={this.state.value}
+                        />
+                    </View>
+                    {macro_plan_days}
+                    {this.state.selectedDays.length < 7 ?
+                        <TouchableOpacity onPress={this.addDay} style={styles.addButton}>
+                            <Text style={styles.addAnotherDay}>Add Days</Text>
+                        </TouchableOpacity>
+                        : null
+                    }
 
-            </ScrollView>
+                </ScrollView>
+                <InputAccessory/>
+            </View>
         )
     }
 });

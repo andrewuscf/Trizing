@@ -264,7 +264,10 @@ const Home = React.createClass({
                             <Text style={styles.textTitle}>{`Today's Workout`}</Text>
                             <Text style={styles.h2Title}>{data.training_day.name}</Text>
                             <Text>Exercises: {data.training_day.exercises.length}</Text>
-                            <Text>Start Workout</Text>
+                            {!this.props.ActiveData.training_day.logged_today?
+                                <Text>Start Workout</Text>
+                                :null
+                            }
 
                         </TouchableOpacity>
                         :

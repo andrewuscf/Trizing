@@ -15,6 +15,8 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../actions/utils';
 
+
+import InputAccessory from '../../components/InputAccessory';
 import MacroLogBox from '../../components/MacroLogBox';
 
 
@@ -146,7 +148,7 @@ const CreateMacroLog = React.createClass({
                 </View>
                 <View style={{margin: 10}}>
                     <Form
-                        ref={(form)=> this.form = form}
+                        ref={(form) => this.form = form}
                         type={MacroLog}
                         options={options}
                         onChange={this.onChange}
@@ -160,19 +162,19 @@ const CreateMacroLog = React.createClass({
     },
 
     renderRow(log, set, key) {
-        return <MacroLogBox log={log} isLast={key == this.state.macro_response.results.length-1}/>
+        return <MacroLogBox log={log} isLast={key == this.state.macro_response.results.length - 1}/>
     },
 
     totals(){
         let fats = 0;
         let carbs = 0;
         let protein = 0;
-        this.state.macro_response.results.forEach((log)=> {
+        this.state.macro_response.results.forEach((log) => {
             fats += log.fats;
             carbs += log.carbs;
             protein += log.protein;
         });
-        let calories =  (9 * fats) + (4 * protein) + (4 * carbs);
+        let calories = (9 * fats) + (4 * protein) + (4 * carbs);
         return (
             <View>
                 <Text style={styles.title}>Daily Total</Text>
@@ -202,14 +204,17 @@ const CreateMacroLog = React.createClass({
 
         const ListData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows(this.state.macro_response.results);
         return (
-            <KeyboardAwareScrollView style={styles.flexCenter}>
-                <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                          enableEmptySections={true} dataSource={ListData} showsVerticalScrollIndicator={false}
-                          renderHeader={this.renderHeader}
-                          renderRow={this.renderRow}
-                />
-                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
-            </KeyboardAwareScrollView>
+            <View style={{flex:1}}>
+                <KeyboardAwareScrollView style={styles.flexCenter}>
+                    <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                              enableEmptySections={true} dataSource={ListData} showsVerticalScrollIndicator={false}
+                              renderHeader={this.renderHeader}
+                              renderRow={this.renderRow}
+                    />
+                    <DropdownAlert ref={(ref) => this.dropdown = ref}/>
+                </KeyboardAwareScrollView>
+                <InputAccessory/>
+            </View>
         )
     }
 });
@@ -258,8 +263,8 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         marginRight: 10,
         marginLeft: 10,
-        flexDirection:'row',
-        justifyContent:'space-between'
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     }
 });
 

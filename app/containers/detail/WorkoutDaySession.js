@@ -1,10 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
-    TouchableOpacity,
-    RefreshControl,
     Platform,
     ListView,
     Dimensions
@@ -13,12 +11,13 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 
+import InputAccessory from '../../components/InputAccessory';
 import SetLogBox from '../../components/SetLogBox';
-import SubmitButton from '../../components/SubmitButton';
 
 
 const window = Dimensions.get('window');
@@ -30,40 +29,37 @@ const WorkoutDaySession = React.createClass({
 
     getInitialState() {
         return {
-            success: false
+            disabled: false,
+        }
+    },
+
+    componentDidMount() {
+        this.props.navigation.setParams({handleSave: this._onSubmit, disabled: this.state.disabled});
+    },
+
+    componentDidUpdate(prevProps, prevState){
+        if (prevState.disabled !== this.state.disabled) {
+            this.props.navigation.setParams({handleSave: this._onSubmit, disabled: this.state.disabled});
         }
     },
 
     rows: [],
 
-    asyncActions(start) {
-        if (start) {
-            this.postbutton.setState({busy: true});
-        } else {
-            this.postbutton.setState({busy: false});
-            this.setState({success: true});
+    asyncActions(success) {
+        this.setState({disabled: false});
+        if (success) {
+            this.dropdown.alertWithType('success', 'Success', 'You have logged your workout session.');
             setTimeout(() => {
-                this.setState({success: false});
+                this.setState({value: null});
                 this.props.navigation.goBack();
             }, 2000);
+        } else {
+            this.dropdown.alertWithType('error', 'Error', "Couldn't log workout session.")
         }
     },
 
-    renderHeader() {
-        if (this.state.success) {
-            return (
-                <View style={{flex: .4, backgroundColor: 'green', alignItems: 'center', justifyContent: 'center'}}>
-                    <Text style={{color: 'white', fontSize: getFontSize(24)}}>
-                        Success
-                    </Text>
-                </View>
-            )
-        }
-        return null;
-    },
 
     _onSubmit() {
-        // console.log(this.state.setRefLimits)
         let completed = true;
         let logs = [];
         const rows = _.uniqBy(this.rows, function (e) {
@@ -86,15 +82,10 @@ const WorkoutDaySession = React.createClass({
                 }
             }
         }
-        if (completed) this.props.actions.logSets(logs, this.asyncActions);
-    },
-
-    renderFooter() {
-        return (
-            <SubmitButton buttonStyle={styles.button} onPress={this._onSubmit}
-                          ref={(postbutton) => this.postbutton = postbutton}
-                          text='Submit'/>
-        )
+        if (completed) {
+            this.setState({disabled: true});
+            this.props.actions.logSets(logs, this.asyncActions);
+        }
     },
 
 
@@ -102,27 +93,29 @@ const WorkoutDaySession = React.createClass({
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = ds.cloneWithRows(this.props.workout_day.exercises);
         return (
-            <ListView ref='exercise_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                      showsVerticalScrollIndicator={false}
-                      keyboardShouldPersistTaps="handled"
-                      renderHeader={this.renderHeader}
-                      renderFooter={this.renderFooter}
-                      style={styles.container} enableEmptySections={true}
-                      dataSource={dataSource}
-                      renderRow={(exercise, sectionID, rowID) =>
-                          <View style={styles.exerciseBox}>
-                              <Text style={styles.exerciseName}>{exercise.name}</Text>
-                              <View style={styles.setsHeader}>
-                                  <Text style={styles.setColumn}>Set</Text>
-                                  <Text style={styles.setColumn}>LBS</Text>
-                                  <Text style={styles.setColumn}>REPS</Text>
+            <View style={{flex: 1}}>
+                <ListView ref='exercise_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                          showsVerticalScrollIndicator={false}
+                          keyboardShouldPersistTaps="handled"
+                          style={styles.container} enableEmptySections={true}
+                          dataSource={dataSource}
+                          renderRow={(exercise, sectionID, rowID) =>
+                              <View style={styles.exerciseBox}>
+                                  <Text style={styles.exerciseName}>{exercise.name}</Text>
+                                  <View style={styles.setsHeader}>
+                                      <Text style={styles.setColumn}>Set</Text>
+                                      <Text style={styles.setColumn}>LBS</Text>
+                                      <Text style={styles.setColumn}>REPS</Text>
+                                  </View>
+                                  {exercise.sets.map((set, index) => {
+                                      return <SetLogBox ref={(row) => this.rows.push(row)} key={index} set={set}/>
+                                  })}
                               </View>
-                              {exercise.sets.map((set, index) => {
-                                  return <SetLogBox ref={(row) => this.rows.push(row)} key={index} set={set}/>
-                              })}
-                          </View>
-                      }
-            />
+                          }
+                />
+                <InputAccessory/>
+                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
+            </View>
         );
     }
 });

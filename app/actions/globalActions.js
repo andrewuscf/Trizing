@@ -374,9 +374,6 @@ export function createWorkout(data, asyncActions) {
 
 
 export function addEditWorkoutDay(data, asyncActions = null) {
-    if (asyncActions) {
-        asyncActions(true);
-    }
     let url = `${API_ENDPOINT}training/workout/days/`;
     let method = 'POST';
     if (data.id) {
@@ -391,18 +388,16 @@ export function addEditWorkoutDay(data, asyncActions = null) {
                 else
                     dispatch({type: types.UPDATE_WORKOUT_DAY, response: responseJson});
 
-                if (asyncActions) {
-                    return asyncActions(false, {
-                        routeName: 'WorkoutDayDetail',
+                if (responseJson.id) {
+                    return asyncActions(true, {
                         props: {workout_day_id: responseJson.id},
-                        state: responseJson
                     });
+                } else {
+                    return asyncActions(false)
                 }
             })
             .catch((error) => {
-                if (asyncActions) {
-                    asyncActions(false);
-                }
+                asyncActions(false);
             }).done();
     }
 }
@@ -463,15 +458,18 @@ export function deleteSet(id) {
 // }
 
 export function logSets(data, asyncActions) {
-    asyncActions(true);
     let JSONDATA = JSON.stringify(data);
     return (dispatch, getState) => {
         return fetch(`${API_ENDPOINT}training/workout/logs/`,
             fetchData('POST', JSONDATA, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                asyncActions(false);
+                if (responseJson.length) {
+                    asyncActions(true)
+                } else {
+                    asyncActions(false)
+                }
                 return dispatch({type: types.CREATE_WORKOUT_LOG, response: responseJson});
-            }).done();
+            }).catch(()=>asyncActions(false));
     }
 }
 
