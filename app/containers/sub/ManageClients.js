@@ -35,7 +35,7 @@ const ManageClients = React.createClass({
     },
 
     componentWillMount() {
-        if (!this.props.Clients.length) {
+        if (!this.props.Clients.length && this.props.RequestUser.type == 1) {
             this.props.actions.getClients();
         }
     },
