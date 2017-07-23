@@ -309,7 +309,6 @@ export function getSchedules(param = '', refresh = false) {
 }
 
 export function createSchedule(data, asyncActions) {
-    asyncActions(true);
     let JSONDATA = JSON.stringify(data);
 
     let url = `${API_ENDPOINT}training/schedules/`;
@@ -322,7 +321,11 @@ export function createSchedule(data, asyncActions) {
     return (dispatch, getState) => {
         return fetch(url, fetchData(method, JSONDATA, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                asyncActions(false, {routeName: 'EditSchedule', props: {scheduleId: responseJson.id}});
+                if (responseJson.id) {
+                    asyncActions(true, {routeName: 'EditSchedule', props: {scheduleId: responseJson.id}});
+                } else {
+                    asyncActions(false);
+                }
                 return dispatch({type: types.CREATE_SCHEDULE, response: responseJson});
             })
             .catch((error) => {
@@ -357,14 +360,16 @@ export function deleteSchedule(scheduleId, asyncActions) {
 }
 
 export function createWorkout(data, asyncActions) {
-    asyncActions(true);
     let JSONDATA = JSON.stringify(data);
     return (dispatch, getState) => {
         return fetch(`${API_ENDPOINT}training/workouts/`,
             fetchData('POST', JSONDATA, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
                 dispatch({type: types.CREATE_WORKOUT, response: responseJson});
-                return asyncActions(false, {routeName: 'EditWorkout', props: {workoutId: responseJson.id}});
+                if (responseJson.id) {
+                    return asyncActions(true, {routeName: 'EditWorkout', props: {workoutId: responseJson.id}});
+                }
+                return asyncActions(false);
             })
             .catch((error) => {
                 asyncActions(false);

@@ -127,14 +127,6 @@ const CreateExercise = React.createClass({
             });
             if (sets.length > 0) {
                 this.props.actions.addEditExercise(sets, this.goBack);
-            } else {
-                Alert.alert(
-                    'You need at least one set with reps.',
-                    'Add reps to a set.',
-                    [
-                        {text: 'Okay', onPress: () => this.setState({disabled: false})},
-                    ]
-                );
             }
 
         } else if (this.props.exercise) {
@@ -163,14 +155,6 @@ const CreateExercise = React.createClass({
             });
             if (sets.length > 0) {
                 this.props.actions.addEditExercise(sets, this.goBack);
-            } else {
-                Alert.alert(
-                    'You need at least one set with reps.',
-                    'Add reps to a set.',
-                    [
-                        {text: 'Okay', onPress: () => this.setState({disabled: false})},
-                    ]
-                );
             }
         }
     },

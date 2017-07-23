@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -8,10 +8,9 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
-import {NavigationActions} from 'react-navigation';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import * as GlobalActions from '../../actions/globalActions';
-import {getFontSize} from '../../actions/utils';
 
 import SelectInput from '../../components/SelectInput';
 
@@ -30,7 +29,8 @@ const CreateSchedule = React.createClass({
         return {
             Error: null,
             template: null,
-            value: null
+            value: null,
+            disabled: false,
         }
     },
 
@@ -38,14 +38,23 @@ const CreateSchedule = React.createClass({
         this.props.navigation.setParams({handleSave: this._onSubmit});
     },
 
-    asyncActions(start, data = {}){
-        if (!start && data.routeName) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.disabled !== this.state.disabled) {
+            this.props.navigation.setParams({handleSave: this._onSubmit, disabled: this.state.disabled});
+        }
+    },
+
+    asyncActions(success, data = {}){
+        this.setState({disabled: false});
+        if (success && data.routeName) {
             this.props.navigation.dispatch({
                 type: 'ReplaceCurrentScreen',
                 routeName: data.routeName,
                 params: data.props,
                 key: data.routeName
             });
+        } else {
+            this.dropdown.alertWithType('error', 'Error', "Couldn't create workout block.")
         }
     },
 
@@ -53,6 +62,7 @@ const CreateSchedule = React.createClass({
     _onSubmit() {
         let values = this.refs.form.getValue();
         if (values) {
+            this.setState({disabled: true});
             if (this.state.template)
                 values = {
                     ...values,
@@ -110,6 +120,7 @@ const CreateSchedule = React.createClass({
                         {id: null, name: 'None'}
                     ]} selectedId={this.state.template} submitChange={this.selectTemplate}/>
                 </View>
+                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
         )
     }

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -8,10 +8,9 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
-import {NavigationActions} from 'react-navigation';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import * as GlobalActions from '../../actions/globalActions';
-import {getFontSize} from '../../actions/utils';
 
 import SelectInput from '../../components/SelectInput';
 
@@ -22,7 +21,8 @@ const CreateWorkout = React.createClass({
 
     getInitialState() {
         return {
-            template: null
+            template: null,
+            disabled: false,
         }
     },
 
@@ -30,22 +30,30 @@ const CreateWorkout = React.createClass({
         this.props.navigation.setParams({handleSave: this._onSubmit});
     },
 
-    asyncActions(start, data = {}){
-        if (start) {
-            // failed
-        } else if (data.routeName) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.disabled !== this.state.disabled) {
+            this.props.navigation.setParams({handleSave: this._onSubmit, disabled: this.state.disabled});
+        }
+    },
+
+    asyncActions(success, data = {}){
+        this.setState({disabled: false});
+        if (success && data.routeName) {
             this.props.navigation.dispatch({
                 type: 'ReplaceCurrentScreen',
                 routeName: data.routeName,
                 params: data.props,
                 key: data.routeName
             });
+        } else {
+            this.dropdown.alertWithType('error', 'Error', "Couldn't create workout block.")
         }
     },
 
     _onSubmit() {
         let values = this.refs.form.getValue();
         if (values) {
+            this.setState({disabled: true});
             if (this.state.template)
                 values = {
                     ...values,
@@ -110,7 +118,7 @@ const CreateWorkout = React.createClass({
                         value={this.state.value}
                     />
                     <View style={styles.templateSection}>
-                        <Text style={{paddingBottom: 10}}>Copy workout day:</Text>
+                        <Text style={{paddingBottom: 10}}>Copy workout block:</Text>
                         <SelectInput ref='workout_templates' options={[
                             ..._.filter(scheduleWorkouts, function (o) {
                                 return !o.training_plan;
@@ -119,6 +127,7 @@ const CreateWorkout = React.createClass({
                         ]} selectedId={this.state.template} submitChange={this.selectTemplate}/>
                     </View>
                 </View>
+                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
         )
     }
@@ -137,8 +146,6 @@ const styles = StyleSheet.create({
         borderColor: '#e1e3df',
         borderBottomWidth: 1,
         borderTopWidth: 1,
-        // flexDirection: 'row',
-        // justifyContent: 'space-between'
     }
 });
 

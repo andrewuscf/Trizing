@@ -14,7 +14,7 @@ import {
 } from 'react-native-popup-menu';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
-import {getFontSize} from '../../actions/utils';
+import {getFontSize, trunc} from '../../actions/utils';
 
 
 const DisplayExerciseBox = React.createClass({
@@ -66,7 +66,7 @@ const DisplayExerciseBox = React.createClass({
         return (
             <TouchableOpacity style={styles.displayWorkoutBox} onPress={this.toggleDetails}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <Text style={styles.simpleTitle}>{this.props.exercise.name}</Text>
+                    <Text style={styles.simpleTitle}>{trunc(this.props.exercise.name, 36)}</Text>
                     <Menu style={{}}>
                         <MenuTrigger>
                             <MaterialIcon name="linear-scale" size={30}/>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
         marginRight: 20,
     },
     simpleTitle: {
-        fontSize: 28,
+        fontSize: 18,
         fontFamily: 'OpenSans-Bold',
     },
     title: {

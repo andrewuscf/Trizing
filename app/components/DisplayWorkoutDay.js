@@ -77,11 +77,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     simpleTitle: {
-        fontSize: getFontSize(28),
+        fontSize: 18,
         fontFamily: 'OpenSans-Bold',
     },
     day: {
-        fontSize: getFontSize(18),
+        fontSize: 12,
         fontFamily: 'OpenSans-Semibold',
         color: 'grey'
     },
