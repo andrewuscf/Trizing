@@ -56,6 +56,41 @@ const PersonBox = React.createClass({
     render() {
         const person = this.props.person;
         const requestUser = this.props.RequestUser;
+
+        let renderButton = null;
+
+        if (!this.state.invited && typeof this.props.sendRequest !== 'undefined') {
+            if (person.id !== requestUser.id) {
+                if (requestUser.id == person.profile.trainer) {
+                    renderButton = (
+                        <TouchableOpacity activeOpacity={1} onPress={this._removeClient}
+                                          style={[styles.addUser, {
+                                              borderColor: 'red',
+                                              backgroundColor: 'red'
+                                          }]}>
+                            <Text style={styles.buttonText}>
+                                {requestUser.type === 2 ? "REMOVE TRAINER" : "REMOVE CLIENT"}
+                            </Text>
+                        </TouchableOpacity>
+                    )
+                } else {
+                    renderButton = (
+                        <TouchableOpacity activeOpacity={1} onPress={this._action}
+                                          style={[styles.addUser, {
+                                              borderColor: '#00AFA3',
+                                              backgroundColor: '#00AFA3'
+                                          }]}>
+                            <Text style={styles.buttonText}>
+                                {requestUser.type === 2 ? "REQUEST TRAINER" : "ADD CLIENT"}
+                            </Text>
+                        </TouchableOpacity>
+                    )
+                }
+
+                if (requestUser.profile.trainer == person.id) renderButton = null;
+            }
+        }
+
         return (
             <TouchableOpacity style={styles.container} onPress={this.goToProfile}>
                 <AvatarImage style={styles.avatar} image={person.profile.thumbnail} resizeImage={102}/>
@@ -64,30 +99,7 @@ const PersonBox = React.createClass({
                     <Text style={styles.title}>{person.profile.first_name} {person.profile.last_name[0]}.</Text>
                 </View>
                 {this.props.selected ? <Icon name="circle" size={20} style={GlobalStyle.lightBlueText}/> : null}
-                {!this.state.invited && typeof this.props.sendRequest !== 'undefined' ?
-                    person.id !== requestUser.id ?
-                        requestUser.id == person.profile.trainer || requestUser.profile.trainer == person.id ?
-                            <TouchableOpacity activeOpacity={1} onPress={this._removeClient}
-                                              style={[styles.addUser, {
-                                                  borderColor: 'red',
-                                                  backgroundColor: 'red'
-                                              }]}>
-                                <Text style={styles.buttonText}>
-                                    {requestUser.type === 2 ? "REMOVE TRAINER" : "REMOVE CLIENT"}
-                                </Text>
-                            </TouchableOpacity> :
-                            <TouchableOpacity activeOpacity={1} onPress={this._action}
-                                              style={[styles.addUser, {
-                                                  borderColor: '#00AFA3',
-                                                  backgroundColor: '#00AFA3'
-                                              }]}>
-                                <Text style={styles.buttonText}>
-                                    {requestUser.type === 2 ? "REQUEST TRAINER" : "ADD CLIENT"}
-                                </Text>
-                            </TouchableOpacity>
-                        : <Icon name="check" size={30} color='green'/>
-                    : null
-                }
+                {renderButton}
 
             </TouchableOpacity>
         );

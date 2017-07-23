@@ -59,10 +59,11 @@ const SelectInput = React.createClass({
                     }}
                     visible={this.state.showOverlay}>
                     <View style={styles.popup}>
-                        <ScrollView  contentContainerStyle={styles.popupContainer} showsVerticalScrollIndicator={false}>
+                        <ScrollView contentContainerStyle={styles.popupContainer} showsVerticalScrollIndicator={false}>
                             {optionslist}
                         </ScrollView>
-                        <TouchableOpacity activeOpacity={1} style={[styles.itemView, {marginTop: 10, marginBottom: 10, borderRadius: 10}]}
+                        <TouchableOpacity activeOpacity={1}
+                                          style={[styles.itemView, {marginTop: 10, marginBottom: 10, borderRadius: 10}]}
                                           onPress={this.toggleOverlay}>
                             <Text style={styles.itemText}>Cancel</Text>
                         </TouchableOpacity>
@@ -79,8 +80,9 @@ const SelectInput = React.createClass({
             <View style={this.props.style}>
                 <TouchableOpacity activeOpacity={1} onPress={this.toggleOverlay}>
                     <View style={styles.selectView}>
-                        <Text
-                            style={styles.selectText}>{this.state.selected ? this.state.selected : 'Select One'}</Text>
+                        <Text style={styles.selectText}>
+                            {this.state.selected ? this.state.selected : 'Select One'}
+                        </Text>
                     </View>
                 </TouchableOpacity>
                 {this._renderOverlay()}

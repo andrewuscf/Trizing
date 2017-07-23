@@ -21,7 +21,7 @@ import moment from 'moment';
 import * as HomeActions from '../actions/homeActions';
 import * as GlobalActions from '../actions/globalActions';
 
-import {getFontSize} from '../actions/utils';
+import {getFontSize, calCalories} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
 
@@ -178,7 +178,7 @@ const Home = React.createClass({
                 fats = (data.macro_plan_day.fats) ? data.macro_plan_day.fats : 0;
                 protein = (data.macro_plan_day.protein) ? data.macro_plan_day.protein : 0;
                 carbs = (data.macro_plan_day.carbs) ? data.macro_plan_day.carbs : 0;
-                calories = (9 * fats) + (4 * protein) + (4 * carbs);
+                calories = calCalories(fats, carbs, protein);
             }
             content = (
                 <View>

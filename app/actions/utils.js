@@ -34,7 +34,7 @@ export function fetchData(method, body = null, token = null, headers = null, get
 }
 
 export function checkStatus(response) {
-    if (response.status === 204){
+    if (response.status === 204) {
         return {deleted: true}
     }
     return response.json();
@@ -73,4 +73,8 @@ export function resetNav(routeName, params = '') {
         actions: [NavigationActions.navigate({routeName})],
         params: params
     });
+}
+
+export function calCalories(fats = 0, carbs = 0, protein = 0) {
+    return (9 * fats) + (4 * protein) + (4 * carbs);
 }

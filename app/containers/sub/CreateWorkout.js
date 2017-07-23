@@ -8,7 +8,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
-import { NavigationActions } from 'react-navigation';
+import {NavigationActions} from 'react-navigation';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
@@ -109,11 +109,15 @@ const CreateWorkout = React.createClass({
                         onChange={this.onChange}
                         value={this.state.value}
                     />
-                    <Text>Copy existing workout:</Text>
-                    <SelectInput ref='workout_templates' options={[
-                        ..._.filter(scheduleWorkouts, function (o) {return !o.training_plan;}),
-                        {id: null, name: 'None'}
-                    ]} selectedId={this.state.template} submitChange={this.selectTemplate}/>
+                    <View style={styles.templateSection}>
+                        <Text style={{paddingBottom: 10}}>Copy workout day:</Text>
+                        <SelectInput ref='workout_templates' options={[
+                            ..._.filter(scheduleWorkouts, function (o) {
+                                return !o.training_plan;
+                            }),
+                            {id: null, name: 'None'}
+                        ]} selectedId={this.state.template} submitChange={this.selectTemplate}/>
+                    </View>
                 </View>
             </View>
         )
@@ -127,10 +131,14 @@ const styles = StyleSheet.create({
     button: {
         margin: 20,
     },
-    submitText: {
-        color: 'white',
-        fontSize: 15,
-        fontFamily: 'OpenSans-Bold',
+    templateSection:{
+        padding: 10,
+        backgroundColor: 'white',
+        borderColor: '#e1e3df',
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
+        // flexDirection: 'row',
+        // justifyContent: 'space-between'
     }
 });
 
