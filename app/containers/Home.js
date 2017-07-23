@@ -220,34 +220,31 @@ const Home = React.createClass({
                         </TouchableOpacity>
                     </View>
                     {data && data.macro_plan_day ?
-                        <View style={[styles.box, {marginBottom: 5, marginTop: 0}]}>
+                        <View style={[styles.box, {marginBottom: 5}]}>
 
                             <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
                                 <View style={styles.details}>
-                                    <Text style={styles.sectionTitle}>Fats</Text>
+                                    <Text style={styles.sectionTitle}>FAT</Text>
                                     <Text style={styles.smallText}>{`${fats}g`}</Text>
                                 </View>
                                 <View style={styles.details}>
-                                    <Text style={styles.sectionTitle}>Carbs</Text>
+                                    <Text style={styles.sectionTitle}>CARBS</Text>
                                     <Text style={styles.smallText}>{`${carbs}g`}</Text>
                                 </View>
                                 <View style={styles.details}>
-                                    <Text style={styles.sectionTitle}>Protein</Text>
+                                    <Text style={styles.sectionTitle}>PROTEIN</Text>
                                     <Text style={styles.smallText}>{`${protein}g`}</Text>
                                 </View>
                             </View>
                             <Text style={styles.formCalories}>
                                 Calories: {calories}
                             </Text>
-                            <TouchableOpacity
-                                onPress={this._redirect.bind(null, 'CreateMacroLog', {
+                            <TouchableOpacity onPress={this._redirect.bind(null, 'CreateMacroLog', {
                                     macro_plan_day: data.macro_plan_day,
                                     date: this.state.dataDate
                                 })}
                                 style={styles.link}>
-                                <Text style={styles.simpleTitle}>Log Today</Text>
-                                <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
-                                              style={styles.linkArrow}/>
+                                <Text style={styles.simpleTitle}>Log Nutrition</Text>
                             </TouchableOpacity>
                         </View>
                         : <View
@@ -382,13 +379,16 @@ const styles = StyleSheet.create({
         color: '#b1aea5',
         fontFamily: 'OpenSans-Semibold',
         margin: 10,
-        flex: 17
+        flex: 17,
+        textAlign: 'center'
     },
     link: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderTopWidth: 0.5,
-        borderColor: '#e1e3df',
+        justifyContent: 'center',
+        alignSelf: 'center'
+        // borderTopWidth: 0.5,
+        // borderColor: '#e1e3df',
     },
     linkArrow: {
         flex: 1

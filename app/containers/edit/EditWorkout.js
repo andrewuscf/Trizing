@@ -86,7 +86,7 @@ const EditWorkout = React.createClass({
         return (
             <View style={[GlobalStyle.simpleBottomBorder, styles.headerContainer]}>
                 <Text style={styles.smallBold}>Duration:
-                    <Text style={styles.notBold}> {workout.duration} Weeks</Text>
+                    <Text style={styles.notBold}> {workout.duration} {workout.duration == 1 ? 'week': 'weeks'}</Text>
                 </Text>
                 <Text style={styles.smallBold}>Created: <Text style={styles.notBold}>{created}</Text></Text>
             </View>

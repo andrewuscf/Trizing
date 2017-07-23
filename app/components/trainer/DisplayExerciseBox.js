@@ -69,7 +69,7 @@ const DisplayExerciseBox = React.createClass({
                     <Text style={styles.simpleTitle}>{this.props.exercise.name}</Text>
                     <Menu style={{}}>
                         <MenuTrigger>
-                            <MaterialIcon name="linear-scale" size={25}/>
+                            <MaterialIcon name="linear-scale" size={30}/>
                         </MenuTrigger>
                         <MenuOptions customStyles={optionsStyles}>
                             <MenuOption onSelect={this._redirect} text='Edit'/>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
         marginRight: 20,
     },
     simpleTitle: {
-        fontSize: getFontSize(28),
+        fontSize: 28,
         fontFamily: 'OpenSans-Bold',
     },
     title: {

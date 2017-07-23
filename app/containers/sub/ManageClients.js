@@ -15,11 +15,11 @@ import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import fetch from 'react-native-cancelable-fetch';
 
-import {fetchData, API_ENDPOINT, checkStatus} from '../../actions/utils';
+import {fetchData, API_ENDPOINT, checkStatus, getFontSize} from '../../actions/utils';
+import GlobalStyle from '../globalStyle';
 
 import * as HomeActions from '../../actions/homeActions';
 
-import Loading from '../../components/Loading';
 import PersonBox from '../../components/PersonBox';
 
 
@@ -34,15 +34,15 @@ const ManageClients = React.createClass({
         }
     },
 
-    componentWillMount() {
-        if (!this.props.Clients.length && this.props.RequestUser.type == 1) {
+    componentDidMount(){
+        const isTrainer = this.props.RequestUser.type === 1;
+        if (!this.props.Clients.length && isTrainer) {
             this.props.actions.getClients();
         }
-    },
-
-    componentDidMount(){
-        const isTrainer = this.props.RequestUser.type == 1;
-        this.props.navigation.setParams({headerTitle: isTrainer ? 'Manage Clients': 'Trainers'});
+        if (!this.state.fetchedUsers.length) {
+            this.getUsersList();
+        }
+        this.props.navigation.setParams({headerTitle: isTrainer ? 'Manage Clients' : 'Trainers'});
     },
 
     refresh() {
@@ -57,7 +57,9 @@ const ManageClients = React.createClass({
     },
 
     getUsersList(text) {
-        fetch(`${API_ENDPOINT}user/list/?search=${text}`, fetchData('GET', null, this.props.UserToken), 1)
+        let url = `${API_ENDPOINT}user/list/`;
+        if (text) url += `?search=${text}`;
+        fetch(url, fetchData('GET', null, this.props.UserToken), 1)
             .then(checkStatus)
             .then(data => {
                 this.setState({
@@ -67,6 +69,8 @@ const ManageClients = React.createClass({
     },
 
     filterPeople() {
+        const isTrainer = this.props.RequestUser.type === 1;
+
         let clients = this.props.Clients.filter((person) => {
             if (!this.state.filterText) {
                 return person
@@ -78,8 +82,13 @@ const ManageClients = React.createClass({
                 return person;
             }
         });
-        clients = clients.concat(this.state.fetchedUsers);
-        return clients
+
+        if (isTrainer) {
+            return {'Clients': clients, 'Users': this.state.fetchedUsers};
+        }
+        return {'Trainers': this.state.fetchedUsers};
+
+
     },
 
     textChange(text) {
@@ -133,17 +142,27 @@ const ManageClients = React.createClass({
         )
     },
 
+    renderSectionHeader: function (sectionData, category) {
+        if (!sectionData.length) return null;
+        return <View style={[GlobalStyle.simpleBottomBorder]}><Text
+            style={styles.sectionTitle}>{category}</Text></View>;
+    },
+
 
     render() {
         const user = this.props.RequestUser;
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        const dataSource = ds.cloneWithRows(this.filterPeople());
+        const ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) => r1 !== r2,
+            sectionHeaderHasChanged: (s1, s2) => s1 !== s2
+        });
+        const dataSource = ds.cloneWithRowsAndSections(this.filterPeople());
         return (
             <ListView ref='peoplelist' removeClippedSubviews={(Platform.OS !== 'ios')}
                       keyboardShouldPersistTaps="handled"
                       showsVerticalScrollIndicator={false}
                       refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
                       renderHeader={this.renderSearchBar}
+                      renderSectionHeader={this.renderSectionHeader}
                       style={styles.container} enableEmptySections={true}
                       dataSource={dataSource}
                       renderRow={(person) =>
@@ -161,6 +180,7 @@ const ManageClients = React.createClass({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingBottom: 20
     },
     filterInput: {
         flex: 1,
@@ -183,6 +203,13 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: '#e1e3df',
     },
+    sectionTitle: {
+        paddingTop:5,
+        paddingBottom: 5,
+        paddingLeft: 10,
+        fontSize: getFontSize(22),
+        fontFamily: 'OpenSans-Bold',
+    }
 });
 
 

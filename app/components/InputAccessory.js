@@ -35,7 +35,7 @@ const InputAccessory = React.createClass({
     },
 
     keyboardWillShow (e) {
-        let newSize = e.endCoordinates.screenY - (INPUT_ACCESSORY_HEIGHT + 60); //-1 so 1px is showing so it doesn't unmount
+        let newSize = e.endCoordinates.screenY - (INPUT_ACCESSORY_HEIGHT + 70); //-1 so 1px is showing so it doesn't unmount
         LayoutAnimation.configureNext({
             duration: 500,
             create: {

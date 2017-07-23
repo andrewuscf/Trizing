@@ -1,13 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
-    TextInput,
     TouchableOpacity,
     Keyboard,
-    Alert,
-    ScrollView
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -17,6 +14,7 @@ import _ from 'lodash';
 import * as GlobalActions from '../../actions/globalActions';
 
 import CreateSetBox from '../../components/trainer/CreateSetBox';
+import InputAccessory from '../../components/InputAccessory';
 
 
 const BlankSet = {reps: null, weight: null};
@@ -214,6 +212,7 @@ const CreateExercise = React.createClass({
                         <Text>Add Set</Text>
                     </TouchableOpacity>
                 </View>
+                <InputAccessory/>
             </View>
         )
     }

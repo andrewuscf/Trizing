@@ -47,25 +47,21 @@ const DaysOfWeek = React.createClass({
                     <View key={day_of_week.id}
                           style={[styles.dayOfWeek, (_.includes(this.props.days, day_of_week.id)
                               ? styles.selectedDay : null )]}>
-                        <Icon name="today" size={30}
-                              style={[(_.includes(this.props.days, day_of_week.id) ? styles.selectedDayText : styles.defaultText)]}/>
-                        <Text
-                            style={[(_.includes(this.props.days, day_of_week.id) ? styles.selectedDayText : styles.defaultText)]}>
+                        <Text style={[(_.includes(this.props.days, day_of_week.id) ? styles.selectedDayText : null)]}>
                             {day_of_week.day}
                         </Text>
                     </View>
                 )
             }
             return (
-                <TouchableOpacity key={day_of_week.id} onPress={() => {
-                    this._dayToggle(day_of_week.id)
-                }}
+                <TouchableOpacity key={day_of_week.id}
+                                  onPress={() => {
+                                      this._dayToggle(day_of_week.id)
+                                  }}
                                   style={[styles.dayOfWeek, (_.includes(this.props.days, day_of_week.id)
                                       ? styles.selectedDay : null )]}>
-                    <Icon name="today" size={30}
-                          style={[(_.includes(this.props.days, day_of_week.id) ? styles.selectedDayText : styles.defaultText)]}/>
                     <Text
-                        style={[(_.includes(this.props.days, day_of_week.id) ? styles.selectedDayText : styles.defaultText)]}>
+                        style={[(_.includes(this.props.days, day_of_week.id) ? styles.selectedDayText : null)]}>
                         {day_of_week.day}
                     </Text>
                 </TouchableOpacity>
@@ -97,25 +93,20 @@ const styles = StyleSheet.create({
         borderColor: '#e1e3df',
     },
     dayOfWeek: {
-        borderWidth: .5,
-        borderLeftWidth: 0,
         flex: .1,
-        borderColor: 'grey',
+        borderRadius: 20,
+        height: 40,
+        marginLeft: 5,
+        marginRight: 5,
+        borderColor: 'black',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     selectedDay: {
         backgroundColor: '#1352e2',
-        borderWidth: 0,
-
-    },
-    defaultText: {
-        color: 'grey',
-        fontFamily: 'OpenSans-Semibold',
     },
     selectedDayText: {
-        color: 'white',
-        fontFamily: 'OpenSans-Semibold',
+        color: 'white'
     },
 });
 

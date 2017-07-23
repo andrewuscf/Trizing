@@ -54,6 +54,7 @@ const MacroBoxDay = React.createClass({
 
 
     calculateCalories() {
+        console.log(this.state)
         const fats = (this.state.fats) ? this.state.fats : 0;
         const protein = (this.state.protein) ? this.state.protein : 0;
         const carbs = (this.state.carbs) ? this.state.carbs : 0;
@@ -103,7 +104,7 @@ const MacroBoxDay = React.createClass({
                 {day_plan ?
                     <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
                         <View style={styles.details}>
-                            <Text style={styles.sectionTitle}>Protein (g)</Text>
+                            <Text style={styles.sectionTitle}>Fats (g)</Text>
                             <Text style={styles.smallText}>{day_plan.protein}</Text>
                         </View>
                         <View style={styles.details}>
@@ -111,34 +112,12 @@ const MacroBoxDay = React.createClass({
                             <Text style={styles.smallText}>{day_plan.carbs}</Text>
                         </View>
                         <View style={styles.details}>
-                            <Text style={styles.sectionTitle}>Fats (g)</Text>
+                            <Text style={styles.sectionTitle}>Protein (g)</Text>
                             <Text style={styles.smallText}>{day_plan.protein}</Text>
                         </View>
                     </View>
                     :
                     <View style={[styles.inputWrap, {flexDirection: 'row', justifyContent: 'space-between'}]}>
-                        <TextInput ref='protein' style={[styles.textInput]} autoCapitalize='none'
-                                   keyboardType="numeric"
-                                   underlineColorAndroid='transparent'
-                                   autoCorrect={false}
-                                   onChangeText={(text) => this.setState({protein: text})}
-                                   value={this.state.protein}
-                                   onSubmitEditing={(event) => {
-                                       this.refs.carbs.focus();
-                                   }}
-                                   placeholderTextColor="#4d4d4d"
-                                   placeholder="Protein (g)"/>
-                        <TextInput ref='carbs' style={[styles.textInput]} autoCapitalize='none'
-                                   keyboardType="numeric"
-                                   underlineColorAndroid='transparent'
-                                   autoCorrect={false}
-                                   onChangeText={(text) => this.setState({carbs: text})}
-                                   value={this.state.carbs}
-                                   onSubmitEditing={(event) => {
-                                       this.refs.fats.focus();
-                                   }}
-                                   placeholderTextColor="#4d4d4d"
-                                   placeholder="Carbs (g)"/>
                         <TextInput ref='fats' style={[styles.textInput]} autoCapitalize='none'
                                    keyboardType="numeric"
                                    underlineColorAndroid='transparent'
@@ -146,10 +125,30 @@ const MacroBoxDay = React.createClass({
                                    onChangeText={(text) => this.setState({fats: text})}
                                    value={this.state.fats}
                                    onSubmitEditing={(event) => {
-                                       // this.refs[`protein_${x + 1}`].focus();
+                                       this.refs.carbs.focus();
                                    }}
                                    placeholderTextColor="#4d4d4d"
                                    placeholder="Fat (g)"/>
+                        <TextInput ref='carbs' style={[styles.textInput]} autoCapitalize='none'
+                                   keyboardType="numeric"
+                                   underlineColorAndroid='transparent'
+                                   autoCorrect={false}
+                                   onChangeText={(text) => this.setState({carbs: text})}
+                                   value={this.state.carbs}
+                                   onSubmitEditing={(event) => {
+                                       this.refs.protein.focus();
+                                   }}
+                                   placeholderTextColor="#4d4d4d"
+                                   placeholder="Carbs (g)"/>
+
+                        <TextInput ref='protein' style={[styles.textInput]} autoCapitalize='none'
+                                   keyboardType="numeric"
+                                   underlineColorAndroid='transparent'
+                                   autoCorrect={false}
+                                   onChangeText={(text) => this.setState({protein: text})}
+                                   value={this.state.protein}
+                                   placeholderTextColor="#4d4d4d"
+                                   placeholder="Protein (g)"/>
                     </View>
                 }
                 <Text style={styles.formCalories}>

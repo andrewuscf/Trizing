@@ -34,10 +34,13 @@ const CreateSetBox = React.createClass({
                 <View style={{flex: .4, justifyContent: 'center', alignItems: 'center'}}>
                     {locals.inputs.reps}
                 </View>
-                <TouchableOpacity style={{flex: .1, justifyContent: 'center', alignItems: 'center'}}
-                                  onPress={this._deleteSet}>
-                    <Icon name="remove-circle" size={20} color="red"/>
-                </TouchableOpacity>
+                {typeof this.props._deleteSet !== 'undefined' ?
+                    <TouchableOpacity style={{flex: .1, justifyContent: 'center', alignItems: 'center'}}
+                                      onPress={this._deleteSet}>
+                        <Icon name="remove-circle" size={20} color="red"/>
+                    </TouchableOpacity>
+                    : null}
+
             </View>
         );
     },
