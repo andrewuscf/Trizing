@@ -5,6 +5,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     Keyboard,
+    Alert
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -95,16 +96,21 @@ const CreateExercise = React.createClass({
     },
 
     goBack() {
-        this.setState({disabled:false});
+        this.setState({disabled: false});
         this.props.navigation.goBack();
     },
 
     _save() {
-        this.setState({disabled:true});
+        this.setState({disabled: true});
         if (this.refs.form) {
             // Created an exercise.
             const sets = [];
             let values = this.refs.form.getValue();
+            if (!values) {
+                this.setState({disabled: false});
+                return
+            }
+
             this.state.sets.forEach((set, index) => {
                 if (set.reps) {
                     const data = {
@@ -122,8 +128,15 @@ const CreateExercise = React.createClass({
             if (sets.length > 0) {
                 this.props.actions.addEditExercise(sets, this.goBack);
             } else {
-                this.goBack();
+                Alert.alert(
+                    'You need at least one set with reps.',
+                    'Add reps to a set.',
+                    [
+                        {text: 'Okay', onPress: () => this.setState({disabled: false})},
+                    ]
+                );
             }
+
         } else if (this.props.exercise) {
             // Updating already created exercise.
             const sets = [];
@@ -151,7 +164,13 @@ const CreateExercise = React.createClass({
             if (sets.length > 0) {
                 this.props.actions.addEditExercise(sets, this.goBack);
             } else {
-                this.goBack();
+                Alert.alert(
+                    'You need at least one set with reps.',
+                    'Add reps to a set.',
+                    [
+                        {text: 'Okay', onPress: () => this.setState({disabled: false})},
+                    ]
+                );
             }
         }
     },
