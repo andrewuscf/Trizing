@@ -1,16 +1,29 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
-    TouchableOpacity,
     Dimensions
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
 
-import {getFontSize} from '../actions/utils';
+function template(locals, order) {
+    return (
+        <View style={styles.rowSection}>
+            <View style={[styles.topSection, {paddingTop: 10, paddingBottom: 10}]}>
+                <Text>{order}</Text>
+            </View>
+            <View style={[styles.topSection, locals.hasError? {borderColor: '#a94442'}: null]}>
+                {locals.inputs.weight}
+            </View>
+            <View style={[styles.topSection, ]}>
+                {locals.inputs.reps}
+            </View>
+        </View>
+    )
+}
+
 
 
 const window = Dimensions.get('window');
@@ -35,6 +48,7 @@ const SetLogBox = React.createClass({
         const set = this.props.set;
         let options = {
             stylesheet: stylesheet,
+            template: (locals)=>template(locals, set.order),
             auto: 'placeholders',
             fields: {
                 weight: {
@@ -47,8 +61,6 @@ const SetLogBox = React.createClass({
             }
         };
         return (
-            <View style={styles.setsHeader}>
-                <Text style={styles.setColumn}>{set.order}</Text>
                 <Form
                     ref="form"
                     type={Set}
@@ -56,7 +68,6 @@ const SetLogBox = React.createClass({
                     onChange={this.onChange}
                     value={this.state.value}
                 />
-            </View>
         )
     }
 });
@@ -69,37 +80,39 @@ const Set = t.struct({
 });
 
 const styles = StyleSheet.create({
-    setsHeader: {
+    rowSection: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
-    setColumn: {
-        width: window.width / 3,
-        borderWidth: .5,
+    topSection: {
+        justifyContent: 'center',
+        alignItems: 'center',
         borderColor: '#e1e3df',
-        textAlign: 'center'
-    }
+        borderWidth: .5,
+        flex:1
+    },
 });
 
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
 
-stylesheet.fieldset = {
-    flexDirection: 'row',
-};
 
 stylesheet.formGroup.normal.marginBottom = 0;
 stylesheet.formGroup.error.marginBottom = 0;
-stylesheet.textbox.normal.borderWidth = .5;
+
+stylesheet.formGroup.normal.flex = 1;
+stylesheet.formGroup.error.flex = 1;
+
+stylesheet.textbox.normal.borderWidth = 0;
+stylesheet.textbox.error.borderWidth = 0;
+
 stylesheet.textbox.error.borderWidth = .5;
-stylesheet.textbox.normal.borderColor = '#e1e3df';
-stylesheet.textbox.normal.borderRadius = 0;
-stylesheet.textbox.error.borderRadius = 0;
+
 stylesheet.textbox.normal.textAlign = 'center';
 stylesheet.textbox.error.textAlign = 'center';
 stylesheet.textbox.normal.marginBottom = 0;
 stylesheet.textbox.error.marginBottom = 0;
-stylesheet.textbox.normal.justifyContent = 'center';
-stylesheet.textbox.error.justifyContent = 'center';
-stylesheet.textbox.normal.width = window.width / 3;
-stylesheet.textbox.error.width = window.width / 3;
+stylesheet.textbox.normal.width =( window.width / 3 )- 10;
+stylesheet.textbox.error.width = (window.width / 3)-10;
 
 export default SetLogBox;

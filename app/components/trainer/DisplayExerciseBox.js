@@ -16,12 +16,14 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import {getFontSize, trunc} from '../../actions/utils';
 
+import SetLogBox from '../../components/SetLogBox';
+
 
 const DisplayExerciseBox = React.createClass({
     propTypes: {
         exercise: React.PropTypes.object.isRequired,
         deleteSet: React.PropTypes.func.isRequired,
-        _editExercise: React.PropTypes.func.isRequired
+        _editExercise: React.PropTypes.func.isRequired,
     },
 
     getInitialState() {
@@ -48,16 +50,16 @@ const DisplayExerciseBox = React.createClass({
 
 
     render: function () {
-        const sets = this.props.exercise.sets.map((set, index) => {
+        let sets = this.props.exercise.sets.map((set, index) => {
             return (
-                <View key={index} style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                    <View style={{flex: .2, justifyContent: 'center', alignItems: 'center'}}>
+                <View key={index} style={styles.rowSection}>
+                    <View style={styles.topSection}>
                         <Text>{set.order}</Text>
                     </View>
-                    <View style={{flex: .4, justifyContent: 'center', alignItems: 'center'}}>
+                    <View style={styles.topSection}>
                         <Text>{set.weight}</Text>
                     </View>
-                    <View style={{flex: .4, justifyContent: 'center', alignItems: 'center'}}>
+                    <View style={styles.topSection}>
                         <Text>{set.reps}</Text>
                     </View>
                 </View>
@@ -67,7 +69,7 @@ const DisplayExerciseBox = React.createClass({
             <TouchableOpacity style={styles.displayWorkoutBox} onPress={this.toggleDetails}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <Text style={styles.simpleTitle}>{trunc(this.props.exercise.name, 36)}</Text>
-                    <Menu style={{}}>
+                    <Menu >
                         <MenuTrigger>
                             <MaterialIcon name="linear-scale" size={30}/>
                         </MenuTrigger>
@@ -77,20 +79,26 @@ const DisplayExerciseBox = React.createClass({
                         </MenuOptions>
                     </Menu>
                 </View>
-                <View style={styles.dateSection}>
-                    {!this.state.showDetails ?
+                {!this.state.showDetails ?
+                    <View style={styles.dateSection}>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <Text style={styles.day}>{sets.length} {sets.length === 1 ? 'set': 'sets'}</Text>
+                            <Text style={styles.day}>{sets.length} {sets.length === 1 ? 'set' : 'sets'}</Text>
                         </View>
-                        : null
-                    }
-                </View>
+                    </View>
+                    : null
+                }
                 {this.state.showDetails ?
-                    <View style={styles.bottom}>
-                        <View style={[styles.title]}>
-                            <Text style={[styles.titleSection, {flex: .2}]}>SET</Text>
-                            <Text style={[styles.titleSection, {flex: .4}]}>LBS</Text>
-                            <Text style={[styles.titleSection, {flex: .4}]}>REPS</Text>
+                    <View>
+                        <View style={styles.rowSection}>
+                            <View style={styles.topSection}>
+                                <Text>#</Text>
+                            </View>
+                            <View style={styles.topSection}>
+                                <Text>LBS</Text>
+                            </View>
+                            <View style={styles.topSection}>
+                                <Text>REPS</Text>
+                            </View>
                         </View>
                         {sets}
                     </View> : null}
@@ -123,35 +131,28 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: 'white'
     },
-    top: {
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginRight: 20,
-    },
     simpleTitle: {
         fontSize: 18,
         fontFamily: 'OpenSans-Bold',
-    },
-    title: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
         marginBottom: 5,
     },
-    titleSection: {
-        textAlign: 'center',
-        fontSize: getFontSize(22),
-        fontFamily: 'OpenSans-Semibold',
+    rowSection: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
-    edit: {
-        // marginRight: 20
-        // margin: 20,
+    topSection: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#e1e3df',
+        borderWidth: .5,
+        paddingTop: 5,
+        paddingBottom: 5,
+        flex: 1
     },
     dateSection: {
         marginLeft: 5,
         marginRight: 5,
-        marginTop: 5,
         paddingTop: 5,
         borderColor: '#e1e3df',
         borderTopWidth: 1,
