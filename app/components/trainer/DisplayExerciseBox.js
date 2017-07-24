@@ -140,12 +140,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        borderColor: '#e1e3df',
+        borderWidth: .5,
     },
     topSection: {
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: '#e1e3df',
-        borderWidth: .5,
+        // borderColor: '#e1e3df',
+        // borderWidth: .5,
         paddingTop: 5,
         paddingBottom: 5,
         flex: 1
