@@ -3,8 +3,6 @@ import {
     View,
     Text,
     StyleSheet,
-    Platform,
-    ListView,
     Dimensions
 } from 'react-native';
 import {bindActionCreators} from 'redux';
@@ -12,6 +10,7 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
 import DropdownAlert from 'react-native-dropdownalert';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
@@ -90,29 +89,26 @@ const WorkoutDaySession = React.createClass({
 
 
     render: function () {
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        let dataSource = ds.cloneWithRows(this.props.workout_day.exercises);
+        const exercises = this.props.workout_day.exercises.map((exercise, i)=> {
+            return (
+                <View style={styles.exerciseBox} key={i}>
+                    <Text style={styles.exerciseName}>{exercise.name}</Text>
+                    <View style={styles.setsHeader}>
+                        <Text style={styles.setColumn}>Set</Text>
+                        <Text style={styles.setColumn}>LBS</Text>
+                        <Text style={styles.setColumn}>REPS</Text>
+                    </View>
+                    {exercise.sets.map((set, index) => {
+                        return <SetLogBox ref={(row) => this.rows.push(row)} key={index} set={set}/>
+                    })}
+                </View>
+            )
+        })
         return (
             <View style={{flex: 1}}>
-                <ListView ref='exercise_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                          showsVerticalScrollIndicator={false}
-                          keyboardShouldPersistTaps="handled"
-                          style={styles.container} enableEmptySections={true}
-                          dataSource={dataSource}
-                          renderRow={(exercise, sectionID, rowID) =>
-                              <View style={styles.exerciseBox}>
-                                  <Text style={styles.exerciseName}>{exercise.name}</Text>
-                                  <View style={styles.setsHeader}>
-                                      <Text style={styles.setColumn}>Set</Text>
-                                      <Text style={styles.setColumn}>LBS</Text>
-                                      <Text style={styles.setColumn}>REPS</Text>
-                                  </View>
-                                  {exercise.sets.map((set, index) => {
-                                      return <SetLogBox ref={(row) => this.rows.push(row)} key={index} set={set}/>
-                                  })}
-                              </View>
-                          }
-                />
+                <KeyboardAwareScrollView extraHeight={130} showsVerticalScrollIndicator={false}>
+                    {exercises}
+                </KeyboardAwareScrollView>
                 <InputAccessory/>
                 <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
