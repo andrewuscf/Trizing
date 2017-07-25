@@ -47,6 +47,10 @@ const SetLogBox = React.createClass({
     render: function () {
         const set = this.props.set;
         let options = {
+            i18n: {
+                optional: '',
+                required: '*',
+            },
             stylesheet: stylesheet,
             template: (locals)=>template(locals, set.order),
             auto: 'placeholders',
@@ -60,6 +64,12 @@ const SetLogBox = React.createClass({
                 }
             }
         };
+
+        const Set = t.struct({
+            weight: set.weight ? t.Number: t.maybe(t.Number),
+            reps: t.Number,
+        });
+
         return (
                 <Form
                     ref="form"
@@ -73,11 +83,6 @@ const SetLogBox = React.createClass({
 });
 
 const Form = t.form.Form;
-
-const Set = t.struct({
-    weight: t.Number,
-    reps: t.Number,
-});
 
 const styles = StyleSheet.create({
     rowSection: {
