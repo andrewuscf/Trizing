@@ -1,14 +1,11 @@
 import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     Dimensions
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import moment from 'moment';
-import _ from 'lodash';
 import DropdownAlert from 'react-native-dropdownalert';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -16,7 +13,7 @@ import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 
 import InputAccessory from '../../components/InputAccessory';
-import SetLogBox from '../../components/SetLogBox';
+import DisplayExerciseBox from '../../components/trainer/DisplayExerciseBox';
 
 
 const window = Dimensions.get('window');
@@ -29,6 +26,7 @@ const WorkoutDaySession = React.createClass({
     getInitialState() {
         return {
             disabled: false,
+            rows: []
         }
     },
 
@@ -41,8 +39,6 @@ const WorkoutDaySession = React.createClass({
             this.props.navigation.setParams({handleSave: this._onSubmit, disabled: this.state.disabled});
         }
     },
-
-    rows: [],
 
     asyncActions(success) {
         this.setState({disabled: false});
@@ -60,50 +56,28 @@ const WorkoutDaySession = React.createClass({
 
     _onSubmit() {
         let completed = true;
-        let logs = [];
-        const rows = _.uniqBy(this.rows, function (e) {
-            if (e && e.props.set) return e.props.set.id;
-        });
-        for (const row of rows) {
-            if (row && row.refs.form) {
-                const formValues = row.refs.form.getValue();
-                if (formValues) {
-                    logs.push({
-                        exercise_set: row.props.set.id,
-                        reps: formValues.reps,
-                        weight: formValues.weight,
-                        workout: this.props.workout_day.workout,
-                        date: moment().format("YYYY-MM-DD")
-                    })
-                } else {
-                    completed = false;
-                    break;
-                }
+        let totalLogs = [];
+        for (const row of this.state.rows) {
+            const logs = row.setData();
+            if (logs) {
+                totalLogs = totalLogs.concat(logs);
+            } else {
+                completed = false;
             }
         }
         if (completed) {
             this.setState({disabled: true});
-            this.props.actions.logSets(logs, this.asyncActions);
+            this.props.actions.logSets(totalLogs, this.asyncActions);
         }
     },
 
 
     render: function () {
-        const exercises = this.props.workout_day.exercises.map((exercise, i)=> {
-            return (
-                <View style={styles.exerciseBox} key={i}>
-                    <Text style={styles.exerciseName}>{exercise.name}</Text>
-                    <View style={styles.setsHeader}>
-                        <Text style={styles.setColumn}>Set</Text>
-                        <Text style={styles.setColumn}>LBS</Text>
-                        <Text style={styles.setColumn}>REPS</Text>
-                    </View>
-                    {exercise.sets.map((set, index) => {
-                        return <SetLogBox ref={(row) => this.rows.push(row)} key={index} set={set}/>
-                    })}
-                </View>
-            )
-        })
+        const exercises = this.props.workout_day.exercises.map((exercise, i) => {
+            return (<DisplayExerciseBox ref={(row) => this.state.rows[i] = row}
+                                        workout={this.props.workout_day.workout}
+                                        exercise={exercise} key={i} log={true}/>)
+        });
         return (
             <View style={{flex: 1}}>
                 <KeyboardAwareScrollView extraHeight={130} showsVerticalScrollIndicator={false}>
@@ -126,48 +100,9 @@ WorkoutDaySession.navigationOptions = ({navigation}) => {
 };
 
 
-const styles = StyleSheet.create({
-    container: {
-        // backgroundColor: 'white',
-    },
-    header: {
-        fontSize: getFontSize(30),
-        fontFamily: 'OpenSans-bold',
-    },
-    exerciseBox: {
-        marginBottom: 5,
-        backgroundColor: 'white',
-
-    },
-    exerciseName: {
-        fontSize: getFontSize(26),
-        fontFamily: 'OpenSans-Semibold',
-        textAlign: 'center',
-        padding: 5,
-    },
-    setsHeader: {
-        flexDirection: 'row',
-    },
-    setColumn: {
-        width: window.width / 3,
-        textAlign: 'center'
-    },
-    button: {
-        backgroundColor: '#00BFFF',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 30,
-        paddingRight: 30,
-        marginLeft: 50,
-        marginRight: 50,
-        bottom: 0,
-        right: 0,
-        left: 0,
-        borderRadius: 80
-    },
-});
+// const styles = StyleSheet.create({
+//
+// });
 
 const stateToProps = (state) => {
     return state.Global;

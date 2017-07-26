@@ -13,6 +13,7 @@ import {
     MenuTrigger,
 } from 'react-native-popup-menu';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import moment from 'moment';
 
 import {getFontSize, trunc} from '../../actions/utils';
 
@@ -22,13 +23,16 @@ import SetLogBox from '../../components/SetLogBox';
 const DisplayExerciseBox = React.createClass({
     propTypes: {
         exercise: React.PropTypes.object.isRequired,
-        deleteSet: React.PropTypes.func.isRequired,
-        _editExercise: React.PropTypes.func.isRequired,
+        deleteSet: React.PropTypes.func,
+        _editExercise: React.PropTypes.func,
+        log: React.PropTypes.bool,
+        workout: React.PropTypes.number
     },
 
     getInitialState() {
         return {
             showDetails: false,
+            rows: []
         }
     },
 
@@ -48,6 +52,29 @@ const DisplayExerciseBox = React.createClass({
         });
     },
 
+    setData() {
+        const logs = [];
+        for (const row of this.state.rows) {
+            if (row && row.refs.form) {
+                const formValues = row.refs.form.getValue();
+                if (formValues) {
+                    logs.push({
+                        exercise_set: row.props.set.id,
+                        reps: formValues.reps,
+                        weight: formValues.weight,
+                        workout: this.props.workout,
+                        date: moment().format("YYYY-MM-DD")
+                    })
+                }
+            }
+        }
+        if (logs.length !== this.props.exercise.sets.length) {
+            this.setState({showDetails: true});
+            return null;
+        }
+        return logs;
+    },
+
 
     render: function () {
         let sets = this.props.exercise.sets.map((set, index) => {
@@ -65,19 +92,29 @@ const DisplayExerciseBox = React.createClass({
                 </View>
             )
         });
+
+        if (this.props.log) {
+            sets = this.props.exercise.sets.map((set, i) => {
+                return <SetLogBox ref={(row) => this.state.rows[i] = row} key={i} set={set}/>
+            })
+        }
+
         return (
             <TouchableOpacity style={styles.displayWorkoutBox} onPress={this.toggleDetails}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <Text style={styles.simpleTitle}>{trunc(this.props.exercise.name, 36)}</Text>
-                    <Menu >
-                        <MenuTrigger>
-                            <MaterialIcon name="linear-scale" size={30}/>
-                        </MenuTrigger>
-                        <MenuOptions customStyles={optionsStyles}>
-                            <MenuOption onSelect={this._redirect} text='Edit'/>
-                            <MenuOption onSelect={this._onDelete} text='Delete'/>
-                        </MenuOptions>
-                    </Menu>
+                    {this.props.deleteSet && this.props._editExercise ?
+                        <Menu >
+                            <MenuTrigger>
+                                <MaterialIcon name="linear-scale" size={30}/>
+                            </MenuTrigger>
+                            <MenuOptions customStyles={optionsStyles}>
+                                <MenuOption onSelect={this._redirect} text='Edit'/>
+                                <MenuOption onSelect={this._onDelete} text='Delete'/>
+                            </MenuOptions>
+                        </Menu>
+                        : null
+                    }
                 </View>
                 {!this.state.showDetails ?
                     <View style={styles.dateSection}>
@@ -87,8 +124,7 @@ const DisplayExerciseBox = React.createClass({
                     </View>
                     : null
                 }
-                {this.state.showDetails ?
-                    <View>
+                    <View style={[this.state.showDetails ?  {flex: 1, opacity: 1}: {width:0, height:0, opacity: 0}]}>
                         <View style={styles.rowSection}>
                             <View style={styles.topSection}>
                                 <Text>#</Text>
@@ -101,7 +137,7 @@ const DisplayExerciseBox = React.createClass({
                             </View>
                         </View>
                         {sets}
-                    </View> : null}
+                    </View>
             </TouchableOpacity>
         )
     }

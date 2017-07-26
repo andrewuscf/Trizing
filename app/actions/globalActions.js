@@ -474,7 +474,7 @@ export function logSets(data, asyncActions) {
                     asyncActions(false)
                 }
                 return dispatch({type: types.CREATE_WORKOUT_LOG, response: responseJson});
-            }).catch(()=>asyncActions(false));
+            }).catch((e) => asyncActions(false));
     }
 }
 
