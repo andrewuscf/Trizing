@@ -80,7 +80,8 @@ const WorkoutDaySession = React.createClass({
         });
         return (
             <View style={{flex: 1}}>
-                <KeyboardAwareScrollView extraHeight={130} showsVerticalScrollIndicator={false}>
+                <KeyboardAwareScrollView extraHeight={130} showsVerticalScrollIndicator={false}
+                contentContainerStyle={{backgroundColor: '#f1f1f3'}}>
                     {exercises}
                 </KeyboardAwareScrollView>
                 <InputAccessory/>
