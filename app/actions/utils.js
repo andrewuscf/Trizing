@@ -40,7 +40,7 @@ export function checkStatus(response) {
         return response.json();
     } else {
         console.log(response);
-        let error = new Error(response.statusText);
+        let error = new Error(response.statusText ? response.statusText: null);
         error.response = response;
         throw error;
     }

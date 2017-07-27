@@ -101,10 +101,9 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
                 if (responseJson.detail)
                     return dispatch(removeToken());
                 return dispatch({type: types.LOAD_REQUEST_USER, request_user: responseJson});
+            }).catch((error) => {
+                return dispatch(removeToken());
             })
-            .catch((error) => {
-                // return dispatch(removeToken());
-            }).done();
     }
 }
 

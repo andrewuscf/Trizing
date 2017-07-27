@@ -75,6 +75,23 @@ const DisplayExerciseBox = React.createClass({
         return logs;
     },
 
+    isComplete() {
+        let isComplete = false;
+        for (const row of this.state.rows) {
+            const set = row.props.set;
+            const value = row.state.value;
+
+            if (value && value.reps && value.weight) {
+                isComplete = true;
+            } else if (value && !set.weight && value.reps) {
+                isComplete = true;
+            } else {
+                break;
+            }
+        }
+        return isComplete;
+    },
+
 
     render: function () {
         let sets = this.props.exercise.sets.map((set, index) => {
@@ -113,7 +130,10 @@ const DisplayExerciseBox = React.createClass({
                                 <MenuOption onSelect={this._onDelete} text='Delete'/>
                             </MenuOptions>
                         </Menu>
-                        : null
+                        : this.isComplete() ?
+                            <MaterialIcon name="check-circle" size={20} color="green"/> :
+                            <MaterialIcon name="check" size={20}/>
+
                     }
                 </View>
                 {!this.state.showDetails ?
@@ -124,20 +144,29 @@ const DisplayExerciseBox = React.createClass({
                     </View>
                     : null
                 }
-                    <View style={[this.state.showDetails ?  {flex: 1, opacity: 1}: {width:0, height:0, opacity: 0}]}>
-                        <View style={styles.rowSection}>
-                            <View style={styles.topSection}>
-                                <Text>#</Text>
-                            </View>
-                            <View style={styles.topSection}>
-                                <Text>LBS</Text>
-                            </View>
-                            <View style={styles.topSection}>
-                                <Text>REPS</Text>
-                            </View>
+                <View style={[this.state.showDetails ? {flex: 1, opacity: 1} : {width: 0, height: 0, opacity: 0}]}>
+                    <View style={styles.rowSection}>
+                        <View style={styles.topSection}>
+                            <Text>#</Text>
                         </View>
-                        {sets}
+                        <View style={styles.topSection}>
+                            <Text>LBS</Text>
+                        </View>
+                        <View style={styles.topSection}>
+                            <Text>REPS</Text>
+                        </View>
+                        {this.props.log ?
+                            <View style={styles.topSection}>
+                                {this.isComplete() ?
+                                    <MaterialIcon name="check-circle" size={20} color="green"/> :
+                                    <MaterialIcon name="check" size={20}/>
+                                }
+                            </View>
+                            : null
+                        }
                     </View>
+                    {sets}
+                </View>
             </TouchableOpacity>
         )
     }
@@ -165,7 +194,8 @@ const styles = StyleSheet.create({
         borderColor: '#e1e3df',
         borderBottomWidth: 1,
         padding: 10,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        marginBottom: 10
     },
     simpleTitle: {
         fontSize: 18,
