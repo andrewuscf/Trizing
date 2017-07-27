@@ -123,7 +123,7 @@ const DisplayExerciseBox = React.createClass({
                     {this.props.deleteSet && this.props._editExercise ?
                         <Menu >
                             <MenuTrigger>
-                                <MaterialIcon name="linear-scale" size={30}/>
+                                <MaterialIcon name="linear-scale" size={35}/>
                             </MenuTrigger>
                             <MenuOptions customStyles={optionsStyles}>
                                 <MenuOption onSelect={this._redirect} text='Edit'/>
