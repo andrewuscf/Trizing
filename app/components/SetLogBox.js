@@ -65,10 +65,19 @@ const SetLogBox = React.createClass({
         const value = this.state.value;
         if (!value || !value.reps || !value.weight) {
             const set = this.props.set;
+            let weight = set.weight ? set.weight : null;
+            let reps = set.reps ? set.reps: null;
+            if (value && value.weight) {
+                weight = value.weight
+            }
+            if (value && value.reps) {
+                reps = value.reps
+            }
+
             this.setState({
                 value: {
-                    weight: set.weight ? set.weight : null,
-                    reps: set.reps,
+                    weight: weight,
+                    reps: reps,
                 }
             })
         } else {
