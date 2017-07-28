@@ -51,16 +51,18 @@ const Home = React.createClass({
 
 
     componentDidMount() {
-        if (!this.props.Clients.length) {
+        if (this.props.RequestUser.type === 1 && !this.props.Clients.length) {
             this.getNeeded();
+        } else if (this.props.RequestUser.type === 2 && !this.props.ActiveData.length) {
+            this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), false)
         }
     },
 
     getNeeded(refresh = false) {
-        if (this.props.RequestUser.type == 1) {
+        if (this.props.RequestUser.type === 1) {
             this.props.actions.getClients(refresh);
         } else {
-            this.props.actions.getActiveData(refresh);
+            this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), true);
         }
         if (refresh) {
             this.props.getNotifications(refresh);
@@ -71,9 +73,9 @@ const Home = React.createClass({
         this.props.navigation.navigate(routeName, props);
     },
 
-    _toLogWorkout() {
-        if (this.props.ActiveData && this.props.ActiveData.training_day && !this.props.ActiveData.training_day.logged_today) {
-            this._redirect('WorkoutDaySession', {workout_day: this.props.ActiveData.training_day})
+    _toLogWorkout(data) {
+        if (data && data.training_day && !data.training_day.logged_today) {
+            this._redirect('WorkoutDaySession', {workout_day: data.training_day})
         }
     },
 
@@ -125,7 +127,9 @@ const Home = React.createClass({
         this.setState({
             dataDate: newDate
         });
-        this.props.actions.getActiveData(false, newDate.format("YYYY-MM-DD"))
+        if (!_.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")})) {
+            this.props.actions.getActiveData(newDate.format("YYYY-MM-DD"), false)
+        }
     },
 
     subtractDay() {
@@ -133,7 +137,9 @@ const Home = React.createClass({
         this.setState({
             dataDate: newDate
         });
-        this.props.actions.getActiveData(false, newDate.format("YYYY-MM-DD"))
+        if (!_.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")})) {
+            this.props.actions.getActiveData(newDate.format("YYYY-MM-DD"), false)
+        }
     },
 
 
@@ -169,7 +175,7 @@ const Home = React.createClass({
                 </View>
             )
         } else {
-            const data = this.props.ActiveData;
+            const data = _.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")});
             let calories = 0;
             let fats = 0;
             let protein = 0;
@@ -180,9 +186,11 @@ const Home = React.createClass({
                 carbs = (data.macro_plan_day.carbs) ? data.macro_plan_day.carbs : 0;
                 calories = calCalories(fats, carbs, protein);
             }
+
+
             content = (
                 <View>
-                    {!data ?
+                    {!data && !this.props.Loading_Active ?
                         <View style={styles.emptyClients}>
                             <Text style={styles.emptyClientsText}>Get started by finding a trainer</Text>
                             <Text style={styles.emptyClientsText}>or workout program.</Text>
@@ -219,63 +227,75 @@ const Home = React.createClass({
                                           style={[{marginRight: 10}]}/>
                         </TouchableOpacity>
                     </View>
-                    {data && data.macro_plan_day ?
-                        <View style={[styles.box, {marginBottom: 5}]}>
+                    {!this.props.Loading_Active ?
+                        <View>
+                            {data && data.macro_plan_day ?
+                                <View style={[styles.box, {marginBottom: 5}]}>
 
-                            <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
-                                <View style={styles.details}>
-                                    <Text style={styles.sectionTitle}>FAT</Text>
-                                    <Text style={styles.smallText}>{`${fats}g`}</Text>
+                                    <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
+                                        <View style={styles.details}>
+                                            <Text style={styles.sectionTitle}>FAT</Text>
+                                            <Text style={styles.smallText}>{`${fats}g`}</Text>
+                                        </View>
+                                        <View style={styles.details}>
+                                            <Text style={styles.sectionTitle}>CARBS</Text>
+                                            <Text style={styles.smallText}>{`${carbs}g`}</Text>
+                                        </View>
+                                        <View style={styles.details}>
+                                            <Text style={styles.sectionTitle}>PROTEIN</Text>
+                                            <Text style={styles.smallText}>{`${protein}g`}</Text>
+                                        </View>
+                                    </View>
+                                    <Text style={styles.formCalories}>
+                                        Calories: {calories}
+                                    </Text>
+                                    <TouchableOpacity onPress={this._redirect.bind(null, 'CreateMacroLog', {
+                                        macro_plan_day: data.macro_plan_day,
+                                        date: this.state.dataDate
+                                    })}
+                                                      style={styles.link}>
+                                        <Text style={styles.simpleTitle}>Log Nutrition</Text>
+                                    </TouchableOpacity>
                                 </View>
-                                <View style={styles.details}>
-                                    <Text style={styles.sectionTitle}>CARBS</Text>
-                                    <Text style={styles.smallText}>{`${carbs}g`}</Text>
+                                : <View
+                                    style={[styles.box, {
+                                        marginBottom: 5,
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }]}>
+                                    <Text style={styles.textTitle}>No Nutrition Plan Today</Text>
                                 </View>
-                                <View style={styles.details}>
-                                    <Text style={styles.sectionTitle}>PROTEIN</Text>
-                                    <Text style={styles.smallText}>{`${protein}g`}</Text>
-                                </View>
-                            </View>
-                            <Text style={styles.formCalories}>
-                                Calories: {calories}
-                            </Text>
-                            <TouchableOpacity onPress={this._redirect.bind(null, 'CreateMacroLog', {
-                                    macro_plan_day: data.macro_plan_day,
-                                    date: this.state.dataDate
-                                })}
-                                style={styles.link}>
-                                <Text style={styles.simpleTitle}>Log Nutrition</Text>
-                            </TouchableOpacity>
-                        </View>
-                        : <View
-                            style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
-                            <Text style={styles.textTitle}>No Nutrition Plan Today</Text>
-                        </View>
-                    }
-                    {data && data.training_day ?
-                        <TouchableOpacity activeOpacity={.6} style={[styles.box, {
-                            marginBottom: 5,
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }]} onPress={this._toLogWorkout}>
-                            <Text style={styles.textTitle}>{`Today's Workout`}</Text>
-                            <Text style={styles.h2Title}>{data.training_day.name}</Text>
-                            <Text>Exercises: {data.training_day.exercises.length}</Text>
-                            {!this.props.ActiveData.training_day.logged_today?
-                                <Text>Start Workout</Text>
-                                :null
                             }
+                            {data && data.training_day ?
+                                <TouchableOpacity activeOpacity={.6} style={[styles.box, {
+                                    marginBottom: 5,
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }]} onPress={this._toLogWorkout.bind(null, data)}>
+                                    <Text style={styles.textTitle}>{data.training_day.name}</Text>
+                                    <Text style={styles.h2Title}>{data.training_day.exercises.length} Exercises</Text>
+                                    {!data.training_day.logged_today ?
+                                        <Text style={styles.simpleTitle}>Start Workout</Text>
+                                        : null
+                                    }
 
-                        </TouchableOpacity>
-                        :
-                        <View
-                            style={[styles.box, {marginBottom: 5, alignItems: 'center', justifyContent: 'center'}]}>
-                            <Text style={styles.textTitle}>No Workout</Text>
+                                </TouchableOpacity>
+                                :
+                                <View
+                                    style={[styles.box, {
+                                        marginBottom: 5,
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }]}>
+                                    <Text style={styles.textTitle}>No Workout</Text>
+                                </View>
+                            }
                         </View>
+                        : <Loading style={{paddingTop: 40}}/>
                     }
 
                 </View>
-            )
+            );
 
         }
         let userImage = user.profile.avatar;
@@ -367,19 +387,20 @@ const styles = StyleSheet.create({
     textTitle: {
         fontSize: getFontSize(26),
         fontFamily: 'OpenSans-Bold',
-        margin: 10,
+        marginTop: 10,
+        marginBottom: 10,
         alignSelf: 'center'
     },
     h2Title: {
-        fontSize: getFontSize(22),
+        fontSize: 15,
         fontFamily: 'OpenSans-SemiBold',
+        paddingBottom: 5,
     },
     simpleTitle: {
-        fontSize: getFontSize(18),
+        fontSize: 14,
         color: '#b1aea5',
         fontFamily: 'OpenSans-Semibold',
         margin: 10,
-        flex: 17,
         textAlign: 'center'
     },
     link: {
@@ -387,11 +408,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'center'
-        // borderTopWidth: 0.5,
-        // borderColor: '#e1e3df',
-    },
-    linkArrow: {
-        flex: 1
     },
     userProfile: {
         flex: .15,
@@ -415,15 +431,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row'
-    },
-    modal: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'white',
-        justifyContent: 'center',
     },
     templateSection: {
         borderColor: '#e1e3df',

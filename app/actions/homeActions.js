@@ -48,20 +48,19 @@ export function sendRequest(data) {
     }
 }
 
-export function getActiveData(refresh, date='') {
+export function getActiveData(date, refresh) {
     return (dispatch, getState) => {
         if (refresh) {
             dispatch(refreshPage());
+        } else {
+            dispatch({type: types.LOADING_ACTIVE_DATA})
         }
-        let url = `${API_ENDPOINT}user/active/${getState().Global.RequestUser.id}/`;
-        if (date) {
-            url += `?for_date=${date}`
-        }
+        let url = `${API_ENDPOINT}user/active/${getState().Global.RequestUser.id}/?for_date=${date}`;
         return fetch(url,
             fetchData('GET', null, getState().Global.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
-                return dispatch({type: types.LOAD_ACTIVE_DATA, response: responseJson});
+                return dispatch({type: types.LOAD_ACTIVE_DATA, response: {...responseJson, date: date}});
             })
     }
 }

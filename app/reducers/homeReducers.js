@@ -7,9 +7,10 @@ const initialState = {
     Clients: [],
     Notifications: [],
     NotificationsNext: null,
-    ActiveData: null,
+    ActiveData: [],
     Refreshing: false,
     HomeIsLoading: true,
+    Loading_Active: false
 };
 
 export default function homeReducers(state = initialState, action = null) {
@@ -52,11 +53,26 @@ export default function homeReducers(state = initialState, action = null) {
             };
 
         case constants.LOAD_ACTIVE_DATA:
+            const activeIndex = _.findIndex(state.ActiveData, {date: action.response.date});
+            let newData = state.ActiveData;
+            if (activeIndex === -1) {
+                newData = [...state.ActiveData, action.response];
+            } else {
+                newData = state.ActiveData.slice(0, activeIndex).concat(state.ActiveData.slice(activeIndex + 1)).push(action.response)
+                // state.ActiveData[index] = action.response;
+            }
             return {
                 ...state,
-                ActiveData: action.response,
+                ActiveData: newData,
                 Refreshing: false,
                 HomeIsLoading: false,
+                Loading_Active: false
+            };
+
+        case constants.LOADING_ACTIVE_DATA:
+            return {
+                ...state,
+                Loading_Active: true
             };
 
         case constants.CREATE_WORKOUT_LOG:
@@ -70,6 +86,17 @@ export default function homeReducers(state = initialState, action = null) {
                     }
 
                 },
+                ActiveData: state.ActiveData.map(active_data =>
+                    (active_data.date === moment.utc(action.response.date).local().format("YYYY-MM-DD")) ?
+                        {
+                            ...active_data,
+                            training_day: {
+                                ...active_data.training_day,
+                                logged_today: moment().isSame(moment.utc(action.response.date).local(), 'day')
+                            }
+                        } :
+                        active_data
+                )
             };
 
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     View,
-    StyleSheet,
     Dimensions
 } from 'react-native';
 import {bindActionCreators} from 'redux';
@@ -10,7 +9,6 @@ import DropdownAlert from 'react-native-dropdownalert';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import * as GlobalActions from '../../actions/globalActions';
-import {getFontSize} from '../../actions/utils';
 
 import InputAccessory from '../../components/InputAccessory';
 import DisplayExerciseBox from '../../components/trainer/DisplayExerciseBox';
