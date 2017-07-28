@@ -20,7 +20,8 @@ class CollapsibleDatePickerIOS extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+        };
     }
 
     render() {
@@ -83,59 +84,30 @@ export class ModalDatePicker extends t.form.DatePicker {
 
     getTemplate() {
         return (locals) => {
-            const stylesheet = locals.stylesheet;
             let formattedValue = String(locals.value);
             if (locals.config) {
                 if (locals.config.format) {
                     formattedValue = locals.config.format(locals.value);
                 }
             }
-            let touchableStyle = stylesheet.dateTouchable.normal;
-            let dateValueStyle = stylesheet.dateValue.normal;
-            if (locals.hasError) {
-                touchableStyle = stylesheet.dateTouchable.error;
-                dateValueStyle = stylesheet.dateValue.error;
-            }
-
-
-            let formGroupStyle = stylesheet.formGroup.normal;
-            let controlLabelStyle = stylesheet.controlLabel.normal;
-
-            if (locals.hasError) {
-                formGroupStyle = stylesheet.formGroup.error;
-                controlLabelStyle = stylesheet.controlLabel.error;
-            }
-
-            const label = locals.label ? <Text style={controlLabelStyle} onPress={() => {
-                this.refs.modal.setVisible(true)
-            }}>{locals.label}</Text> : null;
-
-            return (
-                <View style={formGroupStyle}>
-                    {label}
-                    <TouchableOpacity style={touchableStyle}
-                                      disabled={locals.disabled}
-                                      onPress={() => {
-                                          this.refs.modal.setVisible(true)
-                                      }}>
-                        <Text style={dateValueStyle}>
-                            {formattedValue}
-                        </Text>
-                    </TouchableOpacity>
-
-
-                    <StandaloneModal ref="modal">
-                        <View style={styles.innerModal}>
-                            <View style={styles.bottom}>
-                                <Text style={styles.okText} onPress={() => {
-                                    this.refs.modal.setVisible(false)
-                                }}>Done</Text>
-                                <CollapsibleDatePickerIOS locals={locals}/>
-                            </View>
+            return (<View>
+                <TouchableOpacity style={[styles.button, locals.hasError ? styles.customError : null]}
+                                  onPress={() => {
+                                      this.refs.modal.setVisible(true)
+                                  }}>
+                    <Text style={styles.buttonText}>{formattedValue}</Text>
+                </TouchableOpacity>
+                <StandaloneModal ref="modal">
+                    <View style={styles.innerModal}>
+                        <View style={styles.bottom}>
+                            <Text style={styles.okText} onPress={() => {
+                                this.refs.modal.setVisible(false)
+                            }}>Done</Text>
+                            <CollapsibleDatePickerIOS locals={locals}/>
                         </View>
-                    </StandaloneModal>
-                </View>
-            );
+                    </View>
+                </StandaloneModal>
+            </View>);
         };
     }
 }
@@ -161,7 +133,29 @@ const styles = StyleSheet.create({
     okText: {
         textAlign: 'right',
         paddingBottom: 10,
-        fontSize: getFontSize(22),
-        color: 'blue'
+        fontSize: 15,
+        // fontFamily: 'Gotham-Medium',
+        color: '#2e7fb2'
+    },
+    button: {
+        backgroundColor: 'white',
+        height: 40,
+        paddingVertical: (Platform.OS === 'ios') ? 7 : 0,
+        paddingHorizontal: 15,
+        marginBottom: 10,
+        marginLeft: 30,
+        marginRight: 30,
+        borderRadius: 4,
+        borderWidth: 0,
+        justifyContent: 'center'
+    },
+    buttonText: {
+        color: '#3D3C3B',
+        fontSize: 13,
+        // fontFamily: 'Gotham-Medium',
+        borderWidth: 0
+    },
+    customError: {
+        borderColor: '#a94442', borderWidth:1
     }
 });

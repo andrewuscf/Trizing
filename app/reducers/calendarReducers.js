@@ -21,6 +21,16 @@ export default function calendarReducers(state = initialState, action = null) {
                 CalendarIsLoading: false,
             };
 
+        case constants.ADD_EVENT:
+            return {
+                ...state,
+                Events: [
+                    action.response,
+                    ...state.Events
+                ],
+                CalendarIsLoading: false,
+            };
+
         case constants.REMOVE_TOKEN:
             return initialState;
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     Keyboard,
     ScrollView,
@@ -13,9 +12,9 @@ import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
 import moment from 'moment';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import * as CalendarActions from '../../actions/calendarActions';
-import {getFontSize, trunc} from '../../actions/utils';
 
 import {ModalDatePicker} from '../../components/ModalDatePicker';
 import PersonBox from '../../components/PersonBox';
@@ -28,9 +27,7 @@ function template(locals) {
                 {locals.inputs.title}
             </View>
             {locals.inputs.event_type}
-            <View style={{borderColor: '#e1e3df', borderTopWidth: 1}}>
-                {locals.inputs.date}
-            </View>
+            {locals.inputs.date}
             {locals.inputs.start_time}
             {locals.inputs.end_time}
         </View>
@@ -48,13 +45,12 @@ const CreateEvent = React.createClass({
     getInitialState() {
         return {
             selected: [],
-            value: {
-                title: null,
-                date: moment().toDate(),
-                start_time: moment().add(30, 'minutes').toDate(),
-                end_time: moment().add(2, 'hours').toDate(),
-            },
-            step: 1
+            value: null,
+            date: null,
+            start_time: null,
+            end_time: null,
+            step: 1,
+            disabled: false,
         }
     },
 
@@ -62,12 +58,26 @@ const CreateEvent = React.createClass({
         this.props.navigation.setParams({handleSave: this._onSubmit, saveText: 'Next'});
     },
 
-    asyncActions(start, data = {}){
-        if (start) {
-            // on fail
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.disabled != this.state.disabled) {
+            this.props.navigation.setParams({
+                handleSave: this._onSubmit,
+                saveText: null,
+                disabled: this.state.disabled
+            });
+        }
+    },
+
+    asyncActions(success){
+        this.setState({disabled: false});
+        if (success) {
+            this.dropdown.alertWithType('success', 'Success', 'You created an event.');
+            setTimeout(() => {
+                this.setState({value: null});
+                this._back();
+            }, 1000);
         } else {
-            this.props.actions.getEvents(true);
-            this._back();
+            this.dropdown.alertWithType('error', 'Error', "Couldn't create event.")
         }
     },
 
@@ -80,11 +90,12 @@ const CreateEvent = React.createClass({
         let values;
         if (this.refs.form) {
             values = this.refs.form.getValue();
-            if (values) {
+            if (values && this.state.date && this.state.start_time && this.state.end_time) {
                 this.props.navigation.setParams({headerTitle: 'Select Users to Invite', saveText: null});
                 this.setState({step: 2});
             }
         } else if (this.state.selected.length > 0) {
+            this.setState({disabled: true});
             values = this.state.value;
             let eventDate = moment(values.date);
             let startTime = moment(values.start_time);
@@ -140,7 +151,12 @@ const CreateEvent = React.createClass({
     },
 
     onChange(value) {
-        this.setState({value: value});
+        this.setState({
+            value: value,
+            date: value.date ? value.date : this.state.date,
+            start_time: value.start_time ? value.start_time : this.state.start_time,
+            end_time: value.end_time ? value.end_time : this.state.end_time,
+        });
     },
 
     render() {
@@ -158,7 +174,13 @@ const CreateEvent = React.createClass({
                     mode: 'date',
                     minimumDate: moment().toDate(),
                     config: {
-                        format: (date) => myFormatFunction("MMMM DD YYYY", date),
+                        format: (date) => {
+                            if (!this.state.date) {
+                                return 'Choose a Date'
+                            } else {
+                                return myFormatFunction("MMMM DD YYYY", date)
+                            }
+                        },
                     },
                     factory: Platform.OS == 'ios' ? ModalDatePicker : null,
                 },
@@ -167,7 +189,13 @@ const CreateEvent = React.createClass({
                     mode: 'time',
                     minuteInterval: 10,
                     config: {
-                        format: (date) => myFormatFunction("h:mma", date),
+                        format: (date) => {
+                            if (!this.state.start_time) {
+                                return 'Start Time'
+                            } else {
+                                return myFormatFunction("h:mma", date)
+                            }
+                        },
                     },
                     factory: Platform.OS == 'ios' ? ModalDatePicker : null,
                 },
@@ -175,7 +203,13 @@ const CreateEvent = React.createClass({
                     label: 'End Time*',
                     mode: 'time',
                     config: {
-                        format: (date) => myFormatFunction("h:mma", date),
+                        format: (date) => {
+                            if (!this.state.end_time) {
+                                return 'End Time'
+                            } else {
+                                return myFormatFunction("h:mma", date)
+                            }
+                        },
                         minuteInterval: 10,
                     },
                     factory: Platform.OS == 'ios' ? ModalDatePicker : null,
@@ -203,6 +237,7 @@ const CreateEvent = React.createClass({
                         })}
                     </ScrollView>
                 }
+                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
         )
     }
@@ -294,9 +329,6 @@ stylesheet.textboxView = {
         minHeight: 50,
     }
 };
-
-stylesheet.controlLabel.normal.flex = 1;
-stylesheet.controlLabel.error.flex = 1;
 
 
 let myFormatFunction = (format, date) => {

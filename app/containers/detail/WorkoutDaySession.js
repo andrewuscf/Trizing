@@ -45,7 +45,7 @@ const WorkoutDaySession = React.createClass({
             setTimeout(() => {
                 this.setState({value: null});
                 this.props.navigation.goBack();
-            }, 2000);
+            }, 1000);
         } else {
             this.dropdown.alertWithType('error', 'Error', "Couldn't log workout session.")
         }

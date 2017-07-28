@@ -67,3 +67,4 @@ export const GET_TEAM = 'GET_TEAM';
 // Calendar Constants
 export const GET_EVENTS = 'GET_EVENTS';
 export const EDIT_EVENT = 'EDIT_EVENT';
+export const ADD_EVENT = 'ADD_EVENT';

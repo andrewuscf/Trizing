@@ -18,10 +18,7 @@ export function getEvents(refresh = false) {
     }
 }
 
-export function addEditEvent(data, asyncActions = null) {
-    if (asyncActions) {
-        asyncActions(true);
-    }
+export function addEditEvent(data, asyncActions) {
     let url = `${API_ENDPOINT}social/events/`;
     let method = 'POST';
     if (data.id) {
@@ -31,15 +28,20 @@ export function addEditEvent(data, asyncActions = null) {
     return (dispatch, getState) => {
         return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                console.log(responseJson)
-                if (asyncActions) {
+                if (responseJson.id) {
+                    asyncActions(true);
+                } else {
                     asyncActions(false);
                 }
-                if (method != 'POST')
+                if (method != 'POST') {
                     return dispatch({type: types.EDIT_EVENT, response: responseJson});
+                } else {
+                    return dispatch({type: types.ADD_EVENT, response: responseJson});
+                }
             })
             .catch((error) => {
                 console.log(error);
+                asyncActions(false);
 
             })
     }
