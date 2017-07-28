@@ -163,14 +163,13 @@ const CreateEvent = React.createClass({
         let options = {
             auto: 'none',
             template: template,
-            stylesheet: stylesheet,
+            stylesheet: topStyle,
             fields: {
                 title: {
                     placeholder: 'Event Name',
                     onSubmitEditing: () => Keyboard.dismiss(),
                 },
                 date: {
-                    label: 'Date*',
                     mode: 'date',
                     minimumDate: moment().toDate(),
                     config: {
@@ -182,10 +181,10 @@ const CreateEvent = React.createClass({
                             }
                         },
                     },
+                    stylesheet: Platform.OS != 'ios' ? stylesheet : null,
                     factory: Platform.OS == 'ios' ? ModalDatePicker : null,
                 },
                 start_time: {
-                    label: 'Start Time*',
                     mode: 'time',
                     minuteInterval: 10,
                     config: {
@@ -197,10 +196,10 @@ const CreateEvent = React.createClass({
                             }
                         },
                     },
+                    stylesheet: Platform.OS != 'ios' ? stylesheet : null,
                     factory: Platform.OS == 'ios' ? ModalDatePicker : null,
                 },
                 end_time: {
-                    label: 'End Time*',
                     mode: 'time',
                     config: {
                         format: (date) => {
@@ -212,6 +211,7 @@ const CreateEvent = React.createClass({
                         },
                         minuteInterval: 10,
                     },
+                    stylesheet: Platform.OS != 'ios' ? stylesheet : null,
                     factory: Platform.OS == 'ios' ? ModalDatePicker : null,
                 }
             }
@@ -262,13 +262,44 @@ const styles = StyleSheet.create({
 });
 
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
+const topStyle = _.cloneDeep(t.form.Form.stylesheet);
 
-// {borderBottomWidth: .5, borderColor: '#aaaaaa', marginBottom: 10}
 
 stylesheet.formGroup = {
     ...stylesheet.formGroup,
     normal: {
         ...stylesheet.formGroup.normal,
+        backgroundColor: 'white',
+        height: 40,
+        paddingVertical: (Platform.OS === 'ios') ? 7 : 0,
+        paddingHorizontal: 15,
+        marginBottom: 10,
+        marginLeft: 30,
+        marginRight: 30,
+        borderRadius: 4,
+        borderWidth: 0,
+        justifyContent: 'center'
+    },
+    error: {
+        ...stylesheet.formGroup.error,
+        backgroundColor: 'white',
+        height: 40,
+        paddingVertical: (Platform.OS === 'ios') ? 7 : 0,
+        paddingHorizontal: 15,
+        marginBottom: 10,
+        marginLeft: 30,
+        marginRight: 30,
+        borderRadius: 4,
+        borderWidth: 0,
+        justifyContent: 'center'
+    }
+};
+
+
+topStyle.formGroup = {
+    ...topStyle.formGroup,
+    normal: {
+        ...topStyle.formGroup.normal,
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
@@ -278,7 +309,7 @@ stylesheet.formGroup = {
         backgroundColor: 'white'
     },
     error: {
-        ...stylesheet.formGroup.error,
+        ...topStyle.formGroup.error,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -290,17 +321,18 @@ stylesheet.formGroup = {
     }
 };
 
-stylesheet.textbox = {
-    ...stylesheet.textbox,
+
+topStyle.textbox = {
+    ...topStyle.textbox,
     normal: {
-        ...stylesheet.textbox.normal,
+        ...topStyle.textbox.normal,
         borderWidth: 0,
         marginTop: 5,
         marginBottom: 0,
         fontSize: 24
     },
     error: {
-        ...stylesheet.textbox.error,
+        ...topStyle.textbox.error,
         borderWidth: 0,
         marginTop: 5,
         marginBottom: 0,
@@ -308,10 +340,10 @@ stylesheet.textbox = {
     }
 };
 
-stylesheet.textboxView = {
-    ...stylesheet.textboxView,
+topStyle.textboxView = {
+    ...topStyle.textboxView,
     normal: {
-        ...stylesheet.textboxView.normal,
+        ...topStyle.textboxView.normal,
         borderWidth: 0,
         borderRadius: 0,
         borderBottomWidth: 0,
@@ -320,7 +352,7 @@ stylesheet.textboxView = {
         minHeight: 50,
     },
     error: {
-        ...stylesheet.textboxView.error,
+        ...topStyle.textboxView.error,
         borderWidth: 0,
         borderRadius: 0,
         borderBottomWidth: 0,
