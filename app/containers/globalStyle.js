@@ -30,6 +30,12 @@ const GlobalStyle = StyleSheet.create({
     },
     lightBlueText: {
         color: '#00AFA3'
+    },
+    redText: {
+        color: '#ff473d'
+    },
+    redBackground: {
+        backgroundColor: '#ff473d'
     }
 });
 

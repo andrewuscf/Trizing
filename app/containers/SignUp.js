@@ -1,12 +1,11 @@
 import React from 'react';
 import {
     View,
-    Image,
     Text,
     StyleSheet,
-    TouchableOpacity,
     Keyboard,
     ActivityIndicator,
+    TouchableOpacity
 } from 'react-native';
 import {
     AccessToken,
@@ -21,19 +20,19 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import * as GlobalActions from '../actions/globalActions';
 
-import {getFontSize, resetNav} from '../actions/utils';
+import {resetNav} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
-import BackBar from '../components/BackBar';
 import SubmitButton from '../components/SubmitButton';
 
 const Form = t.form.Form;
 
-const Login = React.createClass({
+const SignUp = React.createClass({
     getInitialState() {
         return {
             value: null,
             keyboard: false,
+            signUp: false,
             busy: false,
             options: {
                 // stylesheet: fullWidthLineInputs,
@@ -43,6 +42,7 @@ const Login = React.createClass({
                     username: {
                         autoCapitalize: 'none',
                         autoCorrect: false,
+                        keyboardType: "ascii-capable",
                         onSubmitEditing: () => {
                             if (this.refs.form.getComponent('email'))
                                 this.refs.form.getComponent('email').refs.input.focus()
@@ -56,7 +56,7 @@ const Login = React.createClass({
                             if (this.refs.form.getComponent('password'))
                                 this.refs.form.getComponent('password').refs.input.focus()
                         },
-                        placeholder: 'Username or Email'
+                        placeholder: 'Email Address'
                     },
                     password: {
                         secureTextEntry: true,
@@ -78,13 +78,24 @@ const Login = React.createClass({
         }
     },
 
+    componentDidUpdate (prevProps) {
+        if (this.props.UserToken) {
+            if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
+                this.props.navigation.dispatch(resetNav('Main'))
+            } else if (this.props.RequestUser && !this.props.RequestUser.profile.completed) {
+                this.props.navigation.dispatch(resetNav('EditProfile'))
+            }
+        }
+    },
+
 
     onPress() {
         // sign in + forgot credentials
         Keyboard.dismiss();
         const formValues = this.refs.form.getValue();
         if (formValues) {
-            this.props.actions.login({username: formValues.email, password: formValues.password}, this.asyncActions)
+            this.props.actions.register(formValues, this.asyncActions);
+            this.setState({value: null});
         }
     },
 
@@ -131,10 +142,14 @@ const Login = React.createClass({
             )
         }
         let User = t.struct({
+            username: t.String,
             email: t.String,
             password: t.String,
         });
+
+
         let options = this.state.options;
+
         return (
             <KeyboardAwareScrollView behavior='padding' style={GlobalStyle.noHeaderContainer} ref="scroll"
                                      contentContainerStyle={{flex: 1}}
@@ -152,21 +167,27 @@ const Login = React.createClass({
                     value={this.state.value}
                 />
 
-                <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('ResetPassword')}>
-                    <Text style={styles.buttonForgotText}>Forgot your password?</Text>
-                </TouchableOpacity>
 
 
                 <SubmitButton onPress={this.onPress} buttonStyle={[styles.button]} textStyle={styles.buttonText}
                               text='Enter'/>
 
+
+
                 <SubmitButton onPress={this.facebookLogin} buttonStyle={[styles.button, styles.fbButton]}
                               textStyle={styles.buttonText}
                               text={
                                   <Text style={styles.fbText}>
-                                      <Icon name="facebook-official" size={18} color="#3b5998"/> Login with Facebook
+                                      <Icon name="facebook-official" size={18} color="#3b5998"/> Sign up with Facebook
                                   </Text>
                               }/>
+
+
+                <TouchableOpacity style={styles.login} onPress={()=> console.log('hit')}>
+                    <Text style={styles.loginText}>By continuing, you agree to our
+                        <Text style={GlobalStyle.redText}> Terms & Services</Text>
+                    </Text>
+                </TouchableOpacity>
 
             </KeyboardAwareScrollView>
         );
@@ -176,14 +197,6 @@ const Login = React.createClass({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    buttonForgotText: {
-        color: '#b1aea5',
-        fontSize: getFontSize(22),
-        fontFamily: 'Heebo-Medium',
-        marginTop: 10,
-        marginBottom: 10,
-        textAlign: 'center'
     },
     buttonText: {
         color: 'white',
@@ -203,7 +216,20 @@ const styles = StyleSheet.create({
         color: '#3b5998',
         fontSize: 18,
         paddingLeft: 10
-    }
+    },
+    login: {
+        bottom: 10,
+        left: 0,
+        right: 0,
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loginText: {
+        color: '#999999',
+        fontSize: 14,
+        fontFamily: 'Heebo-Medium',
+    },
 });
 
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
@@ -243,4 +269,4 @@ const dispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(stateToProps, dispatchToProps)(Login);
+export default connect(stateToProps, dispatchToProps)(SignUp);

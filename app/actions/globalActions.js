@@ -14,6 +14,7 @@ import {getClients, getActiveData} from './homeActions';
 export function initializeApp() {
     return (dispatch, getState) => {
         AsyncStorage.getItem('USER_TOKEN', (err, result) => {
+            console.log(result)
             if (result) dispatch(setTokenInRedux(result));
             else dispatch({type: types.NOT_LOGGED_IN});
         });

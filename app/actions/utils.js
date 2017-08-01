@@ -84,3 +84,7 @@ export function resetNav(routeName, params = '') {
 export function calCalories(fats = 0, carbs = 0, protein = 0) {
     return (9 * fats) + (4 * protein) + (4 * carbs);
 }
+
+export function letterSpacing(string, count = 1) {
+    return string.split('').join('\u200A'.repeat(count));
+}

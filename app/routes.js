@@ -11,6 +11,8 @@ import Calendar from './containers/Calendar';
 // import Feed from './containers/Feed';
 import Chat from './containers/Chat';
 import Login from './containers/Login';
+import ResetPassword from './containers/ResetPassword';
+import SignUp from './containers/SignUp';
 import SplashScreen from './containers/SplashScreen';
 
 // Sub Pages
@@ -68,7 +70,7 @@ const paramsToProps = (SomeComponent) => {
     }
 };
 
-const lightGreen = '#00AFA3';
+const globalBlue = '#297FCA';
 
 const defaultNavigationOptions = {
     headerStyle: {
@@ -78,7 +80,7 @@ const defaultNavigationOptions = {
     headerTitleStyle: {
         alignSelf: 'center',
     },
-    headerTintColor: lightGreen,
+    headerTintColor: globalBlue,
     gesturesEnabled: true
 }
 
@@ -293,7 +295,7 @@ const MainTabNav = TabNavigator({
     },
     tabBarOptions: {
         showLabel: false,
-        activeTintColor: lightGreen
+        activeTintColor: globalBlue
     }
 });
 
@@ -307,8 +309,20 @@ export const AppNavigator = StackNavigator({
     Login: {
         screen: Login,
         navigationOptions: {
-            header: null
-        },
+            headerTitle: 'Login',
+        }
+    },
+    ResetPassword: {
+        screen: ResetPassword,
+        navigationOptions: {
+            headerTitle: 'Reset Password',
+        }
+    },
+    SignUp: {
+        screen: SignUp,
+        navigationOptions: {
+            headerTitle: 'Create an account',
+        }
     },
     EditProfile: {screen: EditProfile},
 

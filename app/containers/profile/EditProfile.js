@@ -181,10 +181,10 @@ const EditProfile = React.createClass({
                 {text: 'Cancel', style: 'cancel'},
                 {
                     text: 'Yes', onPress: () => {
-                    this.props.navigation.dispatch(resetNav('Login'));
                     if (FCM) FCM.setBadgeNumber(0);
                     FCM.getFCMToken().then(token => {
                         self.props.removeToken(token);
+                        this.props.navigation.dispatch(resetNav('SplashScreen'));
                     });
                 }
                 },
