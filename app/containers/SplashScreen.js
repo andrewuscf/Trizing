@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, ActivityIndicator, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
+import {View, ActivityIndicator, StyleSheet, Text, TouchableOpacity, Image, Dimensions} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -8,8 +8,10 @@ import * as GlobalActions from '../actions/globalActions';
 import {resetNav, letterSpacing} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
-
 import CustomStatus from '../components/CustomStatus';
+
+
+const {width: deviceWidth} = Dimensions.get('window');
 
 const SplashScreen = React.createClass({
 
@@ -49,14 +51,17 @@ const SplashScreen = React.createClass({
                 </View>
                 <View style={styles.center}>
                     <Swiper style={styles.wrapper} showsButtons={false} activeDotColor="green" dotColor="#ece9e5">
-                        <View style={styles.slide1}>
-                            <Text style={styles.text}>Hello Swiper</Text>
+                        <View style={{flex: 1}}>
+                            <Image style={styles.splashImage} source={require('../assets/images/better.jpg')}/>
+                            <Text style={styles.splashText}>Workouts made simple</Text>
                         </View>
                         <View style={styles.slide2}>
-                            <Text style={styles.text}>Beautiful</Text>
+                            <Image style={styles.splashImage} source={require('../assets/images/stronger.jpg')}/>
+                            <Text style={styles.splashText}>Find a certified trainer</Text>
                         </View>
                         <View style={styles.slide3}>
-                            <Text style={styles.text}>And simple</Text>
+                            <Image style={styles.splashImage} source={require('../assets/images/stronger.jpg')}/>
+                            <Text style={styles.splashText}>Create an account. It's free.</Text>
                         </View>
                     </Swiper>
                 </View>
@@ -95,9 +100,19 @@ const styles = StyleSheet.create({
     center: {
         flex: .6
     },
+    splashImage: {
+        height: 250,
+        width: deviceWidth,
+        resizeMode: 'contain'
+    },
+    splashText: {
+        fontSize: 18,
+        textAlign: 'center',
+        fontFamily: 'Heebo-Medium',
+        color: '#00AFA3'
+    },
     bottom: {
         flex: .2,
-        // flexDirection: 'column'
     },
     logo: {
         width: 50,

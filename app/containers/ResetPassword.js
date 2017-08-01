@@ -102,7 +102,7 @@ const ResetPassword = React.createClass({
 
 
                 <SubmitButton onPress={this.onPress} buttonStyle={[styles.button]} textStyle={styles.buttonText}
-                              text='Enter'/>
+                              text='Send'/>
 
 
             </KeyboardAwareScrollView>
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#297FCA'
+        backgroundColor: '#00AFA3'
     },
 });
 
