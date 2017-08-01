@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#297FCA'
+        backgroundColor: '#00AFA3'
     },
     fbButton: {
         backgroundColor: 'transparent',

@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         borderTopWidth: StyleSheet.hairlineWidth,
         borderColor: '#aaaaaa',
         flexDirection: 'row',
-        backgroundColor: '#297FCA'
+        backgroundColor: '#00AFA3'
     },
     signUpText: {
         color: 'white',

@@ -184,8 +184,10 @@ const SignUp = React.createClass({
 
 
                 <TouchableOpacity style={styles.login} onPress={()=> console.log('hit')}>
-                    <Text style={styles.loginText}>By continuing, you agree to our
-                        <Text style={GlobalStyle.redText}> Terms & Services</Text>
+                    <Text style={styles.loginText}>By continuing, you agree to our</Text>
+                    <Text style={styles.loginText}>
+                        <Text style={GlobalStyle.redText}>Terms & Services</Text> and
+                        <Text style={GlobalStyle.redText}> Privacy Policy</Text>
                     </Text>
                 </TouchableOpacity>
 
@@ -207,7 +209,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#297FCA'
+        backgroundColor: '#00AFA3'
     },
     fbButton: {
         backgroundColor: 'transparent',

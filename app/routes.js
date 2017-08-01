@@ -70,7 +70,7 @@ const paramsToProps = (SomeComponent) => {
     }
 };
 
-const globalBlue = '#297FCA';
+const globalBlue = '#00AFA3';
 
 const defaultNavigationOptions = {
     headerStyle: {
