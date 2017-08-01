@@ -178,11 +178,11 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     buttonForgotText: {
-        color: '#b1aea5',
-        fontSize: getFontSize(22),
-        fontFamily: 'Heebo-Medium',
         marginTop: 10,
         marginBottom: 10,
+        color: '#999999',
+        fontSize: 14,
+        fontFamily: 'Heebo-Medium',
         textAlign: 'center'
     },
     buttonText: {
