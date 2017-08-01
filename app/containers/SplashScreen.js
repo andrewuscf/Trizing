@@ -15,6 +15,13 @@ const {width: deviceWidth} = Dimensions.get('window');
 
 const SplashScreen = React.createClass({
 
+    getInitialState() {
+        return {
+            width: 0,
+            height: 0
+        }
+    },
+
     componentDidMount () {
         this.props.initializeApp();
     },
@@ -33,6 +40,14 @@ const SplashScreen = React.createClass({
         const actionToDispatch = resetNav(routeName);
         this.props.navigation.dispatch(actionToDispatch)
     },
+
+    setSize(event){
+        const w = event.nativeEvent.layout.width;
+        const h = event.nativeEvent.layout.height;
+        this.setState({width: w, height: h});
+    },
+
+
     render() {
         if (!this.props.AppIsReady) {
             return (
@@ -49,29 +64,33 @@ const SplashScreen = React.createClass({
                     <Image style={styles.logo} source={require('../assets/images/red-logo.png')}/>
                     <Text style={[styles.trizing]}>{letterSpacing('TRIZING', 20)}</Text>
                 </View>
-                <View style={styles.center}>
-                    <Swiper style={styles.wrapper} showsButtons={false} activeDotColor="green" dotColor="#ece9e5">
+                <View style={styles.center} onLayout={this.setSize}>
+                    <Swiper style={styles.wrapper} height={this.state.height} width={this.state.width}
+                            showsButtons={false} activeDotColor='#00AFA3'>
                         <View style={{flex: 1}}>
-                            <Image style={styles.splashImage} source={require('../assets/images/better.jpg')}/>
+                            <Image style={[styles.splashImage, {height: this.state.height - 100}]}
+                                   source={require('../assets/images/stronger.jpg')}/>
                             <Text style={styles.splashText}>Workouts made simple</Text>
                         </View>
                         <View style={styles.slide2}>
-                            <Image style={styles.splashImage} source={require('../assets/images/stronger.jpg')}/>
+                            <Image style={[styles.splashImage, {height: this.state.height - 100}]}
+                            source={require('../assets/images/better.jpg')}/>
                             <Text style={styles.splashText}>Find a certified trainer</Text>
                         </View>
                         <View style={styles.slide3}>
-                            <Image style={styles.splashImage} source={require('../assets/images/stronger.jpg')}/>
+                            <Image style={[styles.splashImage, {height: this.state.height - 100}]}
+                                   source={require('../assets/images/stronger.jpg')}/>
                             <Text style={styles.splashText}>Create an account. It's free.</Text>
                         </View>
                     </Swiper>
                 </View>
                 <View style={styles.bottom}>
-                    <TouchableOpacity style={styles.login} onPress={()=> navigate('Login')}>
+                    <TouchableOpacity style={styles.login} onPress={() => navigate('Login')}>
                         <Text style={styles.loginText}>Already have an account?
                             <Text style={GlobalStyle.redText}> Log In</Text>
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.signUpButton} onPress={()=> navigate('SignUp')}>
+                    <TouchableOpacity style={styles.signUpButton} onPress={() => navigate('SignUp')}>
                         <Text style={styles.signUpText}>
                             GET STARTED
                         </Text>
@@ -101,7 +120,6 @@ const styles = StyleSheet.create({
         flex: .6
     },
     splashImage: {
-        height: 250,
         width: deviceWidth,
         resizeMode: 'contain'
     },
@@ -120,7 +138,8 @@ const styles = StyleSheet.create({
     },
     trizing: {
         fontFamily: 'Heebo-Bold',
-        fontSize: 22,
+        fontSize: 24,
+        paddingLeft: 10
     },
     login: {
         flex: .5,
