@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     textInput: {
         color: 'black',
         fontSize: getFontSize(22),
-        fontFamily: 'OpenSans-SemiBold',
+        fontFamily: 'Heebo-Medium',
         backgroundColor: 'transparent',
         paddingTop: 3,
         paddingBottom: 3,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     },
     notifyText: {
         fontSize: getFontSize(16),
-        fontFamily: 'OpenSans-SemiBold',
+        fontFamily: 'Heebo-Medium',
         paddingRight: 5
     }
 });

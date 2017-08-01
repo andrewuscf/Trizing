@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     },
     inputLabel: {
         fontSize: getFontSize(30),
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         textAlign: 'center'
     },
     templateSection:{

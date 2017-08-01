@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden'
     },
     title: {
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         fontSize: getFontSize(32),
         backgroundColor: 'transparent',
         textAlign: 'center',
@@ -85,18 +85,18 @@ const styles = StyleSheet.create({
     },
     smallTitle: {
         fontSize: getFontSize(18),
-        fontFamily: 'OpenSans-SemiBold',
+        fontFamily: 'Heebo-Medium',
     },
     invitedTitle: {
         fontSize: getFontSize(24),
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         textAlign: 'center',
         marginTop: 10,
         marginBottom: 10,
         color: '#4d4d4e',
     },
     eventDate: {
-        fontFamily: 'OpenSans-Light',
+        fontFamily: 'Heebo-Light',
         fontSize: getFontSize(22),
         color: '#4d4d4e',
         flexDirection: 'row',

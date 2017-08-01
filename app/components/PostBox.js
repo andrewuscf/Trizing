@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
     },
     notifText: {
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         fontSize: getFontSize(22),
         lineHeight: getFontSize(26),
         backgroundColor: 'transparent'
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         fontSize: 11
     },
     firstName: {
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         fontSize: 11,
         color: '#393839'
     },
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     postText: {
         flexWrap: 'wrap',
         flex: 1,
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         fontSize: 15,
         color: '#393839',
         alignSelf: 'center',
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
         // height
     },
     viewAllCommentsText: {
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         fontSize: getFontSize(11),
     },
     likeText: {

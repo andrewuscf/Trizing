@@ -64,13 +64,6 @@
     <key>UIAppFonts</key>
     <array>
       <string>icomoon.ttf</string>
-      <string>OpenSans-Bold.ttf</string>
-      <string>OpenSans-BoldItalic.ttf</string>
-      <string>OpenSans-ExtraBold.ttf</string>
-      <string>OpenSans-ExtraBoldItalic.ttf</string>
-      <string>OpenSans-Italic.ttf</string>
-      <string>OpenSans-Light.ttf</string>
-      <string>OpenSans-Semibold.ttf</string>
       <string>Entypo.ttf</string>
       <string>EvilIcons.ttf</string>
       <string>FontAwesome.ttf</string>
@@ -81,6 +74,12 @@
       <string>Octicons.ttf</string>
       <string>SimpleLineIcons.ttf</string>
       <string>Zocial.ttf</string>
+      <string>Heebo-Black.ttf</string>
+      <string>Heebo-Bold.ttf</string>
+      <string>Heebo-ExtraBold.ttf</string>
+      <string>Heebo-Light.ttf</string>
+      <string>Heebo-Medium.ttf</string>
+      <string>Heebo-Regular.ttf</string>
     </array>
     <key>UIBackgroundModes</key>
     <array>

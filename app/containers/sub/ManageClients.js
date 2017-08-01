@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
         width: 105,
         color: '#797979',
         fontSize: 14,
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         borderWidth: 0,
         backgroundColor: 'transparent',
         paddingLeft: 5
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         paddingLeft: 10,
         fontSize: getFontSize(22),
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
     }
 });
 

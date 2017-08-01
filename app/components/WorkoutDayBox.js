@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: getFontSize(20),
         lineHeight: getFontSize(26),
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
     },
     row: {
         flexDirection: 'row',
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
         flex: 1,
         color: 'black',
         fontSize: getFontSize(17),
-        fontFamily: 'OpenSans-Light',
+        fontFamily: 'Heebo-Light',
         backgroundColor: 'transparent',
         paddingTop: 3,
         paddingBottom: 3,
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     formCalories: {
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         alignSelf: 'center',
         // padding: 10,
         paddingTop: 10,

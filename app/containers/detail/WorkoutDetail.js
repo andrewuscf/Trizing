@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     submitText: {
         color: 'white',
         fontSize: 15,
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
     }
 });
 

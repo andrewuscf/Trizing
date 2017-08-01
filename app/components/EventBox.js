@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     notifText: {
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         fontSize: getFontSize(22),
         lineHeight: getFontSize(26),
         backgroundColor: 'transparent',
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap'
     },
     firstName: {
-        fontFamily: 'OpenSans-SemiBold',
+        fontFamily: 'Heebo-Medium',
         color: '#393839'
     },
     noteText: {
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
     },
     invitedUser: {
-        fontFamily: 'OpenSans-Light',
+        fontFamily: 'Heebo-Light',
         color: '#4d4d4e',
         fontSize: getFontSize(16),
     },

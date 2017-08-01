@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     commentText: {
         flexWrap: 'wrap',
         fontSize: getFontSize(16),
-        fontFamily: 'OpenSans-SemiBold'
+        fontFamily: 'Heebo-Medium'
     },
     timeStamp: {
         flexDirection: 'row',

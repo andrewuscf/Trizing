@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     text: {
         color: '#00AFA3',
         fontSize: getFontSize(24),
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
     }
 });
 

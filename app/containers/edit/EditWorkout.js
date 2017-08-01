@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: getFontSize(28),
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         alignSelf: 'center',
         paddingTop: 10,
         paddingBottom: 10
@@ -171,13 +171,13 @@ const styles = StyleSheet.create({
     },
     smallBold: {
         fontSize: getFontSize(18),
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         paddingLeft: 10,
         paddingBottom: 5
     },
     notBold: {
         color: 'grey',
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
     }
 });
 

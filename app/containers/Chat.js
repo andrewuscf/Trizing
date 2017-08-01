@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
         color: '#b1aeb9',
         textAlign: 'center',
         paddingTop: 20,
-        fontFamily: 'OpenSans-Semibold'
+        fontFamily: 'Heebo-Medium'
     },
     header: {
         backgroundColor: 'white',
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     newChatText: {
         fontSize: getFontSize(22),
         color: '#b1aeb9',
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         paddingLeft: 10
     }
 });

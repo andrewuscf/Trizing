@@ -78,11 +78,11 @@ const styles = StyleSheet.create({
     },
     simpleTitle: {
         fontSize: 18,
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
     },
     day: {
         fontSize: 12,
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         color: 'grey'
     },
 });

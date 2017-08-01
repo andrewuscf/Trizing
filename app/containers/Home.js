@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: getFontSize(20),
         lineHeight: getFontSize(26),
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
     },
     details: {
         flexDirection: 'column',
@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     formCalories: {
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         alignSelf: 'center',
         padding: 10,
         fontSize: getFontSize(22),
@@ -386,20 +386,20 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         fontSize: getFontSize(26),
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         marginTop: 10,
         marginBottom: 10,
         alignSelf: 'center'
     },
     h2Title: {
         fontSize: 15,
-        fontFamily: 'OpenSans-SemiBold',
+        fontFamily: 'Heebo-Medium',
         paddingBottom: 5,
     },
     simpleTitle: {
         fontSize: 14,
         color: '#b1aea5',
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         margin: 10,
         textAlign: 'center'
     },
@@ -458,7 +458,7 @@ const styles = StyleSheet.create({
     itemText: {
         fontSize: getFontSize(24),
         backgroundColor: 'transparent',
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
     },
     emptyClients: {
         height: 50,
@@ -469,7 +469,7 @@ const styles = StyleSheet.create({
     },
     emptyClientsText: {
         fontSize: getFontSize(24),
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         color: 'rgba(0, 175, 163, 1)'
     }
 });

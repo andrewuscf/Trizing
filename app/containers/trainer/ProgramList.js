@@ -132,12 +132,12 @@ const styles = StyleSheet.create({
     },
     simpleTitle: {
         fontSize: getFontSize(24),
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
     },
     smallText: {
         fontSize: getFontSize(18),
         color: '#b1aea5',
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
     },
     leftSection: {
         flex: .9,

@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     submitText: {
         color: 'white',
         fontSize: 15,
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
     },
     workoutBox: {
         backgroundColor: 'white',
@@ -94,12 +94,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     eventDateDay: {
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         fontSize: getFontSize(26),
         color: '#4d4d4e'
     },
     eventDateMonth: {
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         fontSize: getFontSize(14),
         backgroundColor: 'transparent',
         color: '#4d4d4e'

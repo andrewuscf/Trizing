@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'white',
         fontSize: 15,
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
     },
     button: {
         backgroundColor: '#00BFFF',

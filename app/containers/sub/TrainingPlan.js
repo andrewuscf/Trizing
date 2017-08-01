@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
         textDecorationColor: '#4d4d4e',
         backgroundColor: 'transparent',
         color: '#4d4d4e',
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         padding: 5
     },
     pickersView: {
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(22),
         lineHeight: getFontSize(26),
         backgroundColor: 'transparent',
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         marginRight: 8
     },
     mainText: {
@@ -381,20 +381,20 @@ const styles = StyleSheet.create({
         lineHeight: getFontSize(26),
         backgroundColor: 'transparent',
         color: '#4d4d4e',
-        fontFamily: 'OpenSans-Semibold'
+        fontFamily: 'Heebo-Medium'
     },
     smallText: {
         fontSize: getFontSize(12),
         backgroundColor: 'transparent',
         color: '#4d4d4e',
-        fontFamily: 'OpenSans-Semibold'
+        fontFamily: 'Heebo-Medium'
     },
     emptyTitle: {
         fontSize: getFontSize(22),
         color: '#b1aeb9',
         textAlign: 'center',
         paddingTop: 20,
-        fontFamily: 'OpenSans-Semibold'
+        fontFamily: 'Heebo-Medium'
     },
     link: {
         alignItems: 'flex-start',

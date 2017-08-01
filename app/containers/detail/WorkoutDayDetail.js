@@ -142,14 +142,14 @@ const styles = StyleSheet.create({
     },
     dayTitle: {
         fontSize: getFontSize(30),
-        fontFamily: 'OpenSans-SemiBold',
+        fontFamily: 'Heebo-Medium',
         textAlign: 'center',
         borderBottomWidth: .5,
         borderColor: '#e1e3df',
     },
     day: {
         fontSize: getFontSize(32),
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         paddingLeft: 20
     },
     dayTop: {

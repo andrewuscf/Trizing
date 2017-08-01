@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     },
     simpleTitle: {
         fontSize: 18,
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         marginBottom: 5,
     },
     rowSection: {
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     },
     day: {
         fontSize: getFontSize(18),
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         color: 'grey'
     },
 });

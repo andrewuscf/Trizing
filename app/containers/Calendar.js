@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
         color: '#b1aeb9',
         textAlign: 'center',
         paddingTop: 20,
-        fontFamily: 'OpenSans-Semibold'
+        fontFamily: 'Heebo-Medium'
     },
     header: {
         backgroundColor: 'white',
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         paddingLeft: 10,
         fontSize: getFontSize(22),
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
     }
 });
 

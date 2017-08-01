@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     notifText: {
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         fontSize: getFontSize(22),
         lineHeight: getFontSize(26),
         flexDirection: 'column',
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     },
     noteVerb: {
         color: '#393839',
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         fontSize: getFontSize(18),
         lineHeight: getFontSize(26),
         flexWrap: 'wrap',
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
         fontSize: 11
     },
     firstName: {
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         color: '#393839',
         flex: 1
     },

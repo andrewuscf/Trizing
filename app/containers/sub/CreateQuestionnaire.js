@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(22),
         lineHeight: getFontSize(26),
         backgroundColor: 'transparent',
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         alignSelf: 'center',
         textDecorationLine: 'underline',
         textDecorationColor: '#b1aea5'

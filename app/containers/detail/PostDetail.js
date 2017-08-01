@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden'
     },
     title: {
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         fontSize: getFontSize(32),
         backgroundColor: 'transparent',
         textAlign: 'center',
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     },
     smallTitle: {
         fontSize: getFontSize(18),
-        fontFamily: 'OpenSans-SemiBold',
+        fontFamily: 'Heebo-Medium',
     },
 });
 

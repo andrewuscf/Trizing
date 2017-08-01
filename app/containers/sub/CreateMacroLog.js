@@ -234,11 +234,11 @@ const styles = StyleSheet.create({
     submitText: {
         color: 'white',
         fontSize: getFontSize(22),
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
     },
     title: {
         fontSize: getFontSize(26),
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         marginLeft: 10,
         color: '#1DBC8A',
     },
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: getFontSize(20),
         lineHeight: getFontSize(26),
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
     },
     details: {
         flexDirection: 'column',

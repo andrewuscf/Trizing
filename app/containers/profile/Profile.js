@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     },
     name: {
         paddingTop: 5,
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         fontSize: getFontSize(22)
     },
     topRightNav: {
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     },
     requestText: {
         fontSize: getFontSize(18),
-        fontFamily: 'OpenSans-SemiBold',
+        fontFamily: 'Heebo-Medium',
     },
     requestButtonSection: {
         marginTop: 10,

@@ -41,34 +41,6 @@
 		3E4B6C1DC6B94CE2905130D7 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA93046519634EE083C2E02A /* Entypo.ttf */; };
 		452B2BD40DF443D3A0F8A201 /* libRNFIRMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AE13522D351476F9BC1AB3B /* libRNFIRMessaging.a */; };
 		492365071E5980750058073B /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49800F521E597312008F9359 /* libRCTFBSDK.a */; };
-		493C44801E5194F600A97577 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44761E5194F600A97577 /* OpenSans-Bold.ttf */; };
-		493C44811E5194F600A97577 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44761E5194F600A97577 /* OpenSans-Bold.ttf */; };
-		493C44821E5194F600A97577 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44761E5194F600A97577 /* OpenSans-Bold.ttf */; };
-		493C44831E5194F600A97577 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44761E5194F600A97577 /* OpenSans-Bold.ttf */; };
-		493C44841E5194F600A97577 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44771E5194F600A97577 /* OpenSans-BoldItalic.ttf */; };
-		493C44851E5194F600A97577 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44771E5194F600A97577 /* OpenSans-BoldItalic.ttf */; };
-		493C44861E5194F600A97577 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44771E5194F600A97577 /* OpenSans-BoldItalic.ttf */; };
-		493C44871E5194F600A97577 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44771E5194F600A97577 /* OpenSans-BoldItalic.ttf */; };
-		493C44881E5194F600A97577 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44781E5194F600A97577 /* OpenSans-ExtraBold.ttf */; };
-		493C44891E5194F600A97577 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44781E5194F600A97577 /* OpenSans-ExtraBold.ttf */; };
-		493C448A1E5194F600A97577 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44781E5194F600A97577 /* OpenSans-ExtraBold.ttf */; };
-		493C448B1E5194F600A97577 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44781E5194F600A97577 /* OpenSans-ExtraBold.ttf */; };
-		493C448C1E5194F600A97577 /* OpenSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44791E5194F600A97577 /* OpenSans-ExtraBoldItalic.ttf */; };
-		493C448D1E5194F600A97577 /* OpenSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44791E5194F600A97577 /* OpenSans-ExtraBoldItalic.ttf */; };
-		493C448E1E5194F600A97577 /* OpenSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44791E5194F600A97577 /* OpenSans-ExtraBoldItalic.ttf */; };
-		493C448F1E5194F600A97577 /* OpenSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C44791E5194F600A97577 /* OpenSans-ExtraBoldItalic.ttf */; };
-		493C44901E5194F600A97577 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447A1E5194F600A97577 /* OpenSans-Italic.ttf */; };
-		493C44911E5194F600A97577 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447A1E5194F600A97577 /* OpenSans-Italic.ttf */; };
-		493C44921E5194F600A97577 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447A1E5194F600A97577 /* OpenSans-Italic.ttf */; };
-		493C44931E5194F600A97577 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447A1E5194F600A97577 /* OpenSans-Italic.ttf */; };
-		493C44941E5194F600A97577 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447B1E5194F600A97577 /* OpenSans-Light.ttf */; };
-		493C44951E5194F600A97577 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447B1E5194F600A97577 /* OpenSans-Light.ttf */; };
-		493C44961E5194F600A97577 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447B1E5194F600A97577 /* OpenSans-Light.ttf */; };
-		493C44971E5194F600A97577 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447B1E5194F600A97577 /* OpenSans-Light.ttf */; };
-		493C44A01E5194F600A97577 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447E1E5194F600A97577 /* OpenSans-Semibold.ttf */; };
-		493C44A11E5194F600A97577 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447E1E5194F600A97577 /* OpenSans-Semibold.ttf */; };
-		493C44A21E5194F600A97577 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447E1E5194F600A97577 /* OpenSans-Semibold.ttf */; };
-		493C44A31E5194F600A97577 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 493C447E1E5194F600A97577 /* OpenSans-Semibold.ttf */; };
 		495D94581F11E39F00944FDF /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 493E651B1EDFDD5400CCCA35 /* libimageCropPicker.a */; };
 		496174F71E98C098003B9FDB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 496174F61E98C098003B9FDB /* GoogleService-Info.plist */; };
 		496174F81E98C098003B9FDB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 496174F61E98C098003B9FDB /* GoogleService-Info.plist */; };
@@ -92,6 +64,12 @@
 		CB4DD15CC00E41CCA3FDA64B /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 995E3393F9844DDC9EE44EAE /* FontAwesome.ttf */; };
 		D355BBDFFA16029374E32C06 /* Pods_TrizingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A30EC62818662681E5D1792A /* Pods_TrizingTests.framework */; };
 		EEFA4CDFCC754E788D9A0E7A /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99EFCA2327074196B81CCAFC /* Ionicons.ttf */; };
+		5C515C4EFC7E4282949147F1 /* Heebo-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8400CDCD07704420B7B55EA8 /* Heebo-Black.ttf */; };
+		C3358FE1F3EC441AAA700F78 /* Heebo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AAC96E42526948DF88C67413 /* Heebo-Bold.ttf */; };
+		B923CDB85BA24FCF9308498B /* Heebo-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0063A0931159491085B27A20 /* Heebo-ExtraBold.ttf */; };
+		0D7A4877B1AF4EBF82A59D15 /* Heebo-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12630B6328A547C2B6B6CC5B /* Heebo-Light.ttf */; };
+		A17A340B868B48EF810E9407 /* Heebo-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 19E9A5A6F102418EA3141D0B /* Heebo-Medium.ttf */; };
+		7B38D76D0B6F4CD48C1F1532 /* Heebo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 497A66AD8D264DC485DD7A6A /* Heebo-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -367,13 +345,6 @@
 		3805A7BCE2E5418E88F5E9AB /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
 		41598DCACC98D3BD3F00368B /* Pods-TrizingTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrizingTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrizingTests/Pods-TrizingTests.debug.xcconfig"; sourceTree = "<group>"; };
 		49359926A7D6491C94B813C8 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		493C44761E5194F600A97577 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Bold.ttf"; path = "../app/assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
-		493C44771E5194F600A97577 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-BoldItalic.ttf"; path = "../app/assets/fonts/OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
-		493C44781E5194F600A97577 /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-ExtraBold.ttf"; path = "../app/assets/fonts/OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
-		493C44791E5194F600A97577 /* OpenSans-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-ExtraBoldItalic.ttf"; path = "../app/assets/fonts/OpenSans-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
-		493C447A1E5194F600A97577 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Italic.ttf"; path = "../app/assets/fonts/OpenSans-Italic.ttf"; sourceTree = "<group>"; };
-		493C447B1E5194F600A97577 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Light.ttf"; path = "../app/assets/fonts/OpenSans-Light.ttf"; sourceTree = "<group>"; };
-		493C447E1E5194F600A97577 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Semibold.ttf"; path = "../app/assets/fonts/OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		496174F61E98C098003B9FDB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Trizing/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		499961797F904AF1A5353A46 /* RNFIRMessaging.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFIRMessaging.xcodeproj; path = "../node_modules/react-native-fcm/ios/RNFIRMessaging.xcodeproj"; sourceTree = "<group>"; };
 		49CD9FBE1E8E21510032A949 /* icomoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = icomoon.ttf; path = ../app/assets/fonts/icomoon.ttf; sourceTree = "<group>"; };
@@ -403,6 +374,12 @@
 		C8AC1A1DCD40DEDD96E800C4 /* Pods-Trizing.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing.release.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing/Pods-Trizing.release.xcconfig"; sourceTree = "<group>"; };
 		D520597FA6DC4CE0A427EDD5 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		FA6FBCA42C2E184906EAE148 /* libPods-Trizing-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trizing-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8400CDCD07704420B7B55EA8 /* Heebo-Black.ttf */ = {isa = PBXFileReference; name = "Heebo-Black.ttf"; path = "../app/assets/fonts/Heebo-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AAC96E42526948DF88C67413 /* Heebo-Bold.ttf */ = {isa = PBXFileReference; name = "Heebo-Bold.ttf"; path = "../app/assets/fonts/Heebo-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0063A0931159491085B27A20 /* Heebo-ExtraBold.ttf */ = {isa = PBXFileReference; name = "Heebo-ExtraBold.ttf"; path = "../app/assets/fonts/Heebo-ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		12630B6328A547C2B6B6CC5B /* Heebo-Light.ttf */ = {isa = PBXFileReference; name = "Heebo-Light.ttf"; path = "../app/assets/fonts/Heebo-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		19E9A5A6F102418EA3141D0B /* Heebo-Medium.ttf */ = {isa = PBXFileReference; name = "Heebo-Medium.ttf"; path = "../app/assets/fonts/Heebo-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		497A66AD8D264DC485DD7A6A /* Heebo-Regular.ttf */ = {isa = PBXFileReference; name = "Heebo-Regular.ttf"; path = "../app/assets/fonts/Heebo-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -531,13 +508,6 @@
 			isa = PBXGroup;
 			children = (
 				49CD9FBE1E8E21510032A949 /* icomoon.ttf */,
-				493C44761E5194F600A97577 /* OpenSans-Bold.ttf */,
-				493C44771E5194F600A97577 /* OpenSans-BoldItalic.ttf */,
-				493C44781E5194F600A97577 /* OpenSans-ExtraBold.ttf */,
-				493C44791E5194F600A97577 /* OpenSans-ExtraBoldItalic.ttf */,
-				493C447A1E5194F600A97577 /* OpenSans-Italic.ttf */,
-				493C447B1E5194F600A97577 /* OpenSans-Light.ttf */,
-				493C447E1E5194F600A97577 /* OpenSans-Semibold.ttf */,
 				AA93046519634EE083C2E02A /* Entypo.ttf */,
 				49359926A7D6491C94B813C8 /* EvilIcons.ttf */,
 				995E3393F9844DDC9EE44EAE /* FontAwesome.ttf */,
@@ -548,6 +518,12 @@
 				8922F3E8EB4D416EB646539C /* Octicons.ttf */,
 				90DE0954FDB64659BA0BE25F /* SimpleLineIcons.ttf */,
 				4DE33148379349C5AFACDF35 /* Zocial.ttf */,
+				8400CDCD07704420B7B55EA8 /* Heebo-Black.ttf */,
+				AAC96E42526948DF88C67413 /* Heebo-Bold.ttf */,
+				0063A0931159491085B27A20 /* Heebo-ExtraBold.ttf */,
+				12630B6328A547C2B6B6CC5B /* Heebo-Light.ttf */,
+				19E9A5A6F102418EA3141D0B /* Heebo-Medium.ttf */,
+				497A66AD8D264DC485DD7A6A /* Heebo-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1213,15 +1189,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				493C44951E5194F600A97577 /* OpenSans-Light.ttf in Resources */,
-				493C44851E5194F600A97577 /* OpenSans-BoldItalic.ttf in Resources */,
 				496174F81E98C098003B9FDB /* GoogleService-Info.plist in Resources */,
-				493C44A11E5194F600A97577 /* OpenSans-Semibold.ttf in Resources */,
 				49CD9FC01E8E21510032A949 /* icomoon.ttf in Resources */,
-				493C44811E5194F600A97577 /* OpenSans-Bold.ttf in Resources */,
-				493C44891E5194F600A97577 /* OpenSans-ExtraBold.ttf in Resources */,
-				493C44911E5194F600A97577 /* OpenSans-Italic.ttf in Resources */,
-				493C448D1E5194F600A97577 /* OpenSans-ExtraBoldItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1235,21 +1204,20 @@
 				649F4E2B75CF46938C278C28 /* EvilIcons.ttf in Resources */,
 				CB4DD15CC00E41CCA3FDA64B /* FontAwesome.ttf in Resources */,
 				A1E240D2528C4386A199E1CE /* Foundation.ttf in Resources */,
-				493C44941E5194F600A97577 /* OpenSans-Light.ttf in Resources */,
 				EEFA4CDFCC754E788D9A0E7A /* Ionicons.ttf in Resources */,
-				493C448C1E5194F600A97577 /* OpenSans-ExtraBoldItalic.ttf in Resources */,
 				8D861DE18DA6486CB263D16F /* MaterialCommunityIcons.ttf in Resources */,
 				8BA7CC0251774FAFA39CA7BB /* MaterialIcons.ttf in Resources */,
-				493C44A01E5194F600A97577 /* OpenSans-Semibold.ttf in Resources */,
 				4DE103561B9C4C5EA74215DC /* Octicons.ttf in Resources */,
-				493C44841E5194F600A97577 /* OpenSans-BoldItalic.ttf in Resources */,
-				493C44801E5194F600A97577 /* OpenSans-Bold.ttf in Resources */,
 				49CD9FBF1E8E21510032A949 /* icomoon.ttf in Resources */,
-				493C44901E5194F600A97577 /* OpenSans-Italic.ttf in Resources */,
 				864D3C1EB28F44BFB158F359 /* SimpleLineIcons.ttf in Resources */,
 				13E78AF08F614C98A12022BE /* Zocial.ttf in Resources */,
-				493C44881E5194F600A97577 /* OpenSans-ExtraBold.ttf in Resources */,
 				496174F71E98C098003B9FDB /* GoogleService-Info.plist in Resources */,
+				5C515C4EFC7E4282949147F1 /* Heebo-Black.ttf in Resources */,
+				C3358FE1F3EC441AAA700F78 /* Heebo-Bold.ttf in Resources */,
+				B923CDB85BA24FCF9308498B /* Heebo-ExtraBold.ttf in Resources */,
+				0D7A4877B1AF4EBF82A59D15 /* Heebo-Light.ttf in Resources */,
+				A17A340B868B48EF810E9407 /* Heebo-Medium.ttf in Resources */,
+				7B38D76D0B6F4CD48C1F1532 /* Heebo-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1257,16 +1225,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				493C44861E5194F600A97577 /* OpenSans-BoldItalic.ttf in Resources */,
-				493C44821E5194F600A97577 /* OpenSans-Bold.ttf in Resources */,
-				493C44961E5194F600A97577 /* OpenSans-Light.ttf in Resources */,
 				49CD9FC11E8E21510032A949 /* icomoon.ttf in Resources */,
-				493C448E1E5194F600A97577 /* OpenSans-ExtraBoldItalic.ttf in Resources */,
-				493C44A21E5194F600A97577 /* OpenSans-Semibold.ttf in Resources */,
-				493C44921E5194F600A97577 /* OpenSans-Italic.ttf in Resources */,
 				496174F91E98C098003B9FDB /* GoogleService-Info.plist in Resources */,
 				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
-				493C448A1E5194F600A97577 /* OpenSans-ExtraBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1274,15 +1235,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				493C44971E5194F600A97577 /* OpenSans-Light.ttf in Resources */,
-				493C44871E5194F600A97577 /* OpenSans-BoldItalic.ttf in Resources */,
 				496174FA1E98C098003B9FDB /* GoogleService-Info.plist in Resources */,
-				493C44A31E5194F600A97577 /* OpenSans-Semibold.ttf in Resources */,
 				49CD9FC21E8E21510032A949 /* icomoon.ttf in Resources */,
-				493C44831E5194F600A97577 /* OpenSans-Bold.ttf in Resources */,
-				493C448B1E5194F600A97577 /* OpenSans-ExtraBold.ttf in Resources */,
-				493C44931E5194F600A97577 /* OpenSans-Italic.ttf in Resources */,
-				493C448F1E5194F600A97577 /* OpenSans-ExtraBoldItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1360,7 +1314,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		1AA034BE653F6E01A7B4AAFC /* [CP] Check Pods Manifest.lock */ = {
@@ -1375,7 +1329,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
@@ -1419,7 +1373,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		7052B8548DA66E6454737A25 /* [CP] Check Pods Manifest.lock */ = {
@@ -1434,7 +1388,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		715B15E01184D11CCB52571E /* [CP] Copy Pods Resources */ = {

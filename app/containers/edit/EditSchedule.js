@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: getFontSize(28),
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
         alignSelf: 'center',
         paddingTop: 10,
         paddingBottom: 10
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     },
     notBold: {
         color: 'grey',
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
     },
     dateSection: {
         marginLeft: 5,
@@ -196,11 +196,11 @@ const styles = StyleSheet.create({
     },
     simpleTitle: {
         fontSize: getFontSize(28),
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
     },
     day: {
         fontSize: getFontSize(18),
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         color: 'grey'
     },
 });

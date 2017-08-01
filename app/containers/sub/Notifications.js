@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         color: '#b1aeb9',
         textAlign: 'center',
         paddingTop: 20,
-        fontFamily: 'OpenSans-Semibold'
+        fontFamily: 'Heebo-Medium'
     }
 });
 

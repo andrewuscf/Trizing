@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
         lineHeight: getFontSize(26),
         backgroundColor: 'transparent',
         color: '#4d4d4e',
-        fontFamily: 'OpenSans-Semibold'
+        fontFamily: 'Heebo-Medium'
     },
     edit: {
         position: 'absolute',

@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     textInput: {
         color: 'black',
         fontSize: 17,
-        fontFamily: 'OpenSans-Light',
+        fontFamily: 'Heebo-Light',
         backgroundColor: 'transparent',
         paddingTop: 3,
         paddingBottom: 3,
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(22),
         lineHeight: getFontSize(26),
         backgroundColor: 'transparent',
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         textDecorationLine: 'underline',
         textDecorationColor: '#b1aea5'
     },

@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     simpleTitle: {
         fontSize: getFontSize(18),
         color: '#b1aea5',
-        fontFamily: 'OpenSans-Semibold',
+        fontFamily: 'Heebo-Medium',
         margin: 10,
         flex: 17
     },

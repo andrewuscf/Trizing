@@ -250,7 +250,7 @@ const Login = React.createClass({
                     {!this.state.forgotCreds && !this.state.signUp ?
                         <SubmitButton onPress={this.toggleSignUp} ref="sign_button"
                                       buttonStyle={[styles.button]} textStyle={styles.buttonText}
-                                      text="SIGN UP"/>
+                                      text="Sign Up"/>
                         : null
                     }
 
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
     buttonForgotText: {
         color: '#b1aea5',
         fontSize: getFontSize(22),
-        fontFamily: 'OpenSans-SemiBold',
+        fontFamily: 'Heebo-Medium',
         marginTop: 10,
         marginBottom: 10,
         textAlign: 'center'
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#1352e2',
         fontSize: 15,
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'Heebo-Bold',
     },
     button: {
         marginTop: 10,
