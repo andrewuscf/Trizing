@@ -221,14 +221,13 @@ const CreateExercise = React.createClass({
                             value={this.state.value}
                         /> : null}
                     <View style={[styles.title]}>
-                        <Text style={[styles.titleSection, {flex: .1}]}>SET</Text>
                         <Text style={[styles.titleSection, {flex: .4}]}>LBS</Text>
                         <Text style={[styles.titleSection, {flex: .4}]}>REPS</Text>
                         <View style={{flex: .1}}/>
                     </View>
-                    <View>
+                    {/*<View style={{paddingBottom: 40}}>*/}
                         {sets}
-                    </View>
+                    {/*</View>*/}
                 </View>
                 <View style={{flexDirection: 'row'}}>
                     <TouchableOpacity style={styles.buttonBottom} onPress={this._addSet}>

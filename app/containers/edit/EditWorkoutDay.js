@@ -15,7 +15,7 @@ import _ from 'lodash';
 import ActionButton from 'react-native-action-button';
 
 import * as GlobalActions from '../../actions/globalActions';
-import {getFontSize, trunc, fetchData, API_ENDPOINT, checkStatus} from '../../actions/utils';
+import {trunc, fetchData, API_ENDPOINT, checkStatus} from '../../actions/utils';
 import {DAYS_OF_WEEK} from '../../assets/constants';
 
 import CustomIcon from '../../components/CustomIcon';
@@ -130,8 +130,8 @@ const EditWorkoutDay = React.createClass({
 
                     <ListView ref='workout_day_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                               keyboardShouldPersistTaps="handled"
-                              refreshControl={<RefreshControl refreshing={this.props.Refreshing}
-                                                              onRefresh={this.refresh}/>}
+                              refreshControl={<RefreshControl refreshing={this.state.refreshing}
+                                                              onRefresh={()=> this.getWorkoutDay(true)}/>}
                               enableEmptySections={true}
                               dataSource={dataSource}
                               showsVerticalScrollIndicator={false}

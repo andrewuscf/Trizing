@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    ScrollView,
+    RefreshControl,
     View,
     Text,
     StyleSheet,
@@ -159,6 +159,8 @@ const EditWorkout = React.createClass({
                           renderHeader={this.renderHeader}
                           renderRow={this.renderRow}
                           renderFooter={this.renderFooter.bind(null, dataSource.getRowCount())}
+                          refreshControl={<RefreshControl refreshing={this.state.refreshing}
+                                                          onRefresh={()=> this.getWorkout(true)}/>}
                 />
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
                     <ActionButton.Item buttonColor='#F22525' title="Delete" onPress={this._deleteWorkout}>

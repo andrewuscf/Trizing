@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -25,15 +25,9 @@ const CreateSetBox = React.createClass({
     template(locals) {
         return (
             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                <View style={{flex: .1, justifyContent: 'center', alignItems: 'center'}}>
-                    <Text>{this.props.setIndex + 1}</Text>
-                </View>
-                <View style={{flex: .4, justifyContent: 'center', alignItems: 'center'}}>
-                    {locals.inputs.weight}
-                </View>
-                <View style={{flex: .4, justifyContent: 'center', alignItems: 'center'}}>
-                    {locals.inputs.reps}
-                </View>
+                {locals.inputs.weight}
+                <Text style={{textAlign:'center'}}>X</Text>
+                {locals.inputs.reps}
                 {typeof this.props._deleteSet !== 'undefined' ?
                     <TouchableOpacity style={{flex: .1, justifyContent: 'center', alignItems: 'center'}}
                                       onPress={this._deleteSet}>
@@ -76,7 +70,7 @@ const CreateSetBox = React.createClass({
             stylesheet: stylesheet,
             fields: {
                 weight: {
-                    onSubmitEditing: () => this.refs.form.getComponent('reps').refs.input.focus()
+                    onSubmitEditing: () => this.refs.form.getComponent('reps').refs.input.focus(),
                     // label: 'Weight (lb)'
                 },
             }
@@ -131,84 +125,25 @@ const styles = StyleSheet.create({
 const Form = t.form.Form;
 
 const Set = t.struct({
-    reps: t.Number,
     weight: t.maybe(t.Number),
+    reps: t.Number,
 });
 
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
 
-stylesheet.formGroup = {
-    ...stylesheet.formGroup,
-    normal: {
-        ...stylesheet.formGroup.normal,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-        paddingLeft: 10,
-        borderColor: '#e1e3df',
-        borderBottomWidth: 1,
-        marginRight: 5
-    },
-    error: {
-        ...stylesheet.formGroup.error,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-        paddingLeft: 10,
-        borderColor: 'red',
-        borderBottomWidth: 1,
-        marginRight: 5
-    }
-};
+stylesheet.formGroup.normal.flex = .4;
+stylesheet.formGroup.error.flex = .4;
 
-stylesheet.textbox = {
-    ...stylesheet.textbox,
-    normal: {
-        ...stylesheet.textbox.normal,
-        borderWidth: 0,
-        marginBottom: 0,
-        textAlign: 'center'
-    },
-    error: {
-        ...stylesheet.textbox.error,
-        borderWidth: 0,
-        marginBottom: 0,
-        textAlign: 'center'
-    }
-};
+stylesheet.formGroup.normal.alignSelf = 'center';
+stylesheet.formGroup.error.alignSelf = 'center';
 
-stylesheet.textboxView = {
-    ...stylesheet.textboxView,
-    normal: {
-        ...stylesheet.textboxView.normal,
-        borderWidth: 0,
-        borderRadius: 0,
-        borderBottomWidth: 0,
-        flex: 1,
-        backgroundColor: 'transparent',
-    },
-    error: {
-        ...stylesheet.textboxView.error,
-        borderWidth: 0,
-        borderRadius: 0,
-        borderBottomWidth: 0,
-        flex: 1,
-        backgroundColor: 'transparent',
-    }
-};
+stylesheet.formGroup.normal.height = 36;
+stylesheet.formGroup.error.height = 36;
 
-stylesheet.controlLabel = {
-    ...stylesheet.controlLabel,
-    normal: {
-        ...stylesheet.controlLabel.normal,
-        flex: 2
-    },
-    error: {
-        ...stylesheet.controlLabel.error,
-        flex: 2
-    }
-};
+stylesheet.textboxView.normal.flex = 1;
+stylesheet.textboxView.error.flex = 1;
+stylesheet.textbox.normal.flex = 1;
+stylesheet.textbox.error.flex = 1;
 
 
 export default CreateSetBox;
