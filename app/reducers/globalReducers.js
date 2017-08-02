@@ -152,28 +152,6 @@ export default function AppReducers(state = initialState, action = null) {
                 )
             };
 
-        case constants.CREATE_WORKOUT_DAY:
-            const thisSchedule = _.find(state.Schedules, {workouts: [{id: action.response.workout}]});
-            const thisWorkout = _.find(thisSchedule.workouts, {id: action.response.workout});
-            return {
-                ...state,
-                Schedules: state.Schedules.map(schedule =>
-                    (schedule.id === thisSchedule.id) ?
-                        {
-                            ...schedule,
-                            workouts: schedule.workouts.map(workout =>
-                                (workout.id === thisWorkout.id) ? {
-                                    ...workout,
-                                    workout_days: [
-                                        ...workout.workout_days,
-                                        action.response
-                                    ]
-                                }
-                                    : workout
-                            )
-                        } : schedule
-                )
-            };
 
         case constants.NEW_NOTIFICATION:
             return Object.assign({}, state, {
@@ -188,25 +166,6 @@ export default function AppReducers(state = initialState, action = null) {
                 ...state,
                 tabBarOpen: action.result
             }
-
-        // case constants.UPDATE_WORKOUT_DAY:
-        //     return {
-        //         ...state,
-        //         Workouts: state.Workouts.map(workout =>
-        //             (workout.id === action.response.workout) ?
-        //                 {
-        //                     ...workout,
-        //                     workout_days: workout.workout_days.map(workout_day =>
-        //                         (workout_day.id === action.response.id) ?
-        //                             {
-        //                                 ...action.response
-        //                             } :
-        //                             workout_day
-        //                     )
-        //                 } :
-        //                 workout
-        //         )
-        //     };
 
 
         default:

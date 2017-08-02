@@ -387,13 +387,10 @@ export function addEditWorkoutDay(data, asyncActions = null) {
     return (dispatch, getState) => {
         return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                if (method == 'POST')
-                    dispatch({type: types.CREATE_WORKOUT_DAY, response: responseJson});
-                else
-                    dispatch({type: types.UPDATE_WORKOUT_DAY, response: responseJson});
 
                 if (responseJson.id) {
                     return asyncActions(true, {
+                        newTrainingDay: responseJson,
                         props: {workout_day_id: responseJson.id},
                     });
                 } else {

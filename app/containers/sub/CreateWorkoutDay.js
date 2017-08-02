@@ -4,7 +4,6 @@ import {
     Text,
     StyleSheet,
 } from 'react-native';
-import _ from 'lodash';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
@@ -15,7 +14,6 @@ import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 
 import DaysOfWeek from '../../components/DaysOfWeek';
-import SelectInput from '../../components/SelectInput';
 
 
 const Form = t.form.Form;
@@ -40,17 +38,14 @@ let options = {
 const CreateWorkoutDay = React.createClass({
     propTypes: {
         workoutId: React.PropTypes.number.isRequired,
+        newDay: React.PropTypes.func.isRequired
     },
 
     getInitialState() {
-        const schedule = _.find(this.props.Schedules, {workouts: [{id: this.props.workoutId}]});
-        const workout = _.find(schedule.workouts, {id: this.props.workoutId});
         return {
             value: null,
             days: [],
-            workout: workout,
             disabled: false,
-            template: null,
         }
     },
 
@@ -60,11 +55,6 @@ const CreateWorkoutDay = React.createClass({
 
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.Schedules !== prevProps.Schedules) {
-            const schedule = _.find(this.props.Schedules, {workouts: [{id: this.props.workoutId}]});
-            const workout = _.find(schedule.workouts, {id: this.props.workoutId});
-            this.setState({workout: workout});
-        }
         if (prevState.disabled !== this.state.disabled) {
             this.props.navigation.setParams({handleSave: this.createDay, disabled: this.state.disabled});
         }
@@ -73,6 +63,7 @@ const CreateWorkoutDay = React.createClass({
     asyncActions(success, data = {}){
         this.setState({disabled: false});
         if (success && data.props) {
+            this.props.newDay(data.newTrainingDay);
             this.props.navigation.dispatch({
                 type: 'ReplaceCurrentScreen',
                 routeName: 'EditWorkoutDay',
@@ -92,14 +83,8 @@ const CreateWorkoutDay = React.createClass({
                 let data = {
                     name: values.name,
                     day: this.state.days[0],
-                    workout: this.state.workout.id
+                    workout: this.props.workoutId
                 };
-                if (this.state.template) {
-                    data = {
-                        ...data,
-                        template: this.state.template
-                    };
-                }
                 this.props.actions.addEditWorkoutDay(data, this.asyncActions)
             } else {
 
@@ -119,16 +104,8 @@ const CreateWorkoutDay = React.createClass({
         this.setState({value});
     },
 
-    selectTemplate(id) {
-        this.setState({
-            template: id
-        });
-    },
-
 
     render: function () {
-
-        const workout_days = this.state.workout ? this.state.workout.workout_days : [];
         return (
             <View style={styles.flexCenter}>
                 <View style={{padding: 10}}>
@@ -143,11 +120,6 @@ const CreateWorkoutDay = React.createClass({
                 </View>
                 <Text style={styles.inputLabel}>Day of the week</Text>
                 <DaysOfWeek daySelectedState={this.selectDay} days={this.state.days}/>
-                <View style={styles.templateSection}>
-                    <Text style={{paddingBottom: 10}}>Copy workout day:</Text>
-                    <SelectInput ref='workout_templates' options={[...workout_days, {id: null, name: 'None'}]}
-                                 selectedId={this.state.template} submitChange={this.selectTemplate}/>
-                </View>
                 <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
         )

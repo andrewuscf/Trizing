@@ -42,7 +42,7 @@ const DisplayWorkoutDay = React.createClass({
                     </View>
                     <View style={{flexDirection: 'row', alignItems: 'center', flex: .7}}>
                         <CustomIcon name="weight" style={styles.day}/>
-                        <Text style={[styles.day]}> {workout_day.exercises_count} {workout_day.exercises_count === 1 ? 'Exercise' : 'Exercises'}
+                        <Text style={[styles.day]}> {workout_day.exercises_count? workout_day.exercises_count : 0} {workout_day.exercises_count === 1 ? 'Exercise' : 'Exercises'}
                         </Text>
                     </View>
                 </View>

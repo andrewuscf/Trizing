@@ -67,9 +67,21 @@ const EditWorkout = React.createClass({
         }
     },
 
+    newDay(training_day) {
+        this.setState({
+            workout: {
+                ...this.state.workout,
+                workout_days: [
+                    ...this.state.workout.workout_days,
+                    training_day
+                ]
+            }
+        });
+    },
+
     _createWorkoutDay() {
         if (this.state.workout) {
-            this.props.navigation.navigate('CreateWorkoutDay', {workoutId: this.state.workout.id});
+            this.props.navigation.navigate('CreateWorkoutDay', {workoutId: this.state.workout.id, newDay: this.newDay});
         }
     },
 

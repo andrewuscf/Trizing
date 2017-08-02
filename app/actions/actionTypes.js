@@ -16,8 +16,6 @@ export const API_ERROR = 'API_ERROR';
 
 // Workout Constants
 export const CREATE_WORKOUT = 'CREATE_WORKOUT';
-export const CREATE_WORKOUT_DAY = 'CREATE_WORKOUT_DAY';
-export const UPDATE_WORKOUT_DAY = 'UPDATE_WORKOUT_DAY';
 
 export const LOAD_SCHEDULES = 'LOAD_SCHEDULES';
 export const ADD_SCHEDULES = 'ADD_SCHEDULES';
