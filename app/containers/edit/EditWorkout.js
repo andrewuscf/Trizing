@@ -128,7 +128,7 @@ const EditWorkout = React.createClass({
     render: function () {
         if (!this.state.workout) return <Loading/>;
         let workout_days = [];
-        if (this.state.workout && this.state.workout.workout_days.length) {
+        if (this.state.workout.workout_days) {
             workout_days = _.orderBy(this.state.workout.workout_days, (workout_day) => {
                 return workout_day.day
             });

@@ -137,30 +137,6 @@ export default function AppReducers(state = initialState, action = null) {
             };
 
 
-        case constants.ADD_EXERCISE:
-            return {
-                ...state,
-                Schedules: state.Schedules.map(schedule =>
-                    (schedule.id === action.response.id) ? action.response : schedule
-                )
-            };
-
-        case constants.EDIT_EXERCISE:
-            return {
-                ...state,
-                Schedules: state.Schedules.map(schedule =>
-                    (schedule.id === action.response.id) ? action.response : schedule
-                )
-            };
-
-        case constants.DELETE_SET:
-            return {
-                ...state,
-                Schedules: state.Schedules.map(schedule =>
-                    (schedule.id === action.response.id) ? action.response : schedule
-                )
-            };
-
         case constants.CREATE_WORKOUT:
             return {
                 ...state,
@@ -187,12 +163,12 @@ export default function AppReducers(state = initialState, action = null) {
                             ...schedule,
                             workouts: schedule.workouts.map(workout =>
                                 (workout.id === thisWorkout.id) ? {
-                                        ...workout,
-                                        workout_days: [
-                                            ...workout.workout_days,
-                                            action.response
-                                        ]
-                                    }
+                                    ...workout,
+                                    workout_days: [
+                                        ...workout.workout_days,
+                                        action.response
+                                    ]
+                                }
                                     : workout
                             )
                         } : schedule
@@ -202,9 +178,9 @@ export default function AppReducers(state = initialState, action = null) {
         case constants.NEW_NOTIFICATION:
             return Object.assign({}, state, {
                 RequestUser: state.RequestUser ? {
-                        ...state.RequestUser,
-                        unread_notifications: true
-                    } : null
+                    ...state.RequestUser,
+                    unread_notifications: true
+                } : null
             });
 
         case constants.TOGGLE_TAB_BAR:

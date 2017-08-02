@@ -406,7 +406,7 @@ export function addEditWorkoutDay(data, asyncActions = null) {
     }
 }
 
-export function addEditExercise(data, goBack) {
+export function addEditExercise(data, asyncActions) {
     let url = `${API_ENDPOINT}training/workout/sets/`;
     let method = 'POST';
     if (data.id) {
@@ -416,24 +416,30 @@ export function addEditExercise(data, goBack) {
     return (dispatch, getState) => {
         return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                goBack();
-                if (method == 'POST')
-                    return dispatch({type: types.ADD_EXERCISE, response: responseJson});
-                else
-                    return dispatch({type: types.EDIT_EXERCISE, response: responseJson});
+
+                if (responseJson.id) {
+                    asyncActions(true, responseJson);
+                } else {
+                    asyncActions(false);
+                }
             })
             .catch((error) => {
+                asyncActions(false);
                 console.log(error)
             });
     }
 }
 
-export function deleteSet(id) {
+export function deleteSet(id, asyncActions) {
     return (dispatch, getState) => {
         return fetch(`${API_ENDPOINT}training/workout/set/${id}/`,
             fetchData('DELETE', null, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                return dispatch({type: types.DELETE_SET, response: responseJson});
+                if (responseJson.id) {
+                    asyncActions(true, responseJson);
+                } else {
+                    asyncActions(false)
+                }
             })
     }
 }

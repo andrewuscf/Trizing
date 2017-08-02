@@ -66,12 +66,20 @@ const EditWorkoutDay = React.createClass({
         })
     },
 
+    newDay(workout_day) {
+        this.setState({workout_day});
+    },
+
     _addExercise() {
-        this.props.navigation.navigate('CreateExercise', {workout_day: this.state.workout_day});
+        this.props.navigation.navigate('CreateExercise', {workout_day: this.state.workout_day, newDay: this.newDay});
     },
 
     _editExercise(exercise) {
-        this.props.navigation.navigate('CreateExercise', {workout_day: this.state.workout_day, exercise: exercise});
+        this.props.navigation.navigate('CreateExercise', {
+            workout_day: this.state.workout_day,
+            exercise: exercise,
+            newDay: this.newDay
+        });
     },
 
     _deleteWorkoutDay() {
@@ -93,6 +101,16 @@ const EditWorkoutDay = React.createClass({
         return (
             <Text style={[styles.header]}>Exercises</Text>
         )
+    },
+
+    deleteSetActions(success, data) {
+        if (success) {
+            this.newDay(data);
+        }
+    },
+
+    deleteSet(setId) {
+        this.props.actions.deleteSet(setId, this.deleteSetActions)
     },
 
 
@@ -121,7 +139,7 @@ const EditWorkoutDay = React.createClass({
                               renderRow={(exercise, sectionID, rowID) =>
                                   <DisplayExerciseBox exercise={exercise}
                                                       _editExercise={this._editExercise}
-                                                      deleteSet={this.props.actions.deleteSet}/>
+                                                      deleteSet={this.deleteSet}/>
                               }
                     />
                 }

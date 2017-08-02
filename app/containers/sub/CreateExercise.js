@@ -5,12 +5,12 @@ import {
     StyleSheet,
     TouchableOpacity,
     Keyboard,
-    Alert
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import * as GlobalActions from '../../actions/globalActions';
 
@@ -27,7 +27,8 @@ const Exercise = t.struct({
 const CreateExercise = React.createClass({
     propTypes: {
         workout_day: React.PropTypes.object.isRequired,
-        exercise: React.PropTypes.object
+        exercise: React.PropTypes.object,
+        newDay: React.PropTypes.func
     },
 
     getInitialState() {
@@ -71,6 +72,14 @@ const CreateExercise = React.createClass({
         });
     },
 
+    deleteSetActions(success, data) {
+        if (success) {
+            if (typeof this.props.newDay !== 'undefined') {
+                this.props.newDay(data);
+            }
+        }
+    },
+
     _deleteSet(setIndex) {
         Keyboard.dismiss();
         const setId = this.state.sets[setIndex].id;
@@ -78,7 +87,7 @@ const CreateExercise = React.createClass({
             sets: [...this.state.sets.slice(0, setIndex), ...this.state.sets.slice(setIndex + 1)]
         });
         if (setId) {
-            this.props.actions.deleteSet(setId);
+            this.props.actions.deleteSet(setId, this.deleteSetActions);
         }
     },
 
@@ -95,9 +104,20 @@ const CreateExercise = React.createClass({
         this.setState({value});
     },
 
-    goBack() {
+    asyncActions(success, data) {
         this.setState({disabled: false});
-        this.props.navigation.goBack();
+        if (success) {
+            this.dropdown.alertWithType('success', 'Success', 'Created exercise.');
+            if (typeof this.props.newDay !== 'undefined') {
+                this.props.newDay(data);
+            }
+            setTimeout(() => {
+                this.setState({value: null});
+                this.props.navigation.goBack();
+            }, 1000);
+        } else {
+            this.dropdown.alertWithType('error', 'Error', "Couldn't create exercise.");
+        }
     },
 
     _save() {
@@ -126,7 +146,7 @@ const CreateExercise = React.createClass({
                 }
             });
             if (sets.length > 0) {
-                this.props.actions.addEditExercise(sets, this.goBack);
+                this.props.actions.addEditExercise(sets, this.asyncActions);
             }
 
         } else if (this.props.exercise) {
@@ -148,13 +168,13 @@ const CreateExercise = React.createClass({
                         data['id'] = set.id;
                         const old = _.find(this.props.exercise.sets, {id: set.id});
                         if (old.reps !== data.reps || old.weight !== data.weight || old.order !== data.order) {
-                            this.props.actions.addEditExercise(data, this.goBack);
+                            this.props.actions.addEditExercise(data, this.asyncActions);
                         }
                     }
                 }
             });
             if (sets.length > 0) {
-                this.props.actions.addEditExercise(sets, this.goBack);
+                this.props.actions.addEditExercise(sets, this.asyncActions);
             }
         }
     },
@@ -216,6 +236,7 @@ const CreateExercise = React.createClass({
                     </TouchableOpacity>
                 </View>
                 <InputAccessory/>
+                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
         )
     }

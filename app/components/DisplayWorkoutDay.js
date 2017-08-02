@@ -27,12 +27,13 @@ const DisplayWorkoutDay = React.createClass({
 
 
     render: function () {
-        const dayOfWeek = _.find(DAYS_OF_WEEK, {id: this.props.workout_day.day});
+        const workout_day = this.props.workout_day;
+        const dayOfWeek = _.find(DAYS_OF_WEEK, {id: workout_day.day});
         return (
-            <TouchableOpacity onPress={this.props._toWorkoutDay.bind(null, this.props.workout_day.id)}
+            <TouchableOpacity onPress={this.props._toWorkoutDay.bind(null, workout_day.id)}
                               style={[styles.displayWorkoutBox, GlobalStyle.simpleBottomBorder, GlobalStyle.simpleTopBorder]}>
                 <View style={styles.titleView}>
-                    <Text style={styles.simpleTitle}>{this.props.workout_day.name}</Text>
+                    <Text style={styles.simpleTitle}>{workout_day.name}</Text>
                     {this.props.active ? <FontIcon name="circle" size={20} style={GlobalStyle.lightBlueText}/> : null}
                 </View>
                 <View style={styles.dateSection}>
@@ -41,7 +42,7 @@ const DisplayWorkoutDay = React.createClass({
                     </View>
                     <View style={{flexDirection: 'row', alignItems: 'center', flex: .7}}>
                         <CustomIcon name="weight" style={styles.day}/>
-                        <Text style={[styles.day]}> {this.props.workout_day.exercises.length} {this.props.workout_day.exercises.length === 1 ? 'Exercise' : 'Exercises'}
+                        <Text style={[styles.day]}> {workout_day.exercises_count} {workout_day.exercises_count === 1 ? 'Exercise' : 'Exercises'}
                         </Text>
                     </View>
                 </View>
