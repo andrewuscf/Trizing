@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
 import DropdownAlert from 'react-native-dropdownalert';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import * as GlobalActions from '../../actions/globalActions';
 
@@ -210,8 +211,9 @@ const CreateExercise = React.createClass({
                                      value={{reps: set.reps, weight: set.weight}}/>
         });
         return (
-            <View style={styles.box}>
-                <View style={{padding: 10}}>
+            <View style={{flex: 1}}>
+                <KeyboardAwareScrollView extraHeight={130} showsVerticalScrollIndicator={false}
+                                         contentContainerStyle={{padding: 10}}>
                     {!this.props.exercise ?
                         <Form
                             ref="form"
@@ -220,20 +222,13 @@ const CreateExercise = React.createClass({
                             onChange={this.onChange}
                             value={this.state.value}
                         /> : null}
-                    <View style={[styles.title]}>
-                        <Text style={[styles.titleSection, {flex: .4}]}>LBS</Text>
-                        <Text style={[styles.titleSection, {flex: .4}]}>REPS</Text>
-                        <View style={{flex: .1}}/>
+                    {sets}
+                    <View style={styles.box}>
+                        <TouchableOpacity style={styles.buttonBottom} onPress={this._addSet}>
+                            <Text>Add Set</Text>
+                        </TouchableOpacity>
                     </View>
-                    {/*<View style={{paddingBottom: 40}}>*/}
-                        {sets}
-                    {/*</View>*/}
-                </View>
-                <View style={{flexDirection: 'row'}}>
-                    <TouchableOpacity style={styles.buttonBottom} onPress={this._addSet}>
-                        <Text>Add Set</Text>
-                    </TouchableOpacity>
-                </View>
+                </KeyboardAwareScrollView>
                 <InputAccessory/>
                 <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
@@ -270,6 +265,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#e1e3df',
         borderRadius: 10,
+        flexDirection: 'row',
     },
     save: {
         position: 'absolute',

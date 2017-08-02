@@ -26,7 +26,7 @@ const CreateSetBox = React.createClass({
         return (
             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                 {locals.inputs.weight}
-                <Text style={{textAlign:'center'}}>X</Text>
+                <Text style={{textAlign: 'center'}}>X</Text>
                 {locals.inputs.reps}
                 {typeof this.props._deleteSet !== 'undefined' ?
                     <TouchableOpacity style={{flex: .1, justifyContent: 'center', alignItems: 'center'}}
@@ -65,53 +65,47 @@ const CreateSetBox = React.createClass({
                 optional: '',
                 required: '*',
             },
-            template: (locals) => this.template(locals),
-            auto: 'placeholders',
+            // template: (locals) => this.template(locals),
+            // auto: 'labels',
             stylesheet: stylesheet,
             fields: {
                 weight: {
                     onSubmitEditing: () => this.refs.form.getComponent('reps').refs.input.focus(),
-                    // label: 'Weight (lb)'
+                    placeholder: 'lbs'
                 },
+                reps: {
+                    placeholder: '10'
+                }
             }
         };
         return (
-            <Form
-                ref="form"
-                type={Set}
-                options={options}
-                onChange={this.onChange}
-                value={this.props.value}
-            />
+            <View style={styles.setContainer}>
+                <Form
+                    ref="form"
+                    type={Set}
+                    options={options}
+                    onChange={this.onChange}
+                    value={this.props.value}
+                />
+                {/*<Text>test</Text>*/}
+                {typeof this.props._deleteSet !== 'undefined' ?
+                    <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}}
+                                      onPress={this._deleteSet}>
+                        <Icon name="remove-circle" size={20} color="red"/>
+                    </TouchableOpacity>
+                    : null}
+            </View>
         )
     }
 });
 
 const styles = StyleSheet.create({
     setContainer: {
-        flex: 1,
-    },
-    title: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 5,
-    },
-    titleSection: {
-        textAlign: 'center',
-    },
-    setTitleView: {
-        borderColor: '#e1e3df',
-        borderBottomWidth: 1,
-        flex: 1,
         margin: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    setTitle: {
-        fontSize: getFontSize(22),
-        lineHeight: getFontSize(26),
-        flex: 1 / 3
+        borderWidth: 1,
+        borderColor: '#e1e3df',
+        borderRadius: 10,
+        padding:10,
     },
     edit: {
         position: 'absolute',
@@ -131,19 +125,85 @@ const Set = t.struct({
 
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
 
-stylesheet.formGroup.normal.flex = .4;
-stylesheet.formGroup.error.flex = .4;
+stylesheet.formGroup = {
+    ...stylesheet.formGroup,
+    normal: {
+        ...stylesheet.formGroup.normal,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderColor: '#e1e3df',
+        borderBottomWidth: 1,
+    },
+    error: {
+        ...stylesheet.formGroup.error,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderColor: 'red',
+        borderBottomWidth: 1,
+    }
+};
 
-stylesheet.formGroup.normal.alignSelf = 'center';
-stylesheet.formGroup.error.alignSelf = 'center';
+stylesheet.textbox = {
+    ...stylesheet.textbox,
+    normal: {
+        ...stylesheet.textbox.normal,
+        flex: 1,
+        borderWidth: 0,
+        marginBottom: 0,
+        textAlign: 'center'
+    },
+    error: {
+        ...stylesheet.textbox.error,
+        borderWidth: 0,
+        marginBottom: 0,
+        textAlign: 'center'
+    }
+};
 
-stylesheet.formGroup.normal.height = 36;
-stylesheet.formGroup.error.height = 36;
+stylesheet.textboxView = {
+    ...stylesheet.textboxView,
+    normal: {
+        ...stylesheet.textboxView.normal,
+        borderWidth: 0,
+        borderRadius: 0,
+        borderBottomWidth: 0,
+        flex: 1,
+        backgroundColor: 'transparent',
+    },
+    error: {
+        ...stylesheet.textboxView.error,
+        borderWidth: 0,
+        borderRadius: 0,
+        borderBottomWidth: 0,
+        flex: 1,
+        backgroundColor: 'transparent',
+    }
+};
 
-stylesheet.textboxView.normal.flex = 1;
-stylesheet.textboxView.error.flex = 1;
-stylesheet.textbox.normal.flex = 1;
-stylesheet.textbox.error.flex = 1;
+
+// stylesheet.pickerTouchable.normal.flex = 1;
+// stylesheet.pickerTouchable.normal.justifyContent = 'center';
+// stylesheet.pickerTouchable.error.flex = 1;
+// stylesheet.pickerTouchable.error.justifyContent = 'center';
+//
+// stylesheet.pickerContainer.normal.borderWidth = 0;
+// stylesheet.pickerContainer.normal.flex = 1;
+// stylesheet.pickerContainer.normal.marginBottom = 0;
+//
+// stylesheet.pickerContainer.error.borderWidth = 0;
+// stylesheet.pickerContainer.error.flex = 1;
+// stylesheet.pickerContainer.error.marginBottom = 0;
+// stylesheet.pickerValue.error.color = '#a94442';
+//
+// stylesheet.pickerValue.normal.textAlign = 'center';
+// stylesheet.pickerValue.error.textAlign = 'center';
+
+stylesheet.controlLabel.normal.flex = 1;
+stylesheet.controlLabel.error.flex = 1;
+stylesheet.controlLabel.normal.marginLeft = 5;
+stylesheet.controlLabel.error.marginLeft = 5;
 
 
 export default CreateSetBox;
