@@ -84,11 +84,12 @@ const ResetPassword = React.createClass({
         });
         let options = this.state.options;
         return (
-            <KeyboardAwareScrollView behavior='padding' style={GlobalStyle.noHeaderContainer} ref="scroll"
+            <KeyboardAwareScrollView behavior='padding' style={{padding: 20}} ref="scroll"
                                      contentContainerStyle={{flex: 1}}
                                      onKeyboardWillShow={this.changeKeyboard}
                                      onKeyboardWillHide={this.changeKeyboard}
                                      showsVerticalScrollIndicator={false}
+                                     keyboardDismissMode='interactive'
                                      scrollEnabled={this.state.keyboard}>
 
 

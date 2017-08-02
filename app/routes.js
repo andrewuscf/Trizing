@@ -1,6 +1,6 @@
 import React from 'react'
-import {Platform, View} from 'react-native';
-import {TabNavigator, StackNavigator, TabBarBottom, DrawerNavigator, NavigationActions} from 'react-navigation';
+import {View} from 'react-native';
+import {TabNavigator, StackNavigator, TabBarBottom, NavigationActions} from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Save from './components/NavBarSave';
