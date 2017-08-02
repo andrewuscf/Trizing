@@ -85,7 +85,8 @@ const EditProfile = React.createClass({
                 }
             })
         }
-        if (prevProps.RequestUser && prevProps.RequestUser.profile.completed !== this.props.RequestUser.profile.completed) {
+        if (this.props.RequestUser && prevProps.RequestUser
+            && prevProps.RequestUser.profile.completed !== this.props.RequestUser.profile.completed) {
             this.props.navigation.dispatch(resetNav('Main'));
         }
     },
