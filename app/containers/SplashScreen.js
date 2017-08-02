@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     trizing: {
         fontFamily: 'Heebo-Bold',
         fontSize: 24,
-        paddingLeft: 10
+        paddingLeft: 5
     },
     login: {
         flex: .5,

@@ -14,7 +14,6 @@ import {getClients, getActiveData} from './homeActions';
 export function initializeApp() {
     return (dispatch, getState) => {
         AsyncStorage.getItem('USER_TOKEN', (err, result) => {
-            console.log(result)
             if (result) dispatch(setTokenInRedux(result));
             else dispatch({type: types.NOT_LOGGED_IN});
         });
@@ -129,7 +128,7 @@ export function resetPassword(data) {
                         })
                     });
                 }
-            }).done();
+            })
     }
 }
 
@@ -187,7 +186,7 @@ export function socialAuth(access_token) {
                         text: 'Please try again later.'
                     })
                 });
-            }).done();
+            })
     }
 }
 
@@ -214,7 +213,7 @@ export function getNotifications(refresh = false, newNotifications = false) {
                     }
                     return dispatch({type: types.GET_NOTIFICATIONS, response: responseJson, refresh: refresh});
                 }
-            }).done();
+            })
     }
 }
 
@@ -234,7 +233,7 @@ export function readNotification(id) {
             .then((responseJson) => {
                 return dispatch({type: types.READ_NOTIFICATION, noteId: id});
             })
-            .done();
+
     }
 }
 
@@ -251,7 +250,7 @@ export function getQuestionnaires(refresh = false) {
         return fetch(url, fetchData('GET', null, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.GET_QUESTIONNAIRES, response: responseJson, refresh: refresh});
-            }).done();
+            })
     }
 }
 
@@ -267,7 +266,7 @@ export function createQuestionnaire(data, asyncActions) {
             })
             .catch((error) => {
                 asyncActions(false);
-            }).done();
+            })
     }
 }
 
@@ -282,7 +281,7 @@ export function answerQuestionnaire(data, asyncActions) {
             })
             .catch((error) => {
                 asyncActions(false);
-            }).done();
+            })
     }
 }
 
@@ -330,7 +329,7 @@ export function createSchedule(data, asyncActions) {
             })
             .catch((error) => {
                 asyncActions(false);
-            }).done();
+            })
     }
 }
 
@@ -355,7 +354,7 @@ export function deleteSchedule(scheduleId, asyncActions) {
                 return dispatch(removeSchedule(scheduleId));
             })
             .catch((error) => {
-            }).done();
+            })
     }
 }
 
@@ -365,15 +364,15 @@ export function createWorkout(data, asyncActions) {
         return fetch(`${API_ENDPOINT}training/workouts/`,
             fetchData('POST', JSONDATA, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
-                dispatch({type: types.CREATE_WORKOUT, response: responseJson});
                 if (responseJson.id) {
+                    dispatch({type: types.CREATE_WORKOUT, response: responseJson});
                     return asyncActions(true, {routeName: 'EditWorkout', props: {workoutId: responseJson.id}});
                 }
                 return asyncActions(false);
             })
             .catch((error) => {
                 asyncActions(false);
-            }).done();
+            })
     }
 }
 
@@ -403,7 +402,7 @@ export function addEditWorkoutDay(data, asyncActions = null) {
             })
             .catch((error) => {
                 asyncActions(false);
-            }).done();
+            })
     }
 }
 
@@ -435,7 +434,7 @@ export function deleteSet(id) {
             fetchData('DELETE', null, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.DELETE_SET, response: responseJson});
-            }).done();
+            })
     }
 }
 

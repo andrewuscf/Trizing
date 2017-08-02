@@ -68,16 +68,18 @@ const ProgramList = React.createClass({
     },
 
 
-    renderRow(schedule) {
+    renderRow(program) {
+        let duration = 0;
+        program.workouts.forEach((workout)=> duration += workout.duration);
         return (
             <TouchableOpacity style={styles.link}
-                              onPress={this._redirect.bind(null, 'EditSchedule', {scheduleId: schedule.id})}>
+                              onPress={this._redirect.bind(null, 'EditSchedule', {scheduleId: program.id})}>
                 <View style={styles.leftSection}>
-                    <Text style={styles.simpleTitle}>{schedule.name}</Text>
+                    <Text style={styles.simpleTitle}>{program.name}</Text>
                     <View style={styles.row}>
                         <MaterialIcon name="timer" size={getFontSize(18)} style={styles.timerIcon}/>
                         <Text style={styles.smallText}>
-                            {schedule.full_duration} {schedule.full_duration === 1 ? 'week' : 'weeks'}
+                            {duration} {duration === 1 ? 'week' : 'weeks'}
                         </Text>
                     </View>
                 </View>
@@ -92,13 +94,13 @@ const ProgramList = React.createClass({
         const isTrainer = this.props.RequestUser.type === 1;
         const {navigate} = this.props.navigation;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        const SchedulesDs = ds.cloneWithRows(_.filter(this.props.Schedules, function (o) {
+        const ProgramsDs = ds.cloneWithRows(_.filter(this.props.Schedules, function (o) {
             return !o.training_plan;
         }));
         return (
             <View style={{flex: 1}}>
                 <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                          enableEmptySections={true} dataSource={SchedulesDs} showsVerticalScrollIndicator={false}
+                          enableEmptySections={true} dataSource={ProgramsDs} showsVerticalScrollIndicator={false}
                           renderRow={this.renderRow}
                 />
                 {isTrainer ?

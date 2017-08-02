@@ -23,9 +23,9 @@ import ManageClients from './containers/sub/ManageClients';
 // Edit Pages
 import EditSchedule from './containers/edit/EditSchedule';
 import EditWorkout from './containers/edit/EditWorkout';
+import EditWorkoutDay from './containers/edit/EditWorkoutDay';
 
 // Detail Pages
-import WorkoutDayDetail from './containers/detail/WorkoutDayDetail';
 import ChatRoom from './containers/detail/ChatRoom';
 import EventDetail from './containers/detail/EventDetail';
 // import PostDetail from './containers/detail/PostDetail';
@@ -124,7 +124,7 @@ const HomeNav = StackNavigator({
     EditWorkout: {screen: paramsToProps(EditWorkout)},
     CreateWorkoutDay: {screen: paramsToProps(CreateWorkoutDay)},
     CreateExercise: {screen: paramsToProps(CreateExercise)},
-    WorkoutDayDetail: {screen: paramsToProps(WorkoutDayDetail)},
+    EditWorkoutDay: {screen: paramsToProps(EditWorkoutDay)},
     CreateSchedule: {screen: paramsToProps(CreateSchedule)},
     EditSchedule: {screen: paramsToProps(EditSchedule)},
     WorkoutDetail: {screen: paramsToProps(WorkoutDetail)},

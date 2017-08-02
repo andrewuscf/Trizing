@@ -54,12 +54,13 @@ const DisplayWorkoutDay = React.createClass({
 const styles = StyleSheet.create({
     displayWorkoutBox: {
         flex: 1,
-        marginTop: 5,
         borderColor: '#e1e3df',
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
+        borderWidth: 1,
         padding: 10,
         backgroundColor: 'white',
+        margin: 10,
+        marginBottom: 5,
+        borderRadius: 5,
     },
     dateSection: {
         marginLeft: 5,

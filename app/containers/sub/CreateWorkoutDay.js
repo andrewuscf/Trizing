@@ -75,9 +75,9 @@ const CreateWorkoutDay = React.createClass({
         if (success && data.props) {
             this.props.navigation.dispatch({
                 type: 'ReplaceCurrentScreen',
-                routeName: 'WorkoutDayDetail',
+                routeName: 'EditWorkoutDay',
                 params: data.props,
-                key: 'WorkoutDayDetail'
+                key: 'EditWorkoutDay'
             });
         } else {
             this.dropdown.alertWithType('error', 'Error', "Couldn't create workout day.")

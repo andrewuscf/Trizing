@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
-    TouchableOpacity,
     RefreshControl,
     Platform,
     ListView,
@@ -16,13 +15,14 @@ import _ from 'lodash';
 import ActionButton from 'react-native-action-button';
 
 import * as GlobalActions from '../../actions/globalActions';
-import {getFontSize, trunc} from '../../actions/utils';
+import {getFontSize, trunc, fetchData, API_ENDPOINT, checkStatus} from '../../actions/utils';
 import {DAYS_OF_WEEK} from '../../assets/constants';
 
 import CustomIcon from '../../components/CustomIcon';
 import DisplayExerciseBox from '../../components/trainer/DisplayExerciseBox';
+import Loading from '../../components/Loading';
 
-const WorkoutDayDetail = React.createClass({
+const EditWorkoutDay = React.createClass({
     propTypes: {
         workout_day_id: React.PropTypes.number.isRequired,
     },
@@ -30,30 +30,40 @@ const WorkoutDayDetail = React.createClass({
     getInitialState() {
         return {
             Error: null,
-            workout_day: this.getWorkoutDay(),
+            workout_day: null,
+            refreshing: false,
         }
     },
 
-    getWorkoutDay() {
-        const schedule = _.find(this.props.Schedules, {workouts: [{workout_days: [{id: this.props.workout_day_id}]}]});
-        const workout = _.find(schedule.workouts, {workout_days: [{id: this.props.workout_day_id}]});
-        return _.find(workout.workout_days, {id: this.props.workout_day_id});
-    },
-
-    componentWillMount() {
-        const dayOfWeek = _.find(DAYS_OF_WEEK, {id: this.state.workout_day.day});
-        this.props.navigation.setParams({headerTitle: `${trunc(this.getWorkoutDay().name, 14)} (${dayOfWeek.day})`});
+    componentDidMount() {
+        this.getWorkoutDay();
     },
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.Schedules !== prevProps.Schedules) {
-            const workout_day = this.getWorkoutDay();
-            if (workout_day) {
-                this.setState({workout_day: workout_day});
-                const dayOfWeek = _.find(DAYS_OF_WEEK, {id: this.state.workout_day.day});
-                this.props.navigation.setParams({headerTitle: `${trunc(workout_day.name, 14)} (${dayOfWeek.day})`})
-            }
+        if (this.state.workout_day !== prevState.workout_day) {
+            const dayOfWeek = _.find(DAYS_OF_WEEK, {id: this.state.workout_day.day});
+            this.props.navigation.setParams({headerTitle: `${trunc(this.state.workout_day.name, 14)} (${dayOfWeek.day})`})
         }
+    },
+
+    getWorkoutDay(refresh) {
+        if (refresh) this.setState({refreshing: true});
+
+        fetch(`${API_ENDPOINT}training/workout/day/${this.props.workout_day_id}/`,
+            fetchData('GET', null, this.props.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+                let newState = {refreshing: false};
+                if (responseJson.id) {
+                    newState = {
+                        ...newState,
+                        workout_day: responseJson
+                    }
+                }
+                this.setState(newState);
+            }).catch((error) => {
+            console.log(error)
+        })
     },
 
     _addExercise() {
@@ -81,14 +91,14 @@ const WorkoutDayDetail = React.createClass({
 
     renderHeader() {
         return (
-            <Text style={[styles.dayTitle]}>Exercises</Text>
+            <Text style={[styles.header]}>Exercises</Text>
         )
     },
 
 
     render: function () {
-        if (!this.state.workout_day)
-            return null;
+        if (!this.state.workout_day) return <Loading/>;
+
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = ds.cloneWithRows(this.state.workout_day.exercises);
 
@@ -140,15 +150,15 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#f1f1f3'
     },
-    dayTitle: {
-        fontSize: getFontSize(30),
+    header: {
+        fontSize: 26,
         fontFamily: 'Heebo-Medium',
         textAlign: 'center',
         borderBottomWidth: .5,
         borderColor: '#e1e3df',
     },
     day: {
-        fontSize: getFontSize(32),
+        fontSize: 28,
         fontFamily: 'Heebo-Bold',
         paddingLeft: 20
     },
@@ -172,4 +182,4 @@ const dispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(stateToProps, dispatchToProps)(WorkoutDayDetail);
+export default connect(stateToProps, dispatchToProps)(EditWorkoutDay);

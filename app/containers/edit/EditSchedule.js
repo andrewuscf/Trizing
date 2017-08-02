@@ -57,14 +57,6 @@ const EditSchedule = React.createClass({
         }
     },
 
-    _createWorkout() {
-        this.props.navigation.navigate('CreateWorkout', {scheduleId: this.props.scheduleId});
-    },
-
-    _toWorkoutDay(workoutId) {
-        this.props.navigation.navigate('EditWorkout', {workoutId: workoutId});
-    },
-
     _deleteSchedule() {
         Keyboard.dismiss();
         Alert.alert(
@@ -87,8 +79,9 @@ const EditSchedule = React.createClass({
     renderRow(workout, index) {
         const parseIndex = parseInt(index);
         let start_date = moment.utc(workout.dates.start_date).local();
+        const {navigate} = this.props.navigation;
         return (
-            <TouchableOpacity key={parseIndex} onPress={this._toWorkoutDay.bind(null, workout.id)}
+            <TouchableOpacity key={parseIndex} onPress={()=> navigate('EditWorkout', {workoutId: workout.id})}
                               style={[styles.workoutBox]}>
 
                 <View style={styles.titleView}>
@@ -124,6 +117,8 @@ const EditSchedule = React.createClass({
 
     render: function () {
         if (!this.state.schedule) return null;
+
+        const {navigate} = this.props.navigation;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = ds.cloneWithRows(_.orderBy(this.state.schedule.workouts, ['order']));
         return (
@@ -145,7 +140,7 @@ const EditSchedule = React.createClass({
                         <MaterialIcon name="delete-forever" color="white" size={22}/>
                     </ActionButton.Item>
                     <ActionButton.Item buttonColor='#3498db' title="Add Block"
-                                       onPress={this._createWorkout}>
+                                       onPress={()=> navigate('CreateWorkout', {scheduleId: this.props.scheduleId})}>
                         <MaterialIcon name="add" color="white" size={22}/>
                     </ActionButton.Item>
                 </ActionButton>
@@ -168,12 +163,13 @@ const styles = StyleSheet.create({
     },
     workoutBox: {
         flex: 1,
-        marginTop: 5,
         borderColor: '#e1e3df',
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
+        borderWidth: 1,
         padding: 10,
         backgroundColor: 'white',
+        margin: 10,
+        marginBottom: 5,
+        borderRadius: 5,
     },
     notBold: {
         color: 'grey',

@@ -8,18 +8,17 @@ import {
     ListView,
     Platform
 } from 'react-native';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
 import ActionButton from 'react-native-action-button';
 import moment from 'moment';
 
-import * as GlobalActions from '../../actions/globalActions';
-import {getFontSize} from '../../actions/utils';
+import {fetchData, API_ENDPOINT, trunc, checkStatus} from '../../actions/utils';
 import GlobalStyle from '../../containers/globalStyle';
 
 import DisplayWorkoutDay from '../../components/DisplayWorkoutDay';
+import Loading from '../../components/Loading';
 
 import CreateWorkoutDay from '../sub/CreateWorkoutDay';
 
@@ -30,26 +29,41 @@ const EditWorkout = React.createClass({
     },
 
     getInitialState() {
-        const schedule = _.find(this.props.Schedules, {workouts: [{id: this.props.workoutId}]});
-        const workout = _.find(schedule.workouts, {id: this.props.workoutId});
         return {
             Error: null,
-            workout: workout
+            workout: null,
+            refreshing: false
         }
     },
 
-    componentWillMount() {
-        const schedule = _.find(this.props.Schedules, {workouts: [{id: this.props.workoutId}]});
-        const workout = _.find(schedule.workouts, {id: this.props.workoutId});
-        this.props.navigation.setParams({headerTitle: workout.name});
+    componentDidMount() {
+        this.getWorkout();
     },
 
+
+    getWorkout(refresh) {
+        if (refresh) this.setState({refreshing: true});
+
+        fetch(`${API_ENDPOINT}training/workout/${this.props.workoutId}/`,
+            fetchData('GET', null, this.props.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+
+                let newState = {refreshing: false};
+                if (responseJson.id) {
+                    newState = {
+                        ...newState,
+                        workout: responseJson
+                    }
+                }
+                this.setState(newState);
+            }).catch((error) => {console.log(error)})
+    },
+
+
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.Schedules != prevProps.Schedules) {
-            const schedule = _.find(this.props.Schedules, {workouts: [{id: this.props.workoutId}]});
-            const workout = _.find(schedule.workouts, {id: this.props.workoutId});
-            this.setState({workout: workout});
-            this.props.navigation.setParams({headerTitle: workout.name});
+        if (this.state.workout != prevState.workout) {
+            this.props.navigation.setParams({headerTitle: this.state.workout.name});
         }
     },
 
@@ -61,7 +75,7 @@ const EditWorkout = React.createClass({
 
     _toWorkoutDay(workout_day_id) {
         if (this.state.workout) {
-            this.props.navigation.navigate('WorkoutDayDetail', {workout_day_id: workout_day_id});
+            this.props.navigation.navigate('EditWorkoutDay', {workout_day_id: workout_day_id});
         }
     },
 
@@ -86,7 +100,7 @@ const EditWorkout = React.createClass({
         return (
             <View style={[GlobalStyle.simpleBottomBorder, styles.headerContainer]}>
                 <Text style={styles.smallBold}>Duration:
-                    <Text style={styles.notBold}> {workout.duration} {workout.duration == 1 ? 'week': 'weeks'}</Text>
+                    <Text style={styles.notBold}> {workout.duration} {workout.duration == 1 ? 'week' : 'weeks'}</Text>
                 </Text>
                 <Text style={styles.smallBold}>Created: <Text style={styles.notBold}>{created}</Text></Text>
             </View>
@@ -103,15 +117,16 @@ const EditWorkout = React.createClass({
         if (rowCount !== 0) return null;
         return (
             <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
-                <MaterialIcon name="today" style={[styles.notBold, {fontSize: getFontSize(50), paddingBottom: 20}]}/>
-                <Text style={[styles.notBold, {fontSize: getFontSize(28)}]}>Get started by</Text>
-                <Text style={[styles.notBold, {fontSize: getFontSize(28)}]}>creating workout days</Text>
+                <MaterialIcon name="today" style={[styles.notBold, {fontSize: 40, paddingBottom: 20}]}/>
+                <Text style={[styles.notBold, {fontSize: 22}]}>Get started by</Text>
+                <Text style={[styles.notBold, {fontSize: 22}]}>creating workout days</Text>
             </View>
         )
     },
 
 
     render: function () {
+        if (!this.state.workout) return <Loading/>;
         let workout_days = [];
         if (this.state.workout && this.state.workout.workout_days.length) {
             workout_days = _.orderBy(this.state.workout.workout_days, (workout_day) => {
@@ -126,7 +141,7 @@ const EditWorkout = React.createClass({
                           keyboardShouldPersistTaps="handled"
                           showsVerticalScrollIndicator={false}
                           style={[styles.flexCenter]}
-                          contentContainerStyle={{paddingBottom: 20}}
+                          contentContainerStyle={styles.contentContainerStyle}
                           enableEmptySections={true}
                           dataSource={dataSource}
                           renderHeader={this.renderHeader}
@@ -155,10 +170,10 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     contentContainerStyle: {
-        // margin: 10
+        paddingBottom: 50
     },
     title: {
-        fontSize: getFontSize(28),
+        fontSize: 24,
         fontFamily: 'Heebo-Bold',
         alignSelf: 'center',
         paddingTop: 10,
@@ -170,7 +185,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     smallBold: {
-        fontSize: getFontSize(18),
+        fontSize: 16,
         fontFamily: 'Heebo-Bold',
         paddingLeft: 10,
         paddingBottom: 5
@@ -183,13 +198,10 @@ const styles = StyleSheet.create({
 
 
 const stateToProps = (state) => {
-    return state.Global;
-};
-
-const dispatchToProps = (dispatch) => {
     return {
-        actions: bindActionCreators(GlobalActions, dispatch)
-    }
+        UserToken: state.Global.UserToken,
+    };
 };
 
-export default connect(stateToProps, dispatchToProps)(EditWorkout);
+
+export default connect(stateToProps, null)(EditWorkout);

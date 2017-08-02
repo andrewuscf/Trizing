@@ -165,7 +165,7 @@ export default function AppReducers(state = initialState, action = null) {
             return {
                 ...state,
                 Schedules: state.Schedules.map(schedule =>
-                    (schedule.id === action.response.schedule) ?
+                    (schedule.id === action.response.program) ?
                         {
                             ...schedule,
                             workouts: [

@@ -192,10 +192,12 @@ const styles = StyleSheet.create({
     displayWorkoutBox: {
         flex: 1,
         borderColor: '#e1e3df',
-        borderBottomWidth: 1,
+        borderWidth: 1,
         padding: 10,
         backgroundColor: 'white',
-        marginBottom: 10
+        margin: 10,
+        marginBottom: 5,
+        borderRadius: 5,
     },
     simpleTitle: {
         fontSize: 18,
