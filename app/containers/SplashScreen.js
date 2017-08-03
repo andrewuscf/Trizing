@@ -61,8 +61,8 @@ const SplashScreen = React.createClass({
             <View style={styles.container}>
                 <CustomStatus/>
                 <View style={styles.top}>
-                    <Image style={styles.logo} source={require('../assets/images/red-logo.png')}/>
-                    <Text style={[styles.trizing]}>{letterSpacing('TRIZING', 3)}</Text>
+                    <Image style={styles.logo} source={require('../assets/images/new-logo.png')}/>
+                    <Text style={[styles.trizing, GlobalStyle.redText]}>{letterSpacing('TRIZING', 3)}</Text>
                 </View>
                 <View style={styles.center} onLayout={this.setSize}>
                     <Swiper style={styles.wrapper} height={this.state.height} width={this.state.width}
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     },
     trizing: {
         fontFamily: 'Heebo-Bold',
-        fontSize: 24,
+        fontSize: 32,
         paddingLeft: 5
     },
     login: {
