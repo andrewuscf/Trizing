@@ -40,7 +40,6 @@ const CreateWorkoutDay = React.createClass({
     },
 
     getInitialState() {
-        console.log(this.props.template_day)
         return {
             value: this.props.template_day ? {name: `${this.props.template_day.name} - Copy`}: null,
             days: [],

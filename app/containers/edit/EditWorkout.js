@@ -4,7 +4,6 @@ import {
     View,
     Text,
     StyleSheet,
-    Alert,
     ListView,
     Platform
 } from 'react-native';
@@ -91,20 +90,6 @@ const EditWorkout = React.createClass({
         if (this.state.workout) {
             this.props.navigation.navigate('EditWorkoutDay', {workout_day_id: workout_day_id});
         }
-    },
-
-    _deleteWorkout() {
-        Alert.alert(
-            'Delete Workout',
-            `Are you sure you want delete this workout?`,
-            [
-                {text: 'Cancel', style: 'cancel'},
-                {
-                    text: 'Delete',
-                    onPress: () => console.log('Delete workout')
-                },
-            ]
-        );
     },
 
     _onDuplicate(template_day) {

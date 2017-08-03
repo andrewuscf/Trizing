@@ -6,7 +6,6 @@ import {
     RefreshControl,
     Platform,
     ListView,
-    Alert
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -82,20 +81,6 @@ const EditWorkoutDay = React.createClass({
         });
     },
 
-    _deleteWorkoutDay() {
-        Alert.alert(
-            'Delete Training Day',
-            `Are you sure you want delete this training day?`,
-            [
-                {text: 'Cancel', style: 'cancel'},
-                {
-                    text: 'Delete',
-                    onPress: () => console.log('Delete training day')
-                },
-            ]
-        );
-    },
-
 
     renderHeader() {
         return (
@@ -145,10 +130,6 @@ const EditWorkoutDay = React.createClass({
                 }
 
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" offsetX={10} offsetY={20}>
-                    <ActionButton.Item buttonColor='#F22525' title="Delete"
-                                       onPress={this._deleteWorkoutDay}>
-                        <MaterialIcon name="delete-forever" color="white" size={22}/>
-                    </ActionButton.Item>
                     <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={() => console.log('add note')}>
                         <MaterialIcon name="note-add" color="white" size={22}/>
                     </ActionButton.Item>

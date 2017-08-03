@@ -133,11 +133,11 @@ const styles = StyleSheet.create({
         paddingRight: 5
     },
     simpleTitle: {
-        fontSize: getFontSize(24),
+        fontSize: getFontSize(18),
         fontFamily: 'Heebo-Medium',
     },
     smallText: {
-        fontSize: getFontSize(18),
+        fontSize: getFontSize(12),
         color: '#b1aea5',
         fontFamily: 'Heebo-Medium',
     },

@@ -17,13 +17,19 @@ import SelectInput from '../../components/SelectInput';
 const CreateWorkout = React.createClass({
     propTypes: {
         scheduleId: React.PropTypes.number.isRequired,
+        template_workout: React.PropTypes.object
     },
 
     getInitialState() {
         return {
             template: null,
             disabled: false,
-            value: null,
+            value: this.props.template_workout ?
+                {
+                    name: `${this.props.template_workout.name} - Copy`,
+                    duration: this.props.template_workout.duration
+                }
+                : null,
         }
     },
 
@@ -55,11 +61,12 @@ const CreateWorkout = React.createClass({
         let values = this.refs.form.getValue();
         if (values) {
             this.setState({disabled: true});
-            if (this.state.template)
+            if (this.props.template_workout) {
                 values = {
                     ...values,
-                    template: this.state.template
+                    template: this.props.template_workout.id
                 };
+            }
             if (this.props.training_plan) {
                 values = {
                     ...values,
@@ -74,13 +81,6 @@ const CreateWorkout = React.createClass({
         }
     },
 
-    selectTemplate(id) {
-        this.setState({
-            template: id
-        });
-    },
-
-
     onChange(value) {
         this.setState({value});
     },
@@ -92,7 +92,6 @@ const CreateWorkout = React.createClass({
                 optional: '',
                 required: '*',
             },
-            // stylesheet: stylesheet,
             fields: {
                 name: {
                     label: 'Workout Block Name',
@@ -107,7 +106,6 @@ const CreateWorkout = React.createClass({
                 }
             }
         };
-        const scheduleWorkouts = _.find(this.props.Schedules, {id: this.props.scheduleId}).workouts;
         return (
             <View style={styles.flexCenter}>
                 <View style={{margin: 10}}>
@@ -118,15 +116,6 @@ const CreateWorkout = React.createClass({
                         onChange={this.onChange}
                         value={this.state.value}
                     />
-                    <View style={styles.templateSection}>
-                        <Text style={{paddingBottom: 10}}>Copy workout block:</Text>
-                        <SelectInput ref='workout_templates' options={[
-                            ..._.filter(scheduleWorkouts, function (o) {
-                                return !o.training_plan;
-                            }),
-                            {id: null, name: 'None'}
-                        ]} selectedId={this.state.template} submitChange={this.selectTemplate}/>
-                    </View>
                 </View>
                 <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
@@ -141,13 +130,6 @@ const styles = StyleSheet.create({
     button: {
         margin: 20,
     },
-    templateSection:{
-        padding: 10,
-        backgroundColor: 'white',
-        borderColor: '#e1e3df',
-        borderBottomWidth: 1,
-        borderTopWidth: 1,
-    }
 });
 
 // T FORM SETUP
@@ -162,16 +144,10 @@ const Workout = t.struct({
     duration: Positive,
 });
 
-const stateToProps = (state) => {
-    return {
-        Schedules: state.Global.Schedules
-    };
-};
-
 const dispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(GlobalActions, dispatch)
     }
 };
 
-export default connect(stateToProps, dispatchToProps)(CreateWorkout);
+export default connect(null, dispatchToProps)(CreateWorkout);
