@@ -26,7 +26,8 @@ const DisplayExerciseBox = React.createClass({
         deleteSet: React.PropTypes.func,
         _editExercise: React.PropTypes.func,
         log: React.PropTypes.bool,
-        workout: React.PropTypes.number
+        workout: React.PropTypes.number,
+        date: React.PropTypes.string
     },
 
     getInitialState() {
@@ -63,7 +64,7 @@ const DisplayExerciseBox = React.createClass({
                         reps: formValues.reps,
                         weight: formValues.weight,
                         workout: this.props.workout,
-                        date: moment().format("YYYY-MM-DD")
+                        date: this.props.date ? this.props.date : moment().format("YYYY-MM-DD")
                     })
                 }
             }

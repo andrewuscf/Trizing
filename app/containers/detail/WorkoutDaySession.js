@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import DropdownAlert from 'react-native-dropdownalert';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-import * as GlobalActions from '../../actions/globalActions';
+import {logSets} from '../../actions/globalActions';
 
 import InputAccessory from '../../components/InputAccessory';
 import DisplayExerciseBox from '../../components/trainer/DisplayExerciseBox';
@@ -19,6 +19,7 @@ const window = Dimensions.get('window');
 const WorkoutDaySession = React.createClass({
     propTypes: {
         workout_day: React.PropTypes.object.isRequired,
+        date: React.PropTypes.string
     },
 
     getInitialState() {
@@ -65,7 +66,7 @@ const WorkoutDaySession = React.createClass({
         }
         if (completed) {
             this.setState({disabled: true});
-            this.props.actions.logSets(totalLogs, this.asyncActions);
+            this.props.logSets(totalLogs, this.asyncActions);
         }
     },
 
@@ -73,13 +74,14 @@ const WorkoutDaySession = React.createClass({
     render: function () {
         const exercises = this.props.workout_day.exercises.map((exercise, i) => {
             return (<DisplayExerciseBox ref={(row) => this.state.rows[i] = row}
+                                        date={this.props.date}
                                         workout={this.props.workout_day.workout}
                                         exercise={exercise} key={i} log={true}/>)
         });
         return (
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, backgroundColor: '#f1f1f3'}}>
                 <KeyboardAwareScrollView extraHeight={130} showsVerticalScrollIndicator={false}
-                contentContainerStyle={{backgroundColor: '#f1f1f3'}}>
+                                         contentContainerStyle={{paddingBottom: 50}}>
                     {exercises}
                 </KeyboardAwareScrollView>
                 <InputAccessory/>
@@ -109,7 +111,7 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
     return {
-        actions: bindActionCreators(GlobalActions, dispatch)
+        logSets: bindActionCreators(logSets, dispatch)
     }
 };
 

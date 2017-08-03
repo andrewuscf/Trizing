@@ -75,7 +75,7 @@ const Home = React.createClass({
 
     _toLogWorkout(data) {
         if (data && data.training_day && !data.training_day.logged_today) {
-            this._redirect('WorkoutDaySession', {workout_day: data.training_day})
+            this._redirect('WorkoutDaySession', {workout_day: data.training_day, date: this.state.dataDate.format("YYYY-MM-DD")})
         }
     },
 
