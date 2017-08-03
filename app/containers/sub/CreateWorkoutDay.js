@@ -23,13 +23,9 @@ const WorkoutDay = t.struct({
 
 let options = {
     auto: 'placeholders',
-    i18n: {
-        optional: '',
-        required: '*',
-    },
     fields: {
         name: {
-            placeholder: `Pull Day, Monday, etc...`,
+            placeholder: `Name: Pull Day, Monday, etc...`,
             autoCapitalize: 'words',
         }
     }
@@ -38,12 +34,15 @@ let options = {
 const CreateWorkoutDay = React.createClass({
     propTypes: {
         workoutId: React.PropTypes.number.isRequired,
-        newDay: React.PropTypes.func.isRequired
+        newDay: React.PropTypes.func.isRequired,
+        navigation: React.PropTypes.object.isRequired,
+        template_day: React.PropTypes.object
     },
 
     getInitialState() {
+        console.log(this.props.template_day)
         return {
-            value: null,
+            value: this.props.template_day ? {name: `${this.props.template_day.name} - Copy`}: null,
             days: [],
             disabled: false,
         }
@@ -85,6 +84,12 @@ const CreateWorkoutDay = React.createClass({
                     day: this.state.days[0],
                     workout: this.props.workoutId
                 };
+                if (this.props.template_day) {
+                    data = {
+                        ...data,
+                        template: this.props.template_day.id
+                    };
+                }
                 this.props.actions.addEditWorkoutDay(data, this.asyncActions)
             } else {
 
@@ -109,7 +114,6 @@ const CreateWorkoutDay = React.createClass({
         return (
             <View style={styles.flexCenter}>
                 <View style={{padding: 10}}>
-                    <Text style={styles.inputLabel}>Name of Day</Text>
                     <Form
                         ref="form"
                         type={WorkoutDay}

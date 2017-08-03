@@ -1,4 +1,5 @@
 'use strict';
+import {Platform, PixelRatio} from 'react-native';
 import {NavigationActions} from 'react-navigation';
 
 export const SITE = 'https://trizing-staging.herokuapp.com/';
@@ -51,7 +52,12 @@ export function refreshPage() {
 }
 
 export function getFontSize(size = 22) {
-    return Math.floor(size * 0.7);
+    // return Math.floor(size * 0.7);
+    if (Platform.OS === 'ios') {
+        return Math.round(PixelRatio.roundToNearestPixel(size))
+    } else {
+        return Math.round(PixelRatio.roundToNearestPixel(size)) - 2
+    }
 }
 
 export function trimToLength(text, m) {

@@ -5,9 +5,15 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import FontIcon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
+import {
+    Menu,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+} from 'react-native-popup-menu';
 
 import {getFontSize} from '../actions/utils';
 import {DAYS_OF_WEEK} from '../assets/constants';
@@ -22,6 +28,7 @@ const DisplayWorkoutDay = React.createClass({
         workout_day: React.PropTypes.object.isRequired,
         dayIndex: React.PropTypes.number.isRequired,
         _toWorkoutDay: React.PropTypes.func.isRequired,
+        _onDuplicate: React.PropTypes.func,
         active: React.PropTypes.bool,
     },
 
@@ -34,15 +41,28 @@ const DisplayWorkoutDay = React.createClass({
                               style={[styles.displayWorkoutBox, GlobalStyle.simpleBottomBorder, GlobalStyle.simpleTopBorder]}>
                 <View style={styles.titleView}>
                     <Text style={styles.simpleTitle}>{workout_day.name}</Text>
+                    {typeof this.props._onDuplicate !== 'undefined' ?
+                        <Menu >
+                            <MenuTrigger>
+                                <FontIcon name="ellipsis-h" size={getFontSize(35)}/>
+                            </MenuTrigger>
+                            <MenuOptions customStyles={optionsStyles}>
+                                <MenuOption onSelect={this.props._onDuplicate.bind(null, this.props.workout_day)} text='Duplicate'/>
+                            </MenuOptions>
+                        </Menu>
+                        : null
+                    }
                     {this.props.active ? <FontIcon name="circle" size={20} style={GlobalStyle.lightBlueText}/> : null}
                 </View>
                 <View style={styles.dateSection}>
                     <View style={{flexDirection: 'row', alignItems: 'center', flex: .3}}>
-                        <Icon name="today" style={styles.day}/><Text style={styles.day}> {dayOfWeek.full_day}</Text>
+                        <MaterialIcon name="today" style={styles.day}/><Text
+                        style={styles.day}> {dayOfWeek.full_day}</Text>
                     </View>
                     <View style={{flexDirection: 'row', alignItems: 'center', flex: .7}}>
                         <CustomIcon name="weight" style={styles.day}/>
-                        <Text style={[styles.day]}> {workout_day.exercises_count? workout_day.exercises_count : 0} {workout_day.exercises_count === 1 ? 'Exercise' : 'Exercises'}
+                        <Text
+                            style={[styles.day]}> {workout_day.exercises_count ? workout_day.exercises_count : 0} {workout_day.exercises_count === 1 ? 'Exercise' : 'Exercises'}
                         </Text>
                     </View>
                 </View>
@@ -50,6 +70,20 @@ const DisplayWorkoutDay = React.createClass({
         )
     }
 });
+
+const optionsStyles = {
+    optionsContainer: {
+        paddingTop: 5,
+    },
+    optionsWrapper: {},
+    optionWrapper: {
+        margin: 5,
+    },
+    optionTouchable: {
+        activeOpacity: 70,
+    },
+    optionText: {},
+};
 
 
 const styles = StyleSheet.create({
@@ -79,11 +113,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     simpleTitle: {
-        fontSize: 18,
+        fontSize: getFontSize(18),
         fontFamily: 'Heebo-Bold',
     },
     day: {
-        fontSize: 12,
+        fontSize: getFontSize(12),
         fontFamily: 'Heebo-Medium',
         color: 'grey'
     },

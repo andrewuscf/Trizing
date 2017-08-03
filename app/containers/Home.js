@@ -89,7 +89,7 @@ const Home = React.createClass({
                 {unread_count ?
                     <IconBadge
                         MainElement={
-                            <MaterialIcon name="notifications" size={getFontSize(50)}/>
+                            <MaterialIcon name="notifications" size={getFontSize(40)}/>
                         }
                         BadgeElement={
                             <Text style={{color: '#FFFFFF'}}>{unread_count}</Text>
@@ -100,7 +100,7 @@ const Home = React.createClass({
                         }
 
                     /> :
-                    <MaterialIcon name="notifications" size={getFontSize(50)}/>
+                    <MaterialIcon name="notifications" size={getFontSize(40)}/>
                 }
             </TouchableOpacity>
         )
@@ -162,12 +162,12 @@ const Home = React.createClass({
                     <View style={styles.templateSection}>
                         <View style={{flexDirection: 'row',}}>
                             <TouchableOpacity style={[styles.itemBox]} onPress={() => navigate('ProgramList')}>
-                                <CustomIcon name="barbell" size={getFontSize(45)}/>
+                                <CustomIcon name="barbell" size={getFontSize(30)}/>
                                 <Text style={styles.itemText}>Workouts</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.itemBox, {borderRightWidth: 0}]}
                                               onPress={() => navigate('SurveyList')}>
-                                <MaterialIcon name="question-answer" size={getFontSize(45)}/>
+                                <MaterialIcon name="question-answer" size={getFontSize(30)}/>
                                 <Text style={styles.itemText}>Surveys</Text>
                             </TouchableOpacity>
                         </View>
@@ -201,19 +201,19 @@ const Home = React.createClass({
                         <View style={{flexDirection: 'row',}}>
                             <TouchableOpacity style={[styles.itemBox]}
                                               onPress={this._redirect.bind(null, 'ManageClients', null)}>
-                                <CustomIcon name="users" size={getFontSize(45)}/>
+                                <CustomIcon name="users" size={getFontSize(30)}/>
                                 <Text style={styles.itemText}>Find a trainer</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.itemBox, {borderRightWidth: 0}]}
                                               onPress={() => navigate('ProgramList')}>
-                                <CustomIcon name="barbell" size={getFontSize(45)}/>
+                                <CustomIcon name="barbell" size={getFontSize(30)}/>
                                 <Text style={styles.itemText}>Workouts</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                     <View style={[styles.todayTitle, {justifyContent: 'space-between'}]}>
                         <TouchableOpacity onPress={this.subtractDay}>
-                            <MaterialIcon name="keyboard-arrow-left" size={getFontSize(34)}
+                            <MaterialIcon name="keyboard-arrow-left" size={getFontSize(20)}
                                           style={[{marginLeft: 10}]}/>
                         </TouchableOpacity>
                         <View style={styles.todayTitle}>
@@ -223,7 +223,7 @@ const Home = React.createClass({
                             </Text>
                         </View>
                         <TouchableOpacity onPress={this.addDay}>
-                            <MaterialIcon name="keyboard-arrow-right" size={getFontSize(34)}
+                            <MaterialIcon name="keyboard-arrow-right" size={getFontSize(20)}
                                           style={[{marginRight: 10}]}/>
                         </TouchableOpacity>
                     </View>
@@ -333,7 +333,7 @@ const Home = React.createClass({
                     <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
                         <ActionButton.Item buttonColor='#FD795B' title="Manage Clients"
                                            onPress={() => navigate('ManageClients')}>
-                            <CustomIcon name="users" color="white" size={getFontSize(30)}/>
+                            <CustomIcon name="users" color="white" size={getFontSize(22)}/>
                         </ActionButton.Item>
                     </ActionButton>
                     : null
@@ -357,8 +357,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     sectionTitle: {
-        fontSize: getFontSize(20),
-        lineHeight: getFontSize(26),
+        fontSize: getFontSize(18),
+        // lineHeight: getFontSize(26),
         fontFamily: 'Heebo-Bold',
     },
     details: {
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Heebo-Bold',
         alignSelf: 'center',
         padding: 10,
-        fontSize: getFontSize(22),
+        fontSize: getFontSize(18),
     },
     box: {
         marginTop: 5,
@@ -385,19 +385,19 @@ const styles = StyleSheet.create({
         borderColor: '#e1e3df',
     },
     textTitle: {
-        fontSize: getFontSize(26),
+        fontSize: getFontSize(22),
         fontFamily: 'Heebo-Bold',
         marginTop: 10,
         marginBottom: 10,
         alignSelf: 'center'
     },
     h2Title: {
-        fontSize: 15,
+        fontSize: getFontSize(15),
         fontFamily: 'Heebo-Medium',
         paddingBottom: 5,
     },
     simpleTitle: {
-        fontSize: 14,
+        fontSize: getFontSize(14),
         color: '#b1aea5',
         fontFamily: 'Heebo-Medium',
         margin: 10,
@@ -456,7 +456,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     itemText: {
-        fontSize: getFontSize(24),
+        fontSize: getFontSize(20),
         backgroundColor: 'transparent',
         fontFamily: 'Heebo-Medium',
     },
@@ -468,7 +468,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1
     },
     emptyClientsText: {
-        fontSize: getFontSize(24),
+        fontSize: getFontSize(20),
         fontFamily: 'Heebo-Medium',
         color: 'rgba(0, 175, 163, 1)'
     }

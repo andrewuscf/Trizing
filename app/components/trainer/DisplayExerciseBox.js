@@ -13,6 +13,7 @@ import {
     MenuTrigger,
 } from 'react-native-popup-menu';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import FontIcon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
 import {getFontSize, trunc} from '../../actions/utils';
@@ -124,7 +125,7 @@ const DisplayExerciseBox = React.createClass({
                     {this.props.deleteSet && this.props._editExercise ?
                         <Menu >
                             <MenuTrigger>
-                                <MaterialIcon name="linear-scale" size={35}/>
+                                <FontIcon name="ellipsis-h" size={getFontSize(35)}/>
                             </MenuTrigger>
                             <MenuOptions customStyles={optionsStyles}>
                                 <MenuOption onSelect={this._redirect} text='Edit'/>

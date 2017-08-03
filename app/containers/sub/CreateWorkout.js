@@ -23,6 +23,7 @@ const CreateWorkout = React.createClass({
         return {
             template: null,
             disabled: false,
+            value: null,
         }
     },
 

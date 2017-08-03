@@ -14,7 +14,7 @@ import _ from 'lodash';
 import ActionButton from 'react-native-action-button';
 import moment from 'moment';
 
-import {fetchData, API_ENDPOINT, trunc, checkStatus} from '../../actions/utils';
+import {fetchData, API_ENDPOINT, getFontSize, checkStatus} from '../../actions/utils';
 import GlobalStyle from '../../containers/globalStyle';
 
 import DisplayWorkoutDay from '../../components/DisplayWorkoutDay';
@@ -57,7 +57,9 @@ const EditWorkout = React.createClass({
                     }
                 }
                 this.setState(newState);
-            }).catch((error) => {console.log(error)})
+            }).catch((error) => {
+            console.log(error)
+        })
     },
 
 
@@ -105,6 +107,16 @@ const EditWorkout = React.createClass({
         );
     },
 
+    _onDuplicate(template_day) {
+        if (this.state.workout) {
+            this.props.navigation.navigate('CreateWorkoutDay', {
+                workoutId: this.state.workout.id,
+                newDay: this.newDay,
+                template_day: template_day
+            });
+        }
+    },
+
 
     renderHeader() {
         const workout = this.state.workout;
@@ -122,6 +134,7 @@ const EditWorkout = React.createClass({
     renderRow(workout_day, index) {
         const intIndex = parseInt(index);
         return <DisplayWorkoutDay key={intIndex} _toWorkoutDay={this._toWorkoutDay} workout_day={workout_day}
+                                  _onDuplicate={this._onDuplicate}
                                   dayIndex={intIndex}/>
     },
 
@@ -129,9 +142,9 @@ const EditWorkout = React.createClass({
         if (rowCount !== 0) return null;
         return (
             <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
-                <MaterialIcon name="today" style={[styles.notBold, {fontSize: 40, paddingBottom: 20}]}/>
-                <Text style={[styles.notBold, {fontSize: 22}]}>Get started by</Text>
-                <Text style={[styles.notBold, {fontSize: 22}]}>creating workout days</Text>
+                <MaterialIcon name="today" style={[styles.notBold, {fontSize: getFontSize(40), paddingBottom: 20}]}/>
+                <Text style={[styles.notBold, {fontSize: getFontSize(20)}]}>Get started by</Text>
+                <Text style={[styles.notBold, {fontSize: getFontSize(20)}]}>creating workout days</Text>
             </View>
         )
     },
@@ -160,12 +173,9 @@ const EditWorkout = React.createClass({
                           renderRow={this.renderRow}
                           renderFooter={this.renderFooter.bind(null, dataSource.getRowCount())}
                           refreshControl={<RefreshControl refreshing={this.state.refreshing}
-                                                          onRefresh={()=> this.getWorkout(true)}/>}
+                                                          onRefresh={() => this.getWorkout(true)}/>}
                 />
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
-                    <ActionButton.Item buttonColor='#F22525' title="Delete" onPress={this._deleteWorkout}>
-                        <MaterialIcon name="delete-forever" color="white" size={22}/>
-                    </ActionButton.Item>
                     <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={() => console.log('add note')}>
                         <MaterialIcon name="note-add" color="white" size={22}/>
                     </ActionButton.Item>

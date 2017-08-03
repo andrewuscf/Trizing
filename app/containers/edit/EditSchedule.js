@@ -107,9 +107,9 @@ const EditSchedule = React.createClass({
         if (rowCount !== 0) return null;
         return (
             <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
-                <MaterialIcon name="today" style={[styles.notBold, {fontSize: getFontSize(50), paddingBottom: 20}]}/>
-                <Text style={[styles.notBold, {fontSize: getFontSize(28)}]}>Get started by</Text>
-                <Text style={[styles.notBold, {fontSize: getFontSize(28)}]}>creating workout blocks</Text>
+                <MaterialIcon name="today" style={[styles.notBold, {fontSize: getFontSize(40), paddingBottom: 20}]}/>
+                <Text style={[styles.notBold, {fontSize: getFontSize(22)}]}>Get started by</Text>
+                <Text style={[styles.notBold, {fontSize: getFontSize(22)}]}>creating workout blocks</Text>
             </View>
         )
     },
