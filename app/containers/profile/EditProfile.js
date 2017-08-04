@@ -347,20 +347,14 @@ const styles = StyleSheet.create({
         marginTop: 30
     },
     elementFont: {
-        fontSize: 17,
-        fontWeight: '500',
+        fontSize: getFontSize(18),
+        fontFamily: 'Heebo-Medium',
         color: '#3478f6'
-    },
-    sectionTitle: {
-        fontSize: getFontSize(30),
-        fontWeight: '600',
-        paddingBottom: 10,
     },
     changePhotoText: {
         alignSelf: 'center',
-        fontSize: getFontSize(18),
         paddingTop: 10,
-        fontWeight: '600',
+        fontFamily: 'Heebo-Medium'
     }
 });
 

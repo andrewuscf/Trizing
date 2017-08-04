@@ -122,14 +122,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     userName: {
-        fontSize: getFontSize(22),
-        lineHeight: getFontSize(26),
+        fontSize: getFontSize(18),
         backgroundColor: 'transparent',
         color: '#4d4d4e',
         fontFamily: 'Heebo-Medium',
     },
     title: {
-        fontSize: 14,
         paddingTop: 5,
         color: '#999999',
         fontFamily: 'Heebo-Medium',
@@ -154,7 +152,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: 'white',
-        fontSize: 10
+        fontSize: getFontSize(10)
     }
 });
 

@@ -9,11 +9,23 @@ import FCM, {
     FCMEvent,
 } from 'react-native-fcm';
 import {MenuContext} from 'react-native-popup-menu';
+import {
+    setCustomText,
+    setCustomImage,
+} from 'react-native-global-props';
 
 
 import * as GlobalActions from './actions/globalActions';
 import {AppNavigator} from './routes';
+import {getFontSize} from './actions/utils';
 
+
+setCustomText({
+    style: {
+        fontSize: getFontSize(14),
+        fontFamily: 'Heebo-Regular',
+    }
+});
 
 const App = React.createClass({
 

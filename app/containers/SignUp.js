@@ -20,7 +20,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import * as GlobalActions from '../actions/globalActions';
 
-import {resetNav} from '../actions/utils';
+import {resetNav, getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
 import SubmitButton from '../components/SubmitButton';
@@ -151,13 +151,7 @@ const SignUp = React.createClass({
         let options = this.state.options;
 
         return (
-            <KeyboardAwareScrollView behavior='padding' style={{padding: 20}} ref="scroll"
-                                     contentContainerStyle={{flex: 1}}
-                                     onKeyboardWillShow={this.changeKeyboard}
-                                     onKeyboardWillHide={this.changeKeyboard}
-                                     showsVerticalScrollIndicator={false}
-                                     keyboardDismissMode='interactive'
-                                     scrollEnabled={this.state.keyboard}>
+            <View style={styles.container} ref="scroll" keyboardDismissMode='on-drag' keyboardShouldPersistTaps='handled'>
 
 
                 <Form
@@ -169,10 +163,8 @@ const SignUp = React.createClass({
                 />
 
 
-
                 <SubmitButton onPress={this.onPress} buttonStyle={[styles.button]} textStyle={styles.buttonText}
                               text='Enter'/>
-
 
 
                 <SubmitButton onPress={this.facebookLogin} buttonStyle={[styles.button, styles.fbButton]}
@@ -184,7 +176,7 @@ const SignUp = React.createClass({
                               }/>
 
 
-                <TouchableOpacity style={styles.login} onPress={()=> console.log('hit')}>
+                <TouchableOpacity style={styles.login} onPress={() => console.log('hit')}>
                     <Text style={styles.loginText}>By continuing, you agree to our</Text>
                     <Text style={styles.loginText}>
                         <Text style={GlobalStyle.redText}>Terms & Services</Text> and
@@ -192,7 +184,7 @@ const SignUp = React.createClass({
                     </Text>
                 </TouchableOpacity>
 
-            </KeyboardAwareScrollView>
+            </View>
         );
     }
 });
@@ -200,14 +192,14 @@ const SignUp = React.createClass({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        padding: 20
     },
     buttonText: {
         color: 'white',
-        fontSize: 18,
+        fontSize: getFontSize(18),
         fontFamily: 'Heebo-Bold',
     },
     button: {
-        marginTop: 10,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#00AFA3'
@@ -217,7 +209,7 @@ const styles = StyleSheet.create({
     },
     fbText: {
         color: '#3b5998',
-        fontSize: 18,
+        fontSize: getFontSize(18),
         paddingLeft: 10
     },
     login: {
@@ -230,7 +222,6 @@ const styles = StyleSheet.create({
     },
     loginText: {
         color: '#999999',
-        fontSize: 14,
         fontFamily: 'Heebo-Medium',
     },
 });

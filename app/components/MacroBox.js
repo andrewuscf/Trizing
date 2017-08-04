@@ -127,12 +127,12 @@ const styles = StyleSheet.create({
         flex: 1
     },
     date: {
-        fontSize: getFontSize(15),
-        lineHeight: getFontSize(26),
+        // fontSize: getFontSize(15),
+        // lineHeight: getFontSize(26),
     },
     mainText: {
-        fontSize: getFontSize(22),
-        lineHeight: getFontSize(26),
+        fontSize: getFontSize(18),
+        // lineHeight: getFontSize(26),
         backgroundColor: 'transparent',
         color: '#4d4d4e',
         fontFamily: 'Heebo-Medium',

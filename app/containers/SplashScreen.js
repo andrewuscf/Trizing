@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import Swiper from 'react-native-swiper';
 
 import * as GlobalActions from '../actions/globalActions';
-import {resetNav, letterSpacing} from '../actions/utils';
+import {resetNav, letterSpacing, getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
 import CustomStatus from '../components/CustomStatus';
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain'
     },
     splashText: {
-        fontSize: 18,
+        fontSize: getFontSize(18),
         textAlign: 'center',
         fontFamily: 'Heebo-Medium',
         color: '#00AFA3'
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     },
     trizing: {
         fontFamily: 'Heebo-Bold',
-        fontSize: 32,
+        fontSize: getFontSize(32),
         paddingLeft: 5
     },
     login: {
@@ -148,7 +148,6 @@ const styles = StyleSheet.create({
     },
     loginText: {
         color: '#999999',
-        fontSize: 14,
         fontFamily: 'Heebo-Medium',
     },
     signUpButton: {
@@ -162,7 +161,7 @@ const styles = StyleSheet.create({
     },
     signUpText: {
         color: 'white',
-        fontSize: 20,
+        fontSize: getFontSize(20),
         paddingLeft: 10,
         fontFamily: 'Heebo-Bold',
     }

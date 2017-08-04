@@ -68,20 +68,21 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: 'white',
-        fontSize: 15,
         fontFamily: 'Heebo-Bold',
     },
     button: {
         backgroundColor: '#00BFFF',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 10,
-        paddingBottom: 10,
-        paddingLeft: 30,
-        paddingRight: 30,
-        borderRadius: 15,
-        height: 60,
+        // paddingTop: 10,
+        // paddingBottom: 10,
+        // paddingLeft: 15,
+        // paddingRight: 15,
+        borderRadius: 30,
+        height: 55,
         margin: 20,
+        marginRight: 40,
+        marginLeft: 40
     },
     iconWrapper: {
         position: 'absolute',

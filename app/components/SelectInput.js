@@ -118,7 +118,7 @@ var styles = StyleSheet.create({
     itemText: {
         textAlign: 'center',
         color: '#4d4d4e',
-        fontSize: getFontSize(22),
+        fontSize: getFontSize(18),
         lineHeight: getFontSize(26),
         backgroundColor: 'transparent',
         fontFamily: 'Heebo-Medium'
@@ -126,8 +126,7 @@ var styles = StyleSheet.create({
     selectView: {},
     selectText: {
         color: '#4d4d4e',
-        fontSize: getFontSize(22),
-        lineHeight: getFontSize(26),
+        fontSize: getFontSize(18),
         backgroundColor: 'transparent',
         fontFamily: 'Heebo-Medium',
         textDecorationLine: 'underline'

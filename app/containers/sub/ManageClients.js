@@ -186,7 +186,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width: 105,
         color: '#797979',
-        fontSize: 14,
         fontFamily: 'Heebo-Medium',
         borderWidth: 0,
         backgroundColor: 'transparent',

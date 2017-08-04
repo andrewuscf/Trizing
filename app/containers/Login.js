@@ -21,10 +21,9 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import * as GlobalActions from '../actions/globalActions';
 
-import {getFontSize, resetNav} from '../actions/utils';
+import {getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
-import BackBar from '../components/BackBar';
 import SubmitButton from '../components/SubmitButton';
 
 const Form = t.form.Form;
@@ -184,13 +183,12 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 10,
         color: '#999999',
-        fontSize: 14,
         fontFamily: 'Heebo-Medium',
         textAlign: 'center'
     },
     buttonText: {
         color: 'white',
-        fontSize: 18,
+        fontSize: getFontSize(18),
         fontFamily: 'Heebo-Bold',
     },
     button: {
@@ -204,7 +202,7 @@ const styles = StyleSheet.create({
     },
     fbText: {
         color: '#3b5998',
-        fontSize: 18,
+        fontSize: getFontSize(18),
         paddingLeft: 10
     }
 });

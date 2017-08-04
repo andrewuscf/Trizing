@@ -240,7 +240,7 @@ const TrainingPlan = React.createClass({
                                                   questionnaire: _.find(this.props.Questionnaires, {id: this.props.training_plan.questionnaire}),
                                                   client: this.props.client
                                               })}>
-                                <Text style={{fontSize: getFontSize(18)}}>View Answers</Text>
+                                <Text>View Answers</Text>
                             </TouchableOpacity>
                             : null
                         }
@@ -254,17 +254,17 @@ const TrainingPlan = React.createClass({
                 <View style={[styles.tabbarView, GlobalStyle.simpleBottomBorder]}>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(1)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 1)}>
-                        <CustomIcon name="food" size={getFontSize(35)}
+                        <CustomIcon name="food" size={getFontSize(30)}
                                     color={this.isSelected(1) ? selectedIcon : defaultIcon}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(2)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 2)}>
-                        <CustomIcon name="weight" size={getFontSize(35)}
+                        <CustomIcon name="weight" size={getFontSize(30)}
                                     color={this.isSelected(2) ? selectedIcon : defaultIcon}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(3)) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 3)}>
-                        <CustomIcon name="pie-chart" size={getFontSize(25)}
+                        <CustomIcon name="pie-chart" size={getFontSize(20)}
                                     color={this.isSelected(3) ? selectedIcon : defaultIcon}/>
                     </TouchableOpacity>
                 </View>
@@ -293,6 +293,7 @@ const TrainingPlan = React.createClass({
                       renderHeader={this.renderCreateBar.bind(null, dataSource.getRowCount())}
                       keyboardShouldPersistTaps="handled"
                       style={GlobalStyle.container} enableEmptySections={true} dataSource={dataSource}
+                      contentContainerStyle={{paddingBottom: 50}}
                       onEndReached={this._onEndReached}
                       onEndReachedThreshold={Dimensions.get('window').height}
                       renderRow={(object) => {
@@ -341,8 +342,6 @@ const styles = StyleSheet.create({
     },
     helpText: {
         textAlign: 'center',
-        fontSize: getFontSize(12),
-        lineHeight: getFontSize(12),
         textDecorationLine: 'underline',
         textDecorationColor: '#4d4d4e',
         backgroundColor: 'transparent',
@@ -370,27 +369,21 @@ const styles = StyleSheet.create({
     },
     pickersText: {
         color: '#4d4d4e',
-        fontSize: getFontSize(22),
-        lineHeight: getFontSize(26),
         backgroundColor: 'transparent',
         fontFamily: 'Heebo-Medium',
         marginRight: 8
     },
     mainText: {
-        fontSize: getFontSize(24),
-        lineHeight: getFontSize(26),
         backgroundColor: 'transparent',
         color: '#4d4d4e',
         fontFamily: 'Heebo-Medium'
     },
     smallText: {
-        fontSize: getFontSize(12),
         backgroundColor: 'transparent',
         color: '#4d4d4e',
         fontFamily: 'Heebo-Medium'
     },
     emptyTitle: {
-        fontSize: getFontSize(22),
         color: '#b1aeb9',
         textAlign: 'center',
         paddingTop: 20,
