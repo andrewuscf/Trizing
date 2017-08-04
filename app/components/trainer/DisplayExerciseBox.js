@@ -34,7 +34,8 @@ const DisplayExerciseBox = React.createClass({
     getInitialState() {
         return {
             showDetails: false,
-            rows: []
+            rows: [],
+            isComplete: false,
         }
     },
 
@@ -73,25 +74,24 @@ const DisplayExerciseBox = React.createClass({
         if (logs.length !== this.props.exercise.sets.length) {
             this.setState({showDetails: true});
             return null;
+        } else {
+            this.setState({showDetails: false});
         }
         return logs;
     },
 
-    isComplete() {
-        let isComplete = false;
+    getStatus() {
+        let isComplete = true;
         for (const row of this.state.rows) {
-            const set = row.props.set;
-            const value = row.state.value;
-
-            if (value && value.reps && value.weight) {
-                isComplete = true;
-            } else if (value && !set.weight && value.reps) {
-                isComplete = true;
-            } else {
+            if (!row.isCompleted()) {
+                isComplete = false;
                 break;
             }
         }
-        return isComplete;
+        if (this.state.isComplete !== isComplete) {
+            this.setState({isComplete: isComplete});
+        }
+
     },
 
 
@@ -114,7 +114,8 @@ const DisplayExerciseBox = React.createClass({
 
         if (this.props.log) {
             sets = this.props.exercise.sets.map((set, i) => {
-                return <SetLogBox ref={(row) => this.state.rows[i] = row} key={i} set={set}/>
+                return <SetLogBox ref={(row) => this.state.rows[i] = row} key={i} set={set} index={i}
+                                  getStatus={this.getStatus}/>
             })
         }
 
@@ -132,7 +133,7 @@ const DisplayExerciseBox = React.createClass({
                                 <MenuOption onSelect={this._onDelete} text='Delete'/>
                             </MenuOptions>
                         </Menu>
-                        : this.isComplete() ?
+                        : this.state.isComplete ?
                             <MaterialIcon name="check-circle" size={20} color="green"/> :
                             <MaterialIcon name="check" size={20}/>
 
@@ -159,7 +160,7 @@ const DisplayExerciseBox = React.createClass({
                         </View>
                         {this.props.log ?
                             <View style={styles.topSection}>
-                                {this.isComplete() ?
+                                {this.state.isComplete ?
                                     <MaterialIcon name="check-circle" size={20} color="green"/> :
                                     <MaterialIcon name="check" size={20}/>
                                 }

@@ -15,6 +15,7 @@ const window = Dimensions.get('window');
 const SetLogBox = React.createClass({
     propTypes: {
         set: React.PropTypes.object.isRequired,
+        getStatus: React.PropTypes.func.isRequired,
     },
 
     getInitialState() {
@@ -23,21 +24,34 @@ const SetLogBox = React.createClass({
         }
     },
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.value !== this.state.value) {
+            this.props.getStatus();
+        }
+    },
+
+    isCompleted() {
+        let isComplete = false;
+        const value = this.state.value;
+        if (value) {
+            const set = this.props.set;
+
+            if (set.weight && set.reps) {
+                isComplete = !!value.reps && !!value.weight
+            } else if (set.reps) {
+                isComplete = !!value.reps
+            }
+
+        }
+        return isComplete;
+    },
+
     onChange(value) {
         this.setState({value: value});
     },
 
     template(locals) {
-        let isComplete = false;
-        const value = this.state.value;
-        if (value) {
-            const set = this.props.set;
-            if (set.weight && value.weight && value.reps) {
-                isComplete = true;
-            } else if (!set.weight && value.reps) {
-                isComplete = true;
-            }
-        }
+        let isComplete = this.isCompleted();
 
         return (
             <View style={styles.rowSection}>
@@ -63,25 +77,17 @@ const SetLogBox = React.createClass({
 
     completeSet() {
         const value = this.state.value;
-        if (!value || !value.reps || !value.weight) {
+        if (value) {
+            this.setState({value: null})
+        } else {
             const set = this.props.set;
-            let weight = set.weight ? set.weight : null;
-            let reps = set.reps ? set.reps: null;
-            if (value && value.weight) {
-                weight = value.weight
-            }
-            if (value && value.reps) {
-                reps = value.reps
-            }
 
             this.setState({
                 value: {
-                    weight: weight,
-                    reps: reps,
+                    weight: set.weight ? set.weight : null,
+                    reps: set.reps ? set.reps: null,
                 }
             })
-        } else {
-            this.setState({value: null})
         }
     },
 
