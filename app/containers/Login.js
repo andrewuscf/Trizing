@@ -135,13 +135,12 @@ const Login = React.createClass({
         });
         let options = this.state.options;
         return (
-            <KeyboardAwareScrollView behavior='padding' style={{padding: 20}} ref="scroll"
+            <KeyboardAwareScrollView behavior='padding' style={styles.container} ref="scroll"
                                      contentContainerStyle={{flex: 1}}
                                      onKeyboardWillShow={this.changeKeyboard}
                                      onKeyboardWillHide={this.changeKeyboard}
                                      showsVerticalScrollIndicator={false}
-                                     // keyboardDismissMode='interactive'
-                                     keyboardDismissMode='on-drag'
+                                     keyboardDismissMode='interactive'
                                      keyboardShouldPersistTaps='handled'
                                      scrollEnabled={this.state.keyboard}>
 
@@ -178,6 +177,7 @@ const Login = React.createClass({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingTop: 20,
     },
     buttonForgotText: {
         marginTop: 10,

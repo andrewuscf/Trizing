@@ -151,7 +151,14 @@ const SignUp = React.createClass({
         let options = this.state.options;
 
         return (
-            <View style={styles.container} ref="scroll" keyboardDismissMode='on-drag' keyboardShouldPersistTaps='handled'>
+            <KeyboardAwareScrollView behavior='padding' style={styles.container} ref="scroll"
+                                     contentContainerStyle={{flex: 1}}
+                                     onKeyboardWillShow={this.changeKeyboard}
+                                     onKeyboardWillHide={this.changeKeyboard}
+                                     showsVerticalScrollIndicator={false}
+                                     keyboardDismissMode='interactive'
+                                     keyboardShouldPersistTaps='handled'
+                                     scrollEnabled={this.state.keyboard}>
 
 
                 <Form
@@ -176,15 +183,15 @@ const SignUp = React.createClass({
                               }/>
 
 
-                <TouchableOpacity style={styles.login} onPress={() => console.log('hit')}>
-                    <Text style={styles.loginText}>By continuing, you agree to our</Text>
-                    <Text style={styles.loginText}>
+                <TouchableOpacity style={styles.termSection} onPress={() => console.log('hit')}>
+                    <Text style={styles.termsText}>By continuing, you agree to our</Text>
+                    <Text style={styles.termsText}>
                         <Text style={GlobalStyle.redText}>Terms & Services</Text> and
                         <Text style={GlobalStyle.redText}> Privacy Policy</Text>
                     </Text>
                 </TouchableOpacity>
 
-            </View>
+            </KeyboardAwareScrollView>
         );
     }
 });
@@ -192,7 +199,7 @@ const SignUp = React.createClass({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20
+        paddingTop: 20
     },
     buttonText: {
         color: 'white',
@@ -212,15 +219,12 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(18),
         paddingLeft: 10
     },
-    login: {
-        bottom: 10,
-        left: 0,
-        right: 0,
-        position: 'absolute',
+    termSection: {
+        paddingTop: 10,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    loginText: {
+    termsText: {
         color: '#999999',
         fontFamily: 'Heebo-Medium',
     },
