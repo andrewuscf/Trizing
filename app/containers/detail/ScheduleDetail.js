@@ -20,7 +20,7 @@ const ScheduleDetail = React.createClass({
     },
 
     _toWorkoutDay(workout) {
-        this.props.navigation.navigate('WorkoutDetail', {workout: workout});
+        this.props.navigation.navigate('WorkoutDetail', {workoutId: workout.id});
     },
 
     render: function () {

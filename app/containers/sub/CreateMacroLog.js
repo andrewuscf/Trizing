@@ -245,7 +245,6 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         fontSize: getFontSize(20),
-        lineHeight: getFontSize(26),
         fontFamily: 'Heebo-Bold',
         color: '#00AFA3'
     },

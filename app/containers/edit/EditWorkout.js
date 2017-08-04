@@ -29,7 +29,6 @@ const EditWorkout = React.createClass({
 
     getInitialState() {
         return {
-            Error: null,
             workout: null,
             refreshing: false
         }
@@ -58,7 +57,7 @@ const EditWorkout = React.createClass({
                 this.setState(newState);
             }).catch((error) => {
             console.log(error)
-        })
+        });
     },
 
 

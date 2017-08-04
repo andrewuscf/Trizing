@@ -1,33 +1,69 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     ScrollView,
     View,
-    Text,
     StyleSheet,
-    Keyboard
 } from 'react-native';
 import _ from 'lodash';
 import moment from 'moment';
+import {connect} from 'react-redux';
+
+
+import {fetchData, API_ENDPOINT, getFontSize, checkStatus} from '../../actions/utils';
 
 import DisplayWorkoutDay from '../../components/DisplayWorkoutDay';
+import Loading from '../../components/Loading';
 
 
 const WorkoutDetail = React.createClass({
     propTypes: {
-        workout: React.PropTypes.object.isRequired,
+        workoutId: React.PropTypes.number.isRequired,
+    },
+
+    getInitialState() {
+        return {
+            workout: null,
+            refreshing: false
+        }
+    },
+
+    componentDidMount() {
+        this.getWorkout();
+    },
+
+
+    getWorkout(refresh) {
+        if (refresh) this.setState({refreshing: true});
+
+        fetch(`${API_ENDPOINT}training/workout/${this.props.workoutId}/`,
+            fetchData('GET', null, this.props.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+
+                let newState = {refreshing: false};
+                if (responseJson.id) {
+                    newState = {
+                        ...newState,
+                        workout: responseJson
+                    }
+                }
+                this.setState(newState);
+            }).catch((error) => {
+            console.log(error)
+        });
     },
 
 
     _toWorkoutDay(workout_day_id) {
-        // if (this.props.workout) {
-        //     this.props.navigation.navigate('WorkoutDayDetail', {workout_day_id: workout_day_id});
-        // }
+        // WorkoutDayDetail needs to be created
+        this.props.navigation.navigate('WorkoutDayDetail', {workout_day_id: workout_day_id});
     },
 
 
     render: function () {
+        if (!this.state.workout) return <Loading/>;
         const todayDay = moment().isoWeekday();
-        let workout_days = this.props.workout.workout_days.map((workout_day, index) => {
+        let workout_days = this.state.workout.workout_days.map((workout_day, index) => {
             return <DisplayWorkoutDay key={index} _toWorkoutDay={this._toWorkoutDay} workout_day={workout_day}
                                       dayIndex={index} active={_.includes(workout_day.days, todayDay)}/>
         });
@@ -72,4 +108,12 @@ const styles = StyleSheet.create({
     }
 });
 
-export default WorkoutDetail;
+const stateToProps = (state) => {
+    return {
+        UserToken: state.Global.UserToken,
+    };
+};
+
+
+export default connect(stateToProps, null)(WorkoutDetail);
+

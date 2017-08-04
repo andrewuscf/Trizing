@@ -234,15 +234,15 @@ const Home = React.createClass({
 
                                     <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
                                         <View style={styles.details}>
-                                            <Text style={styles.sectionTitle}>FAT</Text>
+                                            <Text style={styles.sectionTitle}>Fat</Text>
                                             <Text style={styles.smallText}>{`${fats}g`}</Text>
                                         </View>
                                         <View style={styles.details}>
-                                            <Text style={styles.sectionTitle}>CARBS</Text>
+                                            <Text style={styles.sectionTitle}>Carbs</Text>
                                             <Text style={styles.smallText}>{`${carbs}g`}</Text>
                                         </View>
                                         <View style={styles.details}>
-                                            <Text style={styles.sectionTitle}>PROTEIN</Text>
+                                            <Text style={styles.sectionTitle}>Protein</Text>
                                             <Text style={styles.smallText}>{`${protein}g`}</Text>
                                         </View>
                                     </View>
@@ -357,8 +357,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     sectionTitle: {
-        fontSize: getFontSize(18),
-        // lineHeight: getFontSize(26),
+        fontSize: getFontSize(20),
         fontFamily: 'Heebo-Bold',
     },
     details: {
@@ -397,7 +396,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
     },
     simpleTitle: {
-        fontSize: getFontSize(14),
+        fontSize: getFontSize(16),
         color: '#b1aea5',
         fontFamily: 'Heebo-Medium',
         margin: 10,
