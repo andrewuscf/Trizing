@@ -120,6 +120,7 @@ const CreateMacroLog = React.createClass({
             fields: {
                 name: {
                     onSubmitEditing: () => this.form.getComponent('fats').refs.input.focus(),
+                    label: 'Food name',
                     placeholder: 'required',
                     autoCapitalize: 'words',
                     maxLength: 100
