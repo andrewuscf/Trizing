@@ -141,7 +141,9 @@ const Login = React.createClass({
                                      onKeyboardWillShow={this.changeKeyboard}
                                      onKeyboardWillHide={this.changeKeyboard}
                                      showsVerticalScrollIndicator={false}
-                                     keyboardDismissMode='interactive'
+                                     // keyboardDismissMode='interactive'
+                                     keyboardDismissMode='on-drag'
+                                     keyboardShouldPersistTaps='handled'
                                      scrollEnabled={this.state.keyboard}>
 
 
