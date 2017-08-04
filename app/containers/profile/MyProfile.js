@@ -88,7 +88,7 @@ const MyProfile = React.createClass({
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
                         <CustomBack back={this.props.close} right={<TouchableOpacity style={styles.topRightNav}
                                                                                      onPress={this._redirect.bind(null, 'EditProfile', null)}>
-                            <CustomIcon name="settings" size={getFontSize(30)} color='#333333'/>
+                            <CustomIcon name="settings" size={getFontSize(22)} color='#333333'/>
                         </TouchableOpacity>}/>
                         <AvatarImage style={styles.avatar} image={userImage} cache={true}/>
                     </View>

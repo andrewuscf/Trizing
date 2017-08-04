@@ -15,7 +15,7 @@ const CustomBack = React.createClass({
         return (
             <View style={[styles.nav]}>
                 <TouchableOpacity style={[styles.topNavButton]} onPress={this.props.back}>
-                    <Icon name="keyboard-arrow-left" size={getFontSize(50)} style={[styles.textColor, {marginLeft: 10}]}/>
+                    <Icon name="keyboard-arrow-left" size={getFontSize(30)} style={[styles.textColor, {marginLeft: 10}]}/>
                 </TouchableOpacity>
                 <View style={[styles.discoverTitle]} >
                     <Text style={[styles.centerText, styles.textColor]}>
