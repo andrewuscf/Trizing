@@ -2,12 +2,12 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity,
     ScrollView,
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import * as ProfileActions from '../../actions/profileActions';
 import {getUser} from '../../actions/globalActions';
@@ -17,7 +17,6 @@ import GlobalStyle from '../globalStyle';
 
 
 import AvatarImage from '../../components/AvatarImage';
-import CustomBack from '../../components/CustomBack';
 import CustomIcon from '../../components/CustomIcon';
 import Loading from '../../components/Loading';
 
@@ -36,7 +35,6 @@ moment.updateLocale('en', {
 const MyProfile = React.createClass({
     propTypes: {
         navigation: React.PropTypes.object.isRequired,
-        close: React.PropTypes.func.isRequired
     },
 
     getInitialState() {
@@ -48,8 +46,15 @@ const MyProfile = React.createClass({
         }
     },
 
-    componentDidMount() {
-        // this.getMacroLogs()
+    componentWillMount() {
+        this.props.navigation.setParams({
+            handleSave: this._toEditProfile,
+            saveText: <MaterialIcon name="settings" size={getFontSize(24)} color='#00AFA3'/>
+        });
+    },
+
+    _toEditProfile() {
+        this.props.navigation.navigate('EditProfile');
     },
 
 
@@ -59,7 +64,7 @@ const MyProfile = React.createClass({
             fetchData('GET', null, this.props.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
-            console.log(responseJson)
+                console.log(responseJson)
                 this.setState({
                     macro_response: responseJson,
                     refreshing: false
@@ -67,13 +72,8 @@ const MyProfile = React.createClass({
             });
     },
 
-
-    _redirect(routeName, props = null) {
-        this.props.navigation.navigate(routeName, props);
-    },
-
     _refresh() {
-        this.props.getUser(refresh = true);
+        this.props.getUser(true);
     },
 
     render() {
@@ -82,14 +82,11 @@ const MyProfile = React.createClass({
             let userImage = user.profile.avatar;
             if (user.profile.thumbnail)
                 userImage = user.profile.thumbnail;
+
             return (
-                <ScrollView style={GlobalStyle.noHeaderContainer} ref="profile_list"
+                <ScrollView style={GlobalStyle.container} ref="profile_list"
                             showsVerticalScrollIndicator={false}>
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
-                        <CustomBack back={this.props.close} right={<TouchableOpacity style={styles.topRightNav}
-                                                                                     onPress={this._redirect.bind(null, 'EditProfile', null)}>
-                            <CustomIcon name="settings" size={getFontSize(22)} color='#333333'/>
-                        </TouchableOpacity>}/>
                         <AvatarImage style={styles.avatar} image={userImage} cache={true}/>
                     </View>
                 </ScrollView>
@@ -105,9 +102,10 @@ const styles = StyleSheet.create({
         height: 80,
         width: 80,
         borderRadius: 40,
-        marginTop: -30,
+        // marginTop: -30,
     },
     userDetail: {
+        paddingTop: 20,
         paddingBottom: 20,
         backgroundColor: 'white',
         justifyContent: 'center',

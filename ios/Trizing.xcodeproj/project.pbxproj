@@ -65,6 +65,7 @@
 		8D861DE18DA6486CB263D16F /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 042706F2338545A4934FAAC3 /* MaterialCommunityIcons.ttf */; };
 		A17A340B868B48EF810E9407 /* Heebo-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 19E9A5A6F102418EA3141D0B /* Heebo-Medium.ttf */; };
 		A1E240D2528C4386A199E1CE /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81BAFB8DB9B841A9BB6356FB /* Foundation.ttf */; };
+		B22C6691587547769E014336 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69D6D2EE1E2541C1AFC7F8B9 /* libRCTActionSheet.a */; };
 		B923CDB85BA24FCF9308498B /* Heebo-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0063A0931159491085B27A20 /* Heebo-ExtraBold.ttf */; };
 		C3358FE1F3EC441AAA700F78 /* Heebo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AAC96E42526948DF88C67413 /* Heebo-Bold.ttf */; };
 		C9331A105430440BB49E2823 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 105CA0C2B2A44A9FB77CC12A /* libRNVectorIcons.a */; };
@@ -150,6 +151,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
 			remoteInfo = RCTCameraRoll;
+		};
+		209DCD471F3788A8004263B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9665C27EB8794E7CAAD518DF /* ReactNativeGlobalProps.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 13B07F961A680F5B00A75B9A;
+			remoteInfo = ReactNativeGlobalProps;
+		};
+		209DCD491F3788A8004263B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9665C27EB8794E7CAAD518DF /* ReactNativeGlobalProps.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 00E356EE1AD99517003FC87E;
+			remoteInfo = ReactNativeGlobalPropsTests;
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -358,6 +373,7 @@
 		5B81740734C94F918964E3E7 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		5FF837605A194A8AB6E98775 /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
+		69D6D2EE1E2541C1AFC7F8B9 /* libRCTActionSheet.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTActionSheet.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7B87053A2BB34784AB011E20 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		81BAFB8DB9B841A9BB6356FB /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -368,6 +384,7 @@
 		90DE0954FDB64659BA0BE25F /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		9373D043B42E10AADDD0B447 /* Pods-Trizing-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing-tvOSTests/Pods-Trizing-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		964565CEF5A8BC66A7AC2152 /* Pods-TrizingTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrizingTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrizingTests/Pods-TrizingTests.release.xcconfig"; sourceTree = "<group>"; };
+		9665C27EB8794E7CAAD518DF /* ReactNativeGlobalProps.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeGlobalProps.xcodeproj; path = "../node_modules/react-native-global-props/ios/ReactNativeGlobalProps.xcodeproj"; sourceTree = "<group>"; };
 		979ED9A76BF8049D87E14508 /* Pods_Trizing.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Trizing.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A9193E47C012E7C27B7032 /* Pods-Trizing-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing-tvOS/Pods-Trizing-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		9872222C7EC84D04A7378C16 /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
@@ -416,6 +433,7 @@
 				452B2BD40DF443D3A0F8A201 /* libRNFIRMessaging.a in Frameworks */,
 				3CC74A33401F345463FA6E3F /* Pods_Trizing.framework in Frameworks */,
 				76994335828F4092B855B1AD /* libRNFetchBlob.a in Frameworks */,
+				B22C6691587547769E014336 /* libRCTActionSheet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -594,6 +612,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		209DCD271F3788A8004263B9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				209DCD481F3788A8004263B9 /* ReactNativeGlobalProps.app */,
+				209DCD4A1F3788A8004263B9 /* ReactNativeGlobalPropsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		3AB4262C0D064C885E46CCCB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -699,6 +726,7 @@
 				499961797F904AF1A5353A46 /* RNFIRMessaging.xcodeproj */,
 				9872222C7EC84D04A7378C16 /* imageCropPicker.xcodeproj */,
 				348DEFF9B9A143C193ECD377 /* RNFetchBlob.xcodeproj */,
+				9665C27EB8794E7CAAD518DF /* ReactNativeGlobalProps.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -932,6 +960,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = 209DCD271F3788A8004263B9 /* Products */;
+					ProjectRef = 9665C27EB8794E7CAAD518DF /* ReactNativeGlobalProps.xcodeproj */;
+				},
+				{
 					ProductGroup = 493E653A1EDFDD5400CCCA35 /* Products */;
 					ProjectRef = 348DEFF9B9A143C193ECD377 /* RNFetchBlob.xcodeproj */;
 				},
@@ -1027,6 +1059,20 @@
 			fileType = archive.ar;
 			path = libRCTCameraRoll.a;
 			remoteRef = 2086D88F1E516C3300D9945E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		209DCD481F3788A8004263B9 /* ReactNativeGlobalProps.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = ReactNativeGlobalProps.app;
+			remoteRef = 209DCD471F3788A8004263B9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		209DCD4A1F3788A8004263B9 /* ReactNativeGlobalPropsTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReactNativeGlobalPropsTests.xctest;
+			remoteRef = 209DCD491F3788A8004263B9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */ = {
@@ -1315,7 +1361,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		1AA034BE653F6E01A7B4AAFC /* [CP] Check Pods Manifest.lock */ = {
@@ -1330,7 +1376,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
@@ -1374,7 +1420,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		7052B8548DA66E6454737A25 /* [CP] Check Pods Manifest.lock */ = {
@@ -1389,7 +1435,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		715B15E01184D11CCB52571E /* [CP] Copy Pods Resources */ = {
@@ -1532,6 +1578,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1554,6 +1601,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1663,6 +1711,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1694,6 +1743,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1724,6 +1774,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Trizing-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1749,6 +1800,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Trizing-tvOSTests";

@@ -49,6 +49,7 @@ import CreateQuestionnaire from './containers/sub/CreateQuestionnaire';
 
 // Profile Pages
 import Profile from './containers/profile/Profile';
+import MyProfile from './containers/profile/MyProfile';
 import EditProfile from './containers/profile/EditProfile';
 
 
@@ -82,7 +83,7 @@ const defaultNavigationOptions = {
     },
     headerTintColor: globalBlue,
     gesturesEnabled: true
-}
+};
 
 
 const HomeNav = StackNavigator({
@@ -105,6 +106,10 @@ const HomeNav = StackNavigator({
 
     Profile: {
         screen: paramsToProps(Profile),
+    },
+
+    MyProfile: {
+        screen: MyProfile,
     },
 
 

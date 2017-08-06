@@ -102,7 +102,7 @@ const Profile = React.createClass({
     reportUser() {
         if (this.state.user) {
             fetch(`${API_ENDPOINT}user/reports/`,
-                fetchData('POST', JSON.stringify({to_user: this.state.user.id}), this.props.UserToken))
+                fetchData('POST', JSON.stringify({to_user: this.state.user.id}), this.props.UserToken));
             Alert.alert(
                 'Report sent',
                 '',

@@ -26,9 +26,6 @@ import {getFontSize, calCalories} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
 
-import MyProfile from '../containers/profile/MyProfile';
-
-import AvatarImage from '../components/AvatarImage';
 import CustomIcon from '../components/CustomIcon';
 import Loading from '../components/Loading';
 import PeopleBar from '../components/PeopleBar';
@@ -44,9 +41,7 @@ const Home = React.createClass({
 
     getInitialState() {
         return {
-            modalY: new Animated.Value(-deviceHeight),
             dataDate: moment(),
-            open: false,
         }
     },
 
@@ -89,11 +84,11 @@ const Home = React.createClass({
         }).length;
         return (
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Notifications')}
-                              style={[{paddingRight: 20}]}>
+                              style={[{paddingLeft: 20}]}>
                 {unread_count ?
                     <IconBadge
                         MainElement={
-                            <MaterialIcon name="notifications" size={getFontSize(40)}/>
+                            <MaterialIcon name="notifications" size={getFontSize(30)} color='#00AFA3'/>
                         }
                         BadgeElement={
                             <Text style={{color: '#FFFFFF', fontSize: getFontSize(12)}}>{unread_count}</Text>
@@ -104,26 +99,10 @@ const Home = React.createClass({
                         }
 
                     /> :
-                    <MaterialIcon name="notifications" size={getFontSize(40)}/>
+                    <MaterialIcon name="notifications" size={getFontSize(30)} color='#00AFA3'/>
                 }
             </TouchableOpacity>
         )
-    },
-
-    showProfile() {
-        Animated.timing(this.state.modalY, {
-            duration: 300,
-            toValue: 0
-        }).start();
-        this.setState({open: true});
-    },
-
-    hideProfile() {
-        Animated.timing(this.state.modalY, {
-            duration: 300,
-            toValue: -deviceHeight
-        }).start();
-        this.setState({open: false});
     },
 
     addDay() {
@@ -163,19 +142,6 @@ const Home = React.createClass({
                             <Text style={styles.emptyClientsText}>Get started by adding new clients.</Text>
                         </View>
                     }
-                    <View style={styles.templateSection}>
-                        <View style={{flexDirection: 'row',}}>
-                            <TouchableOpacity style={[styles.itemBox]} onPress={() => navigate('ProgramList')}>
-                                <CustomIcon name="barbell" size={getFontSize(30)}/>
-                                <Text style={styles.itemText}>Workouts</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[styles.itemBox, {borderRightWidth: 0}]}
-                                              onPress={() => navigate('SurveyList')}>
-                                <MaterialIcon name="question-answer" size={getFontSize(30)}/>
-                                <Text style={styles.itemText}>Surveys</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
                 </View>
             )
         } else {
@@ -201,24 +167,11 @@ const Home = React.createClass({
                         </View>
                         : null
                     }
-                    <View style={styles.templateSection}>
-                        <View style={{flexDirection: 'row',}}>
-                            <TouchableOpacity style={[styles.itemBox]}
-                                              onPress={this._redirect.bind(null, 'ManageClients', null)}>
-                                <CustomIcon name="users" size={getFontSize(30)}/>
-                                <Text style={styles.itemText}>Find a trainer</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[styles.itemBox, {borderRightWidth: 0}]}
-                                              onPress={() => navigate('ProgramList')}>
-                                <CustomIcon name="barbell" size={getFontSize(30)}/>
-                                <Text style={styles.itemText}>Workouts</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+
+
                     <View style={[styles.todayTitle, {justifyContent: 'space-between'}]}>
-                        <TouchableOpacity onPress={this.subtractDay}>
-                            <MaterialIcon name="keyboard-arrow-left" size={getFontSize(20)}
-                                          style={[{marginLeft: 10}]}/>
+                        <TouchableOpacity onPress={this.subtractDay} style={styles.arrowStyle}>
+                            <MaterialIcon name="keyboard-arrow-left" size={getFontSize(24)}/>
                         </TouchableOpacity>
                         <View style={styles.todayTitle}>
                             <MaterialIcon size={24} color='black' name="date-range"/>
@@ -226,9 +179,8 @@ const Home = React.createClass({
                                 {this.state.dataDate.isSame(today, 'd') ? 'Today' : this.state.dataDate.format('dddd, MMM DD')}
                             </Text>
                         </View>
-                        <TouchableOpacity onPress={this.addDay}>
-                            <MaterialIcon name="keyboard-arrow-right" size={getFontSize(20)}
-                                          style={[{marginRight: 10}]}/>
+                        <TouchableOpacity onPress={this.addDay} style={styles.arrowStyle}>
+                            <MaterialIcon name="keyboard-arrow-right" size={getFontSize(24)}/>
                         </TouchableOpacity>
                     </View>
                     {!this.props.Loading_Active ?
@@ -302,9 +254,6 @@ const Home = React.createClass({
             );
 
         }
-        let userImage = user.profile.avatar;
-        if (user.profile.thumbnail)
-            userImage = user.profile.thumbnail;
 
         return (
             <View style={GlobalStyle.noHeaderContainer}>
@@ -315,13 +264,13 @@ const Home = React.createClass({
 
                     <View style={styles.userProfile}>
                         <View style={[styles.topItem, {alignItems: 'flex-start'}]}>
-                            <TouchableOpacity onPress={this.showProfile} style={[{paddingLeft: 20}]}>
-                                <FontIcon size={getFontSize(40)} name="user-circle-o"/>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={[styles.topItem]} />
-                        <View style={styles.topItem}>
                             {this.renderNotifications()}
+                        </View>
+                        <View style={[styles.topItem]}/>
+                        <View style={styles.topItem}>
+                            <TouchableOpacity onPress={() => navigate('MyProfile')} style={[{paddingRight: 20}]}>
+                                <FontIcon size={getFontSize(25)} name="user-circle-o" color='#00AFA3'/>
+                            </TouchableOpacity>
                         </View>
                     </View>
 
@@ -330,19 +279,26 @@ const Home = React.createClass({
                     </View>
                 </ScrollView>
 
-                <Animated.View style={[styles.modal, {transform: [{translateY: this.state.modalY}]}]}>
-                    <MyProfile navigation={this.props.navigation} close={this.hideProfile}/>
-                </Animated.View>
 
-                {isTrainer && !this.state.open ?
-                    <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
-                        <ActionButton.Item buttonColor='#FD795B' title="Manage Clients"
-                                           onPress={() => navigate('ManageClients')}>
-                            <CustomIcon name="users" color="white" size={getFontSize(22)}/>
+                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
+                    <ActionButton.Item buttonColor='#FD795B'
+                                       title={isTrainer ? "Manage Clients" : "Find a trainer" }
+                                       onPress={() => navigate('ManageClients')}>
+                        <CustomIcon name="users" color="white" size={getFontSize(22)}/>
+                    </ActionButton.Item>
+                    <ActionButton.Item buttonColor='#FD795B' title="Workouts"
+                                       onPress={() => navigate('ProgramList')}>
+                        <CustomIcon name="barbell" size={getFontSize(22)} color="white"/>
+                    </ActionButton.Item>
+                    {isTrainer ?
+                        <ActionButton.Item buttonColor='#FD795B' title="Surveys"
+                                           onPress={() => navigate('SurveyList')}>
+                            <MaterialIcon name="question-answer" size={getFontSize(22)} color="white"/>
                         </ActionButton.Item>
-                    </ActionButton>
-                    : null
-                }
+                        : <View/>
+                    }
+
+                </ActionButton>
             </View>
         )
     }
@@ -414,17 +370,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     userProfile: {
-        flex: .1,
+        flex: .07,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         borderColor: '#e1e3df',
         borderBottomWidth: 1,
-    },
-    avatar: {
-        height: 80,
-        width: 80,
-        borderRadius: 40
     },
     topItem: {
         flex: 3.3,
@@ -435,34 +386,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row'
-    },
-    modal: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'white',
-        justifyContent: 'center',
-    },
-    templateSection: {
-        borderColor: '#e1e3df',
-        borderBottomWidth: 1,
-        alignItems: 'center',
-    },
-    itemBox: {
-        flex: .5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderColor: '#e1e3df',
-        borderRightWidth: .5,
-        paddingTop: 10,
-        paddingBottom: 10,
-    },
-    itemText: {
-        fontSize: getFontSize(20),
-        backgroundColor: 'transparent',
-        fontFamily: 'Heebo-Medium',
     },
     emptyClients: {
         height: 50,
@@ -475,6 +398,16 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(20),
         fontFamily: 'Heebo-Medium',
         color: 'rgba(0, 175, 163, 1)'
+    },
+    arrowStyle: {
+        borderColor: 'black',
+        borderWidth: .5,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        margin: 10,
+        padding: 8,
+        justifyContent: 'center'
     }
 });
 
