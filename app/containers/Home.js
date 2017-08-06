@@ -13,6 +13,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import FontIcon from 'react-native-vector-icons/FontAwesome';
 import IconBadge from 'react-native-icon-badge';
 import ActionButton from 'react-native-action-button';
 import moment from 'moment';
@@ -75,7 +76,10 @@ const Home = React.createClass({
 
     _toLogWorkout(data) {
         if (data && data.training_day && !data.training_day.logged_today) {
-            this._redirect('WorkoutDaySession', {workout_day: data.training_day, date: this.state.dataDate.format("YYYY-MM-DD")})
+            this._redirect('WorkoutDaySession', {
+                workout_day: data.training_day,
+                date: this.state.dataDate.format("YYYY-MM-DD")
+            })
         }
     },
 
@@ -85,14 +89,14 @@ const Home = React.createClass({
         }).length;
         return (
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Notifications')}
-                              style={[{padding: 10, paddingTop: 0, paddingRight: 20}]}>
+                              style={[{paddingRight: 20}]}>
                 {unread_count ?
                     <IconBadge
                         MainElement={
                             <MaterialIcon name="notifications" size={getFontSize(40)}/>
                         }
                         BadgeElement={
-                            <Text style={{color: '#FFFFFF'}}>{unread_count}</Text>
+                            <Text style={{color: '#FFFFFF', fontSize: getFontSize(12)}}>{unread_count}</Text>
                         }
 
                         IconBadgeStyle={
@@ -310,11 +314,12 @@ const Home = React.createClass({
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
 
                     <View style={styles.userProfile}>
-                        <View style={styles.topItem}/>
-                        <View style={[{flex: 3.3, justifyContent: 'center', alignItems: 'center'}]}>
-                            <AvatarImage style={styles.avatar} image={userImage}
-                                         redirect={this.showProfile} cache={true}/>
+                        <View style={[styles.topItem, {alignItems: 'flex-start'}]}>
+                            <TouchableOpacity onPress={this.showProfile} style={[{paddingLeft: 20}]}>
+                                <FontIcon size={getFontSize(40)} name="user-circle-o"/>
+                            </TouchableOpacity>
                         </View>
+                        <View style={[styles.topItem]} />
                         <View style={styles.topItem}>
                             {this.renderNotifications()}
                         </View>
@@ -409,7 +414,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     userProfile: {
-        flex: .15,
+        flex: .1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
