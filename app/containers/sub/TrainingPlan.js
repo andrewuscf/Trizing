@@ -200,25 +200,19 @@ const TrainingPlan = React.createClass({
             bottomContent = (
                 <View>
                     {this.state.tab === 1 ?
-                        <TouchableOpacity style={[styles.createContainer]}
+                        <TouchableOpacity style={[styles.emptyContainer]}
                                           activeOpacity={0.8}
                                           onPress={() => this.props._redirect('CreateMacroPlan', {
                                               training_plan: this.props.training_plan.id,
                                               addMacroPlan: this.addMacroPlan
                                           })}>
-                            <View style={styles.center}>
-                                <Icon name="plus" size={30} color='#1352e2'/>
-                                <View style={styles.details}>
                                     <Text style={styles.mainText}>Create New</Text>
-                                </View>
-                            </View>
                         </TouchableOpacity>
                         :
                         <TouchableOpacity style={styles.emptyContainer}
                                           onPress={this.props._redirect.bind(null, 'CreateSchedule',
                                               {training_plan: this.props.training_plan.id})}>
                             <Text style={styles.mainText}>Create a workout program for client</Text>
-                            <Text style={styles.smallText}>(Template or Blank)</Text>
                         </TouchableOpacity>
                     }
                     {textSection}
@@ -292,7 +286,7 @@ const TrainingPlan = React.createClass({
                       showsVerticalScrollIndicator={false}
                       renderHeader={this.renderCreateBar.bind(null, dataSource.getRowCount())}
                       keyboardShouldPersistTaps="handled"
-                      style={GlobalStyle.container} enableEmptySections={true} dataSource={dataSource}
+                      style={[GlobalStyle.container, {backgroundColor: '#f1f1f3'}]} enableEmptySections={true} dataSource={dataSource}
                       contentContainerStyle={{paddingBottom: 50}}
                       onEndReached={this._onEndReached}
                       onEndReachedThreshold={Dimensions.get('window').height}
@@ -340,15 +334,6 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginRight: 5,
     },
-    helpText: {
-        textAlign: 'center',
-        textDecorationLine: 'underline',
-        textDecorationColor: '#4d4d4e',
-        backgroundColor: 'transparent',
-        color: '#4d4d4e',
-        fontFamily: 'Heebo-Medium',
-        padding: 5
-    },
     pickersView: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -359,26 +344,18 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     emptyContainer: {
-        flex: 1,
-        borderBottomWidth: 1,
-        borderColor: '#e1e3df',
-        marginTop: 10,
-        backgroundColor: 'white',
         alignItems: 'center',
-        padding: 10
-    },
-    pickersText: {
-        color: '#4d4d4e',
-        backgroundColor: 'transparent',
-        fontFamily: 'Heebo-Medium',
-        marginRight: 8
+        padding: 10,
+
+        flex: 1,
+        borderWidth: 1,
+        borderColor: '#e1e3df',
+        margin: 10,
+        marginBottom: 5,
+        backgroundColor: 'white',
+        borderRadius: 5
     },
     mainText: {
-        backgroundColor: 'transparent',
-        color: '#4d4d4e',
-        fontFamily: 'Heebo-Medium'
-    },
-    smallText: {
         backgroundColor: 'transparent',
         color: '#4d4d4e',
         fontFamily: 'Heebo-Medium'
@@ -388,23 +365,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingTop: 20,
         fontFamily: 'Heebo-Medium'
-    },
-    link: {
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-        flexDirection: 'row'
-    },
-    createContainer: {
-        flex: 1,
-        borderBottomWidth: 1,
-        borderColor: '#e1e3df',
-        marginTop: 10,
-        backgroundColor: 'white'
-    },
-    center: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        margin: 10
     },
     details: {
         flexDirection: 'column',

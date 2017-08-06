@@ -95,10 +95,12 @@ const greenCircle = '#22c064';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        borderBottomWidth: 1,
         borderColor: '#e1e3df',
-        marginTop: 10,
-        backgroundColor: 'white'
+        borderWidth: 1,
+        backgroundColor: 'white',
+        margin: 10,
+        marginBottom: 5,
+        borderRadius: 5,
     },
     center: {
         flexDirection: 'row',
@@ -122,9 +124,7 @@ const styles = StyleSheet.create({
         flex:.9
     },
     edit: {
-        flex:.05,
-        paddingLeft:10,
-        paddingRight:10
+        flex:.06,
     },
 });
 

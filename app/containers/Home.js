@@ -7,7 +7,6 @@ import {
     ScrollView,
     TouchableOpacity,
     Dimensions,
-    Animated
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -84,11 +83,11 @@ const Home = React.createClass({
         }).length;
         return (
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Notifications')}
-                              style={[{paddingLeft: 20}]}>
+                              style={[{paddingLeft: 10}]}>
                 {unread_count ?
                     <IconBadge
                         MainElement={
-                            <MaterialIcon name="notifications" size={getFontSize(30)} color='#00AFA3'/>
+                            <MaterialIcon name="notifications" size={getFontSize(30)}/>
                         }
                         BadgeElement={
                             <Text style={{color: '#FFFFFF', fontSize: getFontSize(12)}}>{unread_count}</Text>
@@ -99,28 +98,30 @@ const Home = React.createClass({
                         }
 
                     /> :
-                    <MaterialIcon name="notifications" size={getFontSize(30)} color='#00AFA3'/>
+                    <MaterialIcon name="notifications" size={getFontSize(30)}/>
                 }
             </TouchableOpacity>
         )
     },
 
     addDay() {
+        const isTrainer = this.props.RequestUser.type === 1;
         const newDate = this.state.dataDate.add(1, 'day');
         this.setState({
             dataDate: newDate
         });
-        if (!_.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")})) {
+        if (!_.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")}) && !isTrainer) {
             this.props.actions.getActiveData(newDate.format("YYYY-MM-DD"), false)
         }
     },
 
     subtractDay() {
+        const isTrainer = this.props.RequestUser.type === 1;
         const newDate = this.state.dataDate.subtract(1, 'day');
         this.setState({
             dataDate: newDate
         });
-        if (!_.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")})) {
+        if (!_.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")}) && !isTrainer) {
             this.props.actions.getActiveData(newDate.format("YYYY-MM-DD"), false)
         }
     },
@@ -137,7 +138,12 @@ const Home = React.createClass({
             content = (
                 <View>
                     {this.props.Clients.length ?
-                        <PeopleBar navigate={navigate} people={this.props.Clients}/>
+                        <View>
+                            <Text style={{paddingLeft: 12, paddingBottom: 5, paddingTop: 5, fontFamily: 'Heebo-Bold'}}>
+                                Clients
+                            </Text>
+                            <PeopleBar navigate={navigate} people={this.props.Clients}/>
+                        </View>
                         : <View style={styles.emptyClients}>
                             <Text style={styles.emptyClientsText}>Get started by adding new clients.</Text>
                         </View>
@@ -167,22 +173,6 @@ const Home = React.createClass({
                         </View>
                         : null
                     }
-
-
-                    <View style={[styles.todayTitle, {justifyContent: 'space-between'}]}>
-                        <TouchableOpacity onPress={this.subtractDay} style={styles.arrowStyle}>
-                            <MaterialIcon name="keyboard-arrow-left" size={getFontSize(24)}/>
-                        </TouchableOpacity>
-                        <View style={styles.todayTitle}>
-                            <MaterialIcon size={24} color='black' name="date-range"/>
-                            <Text style={styles.textTitle}>
-                                {this.state.dataDate.isSame(today, 'd') ? 'Today' : this.state.dataDate.format('dddd, MMM DD')}
-                            </Text>
-                        </View>
-                        <TouchableOpacity onPress={this.addDay} style={styles.arrowStyle}>
-                            <MaterialIcon name="keyboard-arrow-right" size={getFontSize(24)}/>
-                        </TouchableOpacity>
-                    </View>
                     {!this.props.Loading_Active ?
                         <View>
                             {data && data.macro_plan_day ?
@@ -257,24 +247,37 @@ const Home = React.createClass({
 
         return (
             <View style={GlobalStyle.noHeaderContainer}>
+                <View style={styles.userProfile}>
+                    <View style={[styles.topItem, {alignItems: 'flex-start'}]}>
+                        {this.renderNotifications()}
+                    </View>
+                    <View style={[styles.topItem]}/>
+                    <View style={styles.topItem}>
+                        <TouchableOpacity onPress={() => navigate('MyProfile')} style={[{paddingRight: 10}]}>
+                            <FontIcon size={getFontSize(25)} name="user-circle-o"/>
+                        </TouchableOpacity>
+                    </View>
+                </View>
                 <ScrollView ref='home_scroll' showsVerticalScrollIndicator={false}
                             refreshControl={<RefreshControl refreshing={this.props.Refreshing}
                                                             onRefresh={() => this.getNeeded(true)}/>}
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
 
-                    <View style={styles.userProfile}>
-                        <View style={[styles.topItem, {alignItems: 'flex-start'}]}>
-                            {this.renderNotifications()}
-                        </View>
-                        <View style={[styles.topItem]}/>
-                        <View style={styles.topItem}>
-                            <TouchableOpacity onPress={() => navigate('MyProfile')} style={[{paddingRight: 20}]}>
-                                <FontIcon size={getFontSize(25)} name="user-circle-o" color='#00AFA3'/>
+                    <View style={{flex: .8}}>
+                        <View style={[styles.todayTitle, {justifyContent: 'space-between'}]}>
+                            <TouchableOpacity onPress={this.subtractDay} style={styles.arrowStyle}>
+                                <MaterialIcon name="keyboard-arrow-left" size={getFontSize(24)} color='#00AFA3'/>
+                            </TouchableOpacity>
+                            <View style={styles.todayTitle}>
+                                <MaterialIcon size={24} color='black' name="date-range"/>
+                                <Text style={styles.textTitle}>
+                                    {this.state.dataDate.isSame(today, 'd') ? 'Today' : this.state.dataDate.format('ddd, MMM DD')}
+                                </Text>
+                            </View>
+                            <TouchableOpacity onPress={this.addDay} style={styles.arrowStyle}>
+                                <MaterialIcon name="keyboard-arrow-right" size={getFontSize(24)} color='#00AFA3'/>
                             </TouchableOpacity>
                         </View>
-                    </View>
-
-                    <View style={{flex: .8}}>
                         {content}
                     </View>
                 </ScrollView>
@@ -336,13 +339,20 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(18),
     },
     box: {
-        marginTop: 5,
+        // marginTop: 5,
         justifyContent: 'center',
-        backgroundColor: 'white',
-        borderBottomWidth: 0.5,
-        borderRightWidth: 0.5,
-        borderLeftWidth: 0.5,
+        // backgroundColor: 'white',
+        // borderBottomWidth: 0.5,
+        // borderRightWidth: 0.5,
+        // borderLeftWidth: 0.5,
+
+        margin: 10,
+        borderWidth: 1,
         borderColor: '#e1e3df',
+        borderRadius: 5,
+        paddingTop: 10,
+        backgroundColor: 'white',
+        // flexDirection: 'row',
     },
     textTitle: {
         fontSize: getFontSize(22),
@@ -400,7 +410,8 @@ const styles = StyleSheet.create({
         color: 'rgba(0, 175, 163, 1)'
     },
     arrowStyle: {
-        borderColor: 'black',
+        borderColor: '#00AFA3',
+        backgroundColor: 'white',
         borderWidth: .5,
         width: 40,
         height: 40,

@@ -3,11 +3,14 @@ import {
     StyleSheet,
     View,
     ScrollView,
+    TouchableOpacity,
+    Text
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as ProfileActions from '../../actions/profileActions';
 import {getUser} from '../../actions/globalActions';
@@ -87,7 +90,29 @@ const MyProfile = React.createClass({
                 <ScrollView style={GlobalStyle.container} ref="profile_list"
                             showsVerticalScrollIndicator={false}>
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
-                        <AvatarImage style={styles.avatar} image={userImage} cache={true}/>
+                        <AvatarImage style={styles.avatar} image={userImage}/>
+                        <View>
+                            <Text style={styles.name}>
+                                {trunc(`${user.profile.first_name} ${user.profile.last_name}`, 26)}
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={[styles.tabbarView, GlobalStyle.simpleBottomBorder]}>
+                        <TouchableOpacity style={[styles.tabView]}
+                                          onPress={()=>console.log('redirect')}>
+                            <CustomIcon name="food" size={getFontSize(30)}
+                                        color='black'/>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.tabView]}
+                                          onPress={()=>console.log('redirect')}>
+                            <CustomIcon name="weight" size={getFontSize(30)}
+                                        color='black'/>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.tabView]}
+                                          onPress={()=>console.log('redirect')}>
+                            <CustomIcon name="pie-chart" size={getFontSize(20)}
+                                        color='black'/>
+                        </TouchableOpacity>
                     </View>
                 </ScrollView>
             )
@@ -102,29 +127,48 @@ const styles = StyleSheet.create({
         height: 80,
         width: 80,
         borderRadius: 40,
-        // marginTop: -30,
+        marginLeft: 20,
+        marginRight: 20
     },
     userDetail: {
-        paddingTop: 20,
+        paddingTop: 10,
         paddingBottom: 20,
         backgroundColor: 'white',
-        justifyContent: 'center',
-        alignItems: 'center'
+        flexDirection: 'row'
+    },
+    name: {
+        paddingTop: 5,
+        fontFamily: 'Heebo-Bold',
+        fontSize: getFontSize(22)
     },
     topRightNav: {
-        padding: 10,
+        right: 0,
+        position: 'absolute',
+        padding: 15,
         width: 50,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    back: {
-        left: 0,
-        position: 'absolute',
-        padding: 10,
-        width: 50,
+    tabbarView: {
+        height: 50,
+        opacity: 1,
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-    }
+        backgroundColor: 'white'
+    },
+    tabView: {
+        flex: 1,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    selectedTab: {
+        borderBottomWidth: 2,
+        borderBottomColor: '#1352e2',
+        marginLeft: 5,
+        marginRight: 5,
+    },
 });
 
 const stateToProps = (state) => {
