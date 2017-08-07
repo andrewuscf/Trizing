@@ -10,7 +10,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as ProfileActions from '../../actions/profileActions';
 import {getUser} from '../../actions/globalActions';

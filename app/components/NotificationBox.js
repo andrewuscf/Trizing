@@ -50,6 +50,7 @@ const NotificationBox = React.createClass({
         if (this.props.notification.unread) {
             this.props.readNotification(this.props.notification.id);
         }
+        console.log(this.props.notification)
         if (action.action_object) {
             if (action.action_object.profile)
                 this._navigateTo('Profile', {id: action.action_object.id});
@@ -68,6 +69,10 @@ const NotificationBox = React.createClass({
                 this._navigateTo('EventDetail', {eventId: action.action_object.id});
             } else if (action.action_object.macro_plan_days) {
                 this._navigateTo('MacroPlanDetail', {macro_plan: action.action_object});
+            } else if (action.action_object.macro_plan_day) {
+
+                this._navigateTo('MacroLogDetail', {macro_log: action.action_object});
+
             } else if (action.action_object.workouts) {
                 this._navigateTo('ScheduleDetail', {schedule: action.action_object});
             } else if (action.action_object.questions) {
@@ -93,17 +98,14 @@ const NotificationBox = React.createClass({
                 <View style={[GlobalStyle.simpleBottomBorder, styles.container]}>
                     <AvatarImage goToProfile={this.goToProfile.bind(null, action.actor.id)} image={image} cache={true}/>
                     <View style={styles.noteInfo}>
-                        <Text style={styles.notifText}>
-                            <Text style={styles.firstName}>
-                                {action.actor.profile.first_name} {action.actor.profile.last_name}
-                                <Text style={styles.noteVerb}> {action.verb}
-                                    {action.action_object && action.action_object.event_type ?
-                                        <Text style={styles.noteAction}> {action.action_object.title}</Text>
-                                        : null
-                                    }
-                                </Text>
-                            </Text>
-
+                        <Text style={styles.firstName}>
+                            {action.actor.profile.first_name} {action.actor.profile.last_name}
+                        </Text>
+                        <Text style={[styles.notifText, {paddingLeft: 0}]}>{action.verb}
+                            {action.action_object && action.action_object.event_type ?
+                                <Text style={styles.noteAction}> {action.action_object.title}</Text>
+                                : null
+                            }
                         </Text>
                         <View style={styles.timeStamp}>
                             <Text style={styles.timeStampText}>{moment(action.timestamp).fromNow(false)}</Text>
@@ -124,9 +126,6 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     notifText: {
-        fontFamily: 'Heebo-Medium',
-        fontSize: getFontSize(22),
-        lineHeight: getFontSize(26),
         flexDirection: 'column',
         flexWrap: 'wrap',
         flex: 1,

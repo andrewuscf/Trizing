@@ -54,7 +54,6 @@ const MacroBoxDay = React.createClass({
 
 
     calculateCalories() {
-        console.log(this.state)
         const fats = (this.state.fats) ? this.state.fats : 0;
         const protein = (this.state.protein) ? this.state.protein : 0;
         const carbs = (this.state.carbs) ? this.state.carbs : 0;

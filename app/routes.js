@@ -35,6 +35,7 @@ import WorkoutDetail from './containers/detail/WorkoutDetail';
 import WorkoutDaySession from './containers/detail/WorkoutDaySession';
 import AnswerQuestionnaire from './containers/detail/AnswerQuestionnaire';
 import AnswersDisplay from './containers/detail/AnswersDisplay';
+import MacroLogDetail from './containers/detail/MacroLogDetail';
 
 // Create Pages
 import CreateWorkout from './containers/sub/CreateWorkout';
@@ -143,7 +144,11 @@ const HomeNav = StackNavigator({
 
     CreateMacroPlan: {
         screen: paramsToProps(CreateMacroPlan)
-    }
+    },
+
+    MacroLogDetail: {
+        screen: paramsToProps(MacroLogDetail)
+    },
 
 
 }, {
