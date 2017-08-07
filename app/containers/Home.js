@@ -6,7 +6,7 @@ import {
     RefreshControl,
     ScrollView,
     TouchableOpacity,
-    Dimensions,
+    Platform
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -29,8 +29,6 @@ import CustomIcon from '../components/CustomIcon';
 import Loading from '../components/Loading';
 import PeopleBar from '../components/PeopleBar';
 
-
-let deviceHeight = Dimensions.get('window').height;
 
 const Home = React.createClass({
     propTypes: {
@@ -247,7 +245,7 @@ const Home = React.createClass({
 
         return (
             <View style={GlobalStyle.noHeaderContainer}>
-                <View style={styles.userProfile}>
+                <View style={styles.topBar}>
                     <View style={[styles.topItem, {alignItems: 'flex-start'}]}>
                         {this.renderNotifications()}
                     </View>
@@ -379,8 +377,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'center'
     },
-    userProfile: {
-        flex: .07,
+    topBar: {
+        height: Platform.OS === 'ios' ? 44 : 56,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
