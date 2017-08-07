@@ -5,7 +5,8 @@ import {
     StyleSheet,
     ListView,
     Platform,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions
 } from 'react-native';
 import {connect} from 'react-redux';
 import * as Progress from 'react-native-progress';
@@ -18,6 +19,8 @@ import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../ac
 import GlobalStyle from '../globalStyle';
 
 import MacroLogBox from '../../components/MacroLogBox';
+
+const {width: deviceWidth} = Dimensions.get('window');
 
 let MacroLogList = React.createClass({
     propTypes: {
@@ -203,7 +206,7 @@ const MacroLogDetail = React.createClass({
                     ? <MacroLogList logs={this.state.macro_response.results}
                                     macro_plan_day={this.props.macro_log.macro_plan_day}
                                     logged_data={{currentFats, currentcarbs, currentprotein}}/>
-                    : <Bar data={data} options={options} accessorKey='v'/>
+                    : <View style={{paddingTop: 20}}><Bar data={data} options={options} accessorKey='v'/></View>
                 }
             </View>
         )
@@ -211,7 +214,8 @@ const MacroLogDetail = React.createClass({
 });
 
 let options = {
-    width: 300,
+    width: deviceWidth - 50,
+    flex: 1,
     height: 300,
     margin: {
         top: 20,
