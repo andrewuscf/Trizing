@@ -27,7 +27,8 @@ const ScheduleDetail = React.createClass({
         const today = moment();
         let steps = _.orderBy(this.props.schedule.workouts, ['order']).map((workout, index) => {
             let start_date = moment.utc(workout.dates.start_date).local();
-            const is_active = today.isAfter(workout.dates.start_date) && today.isBefore(workout.dates.end_date);
+            let end_date = moment.utc(workout.dates.end_date).local();
+            const is_active = today.isSameOrAfter(start_date, 'day') && today.isBefore(end_date, 'day');
             return <TouchableOpacity key={index} onPress={this._toWorkoutDay.bind(null, workout)}
                                      style={[GlobalStyle.simpleBottomBorder,
                                          styles.workoutBox, (index == 0) ? {marginTop: 5} : null,
