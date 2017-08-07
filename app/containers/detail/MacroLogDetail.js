@@ -10,6 +10,8 @@ import {
 import {connect} from 'react-redux';
 import * as Progress from 'react-native-progress';
 import moment from 'moment';
+import {Bar} from 'react-native-pathjs-charts';
+import FontIcon from 'react-native-vector-icons/FontAwesome';
 
 
 import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../actions/utils';
@@ -20,7 +22,8 @@ import MacroLogBox from '../../components/MacroLogBox';
 let MacroLogList = React.createClass({
     propTypes: {
         logs: React.PropTypes.array.isRequired,
-        macro_plan_day: React.PropTypes.array.isRequired,
+        macro_plan_day: React.PropTypes.object.isRequired,
+        logged_data: React.PropTypes.object.isRequired,
     },
 
     renderHeader() {
@@ -31,14 +34,7 @@ let MacroLogList = React.createClass({
         // calories = (9 * fats) + (4 * protein) + (4 * carbs);
 
 
-        let currentFats = 0;
-        let currentcarbs = 0;
-        let currentprotein = 0;
-        this.props.logs.forEach((log) => {
-            currentFats += log.fats;
-            currentcarbs += log.carbs;
-            currentprotein += log.protein;
-        });
+        const {currentFats, currentcarbs, currentprotein} = this.props.logged_data;
         // let calories = (9 * currentFats) + (4 * currentcarbs) + (4 * currentprotein);
         return (
             <View>
@@ -47,21 +43,21 @@ let MacroLogList = React.createClass({
                         <Text style={styles.sectionTitle}>Fats</Text>
                         <Text style={styles.smallText}>{`${fats}g`}</Text>
                         <Progress.Bar progress={currentFats / fats} width={80}
-                             borderWidth={0} height={5} borderRadius={20} unfilledColor="grey"/>
+                                      borderWidth={0} height={5} borderRadius={20} unfilledColor="grey"/>
                         <Text style={styles.smallText}>{`${fats - currentFats}g left`}</Text>
                     </View>
                     <View style={styles.details}>
                         <Text style={styles.sectionTitle}>Carbs</Text>
                         <Text style={styles.smallText}>{`${carbs}g`}</Text>
                         <Progress.Bar progress={currentcarbs / carbs} width={80}
-                             borderWidth={0} height={5} borderRadius={20} unfilledColor="grey"/>
+                                      borderWidth={0} height={5} borderRadius={20} unfilledColor="grey"/>
                         <Text style={styles.smallText}>{`${carbs - currentcarbs}g left`}</Text>
                     </View>
                     <View style={styles.details}>
                         <Text style={styles.sectionTitle}>Protein</Text>
                         <Text style={styles.smallText}>{`${protein}g`}</Text>
                         <Progress.Bar progress={currentprotein / protein} width={80}
-                             borderWidth={0} height={5} borderRadius={20} unfilledColor="grey"/>
+                                      borderWidth={0} height={5} borderRadius={20} unfilledColor="grey"/>
                         <Text style={styles.smallText}>{`${protein - currentprotein}g left`}</Text>
                     </View>
                 </View>
@@ -147,26 +143,118 @@ const MacroLogDetail = React.createClass({
 
     render() {
         console.log(this.state.macro_response);
+
+        let currentFats = 0;
+        let currentcarbs = 0;
+        let currentprotein = 0;
+        this.state.macro_response.results.forEach((log) => {
+            currentFats += log.fats;
+            currentcarbs += log.carbs;
+            currentprotein += log.protein;
+        });
+
+        const data = [
+            [
+                {
+                    "v": this.props.macro_log.macro_plan_day.carbs,
+                    "name": "carbs"
+                },
+                {
+                    "v": currentcarbs,
+                    "name": "Logged carbs"
+                }
+            ],
+            [
+                {
+                    "v": this.props.macro_log.macro_plan_day.protein,
+                    "name": "protein"
+                },
+                {
+                    "v": currentprotein,
+                    "name": "Logged protein"
+                }
+            ],
+            [
+                {
+                    "v": this.props.macro_log.macro_plan_day.fats,
+                    "name": "fats"
+                },
+                {
+                    "v": currentFats,
+                    "name": "Logged fats"
+                }
+            ]
+        ];
         return (
             <View style={styles.container}>
                 <View style={[styles.tabbarView, GlobalStyle.simpleBottomBorder]}>
                     <TouchableOpacity style={[styles.tabView, (this.state.tab === 1) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 1)}>
-                        <Text>Logs</Text>
+                        <FontIcon name="list" style={(this.state.tab === 1) ? styles.selectedText : null} size={getFontSize(14)}/>
+                        <Text style={(this.state.tab === 1) ? styles.selectedText : null}>Logs</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.tabView, (this.state.tab === 2) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 2)}>
-                        <Text>Graphs</Text>
+                        <FontIcon name="bar-chart" style={(this.state.tab === 2) ? styles.selectedText : null} size={getFontSize(14)}/>
+                        <Text style={(this.state.tab === 2) ? styles.selectedText : null}>Graph</Text>
                     </TouchableOpacity>
                 </View>
                 {this.state.tab === 1
-                    ? <MacroLogList logs={this.state.macro_response.results} macro_plan_day={this.props.macro_log.macro_plan_day}/>
-                    : null
+                    ? <MacroLogList logs={this.state.macro_response.results}
+                                    macro_plan_day={this.props.macro_log.macro_plan_day}
+                                    logged_data={{currentFats, currentcarbs, currentprotein}}/>
+                    : <Bar data={data} options={options} accessorKey='v'/>
                 }
             </View>
         )
     }
 });
+
+let options = {
+    width: 300,
+    height: 300,
+    margin: {
+        top: 20,
+        left: 25,
+        bottom: 50,
+        right: 20
+    },
+    color: '#2980B9',
+    gutter: 20,
+    animate: {
+        type: 'oneByOne',
+        duration: 200,
+        fillTransition: 3
+    },
+    axisX: {
+        showAxis: true,
+        showLines: true,
+        showLabels: true,
+        showTicks: true,
+        zeroAxis: false,
+        orient: 'bottom',
+        label: {
+            fontFamily: 'Arial',
+            fontSize: 8,
+            fontWeight: true,
+            fill: '#34495E'
+        }
+    },
+    axisY: {
+        showAxis: true,
+        showLines: true,
+        showLabels: true,
+        showTicks: true,
+        zeroAxis: false,
+        orient: 'left',
+        label: {
+            fontFamily: 'Arial',
+            fontSize: 8,
+            fontWeight: true,
+            fill: '#34495E'
+        }
+    }
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -196,6 +284,10 @@ const styles = StyleSheet.create({
         borderBottomColor: '#00AFA3',
         marginLeft: 5,
         marginRight: 5,
+    },
+    selectedText: {
+        color: '#00AFA3',
+        fontFamily: 'Heebo-Medium',
     },
     row: {
         flexDirection: 'row'
