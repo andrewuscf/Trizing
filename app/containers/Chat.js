@@ -98,6 +98,7 @@ const Chat = React.createClass({
 const styles = StyleSheet.create({
     scrollContainer: {
         flex: 1,
+        backgroundColor: '#f1f1f3'
     },
     noRequests: {
         flex: 1,

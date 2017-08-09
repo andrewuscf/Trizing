@@ -51,11 +51,11 @@ const ChatRoomBox = React.createClass({
                 <View style={styles.inner}>
                     <AvatarImage image={image}/>
                     <View style={styles.details}>
-                        <Text style={styles.name}>{sender.profile.first_name} {sender.profile.last_name[0]}.</Text>
-                        {(room.last_message && room.last_message.message) ?
+                        <Text style={styles.name}>{sender.profile.first_name} {sender.profile.last_name}</Text>
+                        {(room.last_message && room.last_message.text) ?
                             <View style={styles.lastMessageSection}>
-                                <Text style={styles.bold}>{this.trimToLength(room.last_message.message, 25)}</Text>
-                                <Text style={styles.timeAgo}>{moment(room.last_message.timestamp).fromNow(false)}</Text>
+                                <Text style={styles.bold}>{this.trimToLength(room.last_message.text, 25)}</Text>
+                                <Text style={styles.timeAgo}>{moment(room.last_message.createdAt).fromNow(false)}</Text>
 
                             </View> : null
                         }
@@ -70,10 +70,12 @@ const ChatRoomBox = React.createClass({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        borderBottomWidth: .5,
-        borderBottomColor: 'rgba(0,0,0,.15)',
-        marginTop:10,
-        backgroundColor: 'white'
+        borderColor: '#e1e3df',
+        borderWidth: 1,
+        backgroundColor: 'white',
+        margin: 10,
+        marginBottom: 5,
+        borderRadius: 5,
     },
     inner: {
         flex: 1,

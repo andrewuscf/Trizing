@@ -73,12 +73,7 @@ const EventBox = React.createClass({
 
 const styles = StyleSheet.create({
     container: {
-        // backgroundColor: 'white',
-        // flex: 1,
         flexDirection: 'row',
-        // padding: 10,
-
-
         flex: 1,
         borderColor: '#e1e3df',
         borderWidth: 1,
