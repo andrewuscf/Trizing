@@ -14,7 +14,9 @@ export function getEvents(refresh = false) {
             .then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.GET_EVENTS, response: responseJson, refresh: refresh});
-            }).done();
+            }).catch((error) => {
+                console.log(error)
+            })
     }
 }
 

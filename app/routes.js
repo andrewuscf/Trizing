@@ -262,6 +262,7 @@ const MainTabNav = TabNavigator({
         path: 'calendar/',
         screen: CalendarNav,
         navigationOptions: {
+            header: null,
             tabBarIcon: (data) => <Icon size={24} color={data.tintColor} name="date-range"/>
         }
     },

@@ -106,7 +106,7 @@ const Calendar = React.createClass({
                           showsVerticalScrollIndicator={false}
                           refreshControl={<RefreshControl refreshing={this.props.Refreshing}
                                                           onRefresh={this._refresh}/>}
-                          style={styles.scrollContainer}
+                          style={GlobalStyle.noHeaderContainer}
                           enableEmptySections={true}
                           dataSource={dataSource} onEndReached={this.onEndReached}
                           onEndReachedThreshold={Dimensions.get('window').height}
@@ -139,7 +139,7 @@ const Calendar = React.createClass({
             )
         }
         return (
-            <View style={GlobalStyle.noHeaderContainer}>
+            <View style={styles.scrollContainer}>
                 {content}
                 {subMenu}
             </View>
