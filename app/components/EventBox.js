@@ -60,7 +60,7 @@ const EventBox = React.createClass({
                         <Text style={styles.notifText}>
                             <Text style={styles.firstName}>{event.title}</Text>
                         </Text>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                             <Icon name="users" size={12} style={styles.userIcon}/>
                             {attending}
                         </View>
@@ -73,15 +73,25 @@ const EventBox = React.createClass({
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
-        flex: 1,
+        // backgroundColor: 'white',
+        // flex: 1,
         flexDirection: 'row',
+        // padding: 10,
+
+
+        flex: 1,
+        borderColor: '#e1e3df',
+        borderWidth: 1,
         padding: 10,
+        paddingBottom: 15,
+        backgroundColor: 'white',
+        margin: 10,
+        marginBottom: 5,
+        borderRadius: 5,
     },
     notifText: {
         fontFamily: 'Heebo-Medium',
         fontSize: getFontSize(22),
-        lineHeight: getFontSize(26),
         backgroundColor: 'transparent',
     },
     noteInfo: {

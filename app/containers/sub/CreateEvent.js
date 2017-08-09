@@ -329,14 +329,16 @@ topStyle.textbox = {
         borderWidth: 0,
         marginTop: 5,
         marginBottom: 0,
-        fontSize: 24
+        fontSize: 24,
+        minHeight: 60,
     },
     error: {
         ...topStyle.textbox.error,
         borderWidth: 0,
         marginTop: 5,
         marginBottom: 0,
-        fontSize: 24
+        fontSize: 24,
+        minHeight: 60,
     }
 };
 
@@ -349,7 +351,7 @@ topStyle.textboxView = {
         borderBottomWidth: 0,
         flex: 1,
         backgroundColor: 'transparent',
-        minHeight: 50,
+        minHeight: 60,
     },
     error: {
         ...topStyle.textboxView.error,
@@ -358,7 +360,7 @@ topStyle.textboxView = {
         borderBottomWidth: 0,
         flex: 1,
         backgroundColor: 'transparent',
-        minHeight: 50,
+        minHeight: 60,
     }
 };
 

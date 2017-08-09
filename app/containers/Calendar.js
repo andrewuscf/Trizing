@@ -50,7 +50,11 @@ const Calendar = React.createClass({
 
     renderSectionHeader: function (sectionData, category) {
         if (!sectionData.length) return null;
-        return <View style={[GlobalStyle.simpleBottomBorder]}><Text style={styles.sectionTitle}>{category}</Text></View>;
+        return (
+            <View style={[GlobalStyle.simpleBottomBorder, {backgroundColor: 'white'}]}>
+                <Text style={styles.sectionTitle}>{category}</Text>
+            </View>
+        );
     },
 
     convertToMap() {
@@ -77,7 +81,7 @@ const Calendar = React.createClass({
 
     render() {
         const isTrainer = this.props.RequestUser.type === 1;
-        if (this.props.CalendarIsLoading) return <Loading />;
+        if (this.props.CalendarIsLoading) return <Loading/>;
         let content = null;
         let subMenu = null;
         if (!this.props.Events.length) {
@@ -179,7 +183,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     sectionTitle: {
-        paddingTop:5,
+        paddingTop: 5,
         paddingBottom: 5,
         paddingLeft: 10,
         fontSize: getFontSize(22),
