@@ -5,7 +5,8 @@ import {
     Text,
     StyleSheet,
     ListView,
-    Platform
+    Platform,
+    Alert
 } from 'react-native';
 import {connect} from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -24,18 +25,22 @@ import CreateWorkoutDay from '../sub/CreateWorkoutDay';
 
 const EditWorkout = React.createClass({
     propTypes: {
-        workoutId: React.PropTypes.number.isRequired,
+        workoutId: React.PropTypes.number,
+        workout: React.PropTypes.object,
+        _onWorkoutDelete: React.PropTypes.func
     },
 
     getInitialState() {
         return {
-            workout: null,
+            workout: this.props.workout ? this.props.workout : null,
             refreshing: false
         }
     },
 
     componentDidMount() {
-        this.getWorkout();
+        if (!this.props.workout) {
+            this.getWorkout();
+        }
     },
 
 
@@ -101,6 +106,35 @@ const EditWorkout = React.createClass({
         }
     },
 
+    _delete() {
+        Alert.alert(
+            `Delete ${this.state.workout ? this.state.workout.name : 'workout'}`,
+            `Are you sure you want delete this workout?`,
+            [
+                {text: 'Cancel', style: 'cancel'},
+                {
+                    text: 'Delete',
+                    onPress: () => {
+
+                        fetch(`${API_ENDPOINT}training/workout/${this.props.workoutId}/`,
+                            fetchData('DELETE', null, this.props.UserToken))
+                            .then(checkStatus)
+                            .then((responseJson) => {
+                                if (responseJson.deleted) {
+                                    if (this.props._onWorkoutDelete) this.props._onWorkoutDelete(this.props.workoutId)
+                                    this.props.navigation.goBack();
+                                } else {
+                                    console.log(responseJson)
+                                }
+                            }).catch((error) => {
+                            console.log(error)
+                        });
+                    }
+                },
+            ]
+        );
+    },
+
 
     renderHeader() {
         const workout = this.state.workout;
@@ -160,12 +194,16 @@ const EditWorkout = React.createClass({
                                                           onRefresh={() => this.getWorkout(true)}/>}
                 />
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
+                    <ActionButton.Item buttonColor='#F22525' title="Delete"
+                                       onPress={this._delete}>
+                        <MaterialIcon name="delete-forever" color="white" size={getFontSize(22)}/>
+                    </ActionButton.Item>
                     <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={() => console.log('add note')}>
-                        <MaterialIcon name="note-add" color="white" size={22}/>
+                        <MaterialIcon name="note-add" color="white" size={getFontSize(22)}/>
                     </ActionButton.Item>
                     <ActionButton.Item buttonColor='#3498db' title="Add Training Day"
                                        onPress={this._createWorkoutDay}>
-                        <MaterialIcon name="add" color="white" size={22}/>
+                        <MaterialIcon name="add" color="white" size={getFontSize(22)}/>
                     </ActionButton.Item>
                 </ActionButton>
             </View>

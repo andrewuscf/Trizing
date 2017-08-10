@@ -127,7 +127,7 @@ const Home = React.createClass({
 
     render() {
         const user = this.props.RequestUser;
-        if (!user || this.props.HomeIsLoading) return <Loading />;
+        if (!user || this.props.HomeIsLoading) return <Loading/>;
         const isTrainer = user.type === 1;
         let content = null;
         const {navigate} = this.props.navigation;
@@ -282,11 +282,6 @@ const Home = React.createClass({
 
 
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
-                    <ActionButton.Item buttonColor='#FD795B'
-                                       title={isTrainer ? "Manage Clients" : "Find a trainer" }
-                                       onPress={() => navigate('ManageClients')}>
-                        <CustomIcon name="users" color="white" size={getFontSize(22)}/>
-                    </ActionButton.Item>
                     <ActionButton.Item buttonColor='#FD795B' title="Workouts"
                                        onPress={() => navigate('ProgramList')}>
                         <CustomIcon name="barbell" size={getFontSize(22)} color="white"/>
@@ -298,6 +293,11 @@ const Home = React.createClass({
                         </ActionButton.Item>
                         : <View/>
                     }
+                    <ActionButton.Item buttonColor='#FD795B'
+                                       title={isTrainer ? "Manage Clients" : "Find a trainer"}
+                                       onPress={() => navigate('ManageClients')}>
+                        <CustomIcon name="users" color="white" size={getFontSize(22)}/>
+                    </ActionButton.Item>
 
                 </ActionButton>
             </View>

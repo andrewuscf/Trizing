@@ -366,7 +366,7 @@ export function createWorkout(data, asyncActions) {
             .then((responseJson) => {
                 if (responseJson.id) {
                     dispatch({type: types.CREATE_WORKOUT, response: responseJson});
-                    return asyncActions(true, {routeName: 'EditWorkout', props: {workoutId: responseJson.id}});
+                    return asyncActions(true, {routeName: 'EditWorkout', props: {workout: responseJson}});
                 }
                 return asyncActions(false);
             })

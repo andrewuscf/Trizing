@@ -50,7 +50,7 @@ const EditSchedule = React.createClass({
         }
     },
 
-    asyncActions(data = {}){
+    asyncActions(data = {}) {
         if (data.deleted) {
             this.props.navigation.goBack();
         }
@@ -79,9 +79,17 @@ const EditSchedule = React.createClass({
         );
     },
 
-
-    _onDuplicate() {
-
+    _onWorkoutDelete(workoutId) {
+        const workoutIndex = _.findIndex(this.state.schedule.workouts, {id: workoutId});
+        if (workoutIndex !== -1) {
+            this.setState({
+                schedule: {
+                    ...this.state.schedule,
+                    workouts: this.state.schedule.workouts.slice(0, workoutIndex)
+                        .concat(this.state.schedule.workouts.slice(workoutIndex + 1))
+                }
+            })
+        }
     },
 
     renderHeader() {
@@ -93,7 +101,10 @@ const EditSchedule = React.createClass({
         let start_date = moment.utc(workout.dates.start_date).local();
         const {navigate} = this.props.navigation;
         return (
-            <TouchableOpacity key={parseIndex} onPress={() => navigate('EditWorkout', {workoutId: workout.id})}
+            <TouchableOpacity key={parseIndex} onPress={() => navigate('EditWorkout', {
+                workoutId: workout.id,
+                _onWorkoutDelete: this._onWorkoutDelete
+            })}
                               style={[styles.workoutBox]}>
 
                 <View style={styles.titleView}>
