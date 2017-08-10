@@ -6,6 +6,7 @@ import {
     RefreshControl,
     Platform,
     ListView,
+    Alert,
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -14,7 +15,7 @@ import _ from 'lodash';
 import ActionButton from 'react-native-action-button';
 
 import * as GlobalActions from '../../actions/globalActions';
-import {trunc, fetchData, API_ENDPOINT, checkStatus} from '../../actions/utils';
+import {trunc, fetchData, API_ENDPOINT, checkStatus, getFontSize} from '../../actions/utils';
 import {DAYS_OF_WEEK} from '../../assets/constants';
 
 import CustomIcon from '../../components/CustomIcon';
@@ -23,19 +24,23 @@ import Loading from '../../components/Loading';
 
 const EditWorkoutDay = React.createClass({
     propTypes: {
-        workout_day_id: React.PropTypes.number.isRequired,
+        _onDayDelete: React.PropTypes.func.isRequired,
+        workout_day_id: React.PropTypes.number,
+        workout_day: React.PropTypes.object
     },
 
     getInitialState() {
         return {
             Error: null,
-            workout_day: null,
+            workout_day: this.props.workout_day,
             refreshing: false,
         }
     },
 
     componentDidMount() {
-        this.getWorkoutDay();
+        if (!this.props.workout_day) {
+            this.getWorkoutDay();
+        }
     },
 
     componentDidUpdate(prevProps, prevState) {
@@ -63,6 +68,34 @@ const EditWorkoutDay = React.createClass({
             }).catch((error) => {
             console.log(error)
         })
+    },
+
+    _delete() {
+        Alert.alert(
+            `Delete ${this.state.workout_day ? this.state.workout_day.name : 'workout'}`,
+            `Are you sure you want delete this workout day?`,
+            [
+                {text: 'Cancel', style: 'cancel'},
+                {
+                    text: 'Delete',
+                    onPress: () => {
+                        fetch(`${API_ENDPOINT}training/workout/day/${this.state.workout_day.id}/`,
+                            fetchData('DELETE', null, this.props.UserToken))
+                            .then(checkStatus)
+                            .then((responseJson) => {
+                                if (responseJson.deleted) {
+                                    this.props._onDayDelete(this.state.workout_day.id);
+                                    this.props.navigation.goBack();
+                                } else {
+                                    console.log(responseJson)
+                                }
+                            }).catch((error) => {
+                            console.log(error)
+                        });
+                    }
+                },
+            ]
+        );
     },
 
     newDay(workout_day) {
@@ -116,7 +149,7 @@ const EditWorkoutDay = React.createClass({
                     <ListView ref='workout_day_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                               keyboardShouldPersistTaps="handled"
                               refreshControl={<RefreshControl refreshing={this.state.refreshing}
-                                                              onRefresh={()=> this.getWorkoutDay(true)}/>}
+                                                              onRefresh={() => this.getWorkoutDay(true)}/>}
                               enableEmptySections={true}
                               dataSource={dataSource}
                               showsVerticalScrollIndicator={false}
@@ -130,12 +163,16 @@ const EditWorkoutDay = React.createClass({
                 }
 
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" offsetX={10} offsetY={20}>
+                    <ActionButton.Item buttonColor='#F22525' title="Delete"
+                                       onPress={this._delete}>
+                        <MaterialIcon name="delete-forever" color="white" size={getFontSize(22)}/>
+                    </ActionButton.Item>
                     <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={() => console.log('add note')}>
-                        <MaterialIcon name="note-add" color="white" size={22}/>
+                        <MaterialIcon name="note-add" color="white" size={getFontSize(22)}/>
                     </ActionButton.Item>
                     <ActionButton.Item buttonColor='#3498db' title="Add Exercise"
                                        onPress={this._addExercise}>
-                        <CustomIcon name="weight" color="white" size={22}/>
+                        <CustomIcon name="weight" color="white" size={getFontSize(22)}/>
                     </ActionButton.Item>
                 </ActionButton>
 

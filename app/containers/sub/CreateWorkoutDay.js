@@ -35,13 +35,14 @@ const CreateWorkoutDay = React.createClass({
     propTypes: {
         workoutId: React.PropTypes.number.isRequired,
         newDay: React.PropTypes.func.isRequired,
+        _onDayDelete: React.PropTypes.func.isRequired,
         navigation: React.PropTypes.object.isRequired,
         template_day: React.PropTypes.object
     },
 
     getInitialState() {
         return {
-            value: this.props.template_day ? {name: `${this.props.template_day.name} - Copy`}: null,
+            value: this.props.template_day ? {name: `${this.props.template_day.name} - Copy`} : null,
             days: [],
             disabled: false,
         }
@@ -58,14 +59,14 @@ const CreateWorkoutDay = React.createClass({
         }
     },
 
-    asyncActions(success, data = {}){
+    asyncActions(success, data = {}) {
         this.setState({disabled: false});
         if (success && data.props) {
             this.props.newDay(data.newTrainingDay);
             this.props.navigation.dispatch({
                 type: 'ReplaceCurrentScreen',
                 routeName: 'EditWorkoutDay',
-                params: data.props,
+                params: {...data.props, _onDayDelete: this.props._onDayDelete},
                 key: 'EditWorkoutDay'
             });
         } else {
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Heebo-Medium',
         textAlign: 'center'
     },
-    templateSection:{
+    templateSection: {
         padding: 10,
         backgroundColor: 'white',
         borderColor: '#e1e3df',

@@ -391,7 +391,7 @@ export function addEditWorkoutDay(data, asyncActions = null) {
                 if (responseJson.id) {
                     return asyncActions(true, {
                         newTrainingDay: responseJson,
-                        props: {workout_day_id: responseJson.id},
+                        props: {workout_day: responseJson},
                     });
                 } else {
                     return asyncActions(false)
@@ -439,6 +439,11 @@ export function deleteSet(id, asyncActions) {
                 }
             })
     }
+}
+
+
+export function deleteWorkout(scheduleId, workoutId) {
+    return {type: types.DELETE_WORKOUT, scheduleId, workoutId}
 }
 
 

@@ -126,6 +126,21 @@ export default function AppReducers(state = initialState, action = null) {
                 Schedules: state.Schedules.slice(0, index).concat(state.Schedules.slice(index + 1))
             };
 
+        case constants.DELETE_WORKOUT:
+            return {
+                ...state,
+                Schedules: state.Schedules.map(schedule => {
+                    if (schedule.id === action.scheduleId) {
+                        const workoutIndex = _.findIndex(schedule.workouts, {id: action.workoutId});
+                        return {
+                            ...schedule,
+                            workouts: schedule.workouts.slice(0, workoutIndex).concat(schedule.workouts.slice(workoutIndex + 1))
+                        }
+                    }
+                    return schedule
+                })
+            };
+
 
         case constants.CREATE_SCHEDULE:
             return {

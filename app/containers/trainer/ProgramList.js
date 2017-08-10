@@ -22,12 +22,12 @@ import CustomIcon from '../../components/CustomIcon';
 
 const ProgramList = React.createClass({
     propTypes: {
-        // Refreshing: React.PropTypes.bool.isRequired,
+        Refreshing: React.PropTypes.bool.isRequired,
     },
 
 
     componentDidMount() {
-        this.getNeeded(true);
+        if (!this.props.Schedules.length) this.getNeeded();
     },
 
     getNeeded(refresh = false) {
@@ -70,7 +70,7 @@ const ProgramList = React.createClass({
 
     renderRow(program) {
         let duration = 0;
-        program.workouts.forEach((workout)=> duration += workout.duration);
+        program.workouts.forEach((workout) => duration += workout.duration);
         return (
             <TouchableOpacity style={styles.link}
                               onPress={this._redirect.bind(null, 'EditSchedule', {scheduleId: program.id})}>
@@ -100,6 +100,8 @@ const ProgramList = React.createClass({
         return (
             <View style={{flex: 1}}>
                 <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                          refreshControl={<RefreshControl refreshing={this.props.Refreshing}
+                                                          onRefresh={this._refresh}/>}
                           enableEmptySections={true} dataSource={ProgramsDs} showsVerticalScrollIndicator={false}
                           renderRow={this.renderRow}
                 />
@@ -120,7 +122,6 @@ const ProgramList = React.createClass({
 ProgramList.navigationOptions = {
     title: 'Workout Programs',
 };
-
 
 
 const styles = StyleSheet.create({
@@ -161,6 +162,7 @@ const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
         Schedules: state.Global.Schedules,
+        Refreshing: state.Global.Refreshing,
     };
 };
 

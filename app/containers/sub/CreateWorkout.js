@@ -17,6 +17,7 @@ import SelectInput from '../../components/SelectInput';
 const CreateWorkout = React.createClass({
     propTypes: {
         scheduleId: React.PropTypes.number.isRequired,
+        _onWorkoutDelete: React.PropTypes.func.isRequired,
         template_workout: React.PropTypes.object
     },
 
@@ -49,7 +50,7 @@ const CreateWorkout = React.createClass({
             this.props.navigation.dispatch({
                 type: 'ReplaceCurrentScreen',
                 routeName: data.routeName,
-                params: data.props,
+                params: {...data.props, _onWorkoutDelete: this.props._onWorkoutDelete},
                 key: data.routeName
             });
         } else {

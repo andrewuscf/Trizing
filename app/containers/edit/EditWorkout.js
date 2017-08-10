@@ -85,25 +85,27 @@ const EditWorkout = React.createClass({
     },
 
     _createWorkoutDay() {
-        if (this.state.workout) {
-            this.props.navigation.navigate('CreateWorkoutDay', {workoutId: this.state.workout.id, newDay: this.newDay});
-        }
+        this.props.navigation.navigate('CreateWorkoutDay', {
+            workoutId: this.state.workout.id,
+            newDay: this.newDay,
+            _onDayDelete: this._onDayDelete
+        });
     },
 
     _toWorkoutDay(workout_day_id) {
-        if (this.state.workout) {
-            this.props.navigation.navigate('EditWorkoutDay', {workout_day_id: workout_day_id});
-        }
+        this.props.navigation.navigate('EditWorkoutDay', {
+            workout_day_id: workout_day_id,
+            _onDayDelete: this._onDayDelete
+        });
     },
 
     _onDuplicate(template_day) {
-        if (this.state.workout) {
-            this.props.navigation.navigate('CreateWorkoutDay', {
-                workoutId: this.state.workout.id,
-                newDay: this.newDay,
-                template_day: template_day
-            });
-        }
+        this.props.navigation.navigate('CreateWorkoutDay', {
+            workoutId: this.state.workout.id,
+            newDay: this.newDay,
+            template_day: template_day,
+            _onDayDelete: this._onDayDelete
+        });
     },
 
     _delete() {
@@ -116,12 +118,12 @@ const EditWorkout = React.createClass({
                     text: 'Delete',
                     onPress: () => {
 
-                        fetch(`${API_ENDPOINT}training/workout/${this.props.workoutId}/`,
+                        fetch(`${API_ENDPOINT}training/workout/${this.state.workout.id}/`,
                             fetchData('DELETE', null, this.props.UserToken))
                             .then(checkStatus)
                             .then((responseJson) => {
                                 if (responseJson.deleted) {
-                                    if (this.props._onWorkoutDelete) this.props._onWorkoutDelete(this.props.workoutId)
+                                    this.props._onWorkoutDelete(this.state.workout.id);
                                     this.props.navigation.goBack();
                                 } else {
                                     console.log(responseJson)
@@ -133,6 +135,19 @@ const EditWorkout = React.createClass({
                 },
             ]
         );
+    },
+
+    _onDayDelete(dayId) {
+        const workoutIndex = _.findIndex(this.state.workout.workout_days, {id: dayId});
+        if (workoutIndex !== -1) {
+            this.setState({
+                workout: {
+                    ...this.state.workout,
+                    workout_days: this.state.workout.workout_days.slice(0, workoutIndex)
+                        .concat(this.state.workout.workout_days.slice(workoutIndex + 1))
+                }
+            })
+        }
     },
 
 

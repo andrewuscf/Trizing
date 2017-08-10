@@ -80,16 +80,7 @@ const EditSchedule = React.createClass({
     },
 
     _onWorkoutDelete(workoutId) {
-        const workoutIndex = _.findIndex(this.state.schedule.workouts, {id: workoutId});
-        if (workoutIndex !== -1) {
-            this.setState({
-                schedule: {
-                    ...this.state.schedule,
-                    workouts: this.state.schedule.workouts.slice(0, workoutIndex)
-                        .concat(this.state.schedule.workouts.slice(workoutIndex + 1))
-                }
-            })
-        }
+        this.props.actions.deleteWorkout(this.state.schedule.id, workoutId)
     },
 
     renderHeader() {
@@ -116,7 +107,8 @@ const EditSchedule = React.createClass({
                         <MenuOptions customStyles={optionsStyles}>
                             <MenuOption onSelect={() => navigate('CreateWorkout', {
                                 scheduleId: this.props.scheduleId,
-                                template_workout: workout
+                                template_workout: workout,
+                                _onWorkoutDelete: this._onWorkoutDelete
                             })}
                                         text='Duplicate'/>
                         </MenuOptions>
@@ -176,7 +168,10 @@ const EditSchedule = React.createClass({
                         <MaterialIcon name="delete-forever" color="white" size={22}/>
                     </ActionButton.Item>
                     <ActionButton.Item buttonColor='#3498db' title="Add Block"
-                                       onPress={() => navigate('CreateWorkout', {scheduleId: this.props.scheduleId})}>
+                                       onPress={() => navigate('CreateWorkout', {
+                                           scheduleId: this.props.scheduleId,
+                                           _onWorkoutDelete: this._onWorkoutDelete
+                                       })}>
                         <MaterialIcon name="add" color="white" size={22}/>
                     </ActionButton.Item>
                 </ActionButton>
