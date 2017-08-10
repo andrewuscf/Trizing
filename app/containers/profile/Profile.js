@@ -5,7 +5,8 @@ import {
     View,
     Alert,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
+    RefreshControl
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -125,6 +126,8 @@ const Profile = React.createClass({
                 userImage = user.profile.thumbnail;
             return (
                 <ScrollView style={GlobalStyle.noHeaderContainer} ref="profile_list"
+                            refreshControl={<RefreshControl refreshing={this.state.refreshing}
+                                                            onRefresh={this._refresh}/>}
                             showsVerticalScrollIndicator={false} contentContainerStyle={{flex:1}}>
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
                         <AvatarImage style={styles.avatar} image={userImage}/>

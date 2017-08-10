@@ -213,9 +213,6 @@ const EditWorkout = React.createClass({
                                        onPress={this._delete}>
                         <MaterialIcon name="delete-forever" color="white" size={getFontSize(22)}/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={() => console.log('add note')}>
-                        <MaterialIcon name="note-add" color="white" size={getFontSize(22)}/>
-                    </ActionButton.Item>
                     <ActionButton.Item buttonColor='#3498db' title="Add Training Day"
                                        onPress={this._createWorkoutDay}>
                         <MaterialIcon name="add" color="white" size={getFontSize(22)}/>
