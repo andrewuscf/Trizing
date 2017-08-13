@@ -19,6 +19,7 @@ import moment from 'moment';
 import {getFontSize, trunc} from '../../actions/utils';
 
 import SetLogBox from '../../components/SetLogBox';
+import GlobalStyle from "../../containers/globalStyle";
 
 
 const DisplayExerciseBox = React.createClass({
@@ -101,18 +102,11 @@ const DisplayExerciseBox = React.createClass({
 
 
     render: function () {
-        let sets = this.props.exercise.sets.map((set, index) => {
+        let sets = null;
+        let notes = this.props.exercise.exercise_notes.map((note, i) => {
             return (
-                <View key={index} style={styles.rowSection}>
-                    <View style={styles.topSection}>
-                        <Text>{set.order}</Text>
-                    </View>
-                    <View style={styles.topSection}>
-                        <Text>{set.weight}</Text>
-                    </View>
-                    <View style={styles.topSection}>
-                        <Text>{set.reps}</Text>
-                    </View>
+                <View key={i} style={{}}>
+                    <Text>{i+1}. {note.text}</Text>
                 </View>
             )
         });
@@ -122,6 +116,22 @@ const DisplayExerciseBox = React.createClass({
                 return <SetLogBox ref={(row) => this.state.rows[i] = row} key={i} set={set} index={i}
                                   getStatus={this.getStatus}/>
             })
+        } else {
+            sets = this.props.exercise.sets.map((set, index) => {
+                return (
+                    <View key={index} style={styles.rowSection}>
+                        <View style={styles.topSection}>
+                            <Text>{set.order}</Text>
+                        </View>
+                        <View style={styles.topSection}>
+                            <Text>{set.weight}</Text>
+                        </View>
+                        <View style={styles.topSection}>
+                            <Text>{set.reps}</Text>
+                        </View>
+                    </View>
+                )
+            });
         }
 
         return (
@@ -178,6 +188,14 @@ const DisplayExerciseBox = React.createClass({
                         }
                     </View>
                     {sets}
+                    {notes.length ?
+                        <View style={[styles.noteSection]}>
+                            <Text style={styles.smallBold}>Notes:</Text>
+                            <View style={GlobalStyle.simpleTopBorder}/>
+                            {notes}
+                        </View>
+                        : null
+                    }
                 </View>
             </TouchableOpacity>
         )
@@ -212,7 +230,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     simpleTitle: {
-        fontSize: 18,
+        fontSize: getFontSize(18),
         fontFamily: 'Heebo-Bold',
         marginBottom: 5,
     },
@@ -226,8 +244,6 @@ const styles = StyleSheet.create({
     topSection: {
         justifyContent: 'center',
         alignItems: 'center',
-        // borderColor: '#e1e3df',
-        // borderWidth: .5,
         paddingTop: 5,
         paddingBottom: 5,
         flex: 1
@@ -245,6 +261,17 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(18),
         fontFamily: 'Heebo-Medium',
         color: 'grey'
+    },
+    noteSection: {
+        margin: 10,
+        marginLeft: 5,
+        marginRight: 5,
+    },
+    smallBold: {
+        fontSize: getFontSize(16),
+        fontFamily: 'Heebo-Bold',
+        // paddingLeft: 10,
+        // paddingBottom: 5
     },
 });
 

@@ -233,14 +233,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#f1f1f3'
     },
     header: {
-        fontSize: 26,
+        fontSize: getFontSize(26),
         fontFamily: 'Heebo-Medium',
         textAlign: 'center',
         borderBottomWidth: .5,
         borderColor: '#e1e3df',
     },
     day: {
-        fontSize: 28,
+        fontSize: getFontSize(28),
         fontFamily: 'Heebo-Bold',
         paddingLeft: 20
     },
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     smallBold: {
-        fontSize: 16,
+        fontSize: getFontSize(16),
         fontFamily: 'Heebo-Bold',
         paddingLeft: 10,
         paddingBottom: 5
