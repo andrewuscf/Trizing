@@ -46,6 +46,7 @@ import CreateEvent from './containers/sub/CreateEvent';
 import CreateChatRoom from './containers/sub/CreateChatRoom';
 import CreateMacroLog from './containers/sub/CreateMacroLog';
 import CreateQuestionnaire from './containers/sub/CreateQuestionnaire';
+import CreateNote from './containers/sub/CreateNote';
 
 
 // Profile Pages
@@ -149,6 +150,13 @@ const HomeNav = StackNavigator({
     MacroLogDetail: {
         screen: paramsToProps(MacroLogDetail)
     },
+
+    CreateNote: {
+        screen: paramsToProps(CreateNote),
+        navigationOptions: {
+            headerTitle: 'Add Note',
+        }
+    }
 
 
 }, {

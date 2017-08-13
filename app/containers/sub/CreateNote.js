@@ -1,84 +1,206 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
-    ScrollView,
     View,
-    Text,
     StyleSheet,
     Keyboard,
     TouchableOpacity,
+    Dimensions
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import t from 'tcomb-form-native';
+import _ from 'lodash';
+import DropdownAlert from 'react-native-dropdownalert';
 
-import * as GlobalActions from '../../actions/globalActions';
+import {fetchData, API_ENDPOINT, checkStatus, getFontSize} from '../../actions/utils';
 
+import InputAccessory from '../../components/InputAccessory';
+
+const Form = t.form.Form;
+const Note = t.struct({
+    text: t.String,
+});
+
+const {height: deviceHeight} = Dimensions.get('window');
 
 const CreateNote = React.createClass({
     propTypes: {
         type: React.PropTypes.string.isRequired,
-        object_id: React.PropTypes.number.isRequired
+        object_id: React.PropTypes.number.isRequired,
+        title: React.PropTypes.string.isRequired,
+        noteAdded: React.PropTypes.func.isRequired,
     },
 
-    asyncActions(start){
-        if (start) {
-            this.refs.postbutton.setState({busy: true});
-        } else {
-            this.refs.postbutton.setState({busy: false});
-            this.props.navigation.goBack();
+    getInitialState() {
+        return {
+            value: null,
+            disabled: false,
         }
     },
 
+    componentDidMount() {
+        this.props.navigation.setParams({handleSave: this.submit, disabled: this.state.disabled});
+    },
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.disabled !== this.state.disabled) {
+            this.props.navigation.setParams({handleSave: this.submit, disabled: this.state.disabled});
+        }
+    },
+
+    asyncActions(success) {
+        if (success) {
+            this.props.navigation.goBack();
+        } else {
+            this.dropdown.alertWithType('error', 'Error', "Couldn't create note.")
+        }
+        this.setState({disabled: false});
+    },
+
     submit() {
+        let values = this.refs.form.getValue();
+        if (values) {
+            values = {
+                ...values,
+                content_type: this.props.type,
+                object_id: this.props.object_id
+            };
+            this.setState({disabled: true});
+            fetch(`${API_ENDPOINT}training/notes/`,
+                fetchData('POST', JSON.stringify(values), this.props.UserToken))
+                .then(checkStatus)
+                .then((responseJson) => {
+                    if (responseJson.id) {
+                        this.props.noteAdded(responseJson);
+                        this.asyncActions(true);
+                    } else {
+                        this.asyncActions(false);
+                    }
+                }).catch((error) => {
+                console.log(error);
+                this.asyncActions(false);
+            });
+        }
 
     },
 
-    render: function () {
+    onChange(value) {
+        this.setState({value});
+    },
+
+    render() {
+        let options = {
+            auto: 'placeholders',
+            stylesheet: topStyle,
+            fields: {
+                text: {
+                    placeholder: `Add a note`,
+                    // onSubmitEditing: () => this.refs.form.getComponent('duration').refs.input.focus(),
+                    maxLength: 1000,
+                    autoCapitalize: 'sentences',
+                    multiline: true,
+                }
+            }
+        };
+
+
         return (
-            <View style={{flex: 1}}>
-                <ScrollView style={styles.flexCenter} keyboardShouldPersistTaps="handled"
-                            showsVerticalScrollIndicator={false}
-                            contentContainerStyle={styles.contentContainerStyle}>
-
-                    <View style={{marginBottom: 10}}>
-                        <Text>test</Text>
-                    </View>
-
-
-                </ScrollView>
-                <View style={styles.footer}>
-
-                </View>
+            <View style={styles.container}>
+                <Form
+                    ref="form"
+                    type={Note}
+                    options={options}
+                    onChange={this.onChange}
+                    value={this.state.value}
+                />
+                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
+                <InputAccessory/>
             </View>
         )
     }
 });
 
-const iconColor = '#8E8E8E';
 
 const styles = StyleSheet.create({
-    flexCenter: {
-        flex: .9,
-    },
-    footer: {
-        borderTopWidth: 1,
-        borderColor: '#e1e3df',
-        alignItems: 'center',
-        minHeight: 40,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        flex: .1
+    container: {
+        flex: 1
     }
 });
+
+const topStyle = _.cloneDeep(t.form.Form.stylesheet);
+
+topStyle.formGroup = {
+    ...topStyle.formGroup,
+    normal: {
+        ...topStyle.formGroup.normal,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderColor: '#e1e3df',
+        borderBottomWidth: 1,
+        marginBottom: 0,
+        backgroundColor: 'white'
+    },
+    error: {
+        ...topStyle.formGroup.error,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderColor: 'red',
+        borderBottomWidth: 1,
+        marginBottom: 0,
+        backgroundColor: 'white'
+    }
+};
+
+
+topStyle.textbox = {
+    ...topStyle.textbox,
+    normal: {
+        ...topStyle.textbox.normal,
+        borderWidth: 0,
+        marginTop: 5,
+        marginBottom: 0,
+        fontSize: 24,
+        minHeight: deviceHeight / 2 - 49,
+    },
+    error: {
+        ...topStyle.textbox.error,
+        borderWidth: 0,
+        marginTop: 5,
+        marginBottom: 0,
+        fontSize: 24,
+        minHeight: deviceHeight / 2 - 49,
+    }
+};
+
+topStyle.textboxView = {
+    ...topStyle.textboxView,
+    normal: {
+        ...topStyle.textboxView.normal,
+        borderWidth: 0,
+        borderRadius: 0,
+        borderBottomWidth: 0,
+        flex: 1,
+        backgroundColor: 'transparent',
+        minHeight: deviceHeight / 2 - 49,
+    },
+    error: {
+        ...topStyle.textboxView.error,
+        borderWidth: 0,
+        borderRadius: 0,
+        borderBottomWidth: 0,
+        flex: 1,
+        backgroundColor: 'transparent',
+        minHeight: deviceHeight / 2 - 49,
+    }
+};
 
 
 const stateToProps = (state) => {
     return state.Global;
 };
 
-const dispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators(GlobalActions, dispatch)
-    }
-};
 
-export default connect(stateToProps, dispatchToProps)(CreateNote);
+export default connect(stateToProps, null)(CreateNote);

@@ -17,6 +17,7 @@ import ActionButton from 'react-native-action-button';
 import * as GlobalActions from '../../actions/globalActions';
 import {trunc, fetchData, API_ENDPOINT, checkStatus, getFontSize} from '../../actions/utils';
 import {DAYS_OF_WEEK} from '../../assets/constants';
+import GlobalStyle from '../../containers/globalStyle';
 
 import CustomIcon from '../../components/CustomIcon';
 import DisplayExerciseBox from '../../components/trainer/DisplayExerciseBox';
@@ -57,6 +58,8 @@ const EditWorkoutDay = React.createClass({
             fetchData('GET', null, this.props.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
+
+                console.log(responseJson)
                 let newState = {refreshing: false};
                 if (responseJson.id) {
                     newState = {
@@ -116,8 +119,20 @@ const EditWorkoutDay = React.createClass({
 
 
     renderHeader() {
+        if (!this.state.workout_day.notes.length) {
+            return null;
+        }
         return (
-            <Text style={[styles.header]}>Exercises</Text>
+            <View style={[GlobalStyle.simpleBottomBorder, styles.headerContainer]}>
+                <Text style={styles.smallBold}>Notes:</Text>
+                {this.state.workout_day.notes.map((note, i) =>
+                    <Text key={i} style={[{
+                        paddingLeft: 15,
+                        paddingRight: 15,
+                        paddingBottom: 10
+                    }, styles.notBold]}>{i + 1}. {note.text}</Text>)
+                }
+            </View>
         )
     },
 
@@ -129,6 +144,25 @@ const EditWorkoutDay = React.createClass({
 
     deleteSet(setId) {
         this.props.actions.deleteSet(setId, this.deleteSetActions)
+    },
+
+    _onNoteAdded(newNote) {
+        this.setState({
+            ...this.state.workout_day,
+            notes: this.state.workout_day.notes ? [
+                ...this.state.workout_day.notes,
+                newNote
+            ] : [newNote]
+        });
+    },
+
+    addNote() {
+        this.props.navigation.navigate('CreateNote', {
+            type: 'training day',
+            object_id: this.state.workout_day.id,
+            title: this.state.workout_day.name,
+            noteAdded: this._onNoteAdded
+        });
     },
 
 
@@ -152,6 +186,7 @@ const EditWorkoutDay = React.createClass({
                                                               onRefresh={() => this.getWorkoutDay(true)}/>}
                               enableEmptySections={true}
                               dataSource={dataSource}
+                              renderHeader={this.renderHeader}
                               showsVerticalScrollIndicator={false}
                               contentContainerStyle={{paddingBottom: 20}}
                               renderRow={(exercise, sectionID, rowID) =>
@@ -167,7 +202,7 @@ const EditWorkoutDay = React.createClass({
                                        onPress={this._delete}>
                         <MaterialIcon name="delete-forever" color="white" size={getFontSize(22)}/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={() => console.log('add note')}>
+                    <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={this.addNote}>
                         <MaterialIcon name="note-add" color="white" size={getFontSize(22)}/>
                     </ActionButton.Item>
                     <ActionButton.Item buttonColor='#3498db' title="Add Exercise"
@@ -204,7 +239,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
         paddingBottom: 10,
-
+    },
+    headerContainer: {
+        paddingTop: 20,
+        paddingBottom: 20,
+        backgroundColor: 'white'
+    },
+    smallBold: {
+        fontSize: 16,
+        fontFamily: 'Heebo-Bold',
+        paddingLeft: 10,
+        paddingBottom: 5
+    },
+    notBold: {
+        color: 'grey',
+        fontFamily: 'Heebo-Medium',
     }
 });
 
