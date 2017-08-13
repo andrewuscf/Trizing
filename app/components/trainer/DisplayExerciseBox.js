@@ -28,7 +28,8 @@ const DisplayExerciseBox = React.createClass({
         _editExercise: React.PropTypes.func,
         log: React.PropTypes.bool,
         workout: React.PropTypes.number,
-        date: React.PropTypes.string
+        date: React.PropTypes.string,
+        addNote: React.PropTypes.func
     },
 
     getInitialState() {
@@ -49,7 +50,7 @@ const DisplayExerciseBox = React.createClass({
             this.props._editExercise(this.props.exercise);
     },
 
-    _onDelete(){
+    _onDelete() {
         this.props.exercise.sets.forEach((set) => {
             this.props.deleteSet(set.id);
         });
@@ -94,6 +95,10 @@ const DisplayExerciseBox = React.createClass({
 
     },
 
+    toAddNote() {
+        this.props.addNote(this.props.exercise)
+    },
+
 
     render: function () {
         let sets = this.props.exercise.sets.map((set, index) => {
@@ -124,12 +129,16 @@ const DisplayExerciseBox = React.createClass({
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <Text style={styles.simpleTitle}>{trunc(this.props.exercise.name, 36)}</Text>
                     {this.props.deleteSet && this.props._editExercise ?
-                        <Menu >
+                        <Menu>
                             <MenuTrigger>
                                 <FontIcon name="ellipsis-h" size={getFontSize(35)}/>
                             </MenuTrigger>
                             <MenuOptions customStyles={optionsStyles}>
                                 <MenuOption onSelect={this._redirect} text='Edit'/>
+                                {typeof this.props.addNote !== 'undefined' ?
+                                    <MenuOption onSelect={this.toAddNote} text='Add note'/>
+                                    : null
+                                }
                                 <MenuOption onSelect={this._onDelete} text='Delete'/>
                             </MenuOptions>
                         </Menu>

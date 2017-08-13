@@ -156,13 +156,23 @@ const EditWorkoutDay = React.createClass({
         });
     },
 
-    addNote() {
-        this.props.navigation.navigate('CreateNote', {
-            type: 'training day',
-            object_id: this.state.workout_day.id,
-            title: this.state.workout_day.name,
-            noteAdded: this._onNoteAdded
-        });
+    addNote(exercise) {
+        if (exercise) {
+            this.props.navigation.navigate('CreateNote', {
+                type: 'training day',
+                object_id: this.state.workout_day.id,
+                title: exercise.name,
+                exerciseId: exercise.id,
+                noteAdded: this._onNoteAdded
+            });
+        } else {
+            this.props.navigation.navigate('CreateNote', {
+                type: 'training day',
+                object_id: this.state.workout_day.id,
+                title: this.state.workout_day.name,
+                noteAdded: this._onNoteAdded
+            });
+        }
     },
 
 
@@ -191,6 +201,7 @@ const EditWorkoutDay = React.createClass({
                               contentContainerStyle={{paddingBottom: 20}}
                               renderRow={(exercise, sectionID, rowID) =>
                                   <DisplayExerciseBox exercise={exercise}
+                                                      addNote={this.addNote}
                                                       _editExercise={this._editExercise}
                                                       deleteSet={this.deleteSet}/>
                               }

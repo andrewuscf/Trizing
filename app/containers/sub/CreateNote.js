@@ -2,17 +2,16 @@ import React from 'react';
 import {
     View,
     StyleSheet,
-    Keyboard,
-    TouchableOpacity,
-    Dimensions
+    Dimensions,
+    Text
 } from 'react-native';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
 import DropdownAlert from 'react-native-dropdownalert';
 
 import {fetchData, API_ENDPOINT, checkStatus, getFontSize} from '../../actions/utils';
+import GlobalStyle from '../../containers/globalStyle';
 
 import InputAccessory from '../../components/InputAccessory';
 
@@ -29,6 +28,7 @@ const CreateNote = React.createClass({
         object_id: React.PropTypes.number.isRequired,
         title: React.PropTypes.string.isRequired,
         noteAdded: React.PropTypes.func.isRequired,
+        exerciseId: React.PropTypes.number
     },
 
     getInitialState() {
@@ -65,11 +65,18 @@ const CreateNote = React.createClass({
                 content_type: this.props.type,
                 object_id: this.props.object_id
             };
+            if (this.props.exerciseId) {
+                values = {
+                    ...values,
+                    exercise: this.props.exerciseId
+                }
+            }
             this.setState({disabled: true});
             fetch(`${API_ENDPOINT}training/notes/`,
                 fetchData('POST', JSON.stringify(values), this.props.UserToken))
                 .then(checkStatus)
                 .then((responseJson) => {
+                console.log(responseJson)
                     if (responseJson.id) {
                         this.props.noteAdded(responseJson);
                         this.asyncActions(true);
@@ -106,6 +113,9 @@ const CreateNote = React.createClass({
 
         return (
             <View style={styles.container}>
+                <View style={[GlobalStyle.simpleBottomBorder, styles.headerContainer]}>
+                    <Text style={styles.smallBold}>{this.props.title}</Text>
+                </View>
                 <Form
                     ref="form"
                     type={Note}
@@ -124,7 +134,18 @@ const CreateNote = React.createClass({
 const styles = StyleSheet.create({
     container: {
         flex: 1
-    }
+    },
+    headerContainer: {
+        paddingTop: 20,
+        paddingBottom: 20,
+        backgroundColor: 'white'
+    },
+    smallBold: {
+        fontSize: 16,
+        fontFamily: 'Heebo-Bold',
+        paddingLeft: 10,
+        paddingBottom: 5
+    },
 });
 
 const topStyle = _.cloneDeep(t.form.Form.stylesheet);
