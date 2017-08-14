@@ -18,6 +18,8 @@ import moment from 'moment';
 
 import {getFontSize, trunc} from '../../actions/utils';
 
+
+import AvatarImage from '../../components/AvatarImage';
 import SetLogBox from '../../components/SetLogBox';
 import GlobalStyle from "../../containers/globalStyle";
 
@@ -106,7 +108,7 @@ const DisplayExerciseBox = React.createClass({
         let notes = this.props.exercise.exercise_notes.map((note, i) => {
             return (
                 <View key={i} style={{}}>
-                    <Text>{i+1}. {note.text}</Text>
+                    <Text>{i + 1}. {note.text}</Text>
                 </View>
             )
         });
@@ -137,7 +139,13 @@ const DisplayExerciseBox = React.createClass({
         return (
             <TouchableOpacity style={styles.displayWorkoutBox} onPress={this.toggleDetails}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <Text style={styles.simpleTitle}>{trunc(this.props.exercise.name, 36)}</Text>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                        {this.props.exercise.image ?
+                            <AvatarImage image={this.props.exercise.image} style={styles.exerciseImage} cache={true}/>
+                            : null
+                        }
+                        <Text style={styles.simpleTitle}>{trunc(this.props.exercise.name, 30)}</Text>
+                    </View>
                     {this.props.deleteSet && this.props._editExercise ?
                         <Menu>
                             <MenuTrigger>
@@ -273,6 +281,12 @@ const styles = StyleSheet.create({
         // paddingLeft: 10,
         // paddingBottom: 5
     },
+    exerciseImage: {
+        height: 40,
+        width: 40,
+        borderRadius: 20,
+        marginRight: 5
+    }
 });
 
 
