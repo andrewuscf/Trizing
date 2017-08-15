@@ -49,7 +49,7 @@ const CreateExercise = React.createClass({
         this.props.navigation.setParams({handleSave: this._save, disabled: this.state.disabled});
     },
 
-    componentDidUpdate(prevProps, prevState){
+    componentDidUpdate(prevProps, prevState) {
         if (prevState.disabled !== this.state.disabled) {
             this.props.navigation.setParams({handleSave: this._save, disabled: this.state.disabled});
         }
