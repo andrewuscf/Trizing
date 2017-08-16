@@ -62,7 +62,7 @@ const SplashScreen = React.createClass({
                 <CustomStatus/>
                 <View style={styles.top}>
                     <Image style={styles.logo} source={require('../assets/images/new-logo.png')}/>
-                    <Text style={[styles.trizing, GlobalStyle.redText]}>{letterSpacing('TRIZING', 3)}</Text>
+                    <Text style={[styles.trizing, GlobalStyle.redText]}>{letterSpacing('Simplylift', 3)}</Text>
                 </View>
                 <View style={styles.center} onLayout={this.setSize}>
                     <Swiper style={styles.wrapper} height={this.state.height} width={this.state.width}

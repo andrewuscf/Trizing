@@ -1,4 +1,4 @@
 import React, { AppRegistry } from 'react-native';
-import Trizing from './app/AppWrapper';
+import Simplylift from './app/AppWrapper';
 
-AppRegistry.registerComponent('Trizing', () => Trizing);
+AppRegistry.registerComponent('Simplylift', () => Simplylift);

@@ -44,7 +44,11 @@ const Home = React.createClass({
 
 
     componentDidMount() {
-        this.getNeeded();
+        if (this.props.RequestUser.type === 1 && !this.props.Clients.length) {
+            this.getNeeded();
+        } else if (this.props.RequestUser.type === 2 && !this.props.ActiveData.length) {
+            this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), false)
+        }
     },
 
     getNeeded(refresh = false) {
