@@ -44,19 +44,14 @@ const Home = React.createClass({
 
 
     componentDidMount() {
-        if (this.props.RequestUser.type === 1 && !this.props.Clients.length) {
-            this.getNeeded();
-        } else if (this.props.RequestUser.type === 2 && !this.props.ActiveData.length) {
-            this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), false)
-        }
+        this.getNeeded();
     },
 
     getNeeded(refresh = false) {
         if (this.props.RequestUser.type === 1) {
             this.props.actions.getClients(refresh);
-        } else {
-            this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), true);
         }
+        this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), refresh);
         if (refresh) {
             this.props.getNotifications(refresh);
         }
@@ -132,6 +127,8 @@ const Home = React.createClass({
         let content = null;
         const {navigate} = this.props.navigation;
         const today = moment();
+        const data = _.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")});
+        console.log(data);
         if (isTrainer) {
             content = (
                 <View>
@@ -149,7 +146,6 @@ const Home = React.createClass({
                 </View>
             )
         } else {
-            const data = _.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")});
             let calories = 0;
             let fats = 0;
             let protein = 0;
