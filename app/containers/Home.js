@@ -252,7 +252,7 @@ const Home = React.createClass({
                     <View style={[styles.topItem]}/>
                     <View style={styles.topItem}>
                         <TouchableOpacity onPress={() => navigate('MyProfile')} style={[{paddingRight: 10}]}>
-                            <FontIcon size={getFontSize(25)} name="user-circle-o"/>
+                            <FontIcon size={getFontSize(25)} name="user-circle-o" color='#00AFA3'/>
                         </TouchableOpacity>
                     </View>
                 </View>

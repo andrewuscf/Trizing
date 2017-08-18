@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -72,6 +71,8 @@
 		CB4DD15CC00E41CCA3FDA64B /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 995E3393F9844DDC9EE44EAE /* FontAwesome.ttf */; };
 		D355BBDFFA16029374E32C06 /* Pods_TrizingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A30EC62818662681E5D1792A /* Pods_TrizingTests.framework */; };
 		EEFA4CDFCC754E788D9A0E7A /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99EFCA2327074196B81CCAFC /* Ionicons.ttf */; };
+		9941FA6A4FB04F29B3C07B89 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59039F2031ED4705B9501232 /* libCodePush.a */; };
+		55C67238205F484781CAED9D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E5D96F5A4F4EBF92A3F589 /* libz.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -398,6 +399,9 @@
 		C8AC1A1DCD40DEDD96E800C4 /* Pods-Trizing.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing.release.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing/Pods-Trizing.release.xcconfig"; sourceTree = "<group>"; };
 		D520597FA6DC4CE0A427EDD5 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		FA6FBCA42C2E184906EAE148 /* libPods-Trizing-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trizing-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B967516DA7964272BAEA0EE5 /* CodePush.xcodeproj */ = {isa = PBXFileReference; name = "CodePush.xcodeproj"; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		59039F2031ED4705B9501232 /* libCodePush.a */ = {isa = PBXFileReference; name = "libCodePush.a"; path = "libCodePush.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		51E5D96F5A4F4EBF92A3F589 /* libz.tbd */ = {isa = PBXFileReference; name = "libz.tbd"; path = "usr/lib/libz.tbd"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = sourcecode.text-based-dylib-definition; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -434,6 +438,8 @@
 				3CC74A33401F345463FA6E3F /* Pods_Trizing.framework in Frameworks */,
 				76994335828F4092B855B1AD /* libRNFetchBlob.a in Frameworks */,
 				B22C6691587547769E014336 /* libRCTActionSheet.a in Frameworks */,
+				9941FA6A4FB04F29B3C07B89 /* libCodePush.a in Frameworks */,
+				55C67238205F484781CAED9D /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,6 +634,7 @@
 				FA6FBCA42C2E184906EAE148 /* libPods-Trizing-tvOSTests.a */,
 				979ED9A76BF8049D87E14508 /* Pods_Trizing.framework */,
 				A30EC62818662681E5D1792A /* Pods_TrizingTests.framework */,
+				51E5D96F5A4F4EBF92A3F589 /* libz.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -727,6 +734,7 @@
 				9872222C7EC84D04A7378C16 /* imageCropPicker.xcodeproj */,
 				348DEFF9B9A143C193ECD377 /* RNFetchBlob.xcodeproj */,
 				9665C27EB8794E7CAAD518DF /* ReactNativeGlobalProps.xcodeproj */,
+				B967516DA7964272BAEA0EE5 /* CodePush.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1604,6 +1612,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1626,6 +1635,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1737,6 +1747,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1767,6 +1778,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1800,6 +1812,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Trizing-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1825,6 +1838,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);

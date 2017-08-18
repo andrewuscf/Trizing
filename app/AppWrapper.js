@@ -1,6 +1,7 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import configureStore from './stores/configureStore';
+import codePush from "react-native-code-push";
 
 import App from './App';
 
@@ -17,4 +18,4 @@ const AppWrapper = React.createClass({
     }
 });
 
-export default AppWrapper;
+export default codePush(AppWrapper);
