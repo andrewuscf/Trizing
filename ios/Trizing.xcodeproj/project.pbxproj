@@ -408,14 +408,18 @@
 		9872222C7EC84D04A7378C16 /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
 		995E3393F9844DDC9EE44EAE /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		99EFCA2327074196B81CCAFC /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		9D1C53441605683190A95F3C /* Pods-Trizing.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing.staging.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing/Pods-Trizing.staging.xcconfig"; sourceTree = "<group>"; };
 		A30EC62818662681E5D1792A /* Pods_TrizingTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrizingTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA93046519634EE083C2E02A /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		AAC96E42526948DF88C67413 /* Heebo-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Heebo-Bold.ttf"; path = "../app/assets/fonts/Heebo-Bold.ttf"; sourceTree = "<group>"; };
 		AD921850405B4BF6AD810168 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		B79C9CFCF6A50C9C8CD4BEAD /* Pods-Trizing-tvOS.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing-tvOS.staging.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing-tvOS/Pods-Trizing-tvOS.staging.xcconfig"; sourceTree = "<group>"; };
 		B967516DA7964272BAEA0EE5 /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		BF433F16B63F21240FA4BB03 /* Pods-Trizing-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing-tvOSTests/Pods-Trizing-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C8AC1A1DCD40DEDD96E800C4 /* Pods-Trizing.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing.release.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing/Pods-Trizing.release.xcconfig"; sourceTree = "<group>"; };
 		D520597FA6DC4CE0A427EDD5 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
+		D781503293496414420D425A /* Pods-Trizing-tvOSTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing-tvOSTests.staging.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing-tvOSTests/Pods-Trizing-tvOSTests.staging.xcconfig"; sourceTree = "<group>"; };
+		ECB86EA444CF332D5A1439B7 /* Pods-TrizingTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrizingTests.staging.xcconfig"; path = "Pods/Target Support Files/Pods-TrizingTests/Pods-TrizingTests.staging.xcconfig"; sourceTree = "<group>"; };
 		FA6FBCA42C2E184906EAE148 /* libPods-Trizing-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trizing-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -714,6 +718,10 @@
 				9373D043B42E10AADDD0B447 /* Pods-Trizing-tvOSTests.release.xcconfig */,
 				41598DCACC98D3BD3F00368B /* Pods-TrizingTests.debug.xcconfig */,
 				964565CEF5A8BC66A7AC2152 /* Pods-TrizingTests.release.xcconfig */,
+				9D1C53441605683190A95F3C /* Pods-Trizing.staging.xcconfig */,
+				B79C9CFCF6A50C9C8CD4BEAD /* Pods-Trizing-tvOS.staging.xcconfig */,
+				D781503293496414420D425A /* Pods-Trizing-tvOSTests.staging.xcconfig */,
+				ECB86EA444CF332D5A1439B7 /* Pods-TrizingTests.staging.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1701,22 +1709,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = ZU3D3L7W4E;
-				"HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(inherited)",
-					"${PODS_ROOT}/Firebase/Core/Sources",
-					"$(inherited)",
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
-					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\"",
-					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
-					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
-					"\"${PODS_ROOT}/Headers/Public/FirebaseMessaging\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
-					"\"$(SRCROOT)/../node_modules/react-native-fcm/ios\"",
-				);
+				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited) ${PODS_ROOT}/Firebase/Core/Sources $(inherited) \"${PODS_ROOT}/Headers/Public\" \"${PODS_ROOT}/Headers/Public/Firebase\" \"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\" \"${PODS_ROOT}/Headers/Public/FirebaseCore\" \"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\" \"${PODS_ROOT}/Headers/Public/FirebaseMessaging\" \"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleUtilities\" \"$(SRCROOT)/../node_modules/react-native-fcm/ios\"";
 				INFOPLIST_FILE = Trizing/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1740,22 +1733,7 @@
 				CODE_SIGN_ENTITLEMENTS = Trizing/Trizing.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZU3D3L7W4E;
-				"HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(inherited)",
-					"${PODS_ROOT}/Firebase/Core/Sources",
-					"$(inherited)",
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
-					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\"",
-					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
-					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
-					"\"${PODS_ROOT}/Headers/Public/FirebaseMessaging\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
-					"\"$(SRCROOT)/../node_modules/react-native-fcm/ios\"",
-				);
+				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited) ${PODS_ROOT}/Firebase/Core/Sources $(inherited) \"${PODS_ROOT}/Headers/Public\" \"${PODS_ROOT}/Headers/Public/Firebase\" \"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\" \"${PODS_ROOT}/Headers/Public/FirebaseCore\" \"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\" \"${PODS_ROOT}/Headers/Public/FirebaseMessaging\" \"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleUtilities\" \"$(SRCROOT)/../node_modules/react-native-fcm/ios\"";
 				INFOPLIST_FILE = Trizing/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1892,6 +1870,157 @@
 			};
 			name = Release;
 		};
+		499D8DC01F473EEF002C5009 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODEPUSH_KEY = "";
+				"CODEPUSH_KEY[arch=*]" = "8Sdxx3ylP8kh3p2xbh5blhWBxYRB8ef6a3d8-c1cd-41fd-8fee-9d44f7f208d0";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Staging;
+		};
+		499D8DC11F473EEF002C5009 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9D1C53441605683190A95F3C /* Pods-Trizing.staging.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Trizing/Trizing.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZU3D3L7W4E;
+				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited) ${PODS_ROOT}/Firebase/Core/Sources $(inherited) \"${PODS_ROOT}/Headers/Public\" \"${PODS_ROOT}/Headers/Public/Firebase\" \"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\" \"${PODS_ROOT}/Headers/Public/FirebaseCore\" \"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\" \"${PODS_ROOT}/Headers/Public/FirebaseMessaging\" \"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleUtilities\" \"$(SRCROOT)/../node_modules/react-native-fcm/ios\"";
+				INFOPLIST_FILE = Trizing/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.trizing;
+				PRODUCT_NAME = Trizing;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Staging;
+		};
+		499D8DC21F473EEF002C5009 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ECB86EA444CF332D5A1439B7 /* Pods-TrizingTests.staging.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COPY_PHASE_STRIP = NO;
+				INFOPLIST_FILE = TrizingTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Trizing.app/Trizing";
+			};
+			name = Staging;
+		};
+		499D8DC31F473EEF002C5009 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B79C9CFCF6A50C9C8CD4BEAD /* Pods-Trizing-tvOS.staging.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Trizing-tvOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Trizing-tvOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+			};
+			name = Staging;
+		};
+		499D8DC41F473EEF002C5009 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D781503293496414420D425A /* Pods-Trizing-tvOSTests.staging.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Trizing-tvOSTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Trizing-tvOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Trizing-tvOS.app/Trizing-tvOS";
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+			};
+			name = Staging;
+		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1911,6 +2040,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODEPUSH_KEY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1956,6 +2086,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODEPUSH_KEY = "";
+				"CODEPUSH_KEY[arch=*]" = "_zRjjNfCgVH8wmcosiBflzUOd-_18ef6a3d8-c1cd-41fd-8fee-9d44f7f208d0";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1983,6 +2115,7 @@
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
 				00E356F71AD99517003FC87E /* Release */,
+				499D8DC21F473EEF002C5009 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1992,6 +2125,7 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
+				499D8DC11F473EEF002C5009 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2001,6 +2135,7 @@
 			buildConfigurations = (
 				2D02E4971E0B4A5E006451C7 /* Debug */,
 				2D02E4981E0B4A5E006451C7 /* Release */,
+				499D8DC31F473EEF002C5009 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2010,6 +2145,7 @@
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
 				2D02E49A1E0B4A5E006451C7 /* Release */,
+				499D8DC41F473EEF002C5009 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2019,6 +2155,7 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+				499D8DC01F473EEF002C5009 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

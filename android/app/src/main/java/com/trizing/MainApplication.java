@@ -35,10 +35,10 @@ public class MainApplication extends Application implements ReactApplication {
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
-    @Override
-    protected String getJSBundleFile() {
-      return CodePush.getJSBundleFile();
-    }
+        @Override
+        protected String getJSBundleFile() {
+            return CodePush.getJSBundleFile();
+        }
 
         @Override
         public boolean getUseDeveloperSupport() {
@@ -49,11 +49,11 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey), getApplicationContext(), BuildConfig.DEBUG),
-            new RNFetchBlobPackage(),
-            new PickerPackage(),
-            new FIRMessagingPackage(),
-            new RNSvgPackage(),
+                    new CodePush(BuildConfig.CODEPUSH_KEY, MainApplication.this, BuildConfig.DEBUG),
+                    new RNFetchBlobPackage(),
+                    new PickerPackage(),
+                    new FIRMessagingPackage(),
+                    new RNSvgPackage(),
                     new FBSDKPackage(mCallbackManager),
                     new VectorIconsPackage()
             );
