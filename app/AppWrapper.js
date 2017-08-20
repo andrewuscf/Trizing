@@ -2,7 +2,6 @@ import React from 'react';
 import {Provider} from 'react-redux';
 import configureStore from './stores/configureStore';
 import codePush from "react-native-code-push";
-codePush.sync({ updateDialog: true });
 
 import App from './App';
 
