@@ -29,7 +29,7 @@ const ChatRoomBox = React.createClass({
     },
 
     _toRoom() {
-        this.props._redirect('ChatRoom', {roomId: this.props.room.id});
+        this.props._redirect('ChatRoom', {room_label: this.props.room.label});
     },
 
     trimToLength(text, m) {
@@ -103,7 +103,8 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     bold: {
-        fontWeight: 'bold'
+        color: 'grey'
+        // fontWeight: 'bold'
     },
     lastMessageSection: {
         flex: 1,

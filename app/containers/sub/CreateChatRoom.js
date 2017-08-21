@@ -35,11 +35,18 @@ const CreateChatRoom = React.createClass({
     },
 
 
-    asyncActions(start, chatroom = null){
+    asyncActions(start, chatroom = null) {
         if (start) {
             // Need to provide messages to select users.
         } else {
-            if (chatroom) this.props.navigation.navigate('ChatRoom', {roomId: chatroom});
+            if (chatroom) {
+                this.props.navigation.dispatch({
+                    type: 'ReplaceCurrentScreen',
+                    routeName: 'ChatRoom',
+                    params: {room_label: chatroom},
+                    key: 'ChatRoom'
+                });
+            }
         }
     },
 

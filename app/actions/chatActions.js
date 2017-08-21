@@ -21,7 +21,7 @@ export function getChatRooms(refresh = false) {
 }
 
 export function sendMessage(data) {
-    return {type: types.SEND_MESSAGE, response: data};
+    return {type: types.SEND_MESSAGE, message: data};
 }
 
 export function createChatRoom(data, asyncActions) {
@@ -31,7 +31,7 @@ export function createChatRoom(data, asyncActions) {
             fetchData('POST', JSON.stringify(data), getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
-                asyncActions(false, responseJson.id);
+                asyncActions(false, responseJson.label);
                 return dispatch({type: types.CREATE_CHAT_ROOM, response: responseJson});
             })
             .catch((error) => {

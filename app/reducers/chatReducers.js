@@ -14,12 +14,12 @@ export default function AppReducers(state = initialState, action = null) {
     switch (action.type) {
         case constants.LOAD_ROOMS:
             const rooms = (action.refresh) ? action.response.results : [
-                    ...state.Rooms,
-                    ...action.response.results
-                ];
+                ...state.Rooms,
+                ...action.response.results
+            ];
             return {
                 ...state,
-                Rooms:  _.uniqBy(rooms, 'id'),
+                Rooms: _.uniqBy(rooms, 'id'),
                 RoomsNext: action.response.next,
                 Refreshing: false,
                 ChatIsLoading: false,
@@ -28,24 +28,31 @@ export default function AppReducers(state = initialState, action = null) {
         case constants.SEND_MESSAGE:
             return {
                 ...state,
-                Rooms: state.Rooms.map(room =>
-                    (parseInt(room.id) == action.response.room) ?
+                Rooms: _.orderBy(state.Rooms.map(chat_room =>
+                    (chat_room.label === action.message.room_label) ?
                         {
-                            ...room,
-                            last_message: action.response
+                            ...chat_room,
+                            last_message: action.message
                         } :
-                        room
-                )
+                        chat_room
+                ), function (chat_room) {
+                    if (chat_room.last_message) {
+                        return chat_room.last_message.createdAt
+                    }
+                    return chat_room.createdAt
+                }, ['desc']),
+                PushedMessage: action.pushNotification ? action.message : null
             };
 
+
         case constants.CREATE_CHAT_ROOM:
-            const index = _.findIndex(state.Rooms, {id: action.response.id});
+            const index = _.findIndex(state.Rooms, {label: action.response.label});
             return {
                 ...state,
                 Rooms: index != -1 ? state.Rooms : [
-                        action.response,
-                        ...state.Rooms
-                    ]
+                    action.response,
+                    ...state.Rooms
+                ]
             };
 
         case constants.GET_TEAM:

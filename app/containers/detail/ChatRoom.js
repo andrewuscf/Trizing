@@ -13,12 +13,14 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {GiftedChat} from 'react-native-gifted-chat';
 
-import {fetchData, API_ENDPOINT} from '../../actions/utils';
+import * as ChatActions from '../../actions/chatActions';
+
+import {fetchData, API_ENDPOINT, checkStatus} from '../../actions/utils';
 
 
 const ChatRoom = React.createClass({
     propTypes: {
-        roomId: React.PropTypes.number.isRequired
+        room_label: React.PropTypes.string.isRequired
     },
 
     getInitialState() {
@@ -33,8 +35,23 @@ const ChatRoom = React.createClass({
         this.getMessages();
     },
 
+    componentDidUpdate(prevProps, prevState) {
+        const newMessage = this.props.PushedMessage;
+        if (newMessage && newMessage != prevProps.PushedMessage) {
+            if (newMessage.room_label == this.state.label) {
+                this.setState((previousState) => {
+                    return {
+                        messages: GiftedChat.append(previousState.messages, [{
+                            ...newMessage,
+                        }]),
+                    };
+                });
+            }
+        }
+    },
+
     getMessages() {
-        let url = `${API_ENDPOINT}social/messages/?room_id=${this.props.roomId}`;
+        let url = `${API_ENDPOINT}social/messages/?room_label=${this.props.room_label}`;
         if (this.state.next) {
             url = this.state.next;
         }
@@ -53,7 +70,7 @@ const ChatRoom = React.createClass({
     },
 
     onSendPress(messages = []) {
-        const data = {room: this.props.roomId, text: messages[0].text};
+        const data = {room: {label: this.props.room_label}, text: messages[0].text};
         let url = `${API_ENDPOINT}social/messages/`;
 
         this.setState((previousState) => {
@@ -62,8 +79,8 @@ const ChatRoom = React.createClass({
             };
         });
         fetch(url, fetchData('POST', JSON.stringify(data), this.props.UserToken))
-            // .then((response) => response.json())
-            // .then((responseJson) => {});
+            .then(checkStatus)
+            .then((responseJson) => {this.props.actions.sendMessage(responseJson)});
     },
 
     _back() {
@@ -71,12 +88,6 @@ const ChatRoom = React.createClass({
     },
 
     render() {
-        // const list = this.state.messages.map((message, index) => {
-        //     return (
-        //         <MessageBox key={index} message={message}
-        //                     position={message.user.id == this.props.RequestUser.id ? 'right' : 'left'}/>
-        //     )
-        // });
         return (
             <View style={styles.container}>
                 <GiftedChat
@@ -108,7 +119,9 @@ const stateToProps = (state) => {
 };
 
 const dispatchToProps = (dispatch) => {
-    return {}
+    return {
+        actions: bindActionCreators(ChatActions, dispatch)
+    }
 };
 
 
