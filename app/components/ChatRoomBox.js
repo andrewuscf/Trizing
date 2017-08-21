@@ -3,7 +3,6 @@ import {
     View,
     Text,
     StyleSheet,
-    Image,
     TouchableHighlight,
 } from 'react-native';
 import moment from 'moment';

@@ -1,13 +1,7 @@
 import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
-    ScrollView,
-    AsyncStorage,
-    TouchableOpacity,
-    Dimensions,
-    TextInput
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
