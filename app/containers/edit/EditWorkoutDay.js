@@ -199,8 +199,8 @@ const EditWorkoutDay = React.createClass({
                               renderHeader={this.renderHeader}
                               showsVerticalScrollIndicator={false}
                               contentContainerStyle={{paddingBottom: 20}}
-                              renderRow={(exercise, sectionID, rowID) =>
-                                  <DisplayExerciseBox exercise={exercise}
+                              renderRow={(set_group, sectionID, rowID) =>
+                                  <DisplayExerciseBox set_group={set_group}
                                                       addNote={this.addNote}
                                                       _editExercise={this._editExercise}
                                                       deleteSet={this.deleteSet}/>

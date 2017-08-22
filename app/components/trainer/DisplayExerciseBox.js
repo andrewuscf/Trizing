@@ -26,7 +26,7 @@ import GlobalStyle from "../../containers/globalStyle";
 
 const DisplayExerciseBox = React.createClass({
     propTypes: {
-        exercise: React.PropTypes.object.isRequired,
+        set_group: React.PropTypes.object.isRequired,
         deleteSet: React.PropTypes.func,
         _editExercise: React.PropTypes.func,
         log: React.PropTypes.bool,
@@ -50,11 +50,11 @@ const DisplayExerciseBox = React.createClass({
     _redirect: function () {
         Keyboard.dismiss();
         if (this.props._editExercise)
-            this.props._editExercise(this.props.exercise);
+            this.props._editExercise(this.props.set_group);
     },
 
     _onDelete() {
-        this.props.exercise.sets.forEach((set) => {
+        this.props.set_group.sets.forEach((set) => {
             this.props.deleteSet(set.id);
         });
     },
@@ -75,7 +75,7 @@ const DisplayExerciseBox = React.createClass({
                 }
             }
         }
-        if (logs.length !== this.props.exercise.sets.length) {
+        if (logs.length !== this.props.set_group.sets.length) {
             this.setState({showDetails: true});
             return null;
         } else {
@@ -99,13 +99,13 @@ const DisplayExerciseBox = React.createClass({
     },
 
     toAddNote() {
-        this.props.addNote(this.props.exercise)
+        this.props.addNote(this.props.set_group)
     },
 
 
     render: function () {
         let sets = null;
-        let notes = this.props.exercise.exercise_notes.map((note, i) => {
+        let notes = this.props.set_group.exercise.notes.map((note, i) => {
             return (
                 <View key={i} style={{}}>
                     <Text>{i + 1}. {note.text}</Text>
@@ -114,12 +114,12 @@ const DisplayExerciseBox = React.createClass({
         });
 
         if (this.props.log) {
-            sets = this.props.exercise.sets.map((set, i) => {
+            sets = this.props.set_group.sets.map((set, i) => {
                 return <SetLogBox ref={(row) => this.state.rows[i] = row} key={i} set={set} index={i}
                                   getStatus={this.getStatus}/>
             })
         } else {
-            sets = this.props.exercise.sets.map((set, index) => {
+            sets = this.props.set_group.sets.map((set, index) => {
                 return (
                     <View key={index} style={styles.rowSection}>
                         <View style={styles.topSection}>
@@ -140,11 +140,11 @@ const DisplayExerciseBox = React.createClass({
             <TouchableOpacity style={styles.displayWorkoutBox} onPress={this.toggleDetails}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                        {this.props.exercise.image ?
-                            <AvatarImage image={this.props.exercise.image} style={styles.exerciseImage} cache={true}/>
+                        {this.props.set_group.exercise.image ?
+                            <AvatarImage image={this.props.set_group.exercise.image} style={styles.exerciseImage} cache={true}/>
                             : null
                         }
-                        <Text style={styles.simpleTitle}>{trunc(this.props.exercise.name, 30)}</Text>
+                        <Text style={styles.simpleTitle}>{trunc(this.props.set_group.exercise.name, 30)}</Text>
                     </View>
                     {this.props.deleteSet && this.props._editExercise ?
                         <Menu>
