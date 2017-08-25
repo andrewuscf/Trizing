@@ -140,8 +140,8 @@ const EditWorkoutDay = React.createClass({
         }
     },
 
-    deleteSet(setId) {
-        this.props.actions.deleteSet(setId, this.deleteSetActions)
+    deleteSetGroup(setId) {
+        this.props.actions.deleteSetGroup(setId, this.deleteSetActions)
     },
 
     _onNoteAdded(newNote) {
@@ -201,7 +201,7 @@ const EditWorkoutDay = React.createClass({
                                   <DisplayExerciseBox set_group={set_group}
                                                       addNote={this.addNote}
                                                       _editExercise={this._editExercise}
-                                                      deleteSet={this.deleteSet}/>
+                                                      deleteSetGroup={this.deleteSetGroup}/>
                               }
                     />
                 }

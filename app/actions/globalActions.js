@@ -447,6 +447,22 @@ export function createSetGroup(data, asyncActions) {
     }
 }
 
+// deleteSetGroup
+
+export function deleteSetGroup(id, asyncActions) {
+    return (dispatch, getState) => {
+        return fetch(`${API_ENDPOINT}training/workout/set_group/${id}/`,
+            fetchData('DELETE', null, getState().Global.UserToken)).then(checkStatus)
+            .then((responseJson) => {
+                if (responseJson.id) {
+                    asyncActions(true, responseJson);
+                } else {
+                    asyncActions(false)
+                }
+            })
+    }
+}
+
 export function deleteSet(id, asyncActions) {
     return (dispatch, getState) => {
         return fetch(`${API_ENDPOINT}training/workout/set/${id}/`,

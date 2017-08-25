@@ -27,7 +27,7 @@ import GlobalStyle from "../../containers/globalStyle";
 const DisplayExerciseBox = React.createClass({
     propTypes: {
         set_group: React.PropTypes.object.isRequired,
-        deleteSet: React.PropTypes.func,
+        deleteSetGroup: React.PropTypes.func,
         _editExercise: React.PropTypes.func,
         log: React.PropTypes.bool,
         workout: React.PropTypes.number,
@@ -54,9 +54,7 @@ const DisplayExerciseBox = React.createClass({
     },
 
     _onDelete() {
-        this.props.set_group.sets.forEach((set) => {
-            this.props.deleteSet(set.id);
-        });
+        this.props.deleteSetGroup(this.props.set_group.id);
     },
 
     setData() {
@@ -146,7 +144,7 @@ const DisplayExerciseBox = React.createClass({
                         }
                         <Text style={styles.simpleTitle}>{trunc(this.props.set_group.exercise.name, 30)}</Text>
                     </View>
-                    {this.props.deleteSet && this.props._editExercise ?
+                    {this.props.deleteSetGroup && this.props._editExercise ?
                         <Menu>
                             <MenuTrigger>
                                 <FontIcon name="ellipsis-h" size={getFontSize(35)}/>
