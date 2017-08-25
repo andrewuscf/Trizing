@@ -6,8 +6,11 @@ import {
     TouchableHighlight,
 } from 'react-native';
 import moment from 'moment';
+import FontIcon from 'react-native-vector-icons/FontAwesome';
 
 import AvatarImage from './AvatarImage';
+import {getFontSize} from "../actions/utils";
+import GlobalStyle from "../containers/globalStyle";
 
 moment.updateLocale('en', {
     relativeTime: {
@@ -47,16 +50,21 @@ const ChatRoomBox = React.createClass({
         return (
             <TouchableHighlight style={styles.container} onPress={this._toRoom} underlayColor='white'>
                 <View style={styles.inner}>
-                    <AvatarImage image={image}/>
+                    <AvatarImage image={image} style={styles.avatar}/>
                     <View style={styles.details}>
-                        <Text style={styles.name}>{sender.profile.first_name} {sender.profile.last_name}</Text>
+                        <Text style={[styles.name, GlobalStyle.lightBlueText]}>
+                            {sender.profile.first_name} {sender.profile.last_name}
+                            </Text>
                         {(room.last_message && room.last_message.text) ?
                             <View style={styles.lastMessageSection}>
                                 <Text style={styles.bold}>{this.trimToLength(room.last_message.text, 25)}</Text>
-                                <Text style={styles.timeAgo}>{moment(room.last_message.createdAt).fromNow(false)}</Text>
 
                             </View> : null
                         }
+                    </View>
+                    <View style={styles.rightSec}>
+                        <Text style={[styles.timeAgo]}>{moment(room.last_message.createdAt).fromNow(false)}</Text>
+                        <FontIcon name="circle" style={[GlobalStyle.lightBlueText, {paddingTop: 5}]}/>
                     </View>
                 </View>
             </TouchableHighlight>
@@ -69,9 +77,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         borderColor: '#e1e3df',
-        borderWidth: 1,
+        borderBottomWidth: 1,
         backgroundColor: 'white',
-        margin: 10,
+        // margin: 10,
         marginBottom: 5,
         borderRadius: 5,
     },
@@ -82,13 +90,12 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap'
     },
     avatar: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
+        width: 60,
+        height: 60,
+        borderRadius: 30,
     },
     details: {
-        // flex: 1,
-        flexDirection: 'column',
+        flex: .9,
         paddingTop: 5,
         paddingLeft: 10,
     },
@@ -97,12 +104,14 @@ const styles = StyleSheet.create({
         color: 'gray'
     },
     name: {
-        fontSize: 12,
-        fontWeight: 'bold',
+        fontSize: getFontSize(16),
+        fontFamily: 'Heebo-Bold',
         color: 'black'
     },
     bold: {
-        color: 'grey'
+        color: 'rgba(0,0,0,.70)',
+        fontFamily: 'Heebo-Medium',
+        // color: 'grey'
         // fontWeight: 'bold'
     },
     lastMessageSection: {
@@ -112,7 +121,11 @@ const styles = StyleSheet.create({
     },
     timeAgo: {
         paddingLeft: 6,
-        color: 'rgba(0,0,0,.45)'
+        color: 'rgba(0,0,0,.45)',
+    },
+    rightSec: {
+        justifyContent: 'center',
+        alignItems: 'flex-end'
     }
 });
 

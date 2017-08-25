@@ -229,7 +229,7 @@ const ChatNav = StackNavigator({
         path: 'chat/',
         screen: Chat,
         navigationOptions: {
-            header: null,
+            headerTitle: 'Messages',
         }
     },
     CreateChatRoom: {screen: paramsToProps(CreateChatRoom)},

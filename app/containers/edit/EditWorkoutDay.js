@@ -58,8 +58,6 @@ const EditWorkoutDay = React.createClass({
             fetchData('GET', null, this.props.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
-
-                console.log(responseJson)
                 let newState = {refreshing: false};
                 if (responseJson.id) {
                     newState = {
@@ -109,10 +107,10 @@ const EditWorkoutDay = React.createClass({
         this.props.navigation.navigate('CreateExercise', {workout_day: this.state.workout_day, newDay: this.newDay});
     },
 
-    _editExercise(exercise) {
+    _editExercise(set_group) {
         this.props.navigation.navigate('CreateExercise', {
             workout_day: this.state.workout_day,
-            exercise: exercise,
+            set_group: set_group,
             newDay: this.newDay
         });
     },

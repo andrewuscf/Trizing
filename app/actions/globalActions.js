@@ -427,6 +427,26 @@ export function addEditExercise(data, asyncActions) {
     }
 }
 
+export function createSetGroup(data, asyncActions) {
+    let url = `${API_ENDPOINT}training/workout/set_groups/`;
+    let method = 'POST';
+    return (dispatch, getState) => {
+        return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
+            .then((responseJson) => {
+
+                if (responseJson.id) {
+                    asyncActions(true, responseJson);
+                } else {
+                    asyncActions(false);
+                }
+            })
+            .catch((error) => {
+                asyncActions(false);
+                console.log(error)
+            });
+    }
+}
+
 export function deleteSet(id, asyncActions) {
     return (dispatch, getState) => {
         return fetch(`${API_ENDPOINT}training/workout/set/${id}/`,

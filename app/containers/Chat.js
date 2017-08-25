@@ -54,7 +54,7 @@ const Chat = React.createClass({
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             const dataSource = ds.cloneWithRows(this.props.Rooms);
             return (
-                <View style={GlobalStyle.noHeaderContainer}>
+                <View style={GlobalStyle.container}>
                     <ListView showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
                         style={styles.scrollContainer} enableEmptySections={true}
@@ -98,7 +98,7 @@ const Chat = React.createClass({
 const styles = StyleSheet.create({
     scrollContainer: {
         flex: 1,
-        backgroundColor: '#f1f1f3'
+        // backgroundColor: '#f1f1f3'
     },
     noRequests: {
         flex: 1,

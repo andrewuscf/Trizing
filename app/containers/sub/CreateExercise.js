@@ -28,19 +28,19 @@ const Exercise = t.struct({
 const CreateExercise = React.createClass({
     propTypes: {
         workout_day: React.PropTypes.object.isRequired,
-        exercise: React.PropTypes.object,
+        set_group: React.PropTypes.object,
         newDay: React.PropTypes.func
     },
 
     getInitialState() {
         let sets = [BlankSet];
-        if (this.props.exercise) {
-            sets = [...this.props.exercise.sets];
+        if (this.props.set_group) {
+            sets = [...this.props.set_group.sets];
         }
         return {
             fetchedExercises: [],
             sets: sets,
-            value: this.props.exercise ? {name: this.props.exercise.name} : null,
+            value: this.props.set_group ? {name: this.props.set_group.name} : null,
             disabled: false,
         }
     },
@@ -125,39 +125,41 @@ const CreateExercise = React.createClass({
         this.setState({disabled: true});
         if (this.refs.form) {
             // Created an exercise.
-            const sets = [];
             let values = this.refs.form.getValue();
             if (!values) {
                 this.setState({disabled: false});
                 return
             }
-
+            const data = {
+                training_day: this.props.workout_day.id,
+                exercise: {
+                    name: values.name,
+                },
+                sets: [],
+                order: 1
+            };
             this.state.sets.forEach((set, index) => {
                 if (set.reps) {
-                    const data = {
-                        day: this.props.workout_day.id,
-                        exercise: {
-                            name: values.name,
-                        },
+                    const set_data = {
                         reps: set.reps,
                         order: index + 1
                     };
-                    if (set.weight) data['weight'] = set.weight;
-                    sets.push(data);
+                    if (set.weight) set_data['weight'] = set.weight;
+                    data.sets.push(set_data);
                 }
             });
-            if (sets.length > 0) {
-                this.props.actions.addEditExercise(sets, this.asyncActions);
+            if (data.sets.length > 0) {
+                this.props.actions.createSetGroup(data, this.asyncActions);
             }
 
-        } else if (this.props.exercise) {
+        } else if (this.props.set_group) {
             // Updating already created exercise.
             const sets = [];
             this.state.sets.forEach((set, index) => {
                 if (set.reps) {
                     const data = {
-                        day: this.props.workout_day.id,
-                        exercise: this.props.exercise.id,
+                        training_day: this.props.workout_day.id,
+                        set_group: this.props.set_group.id,
                         reps: set.reps,
                         order: index + 1
                     };
@@ -167,7 +169,7 @@ const CreateExercise = React.createClass({
                         sets.push(data);
                     } else {
                         data['id'] = set.id;
-                        const old = _.find(this.props.exercise.sets, {id: set.id});
+                        const old = _.find(this.props.set_group.sets, {id: set.id});
                         if (old.reps !== data.reps || old.weight !== data.weight || old.order !== data.order) {
                             this.props.actions.addEditExercise(data, this.asyncActions);
                         }
@@ -214,7 +216,7 @@ const CreateExercise = React.createClass({
             <View style={{flex: 1}}>
                 <KeyboardAwareScrollView extraHeight={130} showsVerticalScrollIndicator={false}
                                          contentContainerStyle={{padding: 10}}>
-                    {!this.props.exercise ?
+                    {!this.props.set_group ?
                         <Form
                             ref="form"
                             type={Exercise}
