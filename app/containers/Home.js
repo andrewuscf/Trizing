@@ -16,6 +16,7 @@ import FontIcon from 'react-native-vector-icons/FontAwesome';
 import IconBadge from 'react-native-icon-badge';
 import ActionButton from 'react-native-action-button';
 import moment from 'moment';
+import {Circle} from 'react-native-progress';
 
 
 import * as HomeActions from '../actions/homeActions';
@@ -28,6 +29,7 @@ import GlobalStyle from './globalStyle';
 import CustomIcon from '../components/CustomIcon';
 import Loading from '../components/Loading';
 import PeopleBar from '../components/PeopleBar';
+import SubmitButton from '../components/SubmitButton';
 
 
 const Home = React.createClass({
@@ -160,7 +162,14 @@ const Home = React.createClass({
                 carbs = (data.macro_plan_day.carbs) ? data.macro_plan_day.carbs : 0;
                 calories = calCalories(fats, carbs, protein);
             }
-
+            let currentFats = 10;
+            let currentcarbs = 50;
+            let currentprotein = 50;
+            // this.state.macro_response.results.forEach((log) => {
+            //     currentFats += log.fats;
+            //     currentcarbs += log.carbs;
+            //     currentprotein += log.protein;
+            // });
 
             content = (
                 <View>
@@ -175,31 +184,59 @@ const Home = React.createClass({
                         <View>
                             {data && data.macro_plan_day ?
                                 <View style={[styles.box, {marginBottom: 5}]}>
-
-                                    <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
-                                        <View style={styles.details}>
-                                            <Text style={styles.sectionTitle}>Fat</Text>
-                                            <Text style={styles.smallText}>{`${fats}g`}</Text>
+                                    <Text style={styles.formCalories}>
+                                        NUTRITION PLAN
+                                    </Text>
+                                    <View style={[styles.row, {alignItems: 'center'}]}>
+                                        <View style={[styles.calorieBox, {justifyContent: 'flex-end'}]}>
+                                            <View style={{paddingRight: 20}}>
+                                                <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>KCAL</Text>
+                                                <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>EATEN</Text>
+                                            </View>
+                                            <Text style={{
+                                                fontFamily: 'Heebo-Bold',
+                                                color: 'black',
+                                                fontSize: getFontSize(24),
+                                            }}>{calories}</Text>
                                         </View>
-                                        <View style={styles.details}>
-                                            <Text style={styles.sectionTitle}>Carbs</Text>
-                                            <Text style={styles.smallText}>{`${carbs}g`}</Text>
-                                        </View>
-                                        <View style={styles.details}>
-                                            <Text style={styles.sectionTitle}>Protein</Text>
-                                            <Text style={styles.smallText}>{`${protein}g`}</Text>
+                                        <View style={{flex: .1}}/>
+                                        <View style={[styles.calorieBox]}>
+                                            <Text style={{
+                                                fontFamily: 'Heebo-Bold',
+                                                color: 'black',
+                                                fontSize: getFontSize(24)
+                                            }}>{calories}</Text>
+                                            <View style={{paddingLeft: 20}}>
+                                                <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>KCAL</Text>
+                                                <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>LEFT OVER</Text>
+                                            </View>
                                         </View>
                                     </View>
-                                    <Text style={styles.formCalories}>
-                                        Calories: {calories}
-                                    </Text>
-                                    <TouchableOpacity onPress={this._redirect.bind(null, 'CreateMacroLog', {
+                                    <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
+                                        <View style={styles.details}>
+                                            <Circle size={getFontSize(80)} progress={currentFats / fats}
+                                                    unfilledColor={unfilledColor} borderWidth={0} color="#1fc16c"
+                                                    thickness={5} formatText={() => "Fats"} showsText={true}/>
+                                            <Text style={styles.smallText}>{`${fats - currentFats}g left`}</Text>
+                                        </View>
+                                        <View style={styles.details}>
+                                            <Circle size={getFontSize(80)} progress={currentcarbs / carbs}
+                                                    unfilledColor={unfilledColor} borderWidth={0} color="#a56dd1"
+                                                    thickness={5} formatText={() => "Carbs"} showsText={true}/>
+                                            <Text style={styles.smallText}>{`${carbs - currentcarbs}g left`}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>
+                                        <Circle size={getFontSize(80)} progress={currentprotein / protein}
+                                                unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"
+                                                thickness={5} formatText={() => "Protein"} showsText={true}/>
+                                        <Text style={styles.smallText}>{`${protein - currentprotein}g left`}</Text>
+                                    </View>
+                                    <SubmitButton onPress={this._redirect.bind(null, 'CreateMacroLog', {
                                         macro_plan_day: data.macro_plan_day,
                                         date: this.state.dataDate
-                                    })}
-                                                      style={styles.link}>
-                                        <Text style={styles.simpleTitle}>Log Nutrition</Text>
-                                    </TouchableOpacity>
+                                    })} text="LOG NUTRITION" buttonStyle={styles.logButton}/>
+
                                 </View>
                                 : <View
                                     style={[styles.box, {
@@ -252,7 +289,7 @@ const Home = React.createClass({
                     <View style={[styles.topItem]}/>
                     <View style={styles.topItem}>
                         <TouchableOpacity onPress={() => navigate('MyProfile')} style={[{paddingRight: 10}]}>
-                            <FontIcon size={getFontSize(25)} name="user-circle-o" />
+                            <FontIcon size={getFontSize(25)} name="user-circle-o"/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -261,7 +298,7 @@ const Home = React.createClass({
                                                             onRefresh={() => this.getNeeded(true)}/>}
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
 
-                    <View style={{flex: .8}}>
+                    {/*<View style={{flex: .8}}>*/}
                         <View style={[styles.todayTitle, {justifyContent: 'space-between'}]}>
                             <TouchableOpacity onPress={this.subtractDay} style={styles.arrowStyle}>
                                 <MaterialIcon name="keyboard-arrow-left" size={getFontSize(24)} color='#00AFA3'/>
@@ -277,7 +314,7 @@ const Home = React.createClass({
                             </TouchableOpacity>
                         </View>
                         {content}
-                    </View>
+                    {/*</View>*/}
                 </ScrollView>
 
 
@@ -305,15 +342,17 @@ const Home = React.createClass({
     }
 });
 
+const unfilledColor = 'rgba(0, 0, 0, 0.1)';
 
 const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        backgroundColor: '#f1f1f3'
     },
     contentContainerStyle: {
-        flex: 1,
-        flexDirection: 'column',
+        // flex: 1,
+        // flexDirection: 'column',
     },
     row: {
         flexDirection: 'row',
@@ -325,32 +364,44 @@ const styles = StyleSheet.create({
     details: {
         flexDirection: 'column',
         flex: 1,
-        backgroundColor: 'transparent',
-        paddingTop: 3,
-        paddingBottom: 3,
+        // backgroundColor: 'transparent',
+        paddingTop: 5,
+        // paddingBottom: 3,
         alignItems: 'center'
     },
     formCalories: {
         fontFamily: 'Heebo-Bold',
         alignSelf: 'center',
+        paddingTop: 10,
+        paddingBottom: 10,
+        fontSize: getFontSize(20),
+        color: 'black'
+    },
+    calorieBox: {
+        flex: .4,
         padding: 10,
-        fontSize: getFontSize(18),
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: unfilledColor,
+        flexDirection: 'row'
+    },
+    logButton: {
+        margin: 10,
+        marginLeft: 0,
+        marginRight: 0,
+        width: 150,
+        alignSelf: 'center',
+        borderRadius: 30,
+        height: 35,
+        backgroundColor: 'rgba(0, 175, 163, 1)'
     },
     box: {
-        // marginTop: 5,
         justifyContent: 'center',
-        // backgroundColor: 'white',
-        // borderBottomWidth: 0.5,
-        // borderRightWidth: 0.5,
-        // borderLeftWidth: 0.5,
-
         margin: 10,
-        borderWidth: 1,
+        borderWidth: .5,
         borderColor: '#e1e3df',
         borderRadius: 5,
-        paddingTop: 10,
-        backgroundColor: 'white',
-        // flexDirection: 'row',
+        backgroundColor: 'white'
     },
     textTitle: {
         fontSize: getFontSize(22),
@@ -368,14 +419,8 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(16),
         color: '#b1aea5',
         fontFamily: 'Heebo-Medium',
-        margin: 10,
+        // margin: 10,
         textAlign: 'center'
-    },
-    link: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        alignSelf: 'center'
     },
     topBar: {
         height: Platform.OS === 'ios' ? 44 : 56,
@@ -417,6 +462,9 @@ const styles = StyleSheet.create({
         margin: 10,
         padding: 8,
         justifyContent: 'center'
+    },
+    smallText: {
+        paddingTop: 5
     }
 });
 

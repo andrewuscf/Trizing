@@ -12,6 +12,9 @@ target 'Trizing' do
   pod 'Firebase/Messaging'
   pod 'RSKImageCropper'
   pod 'QBImagePickerController'
+  pod 'React', path: '../node_modules/react-native', subspecs: [
+    'ART',
+  ]
 
   target 'TrizingTests' do
     inherit! :search_paths
