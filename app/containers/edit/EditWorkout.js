@@ -27,7 +27,6 @@ const EditWorkout = React.createClass({
     propTypes: {
         workoutId: React.PropTypes.number,
         workout: React.PropTypes.object,
-        _onWorkoutDelete: React.PropTypes.func
     },
 
     getInitialState() {
@@ -88,14 +87,12 @@ const EditWorkout = React.createClass({
         this.props.navigation.navigate('CreateWorkoutDay', {
             workoutId: this.state.workout.id,
             newDay: this.newDay,
-            _onDayDelete: this._onDayDelete
         });
     },
 
     _toWorkoutDay(workout_day_id) {
         this.props.navigation.navigate('EditWorkoutDay', {
             workout_day_id: workout_day_id,
-            _onDayDelete: this._onDayDelete
         });
     },
 
@@ -104,27 +101,33 @@ const EditWorkout = React.createClass({
             workoutId: this.state.workout.id,
             newDay: this.newDay,
             template_day: template_day,
-            _onDayDelete: this._onDayDelete
         });
     },
 
-    _delete() {
+    _onDayDelete(day) {
         Alert.alert(
-            `Delete ${this.state.workout ? this.state.workout.name : 'workout'}`,
-            `Are you sure you want delete this workout?`,
+            `Delete ${day.name}`,
+            `Are you sure you want delete this workout day?`,
             [
                 {text: 'Cancel', style: 'cancel'},
                 {
                     text: 'Delete',
                     onPress: () => {
-
-                        fetch(`${API_ENDPOINT}training/workout/${this.state.workout.id}/`,
+                        fetch(`${API_ENDPOINT}training/workout/day/${day.id}/`,
                             fetchData('DELETE', null, this.props.UserToken))
                             .then(checkStatus)
                             .then((responseJson) => {
                                 if (responseJson.deleted) {
-                                    this.props._onWorkoutDelete(this.state.workout.id);
-                                    this.props.navigation.goBack();
+                                    const workoutIndex = _.findIndex(this.state.workout.workout_days, {id: day.id});
+                                    if (workoutIndex !== -1) {
+                                        this.setState({
+                                            workout: {
+                                                ...this.state.workout,
+                                                workout_days: this.state.workout.workout_days.slice(0, workoutIndex)
+                                                    .concat(this.state.workout.workout_days.slice(workoutIndex + 1))
+                                            }
+                                        })
+                                    }
                                 } else {
                                     console.log(responseJson)
                                 }
@@ -135,19 +138,6 @@ const EditWorkout = React.createClass({
                 },
             ]
         );
-    },
-
-    _onDayDelete(dayId) {
-        const workoutIndex = _.findIndex(this.state.workout.workout_days, {id: dayId});
-        if (workoutIndex !== -1) {
-            this.setState({
-                workout: {
-                    ...this.state.workout,
-                    workout_days: this.state.workout.workout_days.slice(0, workoutIndex)
-                        .concat(this.state.workout.workout_days.slice(workoutIndex + 1))
-                }
-            })
-        }
     },
 
 
@@ -167,7 +157,7 @@ const EditWorkout = React.createClass({
     renderRow(workout_day, index) {
         const intIndex = parseInt(index);
         return <DisplayWorkoutDay key={intIndex} _toWorkoutDay={this._toWorkoutDay} workout_day={workout_day}
-                                  _onDuplicate={this._onDuplicate}
+                                  _onDuplicate={this._onDuplicate} _onDayDelete={this._onDayDelete}
                                   dayIndex={intIndex}/>
     },
 
@@ -208,16 +198,7 @@ const EditWorkout = React.createClass({
                           refreshControl={<RefreshControl refreshing={this.state.refreshing}
                                                           onRefresh={() => this.getWorkout(true)}/>}
                 />
-                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
-                    <ActionButton.Item buttonColor='#F22525' title="Delete"
-                                       onPress={this._delete}>
-                        <MaterialIcon name="delete-forever" color="white" size={getFontSize(22)}/>
-                    </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#3498db' title="Add Training Day"
-                                       onPress={this._createWorkoutDay}>
-                        <MaterialIcon name="add" color="white" size={getFontSize(22)}/>
-                    </ActionButton.Item>
-                </ActionButton>
+                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" onPress={this._createWorkoutDay}/>
             </View>
         )
     }

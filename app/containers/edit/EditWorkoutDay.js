@@ -25,7 +25,6 @@ import Loading from '../../components/Loading';
 
 const EditWorkoutDay = React.createClass({
     propTypes: {
-        _onDayDelete: React.PropTypes.func.isRequired,
         workout_day_id: React.PropTypes.number,
         workout_day: React.PropTypes.object
     },
@@ -69,34 +68,6 @@ const EditWorkoutDay = React.createClass({
             }).catch((error) => {
             console.log(error)
         })
-    },
-
-    _delete() {
-        Alert.alert(
-            `Delete ${this.state.workout_day ? this.state.workout_day.name : 'workout'}`,
-            `Are you sure you want delete this workout day?`,
-            [
-                {text: 'Cancel', style: 'cancel'},
-                {
-                    text: 'Delete',
-                    onPress: () => {
-                        fetch(`${API_ENDPOINT}training/workout/day/${this.state.workout_day.id}/`,
-                            fetchData('DELETE', null, this.props.UserToken))
-                            .then(checkStatus)
-                            .then((responseJson) => {
-                                if (responseJson.deleted) {
-                                    this.props._onDayDelete(this.state.workout_day.id);
-                                    this.props.navigation.goBack();
-                                } else {
-                                    console.log(responseJson)
-                                }
-                            }).catch((error) => {
-                            console.log(error)
-                        });
-                    }
-                },
-            ]
-        );
     },
 
     newDay(workout_day) {
@@ -207,10 +178,6 @@ const EditWorkoutDay = React.createClass({
                 }
 
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" offsetX={10} offsetY={20}>
-                    <ActionButton.Item buttonColor='#F22525' title="Delete"
-                                       onPress={this._delete}>
-                        <MaterialIcon name="delete-forever" color="white" size={getFontSize(22)}/>
-                    </ActionButton.Item>
                     <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={this.addNote}>
                         <MaterialIcon name="note-add" color="white" size={getFontSize(22)}/>
                     </ActionButton.Item>

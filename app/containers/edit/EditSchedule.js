@@ -4,7 +4,6 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    Keyboard,
     Alert,
     ListView,
     Platform
@@ -24,7 +23,7 @@ import {
 } from 'react-native-popup-menu';
 
 import * as GlobalActions from '../../actions/globalActions';
-import {getFontSize} from '../../actions/utils';
+import {fetchData, API_ENDPOINT, getFontSize, checkStatus} from '../../actions/utils';
 
 
 import CustomIcon from '../../components/CustomIcon';
@@ -64,23 +63,47 @@ const EditSchedule = React.createClass({
         }
     },
 
-    _deleteSchedule() {
-        Keyboard.dismiss();
+    // _deleteSchedule() {
+    //     Keyboard.dismiss();
+    //     Alert.alert(
+    //         'Delete Schedule',
+    //         `Are you sure you want delete this schedule?`,
+    //         [
+    //             {text: 'Cancel', style: 'cancel'},
+    //             {
+    //                 text: 'Delete',
+    //                 onPress: () => this.props.actions.deleteSchedule(this.props.scheduleId, this.asyncActions)
+    //             },
+    //         ]
+    //     );
+    // },
+
+    _onWorkoutDelete(workoutId) {
         Alert.alert(
-            'Delete Schedule',
-            `Are you sure you want delete this schedule?`,
+            `Delete ${this.state.workout ? this.state.workout.name : 'workout'}`,
+            `Are you sure you want delete this workout?`,
             [
                 {text: 'Cancel', style: 'cancel'},
                 {
                     text: 'Delete',
-                    onPress: () => this.props.actions.deleteSchedule(this.props.scheduleId, this.asyncActions)
+                    onPress: () => {
+
+                        fetch(`${API_ENDPOINT}training/workout/${workoutId}/`,
+                            fetchData('DELETE', null, this.props.UserToken))
+                            .then(checkStatus)
+                            .then((responseJson) => {
+                                if (responseJson.deleted) {
+                                    this.props.actions.deleteWorkout(this.state.schedule.id, workoutId);
+                                } else {
+                                    console.log(responseJson)
+                                }
+                            }).catch((error) => {
+                            console.log(error)
+                        });
+                    }
                 },
             ]
         );
-    },
-
-    _onWorkoutDelete(workoutId) {
-        this.props.actions.deleteWorkout(this.state.schedule.id, workoutId)
     },
 
     renderHeader() {
@@ -94,7 +117,6 @@ const EditSchedule = React.createClass({
         return (
             <TouchableOpacity key={parseIndex} onPress={() => navigate('EditWorkout', {
                 workoutId: workout.id,
-                _onWorkoutDelete: this._onWorkoutDelete
             })}
                               style={[styles.workoutBox]}>
 
@@ -105,10 +127,10 @@ const EditSchedule = React.createClass({
                             <FontIcon name="ellipsis-h" size={getFontSize(35)}/>
                         </MenuTrigger>
                         <MenuOptions customStyles={optionsStyles}>
+                            <MenuOption onSelect={() => this._onWorkoutDelete(workout.id)} text='Delete'/>
                             <MenuOption onSelect={() => navigate('CreateWorkout', {
                                 scheduleId: this.props.scheduleId,
                                 template_workout: workout,
-                                _onWorkoutDelete: this._onWorkoutDelete
                             })}
                                         text='Duplicate'/>
                         </MenuOptions>
@@ -145,8 +167,6 @@ const EditSchedule = React.createClass({
 
     render: function () {
         if (!this.state.schedule) return null;
-
-        const {navigate} = this.props.navigation;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = ds.cloneWithRows(_.orderBy(this.state.schedule.workouts, ['order']));
         return (
@@ -162,22 +182,17 @@ const EditSchedule = React.createClass({
                           renderRow={this.renderRow}
                           renderFooter={this.renderFooter.bind(null, dataSource.getRowCount())}
                 />
-                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
-                    <ActionButton.Item buttonColor='#F22525' title="Delete"
-                                       onPress={this._deleteSchedule}>
-                        <MaterialIcon name="delete-forever" color="white" size={22}/>
-                    </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#3498db' title="Add Block"
-                                       onPress={() => navigate('CreateWorkout', {
-                                           scheduleId: this.props.scheduleId,
-                                           _onWorkoutDelete: this._onWorkoutDelete
-                                       })}>
-                        <MaterialIcon name="add" color="white" size={22}/>
-                    </ActionButton.Item>
-                </ActionButton>
+                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" onPress={this._toCreateWorkout}/>
             </View>
         )
-    }
+    },
+
+    _toCreateWorkout() {
+        this.props.navigation.navigate('CreateWorkout', {
+            scheduleId: this.props.scheduleId,
+            _onWorkoutDelete: this._onWorkoutDelete
+        })
+    },
 });
 
 const optionsStyles = {

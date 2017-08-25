@@ -47,12 +47,13 @@ const CreateSchedule = React.createClass({
     asyncActions(success, data = {}){
         this.setState({disabled: false});
         if (success && data.routeName) {
-            this.props.navigation.dispatch({
-                type: 'ReplaceCurrentScreen',
-                routeName: data.routeName,
-                params: data.props,
-                key: data.routeName
-            });
+            // this.props.navigation.dispatch({
+            //     type: 'ReplaceCurrentScreen',
+            //     routeName: data.routeName,
+            //     params: data.props,
+            //     key: data.routeName
+            // });
+            this.props.navigation.goBack();
         } else {
             this.dropdown.alertWithType('error', 'Error', "Couldn't create workout block.")
         }

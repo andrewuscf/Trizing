@@ -35,7 +35,6 @@ const CreateWorkoutDay = React.createClass({
     propTypes: {
         workoutId: React.PropTypes.number.isRequired,
         newDay: React.PropTypes.func.isRequired,
-        _onDayDelete: React.PropTypes.func.isRequired,
         navigation: React.PropTypes.object.isRequired,
         template_day: React.PropTypes.object
     },
@@ -63,12 +62,7 @@ const CreateWorkoutDay = React.createClass({
         this.setState({disabled: false});
         if (success && data.props) {
             this.props.newDay(data.newTrainingDay);
-            this.props.navigation.dispatch({
-                type: 'ReplaceCurrentScreen',
-                routeName: 'EditWorkoutDay',
-                params: {...data.props, _onDayDelete: this.props._onDayDelete},
-                key: 'EditWorkoutDay'
-            });
+            this.props.navigation.goBack();
         } else {
             this.dropdown.alertWithType('error', 'Error', "Couldn't create workout day.")
         }
