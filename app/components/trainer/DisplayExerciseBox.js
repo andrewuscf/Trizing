@@ -112,7 +112,6 @@ const DisplayExerciseBox = React.createClass({
         // });
 
         if (this.props.log) {
-            console.log(this.props.set_group)
             sets = this.props.set_group.sets.map((set, i) => {
                 return <SetLogBox ref={(row) => this.state.rows[i] = row} key={i} set={set} index={i}
                                   getStatus={this.getStatus}/>
@@ -136,73 +135,71 @@ const DisplayExerciseBox = React.createClass({
         }
 
         return (
-            <TouchableOpacity style={styles.displayWorkoutBox} onPress={this.toggleDetails}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                        {this.props.set_group.exercise.image ?
-                            <AvatarImage image={this.props.set_group.exercise.image} style={styles.exerciseImage} cache={true}/>
-                            : null
-                        }
-                        <Text style={styles.simpleTitle}>{trunc(this.props.set_group.exercise.name, 30)}</Text>
-                    </View>
-                    {this.props.deleteSetGroup && this.props._editExercise ?
-                        <Menu>
-                            <MenuTrigger>
-                                <FontIcon name="ellipsis-h" size={getFontSize(35)}/>
-                            </MenuTrigger>
-                            <MenuOptions customStyles={optionsStyles}>
-                                <MenuOption onSelect={this._redirect} text='Edit'/>
-                                {typeof this.props.addNote !== 'undefined' ?
-                                    <MenuOption onSelect={this.toAddNote} text='Add note'/>
-                                    : null
-                                }
-                                <MenuOption onSelect={this._onDelete} text='Delete'/>
-                            </MenuOptions>
-                        </Menu>
-                        : this.state.isComplete ?
-                            <MaterialIcon name="check-circle" size={20} color="green"/> :
-                            <MaterialIcon name="check" size={20}/>
-
-                    }
-                </View>
-                {!this.state.showDetails ?
-                    <View style={styles.dateSection}>
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <Text style={styles.day}>{sets.length} {sets.length === 1 ? 'set' : 'sets'}</Text>
-                        </View>
-                    </View>
+            <TouchableOpacity style={[styles.displayWorkoutBox, {flexDirection: 'row'}]} onPress={this.toggleDetails}>
+                {this.props.set_group.exercise.image ?
+                    <AvatarImage image={this.props.set_group.exercise.image} style={styles.exerciseImage} cache={true}/>
                     : null
                 }
-                <View style={[this.state.showDetails ? {flex: 1, opacity: 1} : {width: 0, height: 0, opacity: 0}]}>
-                    <View style={styles.rowSection}>
-                        <View style={styles.topSection}>
-                            <Text>#</Text>
-                        </View>
-                        <View style={styles.topSection}>
-                            <Text>LBS</Text>
-                        </View>
-                        <View style={styles.topSection}>
-                            <Text>REPS</Text>
-                        </View>
-                        {this.props.log ?
+                <View style={{flexDirection: 'column', flex: 1}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <Text style={styles.simpleTitle}>{trunc(this.props.set_group.exercise.name, 30)}</Text>
+                        {this.props.deleteSetGroup && this.props._editExercise ?
+                            <Menu>
+                                <MenuTrigger>
+                                    <FontIcon name="ellipsis-h" size={getFontSize(35)}/>
+                                </MenuTrigger>
+                                <MenuOptions customStyles={optionsStyles}>
+                                    <MenuOption onSelect={this._redirect} text='Edit'/>
+                                    {typeof this.props.addNote !== 'undefined' ?
+                                        <MenuOption onSelect={this.toAddNote} text='Add note'/>
+                                        : null
+                                    }
+                                    <MenuOption onSelect={this._onDelete} text='Delete'/>
+                                </MenuOptions>
+                            </Menu>
+                            : this.state.isComplete ?
+                                <MaterialIcon name="check-circle" size={getFontSize(20)} color="green"/> :
+                                !this.state.showDetails ?
+                                    <MaterialIcon name="keyboard-arrow-down" size={getFontSize(32)}/> :
+                                    <MaterialIcon name="keyboard-arrow-up" size={getFontSize(32)}/>
+
+                        }
+                    </View>
+                    {!this.state.showDetails ?
+                        <View style={styles.dateSection}/>
+                        : null
+                    }
+                    <View style={[this.state.showDetails ? {flex: 1, opacity: 1} : {width: 0, height: 0, opacity: 0}]}>
+                        <View style={styles.rowSection}>
                             <View style={styles.topSection}>
-                                {this.state.isComplete ?
-                                    <MaterialIcon name="check-circle" size={20} color="green"/> :
-                                    <MaterialIcon name="check" size={20}/>
-                                }
+                                <Text>#</Text>
+                            </View>
+                            <View style={styles.topSection}>
+                                <Text>LBS</Text>
+                            </View>
+                            <View style={styles.topSection}>
+                                <Text>REPS</Text>
+                            </View>
+                            {this.props.log ?
+                                <View style={styles.topSection}>
+                                    {this.state.isComplete ?
+                                        <MaterialIcon name="check-circle" size={getFontSize(20)} color="green"/> :
+                                        <MaterialIcon name="check" size={getFontSize(20)}/>
+                                    }
+                                </View>
+                                : null
+                            }
+                        </View>
+                        {sets}
+                        {notes.length ?
+                            <View style={[styles.noteSection]}>
+                                <Text style={styles.smallBold}>Notes:</Text>
+                                <View style={GlobalStyle.simpleTopBorder}/>
+                                {notes}
                             </View>
                             : null
                         }
                     </View>
-                    {sets}
-                    {notes.length ?
-                        <View style={[styles.noteSection]}>
-                            <Text style={styles.smallBold}>Notes:</Text>
-                            <View style={GlobalStyle.simpleTopBorder}/>
-                            {notes}
-                        </View>
-                        : null
-                    }
                 </View>
             </TouchableOpacity>
         )
@@ -228,12 +225,12 @@ const optionsStyles = {
 const styles = StyleSheet.create({
     displayWorkoutBox: {
         flex: 1,
-        borderColor: '#e1e3df',
-        borderWidth: 1,
+        // borderColor: '#e1e3df',
+        // borderWidth: 1,
         padding: 10,
         backgroundColor: 'white',
-        margin: 10,
-        marginBottom: 5,
+        // margin: 10,
+        // marginBottom: 5,
         borderRadius: 5,
     },
     simpleTitle: {
@@ -281,10 +278,11 @@ const styles = StyleSheet.create({
         // paddingBottom: 5
     },
     exerciseImage: {
-        height: 40,
-        width: 40,
-        borderRadius: 20,
-        marginRight: 5
+        resizeMode:"contain",
+        padding: 10,
+        marginRight: 10,
+        borderColor:    '#e1e3df',
+        borderWidth: 1,
     }
 });
 

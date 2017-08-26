@@ -250,7 +250,7 @@ const Home = React.createClass({
                             {data && data.training_day ?
                                 <TouchableOpacity activeOpacity={.6} style={[styles.box, {
                                     marginBottom: 5,
-                                    alignItems: 'center',
+                                    // alignItems: 'center',
                                     justifyContent: 'center'
                                 }]} onPress={this._toLogWorkout.bind(null, data)}>
                                     <Text style={styles.textTitle}>{data.training_day.name}</Text>
