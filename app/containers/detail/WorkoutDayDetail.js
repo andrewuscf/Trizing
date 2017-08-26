@@ -12,7 +12,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
-import ActionButton from 'react-native-action-button';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {trunc, fetchData, API_ENDPOINT, checkStatus, getFontSize} from '../../actions/utils';
@@ -26,7 +25,6 @@ import Loading from '../../components/Loading';
 const EditWorkoutDay = React.createClass({
     propTypes: {
         workout_day_id: React.PropTypes.number,
-        workout_day: React.PropTypes.object
     },
 
     getInitialState() {
@@ -69,23 +67,6 @@ const EditWorkoutDay = React.createClass({
         })
     },
 
-    newDay(workout_day) {
-        this.setState({workout_day});
-    },
-
-    _addExercise() {
-        this.props.navigation.navigate('CreateExercise', {workout_day: this.state.workout_day, newDay: this.newDay});
-    },
-
-    _editExercise(set_group) {
-        this.props.navigation.navigate('CreateExercise', {
-            workout_day: this.state.workout_day,
-            set_group: set_group,
-            newDay: this.newDay
-        });
-    },
-
-
     renderHeader() {
         if (!this.state.workout_day.notes.length) {
             return null;
@@ -104,46 +85,6 @@ const EditWorkoutDay = React.createClass({
         )
     },
 
-    deleteSetActions(success, data) {
-        if (success) {
-            this.newDay(data);
-        }
-    },
-
-    deleteSetGroup(setId) {
-        this.props.actions.deleteSetGroup(setId, this.deleteSetActions)
-    },
-
-    _onNoteAdded(newNote) {
-        this.setState({
-            ...this.state.workout_day,
-            notes: this.state.workout_day.notes ? [
-                ...this.state.workout_day.notes,
-                newNote
-            ] : [newNote]
-        });
-    },
-
-    addNote(exercise) {
-        if (exercise) {
-            this.props.navigation.navigate('CreateNote', {
-                type: 'training day',
-                object_id: this.state.workout_day.id,
-                title: exercise.name,
-                exerciseId: exercise.id,
-                noteAdded: this._onNoteAdded
-            });
-        } else {
-            this.props.navigation.navigate('CreateNote', {
-                type: 'training day',
-                object_id: this.state.workout_day.id,
-                title: this.state.workout_day.name,
-                noteAdded: this._onNoteAdded
-            });
-        }
-    },
-
-
     render: function () {
         if (!this.state.workout_day) return <Loading/>;
 
@@ -152,40 +93,19 @@ const EditWorkoutDay = React.createClass({
 
         return (
             <View style={styles.container}>
-
-                {!this.state.workout_day.exercises.length ?
-                    <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
-                        <Text>Create Exercises!</Text>
-                    </View> :
-
-                    <ListView ref='workout_day_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                              keyboardShouldPersistTaps="handled"
-                              refreshControl={<RefreshControl refreshing={this.state.refreshing}
-                                                              onRefresh={() => this.getWorkoutDay(true)}/>}
-                              enableEmptySections={true}
-                              dataSource={dataSource}
-                              renderHeader={this.renderHeader}
-                              showsVerticalScrollIndicator={false}
-                              contentContainerStyle={{paddingBottom: 20}}
-                              renderRow={(set_group, sectionID, rowID) =>
-                                  <DisplayExerciseBox set_group={set_group}
-                                                      addNote={this.addNote}
-                                                      _editExercise={this._editExercise}
-                                                      deleteSetGroup={this.deleteSetGroup}/>
-                              }
-                    />
-                }
-
-                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" offsetX={10} offsetY={20}>
-                    <ActionButton.Item buttonColor='#9b59b6' title="Add Note" onPress={this.addNote}>
-                        <MaterialIcon name="note-add" color="white" size={getFontSize(22)}/>
-                    </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#3498db' title="Add Exercise"
-                                       onPress={this._addExercise}>
-                        <CustomIcon name="weight" color="white" size={getFontSize(22)}/>
-                    </ActionButton.Item>
-                </ActionButton>
-
+                <ListView ref='workout_day_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                          keyboardShouldPersistTaps="handled"
+                          refreshControl={<RefreshControl refreshing={this.state.refreshing}
+                                                          onRefresh={() => this.getWorkoutDay(true)}/>}
+                          enableEmptySections={true}
+                          dataSource={dataSource}
+                          renderHeader={this.renderHeader}
+                          showsVerticalScrollIndicator={false}
+                          contentContainerStyle={{paddingBottom: 20}}
+                          renderRow={(set_group, sectionID, rowID) =>
+                              <DisplayExerciseBox set_group={set_group}/>
+                          }
+                />
             </View>
         );
     }

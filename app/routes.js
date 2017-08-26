@@ -36,6 +36,7 @@ import WorkoutDaySession from './containers/detail/WorkoutDaySession';
 import AnswerQuestionnaire from './containers/detail/AnswerQuestionnaire';
 import AnswersDisplay from './containers/detail/AnswersDisplay';
 import MacroLogDetail from './containers/detail/MacroLogDetail';
+import WorkoutDayDetail from './containers/detail/WorkoutDayDetail';
 
 // Create Pages
 import CreateWorkout from './containers/sub/CreateWorkout';
@@ -135,6 +136,7 @@ const HomeNav = StackNavigator({
     CreateSchedule: {screen: paramsToProps(CreateSchedule)},
     EditSchedule: {screen: paramsToProps(EditSchedule)},
     WorkoutDetail: {screen: paramsToProps(WorkoutDetail)},
+    WorkoutDayDetail: {screen: paramsToProps(WorkoutDayDetail)},
     WorkoutDaySession: {screen: paramsToProps(WorkoutDaySession)},
 
     EventDetail: {screen: paramsToProps(EventDetail)},

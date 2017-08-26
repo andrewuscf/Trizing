@@ -64,7 +64,7 @@ const WorkoutDetail = React.createClass({
         if (!this.state.workout) return <Loading/>;
         const todayDay = moment().isoWeekday();
         let workout_days = this.state.workout.workout_days.map((workout_day, index) => {
-            return <DisplayWorkoutDay key={index} _toWorkoutDay={this._toWorkoutDay} workout_day={workout_day}
+            return <DisplayWorkoutDay key={index} _toWorkoutDay={this._toWorkoutDay.bind(null, workout_day.id)} workout_day={workout_day}
                                       dayIndex={index} active={_.includes(workout_day.days, todayDay)}/>
         });
         return (

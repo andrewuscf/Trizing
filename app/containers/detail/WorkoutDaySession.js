@@ -72,11 +72,11 @@ const WorkoutDaySession = React.createClass({
 
 
     render: function () {
-        const exercises = this.props.workout_day.exercises.map((exercise, i) => {
+        const exercises = this.props.workout_day.exercises.map((set_group, i) => {
             return (<DisplayExerciseBox ref={(row) => this.state.rows[i] = row}
                                         date={this.props.date}
                                         workout={this.props.workout_day.workout}
-                                        exercise={exercise} key={i} log={true}/>)
+                                        set_group={set_group} key={i} log={true}/>)
         });
         return (
             <View style={{flex: 1, backgroundColor: '#f1f1f3'}}>

@@ -28,7 +28,7 @@ const DisplayWorkoutDay = React.createClass({
         workout_day: React.PropTypes.object.isRequired,
         dayIndex: React.PropTypes.number.isRequired,
         _toWorkoutDay: React.PropTypes.func.isRequired,
-        _onDayDelete: React.PropTypes.func.isRequired,
+        _onDayDelete: React.PropTypes.func,
         _onDuplicate: React.PropTypes.func,
         active: React.PropTypes.bool,
     },
@@ -42,14 +42,16 @@ const DisplayWorkoutDay = React.createClass({
                               style={[styles.displayWorkoutBox, GlobalStyle.simpleBottomBorder, GlobalStyle.simpleTopBorder]}>
                 <View style={styles.titleView}>
                     <Text style={styles.simpleTitle}>{workout_day.name}</Text>
-                    {typeof this.props._onDuplicate !== 'undefined' ?
-                        <Menu >
+                    {typeof this.props._onDuplicate !== 'undefined' && typeof  this.props._onDayDelete !== 'undefined' ?
+                        <Menu>
                             <MenuTrigger>
                                 <FontIcon name="ellipsis-h" size={getFontSize(35)}/>
                             </MenuTrigger>
                             <MenuOptions customStyles={optionsStyles}>
-                                <MenuOption onSelect={this.props._onDayDelete.bind(null, this.props.workout_day)} text='Delete'/>
-                                <MenuOption onSelect={this.props._onDuplicate.bind(null, this.props.workout_day)} text='Duplicate'/>
+                                <MenuOption onSelect={this.props._onDayDelete.bind(null, this.props.workout_day)}
+                                            text='Delete'/>
+                                <MenuOption onSelect={this.props._onDuplicate.bind(null, this.props.workout_day)}
+                                            text='Duplicate'/>
                             </MenuOptions>
                         </Menu>
                         : null

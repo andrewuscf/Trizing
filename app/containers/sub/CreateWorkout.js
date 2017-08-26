@@ -17,7 +17,6 @@ import SelectInput from '../../components/SelectInput';
 const CreateWorkout = React.createClass({
     propTypes: {
         scheduleId: React.PropTypes.number.isRequired,
-        _onWorkoutDelete: React.PropTypes.func.isRequired,
         template_workout: React.PropTypes.object
     },
 
@@ -47,12 +46,7 @@ const CreateWorkout = React.createClass({
     asyncActions(success, data = {}){
         this.setState({disabled: false});
         if (success && data.routeName) {
-            // this.props.navigation.dispatch({
-            //     type: 'ReplaceCurrentScreen',
-            //     routeName: data.routeName,
-            //     params: {...data.props, _onWorkoutDelete: this.props._onWorkoutDelete},
-            //     key: data.routeName
-            // });
+
             this.props.navigation.goBack();
         } else {
             this.dropdown.alertWithType('error', 'Error', "Couldn't create workout block.")

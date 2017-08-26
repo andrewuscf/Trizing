@@ -4,7 +4,6 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    Keyboard,
 } from 'react-native';
 import {
     Menu,
@@ -48,7 +47,6 @@ const DisplayExerciseBox = React.createClass({
     },
 
     _redirect: function () {
-        Keyboard.dismiss();
         if (this.props._editExercise)
             this.props._editExercise(this.props.set_group);
     },
@@ -97,21 +95,24 @@ const DisplayExerciseBox = React.createClass({
     },
 
     toAddNote() {
-        this.props.addNote(this.props.set_group)
+        if (typeof this.props.addNote !== "undefined")
+            this.props.addNote(this.props.set_group)
     },
 
 
     render: function () {
-        let sets = null;
-        let notes = this.props.set_group.exercise.notes.map((note, i) => {
-            return (
-                <View key={i} style={{}}>
-                    <Text>{i + 1}. {note.text}</Text>
-                </View>
-            )
-        });
+        let sets = [];
+        let notes = [];
+        // let notes = this.props.exercises.notes.map((note, i) => {
+        //     return (
+        //         <View key={i} style={{}}>
+        //             <Text>{i + 1}. {note.text}</Text>
+        //         </View>
+        //     )
+        // });
 
         if (this.props.log) {
+            console.log(this.props.set_group)
             sets = this.props.set_group.sets.map((set, i) => {
                 return <SetLogBox ref={(row) => this.state.rows[i] = row} key={i} set={set} index={i}
                                   getStatus={this.getStatus}/>
