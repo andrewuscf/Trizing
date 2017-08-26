@@ -190,7 +190,7 @@ const Home = React.createClass({
                                     <View style={[styles.row, {alignItems: 'center'}]}>
                                         <View style={[styles.calorieBox, {justifyContent: 'flex-end'}]}>
                                             <View style={{paddingRight: 20}}>
-                                                <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>KCAL</Text>
+                                                <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>CAL</Text>
                                                 <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>EATEN</Text>
                                             </View>
                                             <Text style={{
@@ -207,8 +207,8 @@ const Home = React.createClass({
                                                 fontSize: getFontSize(24)
                                             }}>{calories}</Text>
                                             <View style={{paddingLeft: 20}}>
-                                                <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>KCAL</Text>
-                                                <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>LEFT OVER</Text>
+                                                <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>CAL</Text>
+                                                <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>LEFT</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -318,7 +318,7 @@ const Home = React.createClass({
                 </ScrollView>
 
 
-                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
+                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" offsetX={10} offsetY={10}>
                     <ActionButton.Item buttonColor='#FD795B' title="Workouts"
                                        onPress={() => navigate('ProgramList')}>
                         <CustomIcon name="barbell" size={getFontSize(22)} color="white"/>

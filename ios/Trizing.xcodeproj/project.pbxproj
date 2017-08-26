@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -48,6 +47,7 @@
 		496174F81E98C098003B9FDB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 496174F61E98C098003B9FDB /* GoogleService-Info.plist */; };
 		496174F91E98C098003B9FDB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 496174F61E98C098003B9FDB /* GoogleService-Info.plist */; };
 		496174FA1E98C098003B9FDB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 496174F61E98C098003B9FDB /* GoogleService-Info.plist */; };
+		49AD96AE1F50885200017A06 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49AD968A1F50884100017A06 /* libART.a */; };
 		49CD9FBF1E8E21510032A949 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49CD9FBE1E8E21510032A949 /* icomoon.ttf */; };
 		49CD9FC01E8E21510032A949 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49CD9FBE1E8E21510032A949 /* icomoon.ttf */; };
 		49CD9FC11E8E21510032A949 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49CD9FBE1E8E21510032A949 /* icomoon.ttf */; };
@@ -308,6 +308,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = CodePush;
 		};
+		49AD96891F50884100017A06 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49AD96851F50884100017A06 /* ART.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
+			remoteInfo = ART;
+		};
 		5E9157321DD0AC6500FF2AA8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */;
@@ -376,6 +383,7 @@
 		496174F61E98C098003B9FDB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Trizing/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		497A66AD8D264DC485DD7A6A /* Heebo-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Heebo-Regular.ttf"; path = "../app/assets/fonts/Heebo-Regular.ttf"; sourceTree = "<group>"; };
 		499961797F904AF1A5353A46 /* RNFIRMessaging.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFIRMessaging.xcodeproj; path = "../node_modules/react-native-fcm/ios/RNFIRMessaging.xcodeproj"; sourceTree = "<group>"; };
+		49AD96851F50884100017A06 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		49CD9FBE1E8E21510032A949 /* icomoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = icomoon.ttf; path = ../app/assets/fonts/icomoon.ttf; sourceTree = "<group>"; };
 		4D040E6939A3394128C13CEE /* Pods-Trizing.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trizing.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Trizing/Pods-Trizing.debug.xcconfig"; sourceTree = "<group>"; };
 		4DE33148379349C5AFACDF35 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
@@ -430,6 +438,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49AD96AE1F50885200017A06 /* libART.a in Frameworks */,
 				495D94581F11E39F00944FDF /* libimageCropPicker.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
@@ -699,6 +708,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		49AD96861F50884100017A06 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				49AD968A1F50884100017A06 /* libART.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		4F25D0BF5CDF86949706FF08 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -739,6 +756,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				49AD96851F50884100017A06 /* ART.xcodeproj */,
 				2086D88B1E516C3300D9945E /* RCTCameraRoll.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -935,6 +953,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = 49AD96861F50884100017A06 /* Products */;
+					ProjectRef = 49AD96851F50884100017A06 /* ART.xcodeproj */;
+				},
 				{
 					ProductGroup = 499D8D751F473552002C5009 /* Products */;
 					ProjectRef = B967516DA7964272BAEA0EE5 /* CodePush.xcodeproj */;
@@ -1244,6 +1266,13 @@
 			remoteRef = 499D8D791F473552002C5009 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		49AD968A1F50884100017A06 /* libART.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libART.a;
+			remoteRef = 49AD96891F50884100017A06 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1536,7 +1565,6 @@
 				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
 				"${BUILT_PRODUCTS_DIR}/QBImagePickerController/QBImagePickerController.framework",
 				"${BUILT_PRODUCTS_DIR}/RSKImageCropper/RSKImageCropper.framework",
-				"${BUILT_PRODUCTS_DIR}/React/React.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1546,7 +1574,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QBImagePickerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RSKImageCropper.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1696,7 +1723,22 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = ZU3D3L7W4E;
-				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited) ${PODS_ROOT}/Firebase/Core/Sources $(inherited) \"${PODS_ROOT}/Headers/Public\" \"${PODS_ROOT}/Headers/Public/Firebase\" \"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\" \"${PODS_ROOT}/Headers/Public/FirebaseCore\" \"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\" \"${PODS_ROOT}/Headers/Public/FirebaseMessaging\" \"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleUtilities\" \"$(SRCROOT)/../node_modules/react-native-fcm/ios\"";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/Core/Sources",
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseMessaging\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"$(SRCROOT)/../node_modules/react-native-fcm/ios\"",
+				);
 				INFOPLIST_FILE = Trizing/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1720,7 +1762,22 @@
 				CODE_SIGN_ENTITLEMENTS = Trizing/Trizing.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZU3D3L7W4E;
-				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited) ${PODS_ROOT}/Firebase/Core/Sources $(inherited) \"${PODS_ROOT}/Headers/Public\" \"${PODS_ROOT}/Headers/Public/Firebase\" \"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\" \"${PODS_ROOT}/Headers/Public/FirebaseCore\" \"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\" \"${PODS_ROOT}/Headers/Public/FirebaseMessaging\" \"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleUtilities\" \"$(SRCROOT)/../node_modules/react-native-fcm/ios\"";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/Core/Sources",
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseMessaging\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"$(SRCROOT)/../node_modules/react-native-fcm/ios\"",
+				);
 				INFOPLIST_FILE = Trizing/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1906,7 +1963,22 @@
 				CODE_SIGN_ENTITLEMENTS = Trizing/Trizing.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZU3D3L7W4E;
-				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited) ${PODS_ROOT}/Firebase/Core/Sources $(inherited) \"${PODS_ROOT}/Headers/Public\" \"${PODS_ROOT}/Headers/Public/Firebase\" \"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\" \"${PODS_ROOT}/Headers/Public/FirebaseCore\" \"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\" \"${PODS_ROOT}/Headers/Public/FirebaseMessaging\" \"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleUtilities\" \"$(SRCROOT)/../node_modules/react-native-fcm/ios\"";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/Core/Sources",
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseMessaging\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"$(SRCROOT)/../node_modules/react-native-fcm/ios\"",
+				);
 				INFOPLIST_FILE = Trizing/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
