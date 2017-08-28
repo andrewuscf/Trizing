@@ -158,16 +158,19 @@ export function register(data, asyncActions) {
                             text: 'Please use another username or log into your account.'
                         };
                 }
+                asyncActions(false);
                 return dispatch({type: types.REGISTER_USER, message: JSON.stringify(message)});
             })
             .catch((error) => {
+            console.log(error)
+                asyncActions(false);
                 return dispatch({
                     type: types.API_ERROR, error: JSON.stringify({
                         title: 'Request could not be performed.',
                         text: 'Please try again later.'
                     })
                 });
-            }).done(() => asyncActions(false));
+            })
     }
 }
 
