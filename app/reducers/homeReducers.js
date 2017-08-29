@@ -92,6 +92,29 @@ export default function homeReducers(state = initialState, action = null) {
                 Loading_Active: false,
             };
 
+        case constants.ADD_MACRO_LOG:
+            return {
+                ...state,
+                ActiveData: state.ActiveData.map(active_data => {
+                        if (active_data.date === moment(action.response.date).format("YYYY-MM-DD")) {
+                            return {
+                                ...active_data,
+                                macro_plan_day: {
+                                    ...active_data.macro_plan_day,
+                                    current_logs: {
+                                        fats: active_data.macro_plan_day.current_logs.fats + action.response.fats,
+                                        carbs: active_data.macro_plan_day.current_logs.carbs + action.response.carbs,
+                                        protein: active_data.macro_plan_day.current_logs.protein + action.response.protein,
+                                    }
+                                }
+                            }
+                        }
+                        return active_data
+                    }
+                ),
+                Loading_Active: false,
+            };
+
 
         case constants.REMOVE_TOKEN:
             return initialState;

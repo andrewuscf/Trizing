@@ -64,3 +64,7 @@ export function getActiveData(date, refresh) {
             })
     }
 }
+
+export function addMacroLog(response) {
+    return {type: types.ADD_MACRO_LOG, response}
+}

@@ -4,8 +4,10 @@ import {
     Text,
     StyleSheet,
     ListView,
-    Platform
+    Platform,
+    Dimensions
 } from 'react-native';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import moment from 'moment';
@@ -13,6 +15,8 @@ import DropdownAlert from 'react-native-dropdownalert';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Bar} from 'react-native-progress';
 import _ from 'lodash';
+
+import {addMacroLog} from '../../actions/homeActions';
 
 
 import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../actions/utils';
@@ -46,6 +50,7 @@ const CreateMacroLog = React.createClass({
                 next: null
             },
             refreshing: false,
+            loading: false,
             disabled: false,
         }
     },
@@ -55,15 +60,25 @@ const CreateMacroLog = React.createClass({
         this.getMacroLogs()
     },
 
-    getMacroLogs() {
-        fetch(`${API_ENDPOINT}training/macros/logs/?date=${this.props.date.format("YYYY-MM-DD")}`,
-            fetchData('GET', null, this.props.UserToken))
+    getMacroLogs(url = `${API_ENDPOINT}training/macros/logs/?date=${this.props.date.format("YYYY-MM-DD")}`) {
+        this.setState({loading: true});
+
+        fetch(url, fetchData('GET', null, this.props.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
-                this.setState({
-                    macro_response: responseJson,
-                    refreshing: false
-                })
+                if (responseJson) {
+                    this.setState({
+                        macro_response: {
+                            ...responseJson,
+                            results: [
+                                ...this.state.macro_response.results,
+                                ...responseJson.results
+                            ],
+                        },
+                        refreshing: false,
+                        loading: false
+                    });
+                }
             });
     },
 
@@ -87,12 +102,11 @@ const CreateMacroLog = React.createClass({
                 macro_plan_day: this.props.macro_plan_day.id,
                 date: this.props.date.format("YYYY-MM-DD")
             };
-
             fetch(`${API_ENDPOINT}training/macros/logs/`,
                 fetchData('POST', JSON.stringify(values), this.props.UserToken)).then(checkStatus)
                 .then((responseJson) => {
                     if (responseJson.id) {
-                        this.asyncActions(true);
+                        this.props.actions.addMacroLog(responseJson);
                         this.setState({
                             macro_response: {
                                 ...this.state.macro_response,
@@ -101,7 +115,8 @@ const CreateMacroLog = React.createClass({
                                     ...this.state.macro_response.results
                                 ]
                             }
-                        })
+                        });
+                        this.asyncActions(true);
                     } else {
                         this.asyncActions(false);
                     }
@@ -139,22 +154,15 @@ const CreateMacroLog = React.createClass({
                 },
             }
         };
-        // let calories = 0;
         const fats = (this.props.macro_plan_day.fats) ? this.props.macro_plan_day.fats : 0;
         const protein = (this.props.macro_plan_day.protein) ? this.props.macro_plan_day.protein : 0;
         const carbs = (this.props.macro_plan_day.carbs) ? this.props.macro_plan_day.carbs : 0;
-        // calories = (9 * fats) + (4 * protein) + (4 * carbs);
 
 
-        let currentFats = 0;
-        let currentcarbs = 0;
-        let currentprotein = 0;
-        this.state.macro_response.results.forEach((log) => {
-            currentFats += log.fats;
-            currentcarbs += log.carbs;
-            currentprotein += log.protein;
-        });
-        // let calories = (9 * currentFats) + (4 * currentcarbs) + (4 * currentprotein);
+        let currentFats = this.props.macro_plan_day.current_logs.fats ? this.props.macro_plan_day.current_logs.fats : 0;
+        let currentCarbs = this.props.macro_plan_day.current_logs.carbs ? this.props.macro_plan_day.current_logs.carbs : 0;
+        let currentProtein = this.props.macro_plan_day.current_logs.protein ? this.props.macro_plan_day.current_logs.protein : 0;
+
         return (
             <View>
                 <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center', paddingTop: 10}]}>
@@ -168,16 +176,16 @@ const CreateMacroLog = React.createClass({
                     <View style={styles.details}>
                         <Text style={styles.sectionTitle}>Carbs</Text>
                         <Text style={styles.smallText}>{`${carbs}g`}</Text>
-                        <Bar progress={currentcarbs / carbs} width={80}
+                        <Bar progress={currentCarbs / carbs} width={80}
                              borderWidth={0} height={5} borderRadius={20} unfilledColor="grey"/>
-                        <Text style={styles.smallText}>{`${carbs - currentcarbs}g left`}</Text>
+                        <Text style={styles.smallText}>{`${carbs - currentCarbs}g left`}</Text>
                     </View>
                     <View style={styles.details}>
                         <Text style={styles.sectionTitle}>Protein</Text>
                         <Text style={styles.smallText}>{`${protein}g`}</Text>
-                        <Bar progress={currentprotein / protein} width={80}
+                        <Bar progress={currentProtein / protein} width={80}
                              borderWidth={0} height={5} borderRadius={20} unfilledColor="grey"/>
-                        <Text style={styles.smallText}>{`${protein - currentprotein}g left`}</Text>
+                        <Text style={styles.smallText}>{`${protein - currentProtein}g left`}</Text>
                     </View>
                 </View>
                 <View style={{margin: 10}}>
@@ -198,19 +206,25 @@ const CreateMacroLog = React.createClass({
         return <MacroLogBox log={log}/>
     },
 
+    _onEndReached() {
+        if (this.state.macro_response.next && !this.state.loading) this.getMacroLogs(this.state.macro_response.next);
+    },
+
+
     render() {
 
         const ListData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows(this.state.macro_response.results);
         return (
             <View style={{flex: 1}}>
-                <KeyboardAwareScrollView style={styles.flexCenter}>
-                    <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                              enableEmptySections={true} dataSource={ListData} showsVerticalScrollIndicator={false}
-                              renderHeader={this.renderHeader}
-                              renderRow={this.renderRow}
-                    />
-                    <DropdownAlert ref={(ref) => this.dropdown = ref}/>
-                </KeyboardAwareScrollView>
+                <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                style={{flex:1}}
+                          enableEmptySections={true} dataSource={ListData} showsVerticalScrollIndicator={false}
+                          renderHeader={this.renderHeader}
+                          renderRow={this.renderRow}
+                          onEndReached={this._onEndReached}
+                          onEndReachedThreshold={400}
+                />
+                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
                 <InputAccessory/>
             </View>
         )
@@ -337,4 +351,10 @@ const stateToProps = (state) => {
     };
 };
 
-export default connect(stateToProps, null)(CreateMacroLog);
+const dispatchToProps = (dispatch) => {
+    return {
+        actions: {addMacroLog: bindActionCreators(addMacroLog, dispatch)}
+    }
+};
+
+export default connect(stateToProps, dispatchToProps)(CreateMacroLog);

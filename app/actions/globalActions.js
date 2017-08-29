@@ -139,6 +139,7 @@ export function register(data, asyncActions) {
         return fetch(`${API_ENDPOINT}auth/register/`, fetchData('POST', JSONDATA))
             .then(checkStatus)
             .then((responseJson) => {
+                asyncActions(false);
                 let message;
                 if (responseJson.email) {
                     message = {
@@ -158,7 +159,6 @@ export function register(data, asyncActions) {
                             text: 'Please use another username or log into your account.'
                         };
                 }
-                asyncActions(false);
                 return dispatch({type: types.REGISTER_USER, message: JSON.stringify(message)});
             })
             .catch((error) => {

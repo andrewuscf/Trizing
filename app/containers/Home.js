@@ -134,7 +134,6 @@ const Home = React.createClass({
         const {navigate} = this.props.navigation;
         const today = moment();
         const data = _.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")});
-        console.log(data);
         if (isTrainer) {
             content = (
                 <View>
@@ -156,20 +155,22 @@ const Home = React.createClass({
             let fats = 0;
             let protein = 0;
             let carbs = 0;
+
+            let currentCarbs;
+            let currentProtein;
+            let currentCal;
+            let currentFats = currentCarbs = currentProtein = currentCal = 0;
             if (data && data.macro_plan_day) {
                 fats = (data.macro_plan_day.fats) ? data.macro_plan_day.fats : 0;
                 protein = (data.macro_plan_day.protein) ? data.macro_plan_day.protein : 0;
                 carbs = (data.macro_plan_day.carbs) ? data.macro_plan_day.carbs : 0;
                 calories = calCalories(fats, carbs, protein);
+
+                currentFats = data.macro_plan_day.current_logs.fats;
+                currentCarbs = data.macro_plan_day.current_logs.carbs;
+                currentProtein = data.macro_plan_day.current_logs.protein;
+                currentCal = calCalories(currentFats, currentCarbs, currentProtein);
             }
-            let currentFats = 10;
-            let currentcarbs = 50;
-            let currentprotein = 50;
-            // this.state.macro_response.results.forEach((log) => {
-            //     currentFats += log.fats;
-            //     currentcarbs += log.carbs;
-            //     currentprotein += log.protein;
-            // });
 
             content = (
                 <View>
@@ -190,14 +191,18 @@ const Home = React.createClass({
                                     <View style={[styles.row, {alignItems: 'center'}]}>
                                         <View style={[styles.calorieBox, {justifyContent: 'flex-end'}]}>
                                             <View style={{paddingRight: 20}}>
-                                                <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>CAL</Text>
-                                                <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>EATEN</Text>
+                                                <Text
+                                                    style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>CAL</Text>
+                                                <Text style={{
+                                                    fontFamily: 'Heebo-Medium',
+                                                    textAlign: 'right'
+                                                }}>EATEN</Text>
                                             </View>
                                             <Text style={{
                                                 fontFamily: 'Heebo-Bold',
                                                 color: 'black',
                                                 fontSize: getFontSize(24),
-                                            }}>{calories}</Text>
+                                            }}>{currentCal}</Text>
                                         </View>
                                         <View style={{flex: .1}}/>
                                         <View style={[styles.calorieBox]}>
@@ -205,10 +210,11 @@ const Home = React.createClass({
                                                 fontFamily: 'Heebo-Bold',
                                                 color: 'black',
                                                 fontSize: getFontSize(24)
-                                            }}>{calories}</Text>
+                                            }}>{calories - currentCal}</Text>
                                             <View style={{paddingLeft: 20}}>
                                                 <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>CAL</Text>
-                                                <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>LEFT</Text>
+                                                <Text
+                                                    style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>LEFT</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -220,17 +226,17 @@ const Home = React.createClass({
                                             <Text style={styles.smallText}>{`${fats - currentFats}g left`}</Text>
                                         </View>
                                         <View style={styles.details}>
-                                            <Circle size={getFontSize(80)} progress={currentcarbs / carbs}
+                                            <Circle size={getFontSize(80)} progress={currentCarbs / carbs}
                                                     unfilledColor={unfilledColor} borderWidth={0} color="#a56dd1"
                                                     thickness={5} formatText={() => "Carbs"} showsText={true}/>
-                                            <Text style={styles.smallText}>{`${carbs - currentcarbs}g left`}</Text>
+                                            <Text style={styles.smallText}>{`${carbs - currentCarbs}g left`}</Text>
                                         </View>
                                     </View>
                                     <View style={{alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>
-                                        <Circle size={getFontSize(80)} progress={currentprotein / protein}
+                                        <Circle size={getFontSize(80)} progress={currentProtein / protein}
                                                 unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"
                                                 thickness={5} formatText={() => "Protein"} showsText={true}/>
-                                        <Text style={styles.smallText}>{`${protein - currentprotein}g left`}</Text>
+                                        <Text style={styles.smallText}>{`${protein - currentProtein}g left`}</Text>
                                     </View>
                                     <SubmitButton onPress={this._redirect.bind(null, 'CreateMacroLog', {
                                         macro_plan_day: data.macro_plan_day,
@@ -299,21 +305,21 @@ const Home = React.createClass({
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
 
                     {/*<View style={{flex: .8}}>*/}
-                        <View style={[styles.todayTitle, {justifyContent: 'space-between'}]}>
-                            <TouchableOpacity onPress={this.subtractDay} style={styles.arrowStyle}>
-                                <MaterialIcon name="keyboard-arrow-left" size={getFontSize(24)} color='#00AFA3'/>
-                            </TouchableOpacity>
-                            <View style={styles.todayTitle}>
-                                <MaterialIcon size={24} color='black' name="date-range"/>
-                                <Text style={styles.textTitle}>
-                                    {this.state.dataDate.isSame(today, 'd') ? 'Today' : this.state.dataDate.format('ddd, MMM DD')}
-                                </Text>
-                            </View>
-                            <TouchableOpacity onPress={this.addDay} style={styles.arrowStyle}>
-                                <MaterialIcon name="keyboard-arrow-right" size={getFontSize(24)} color='#00AFA3'/>
-                            </TouchableOpacity>
+                    <View style={[styles.todayTitle, {justifyContent: 'space-between'}]}>
+                        <TouchableOpacity onPress={this.subtractDay} style={styles.arrowStyle}>
+                            <MaterialIcon name="keyboard-arrow-left" size={getFontSize(24)} color='#00AFA3'/>
+                        </TouchableOpacity>
+                        <View style={styles.todayTitle}>
+                            <MaterialIcon size={24} color='black' name="date-range"/>
+                            <Text style={styles.textTitle}>
+                                {this.state.dataDate.isSame(today, 'd') ? 'Today' : this.state.dataDate.format('ddd, MMM DD')}
+                            </Text>
                         </View>
-                        {content}
+                        <TouchableOpacity onPress={this.addDay} style={styles.arrowStyle}>
+                            <MaterialIcon name="keyboard-arrow-right" size={getFontSize(24)} color='#00AFA3'/>
+                        </TouchableOpacity>
+                    </View>
+                    {content}
                     {/*</View>*/}
                 </ScrollView>
 
