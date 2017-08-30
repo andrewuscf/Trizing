@@ -101,12 +101,11 @@ export class ModalPicker extends t.form.Select {
                 formGroupStyle = stylesheet.formGroup.error;
                 controlLabelStyle = stylesheet.controlLabel.error;
             }
-            const label = locals.label ? <Text style={controlLabelStyle} onPress={() => {
-                this.refs.modal.setVisible(true)
-            }}>{locals.label}</Text> : null;
+            // const label = locals.label ? <Text style={controlLabelStyle} onPress={() => {
+            //     this.refs.modal.setVisible(true)
+            // }}>{locals.label}</Text> : null;
             return (
                 <View style={formGroupStyle}>
-                    {label}
                     <TouchableOpacity style={[touchableStyle]} onPress={() => {
                         this.refs.modal.setVisible(true)
                     }}>

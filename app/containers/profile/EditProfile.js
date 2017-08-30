@@ -28,14 +28,22 @@ import {getFontSize, resetNav} from '../../actions/utils';
 
 import * as ProfileActions from '../../actions/profileActions';
 import {removeToken} from '../../actions/globalActions';
+import {EMPTY_AVATAR} from '../../assets/constants';
 
 import AvatarImage from '../../components/AvatarImage';
-import {EMPTY_AVATAR} from '../../assets/constants';
+import FloatingLabel from '../../components/tcomb/FloatingLabel';
 import Loading from '../../components/Loading';
 import {ModalPicker} from '../../components/ModalPicker';
+import SubmitButton from '../../components/SubmitButton';
 
 
 const {width: deviceWidth} = Dimensions.get('window');
+
+function formatPhoneNumber(s) {
+    if (!s) return s;
+    s = s.split("-").join(""); // remove hyphens
+    return s.match(new RegExp('.{1,4}$|.{1,3}', 'g')).join("-");
+}
 
 const EditProfile = React.createClass({
     getInitialState() {
@@ -206,18 +214,30 @@ const EditProfile = React.createClass({
                 },
                 username: {
                     onSubmitEditing: () => this.refs.form.getComponent('first_name').refs.input.focus(),
+                    factory: FloatingLabel,
                     autoCapitalize: 'words'
                 },
                 first_name: {
                     onSubmitEditing: () => this.refs.form.getComponent('last_name').refs.input.focus(),
+                    factory: FloatingLabel,
                     autoCapitalize: 'words'
                 },
                 last_name: {
                     onSubmitEditing: () => this.refs.form.getComponent('phone_number').refs.input.focus(),
-                    autoCapitalize: 'words'
+                    factory: FloatingLabel,
+                    autoCapitalize: 'words',
                 },
                 phone_number: {
-                    onSubmitEditing: () => Keyboard.dismiss()
+                    factory: FloatingLabel,
+                    onSubmitEditing: () => Keyboard.dismiss(),
+                    keyboardType: 'number-pad',
+                    transformer: {
+                        format: (value) => formatPhoneNumber(value),
+                        parse: (value) => {
+                            if (value) return value.split("-").join("");
+                            return value;
+                        }
+                    }
                 }
             }
         };
@@ -235,7 +255,7 @@ const EditProfile = React.createClass({
                 username: t.String,
                 first_name: t.String,
                 last_name: t.String,
-                phone_number: t.Number
+                phone_number: t.String
             });
             if (!this.props.RequestUser.type) {
                 Profile = t.struct({
@@ -243,7 +263,7 @@ const EditProfile = React.createClass({
                     username: t.String,
                     first_name: t.String,
                     last_name: t.String,
-                    phone_number: t.Number,
+                    phone_number: t.String,
                 });
             }
 
@@ -264,7 +284,7 @@ const EditProfile = React.createClass({
                                                  borderWidth: 1
                                              } : null]}/>
                                 <Text style={styles.changePhotoText}>
-                                    Change Profile Photo
+                                    Change Photo
                                 </Text>
                             </MenuTrigger>
                             <MenuOptions
@@ -280,20 +300,21 @@ const EditProfile = React.createClass({
                             </MenuOptions>
                         </Menu>
 
-                        <View style={styles.hr}/>
 
-                        <Form
-                            ref="form"
-                            type={Profile}
-                            options={options}
-                            value={this.state.value}
-                            onChange={this.onChange}
-                        />
+                        <View style={{marginLeft: 20, marginRight: 20}}>
+                            <Form
+                                ref="form"
+                                type={Profile}
+                                options={options}
+                                value={this.state.value}
+                                onChange={this.onChange}
+                            />
+                        </View>
+
+                        <SubmitButton onPress={this._logOut}
+                                      text='LOG OUT'/>
 
 
-                        <TouchableOpacity style={styles.element} onPress={this._logOut}>
-                            <Text style={styles.elementFont}>Log out</Text>
-                        </TouchableOpacity>
 
                     </KeyboardAwareScrollView>
 
@@ -329,29 +350,10 @@ const styles = StyleSheet.create({
         width: 80,
         borderRadius: 40,
     },
-    hr: {
-        borderColor: '#e1e3df',
-        borderBottomWidth: 1,
-    },
     menuOption: {
         height: 50,
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    element: {
-        borderColor: '#e1e3df',
-        borderBottomWidth: 1,
-        borderTopWidth: 1,
-        paddingTop: 10,
-        paddingBottom: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 30
-    },
-    elementFont: {
-        fontSize: getFontSize(18),
-        fontFamily: 'Heebo-Medium',
-        color: '#3478f6'
     },
     changePhotoText: {
         alignSelf: 'center',
@@ -376,16 +378,13 @@ stylesheet.formGroup = {
     normal: {
         ...stylesheet.formGroup.normal,
         justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
+        margin: 0,
         borderColor: '#e1e3df',
         borderBottomWidth: 1,
     },
     error: {
         ...stylesheet.formGroup.error,
         justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
         borderColor: 'red',
         borderBottomWidth: 1,
     }
@@ -396,59 +395,14 @@ stylesheet.textbox = {
     normal: {
         ...stylesheet.textbox.normal,
         borderWidth: 0,
-        marginBottom: 0,
-        textAlign: 'center'
+        margin: 0,
     },
     error: {
         ...stylesheet.textbox.error,
         borderWidth: 0,
         marginBottom: 0,
-        textAlign: 'center'
     }
 };
-
-stylesheet.textboxView = {
-    ...stylesheet.textboxView,
-    normal: {
-        ...stylesheet.textboxView.normal,
-        borderWidth: 0,
-        borderRadius: 0,
-        borderBottomWidth: 0,
-        flex: 1,
-        backgroundColor: 'transparent',
-    },
-    error: {
-        ...stylesheet.textboxView.error,
-        borderWidth: 0,
-        borderRadius: 0,
-        borderBottomWidth: 0,
-        flex: 1,
-        backgroundColor: 'transparent',
-    }
-};
-
-
-stylesheet.pickerTouchable.normal.flex = 1;
-stylesheet.pickerTouchable.normal.justifyContent = 'center';
-stylesheet.pickerTouchable.error.flex = 1;
-stylesheet.pickerTouchable.error.justifyContent = 'center';
-
-stylesheet.pickerContainer.normal.borderWidth = 0;
-stylesheet.pickerContainer.normal.flex = 1;
-stylesheet.pickerContainer.normal.marginBottom = 0;
-
-stylesheet.pickerContainer.error.borderWidth = 0;
-stylesheet.pickerContainer.error.flex = 1;
-stylesheet.pickerContainer.error.marginBottom = 0;
-stylesheet.pickerValue.error.color = '#a94442';
-
-stylesheet.pickerValue.normal.textAlign = 'center';
-stylesheet.pickerValue.error.textAlign = 'center';
-
-stylesheet.controlLabel.normal.flex = 1;
-stylesheet.controlLabel.error.flex = 1;
-stylesheet.controlLabel.normal.marginLeft = 5;
-stylesheet.controlLabel.error.marginLeft = 5;
 
 const stateToProps = (state) => {
     return {
