@@ -89,6 +89,9 @@ const EditProfile = React.createClass({
             && prevProps.RequestUser.profile.completed !== this.props.RequestUser.profile.completed) {
             this.props.navigation.dispatch(resetNav('Main'));
         }
+        if (!this.props.RequestUser && prevProps.RequestUser && (this.props.RequestUser !== prevProps.RequestUser)) {
+            this.props.navigation.dispatch(resetNav('SplashScreen'));
+        }
     },
 
     asyncActions(progress){
@@ -185,7 +188,6 @@ const EditProfile = React.createClass({
                     if (FCM) FCM.setBadgeNumber(0);
                     FCM.getFCMToken().then(token => {
                         self.props.removeToken(token);
-                        this.props.navigation.dispatch(resetNav('SplashScreen'));
                     });
                 }
                 },

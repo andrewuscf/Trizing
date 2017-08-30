@@ -29,7 +29,7 @@ export function setTokenInRedux(token, FromAPI = false) {
 
 export function removeDeviceNotification(token) {
     return (dispatch, getState) => {
-        return fetch(`${API_ENDPOINT}devices/${token}/`, fetchData('DELETE', null, getState().Global.UserToken));
+        return fetch(`${API_ENDPOINT}devices/${token}/`, fetchData('DELETE', null, getState().Global.UserToken)).then(checkStatus).catch(err => console.log(err));
     }
 }
 
@@ -162,7 +162,7 @@ export function register(data, asyncActions) {
                 return dispatch({type: types.REGISTER_USER, message: JSON.stringify(message)});
             })
             .catch((error) => {
-            console.log(error)
+                console.log(error)
                 asyncActions(false);
                 return dispatch({
                     type: types.API_ERROR, error: JSON.stringify({

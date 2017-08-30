@@ -21,6 +21,7 @@ import GlobalStyle from '../globalStyle';
 import * as HomeActions from '../../actions/homeActions';
 
 import PersonBox from '../../components/PersonBox';
+import TrainerBox from '../../components/TrainerBox';
 
 
 const ManageClients = React.createClass({
@@ -34,7 +35,7 @@ const ManageClients = React.createClass({
         }
     },
 
-    componentDidMount(){
+    componentDidMount() {
         const isTrainer = this.props.RequestUser.type === 1;
         if (!this.props.Clients.length && isTrainer) {
             this.props.actions.getClients();
@@ -69,8 +70,6 @@ const ManageClients = React.createClass({
     },
 
     filterPeople() {
-        const isTrainer = this.props.RequestUser.type === 1;
-
         let clients = this.props.Clients.filter((person) => {
             if (!this.state.filterText) {
                 return person
@@ -82,13 +81,7 @@ const ManageClients = React.createClass({
                 return person;
             }
         });
-
-        if (isTrainer) {
-            return {'Clients': clients, 'Users': this.state.fetchedUsers};
-        }
-        return {'Trainers': this.state.fetchedUsers};
-
-
+        return clients.concat(this.state.fetchedUsers)
     },
 
     textChange(text) {
@@ -121,7 +114,7 @@ const ManageClients = React.createClass({
         }
     },
 
-    renderSearchBar(){
+    renderSearchBar() {
         return (
             <View style={styles.subNav}>
                 <Icon name="search" size={16} color={this.state.iconColor}/>
@@ -142,34 +135,33 @@ const ManageClients = React.createClass({
         )
     },
 
-    renderSectionHeader: function (sectionData, category) {
-        if (!sectionData.length) return null;
-        return <View style={[GlobalStyle.simpleBottomBorder]}><Text
-            style={styles.sectionTitle}>{category}</Text></View>;
+
+    renderRow(person) {
+        const isTrainer = this.props.RequestUser.type === 1;
+        if (isTrainer) {
+            return <PersonBox navigate={this.props.navigation.navigate} person={person} RequestUser={this.props.RequestUser}
+                              removeClient={this.props.actions.removeClient}
+                              sendRequest={this.props.actions.sendRequest}/>;
+        }
+        return <TrainerBox trainer={person} navigate={this.props.navigation.navigate}/>
+
     },
 
 
     render() {
-        const user = this.props.RequestUser;
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2,
-            sectionHeaderHasChanged: (s1, s2) => s1 !== s2
         });
-        const dataSource = ds.cloneWithRowsAndSections(this.filterPeople());
+        const dataSource = ds.cloneWithRows(this.filterPeople());
         return (
             <ListView ref='peoplelist' removeClippedSubviews={(Platform.OS !== 'ios')}
                       keyboardShouldPersistTaps="handled"
                       showsVerticalScrollIndicator={false}
                       refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
                       renderHeader={this.renderSearchBar}
-                      renderSectionHeader={this.renderSectionHeader}
                       style={styles.container} enableEmptySections={true}
                       dataSource={dataSource}
-                      renderRow={(person) =>
-                          <PersonBox navigate={this.props.navigation.navigate} person={person} RequestUser={user}
-                                     removeClient={this.props.actions.removeClient}
-                                     sendRequest={this.props.actions.sendRequest}/>
-                      }
+                      renderRow={this.renderRow}
             />
         );
 
@@ -189,21 +181,20 @@ const styles = StyleSheet.create({
         fontFamily: 'Heebo-Medium',
         borderWidth: 0,
         backgroundColor: 'transparent',
-        paddingLeft: 5
+        paddingLeft: 5,
     },
     subNav: {
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 60,
-        marginLeft: 10,
-        marginRight: 10,
-        borderBottomWidth: 1,
+        height: 40,
+        margin: 10,
+        padding:10,
+        borderWidth: 1,
         borderColor: '#e1e3df',
+        borderRadius: 20,
     },
     sectionTitle: {
-        paddingTop:5,
+        paddingTop: 5,
         paddingBottom: 5,
         paddingLeft: 10,
         fontSize: getFontSize(22),
