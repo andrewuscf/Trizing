@@ -171,7 +171,6 @@ const Home = React.createClass({
                 currentProtein = data.macro_plan_day.current_logs.protein;
                 currentCal = calCalories(currentFats, currentCarbs, currentProtein);
             }
-            console.log(data.training_day)
 
             content = (
                 <View>
@@ -294,7 +293,7 @@ const Home = React.createClass({
                                     </View>
 
                                     {!data.training_day.logged_today ?
-                                        <SubmitButton onPress={this._toLogWorkout.bind(null, data)} text="Start Workout"
+                                        <SubmitButton onPress={this._toLogWorkout.bind(null, data)} text="START WORKOUT"
                                                       buttonStyle={styles.logButton}/>
                                         : null
                                     }
@@ -355,7 +354,7 @@ const Home = React.createClass({
                         <View style={styles.todayTitle}>
                             <MaterialIcon size={24} color='black' name="date-range"/>
                             <Text style={styles.textTitle}>
-                                {this.state.dataDate.isSame(today, 'd') ? 'Today' : this.state.dataDate.format('ddd, MMM DD')}
+                                {this.state.dataDate.isSame(today, 'd') ? 'TODAY' : this.state.dataDate.format('ddd, MMM DD').toUpperCase()}
                             </Text>
                         </View>
                         <TouchableOpacity onPress={this.addDay} style={styles.arrowStyle}>
@@ -462,6 +461,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Heebo-Bold',
         marginTop: 10,
         marginBottom: 10,
+        marginLeft: 10,
         alignSelf: 'center'
     },
     h2Title: {
