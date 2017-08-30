@@ -215,6 +215,8 @@ const CreateExercise = React.createClass({
         return (
             <View style={{flex: 1}}>
                 <KeyboardAwareScrollView extraHeight={130} showsVerticalScrollIndicator={false}
+                                         keyboardDismissMode='interactive'
+                                         keyboardShouldPersistTaps='handled'
                                          contentContainerStyle={{padding: 10}}>
                     {!this.props.set_group ?
                         <Form

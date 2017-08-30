@@ -217,7 +217,9 @@ const CreateMacroLog = React.createClass({
         return (
             <View style={{flex: 1}}>
                 <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                style={{flex:1}}
+                          keyboardDismissMode='interactive'
+                          keyboardShouldPersistTaps='handled'
+                          style={{flex: 1}}
                           enableEmptySections={true} dataSource={ListData} showsVerticalScrollIndicator={false}
                           renderHeader={this.renderHeader}
                           renderRow={this.renderRow}

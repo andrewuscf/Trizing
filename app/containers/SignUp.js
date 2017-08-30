@@ -171,14 +171,16 @@ const SignUp = React.createClass({
 
 
                 <SubmitButton onPress={this.onPress} buttonStyle={[styles.button]} textStyle={styles.buttonText}
-                              text='Enter'/>
+                              text='ENTER'/>
+
+                <Text style={styles.buttonForgotText}>OR</Text>
 
 
                 <SubmitButton onPress={this.facebookLogin} buttonStyle={[styles.button, styles.fbButton]}
                               textStyle={styles.buttonText}
                               text={
                                   <Text style={styles.fbText}>
-                                      <Icon name="facebook-official" size={18} color="#3b5998"/> Sign up with Facebook
+                                      SIGN UP WITH FACEBOOK
                                   </Text>
                               }/>
 
@@ -201,23 +203,27 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 20
     },
+    buttonForgotText: {
+        marginTop: 10,
+        marginBottom: 10,
+        color: '#999999',
+        fontFamily: 'Heebo-Medium',
+        textAlign: 'center'
+    },
     buttonText: {
-        color: 'white',
-        fontSize: getFontSize(18),
         fontFamily: 'Heebo-Bold',
     },
     button: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#00AFA3'
     },
     fbButton: {
-        backgroundColor: 'transparent',
+        backgroundColor: '#3b5998',
+        borderWidth: 0,
     },
     fbText: {
-        color: '#3b5998',
-        fontSize: getFontSize(18),
-        paddingLeft: 10
+        fontFamily: 'Heebo-Bold',
+        color: 'white',
     },
     termSection: {
         paddingTop: 10,

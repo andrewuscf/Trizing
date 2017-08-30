@@ -96,23 +96,23 @@ const MyProfile = React.createClass({
                             </Text>
                         </View>
                     </View>
-                    <View style={[styles.tabbarView, GlobalStyle.simpleBottomBorder]}>
-                        <TouchableOpacity style={[styles.tabView]}
-                                          onPress={()=>console.log('redirect')}>
-                            <CustomIcon name="food" size={getFontSize(30)}
-                                        color='black'/>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.tabView]}
-                                          onPress={()=>console.log('redirect')}>
-                            <CustomIcon name="weight" size={getFontSize(30)}
-                                        color='black'/>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.tabView]}
-                                          onPress={()=>console.log('redirect')}>
-                            <CustomIcon name="pie-chart" size={getFontSize(20)}
-                                        color='black'/>
-                        </TouchableOpacity>
-                    </View>
+                    {/*<View style={[styles.tabbarView, GlobalStyle.simpleBottomBorder]}>*/}
+                        {/*<TouchableOpacity style={[styles.tabView]}*/}
+                                          {/*onPress={()=>console.log('redirect')}>*/}
+                            {/*<CustomIcon name="food" size={getFontSize(30)}*/}
+                                        {/*color='black'/>*/}
+                        {/*</TouchableOpacity>*/}
+                        {/*<TouchableOpacity style={[styles.tabView]}*/}
+                                          {/*onPress={()=>console.log('redirect')}>*/}
+                            {/*<CustomIcon name="weight" size={getFontSize(30)}*/}
+                                        {/*color='black'/>*/}
+                        {/*</TouchableOpacity>*/}
+                        {/*<TouchableOpacity style={[styles.tabView]}*/}
+                                          {/*onPress={()=>console.log('redirect')}>*/}
+                            {/*<CustomIcon name="pie-chart" size={getFontSize(20)}*/}
+                                        {/*color='black'/>*/}
+                        {/*</TouchableOpacity>*/}
+                    {/*</View>*/}
                 </ScrollView>
             )
         }

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TouchableHighlight, View, Image, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import {TouchableOpacity, View, Image, Text, StyleSheet, ActivityIndicator} from 'react-native';
 
 const SubmitButton = React.createClass({
     propTypes: {
@@ -39,8 +39,8 @@ const SubmitButton = React.createClass({
 
         // render
         return (
-            <TouchableHighlight style={[styles.button, this.props.buttonStyle, actionstyle]} onPress={this.onPress}
-                                underlayColor='#99d9f4'>
+            <TouchableOpacity style={[styles.button, this.props.buttonStyle, actionstyle]} onPress={this.onPress}
+                                activeOpacity={.8}>
                 <View style={styles.wrapper}>
                     <View style={[styles.iconWrapper, {opacity:(!this.state.busy)?0:1}]}>
                         <ActivityIndicator animating={this.state.busy} size='small'/>
@@ -49,7 +49,7 @@ const SubmitButton = React.createClass({
                         {content}
                     </Text>
                 </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
         )
     }
 });
@@ -67,13 +67,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     buttonText: {
-        color: 'white',
+        color: '#00AFA3',
         fontFamily: 'Heebo-Bold',
+        alignItems: 'center'
     },
     button: {
-        backgroundColor: '#00BFFF',
+        backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#00AFA3',
         // paddingTop: 10,
         // paddingBottom: 10,
         // paddingLeft: 15,

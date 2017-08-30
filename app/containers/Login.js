@@ -159,15 +159,13 @@ const Login = React.createClass({
 
 
                 <SubmitButton onPress={this.onPress} buttonStyle={[styles.button]} textStyle={styles.buttonText}
-                              text='Enter'/>
+                              text='ENTER'/>
+
+                <Text style={styles.buttonForgotText}>OR</Text>
 
                 <SubmitButton onPress={this.facebookLogin} buttonStyle={[styles.button, styles.fbButton]}
                               textStyle={styles.buttonText}
-                              text={
-                                  <Text style={styles.fbText}>
-                                      <Icon name="facebook-official" size={18} color="#3b5998"/> Login with Facebook
-                                  </Text>
-                              }/>
+                              text={<Text style={styles.fbText}>LOGIN WITH FACEBOOK</Text>}/>
 
             </KeyboardAwareScrollView>
         );
@@ -187,23 +185,20 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     buttonText: {
-        color: 'white',
-        fontSize: getFontSize(18),
         fontFamily: 'Heebo-Bold',
     },
     button: {
         marginTop: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#00AFA3'
     },
     fbButton: {
-        backgroundColor: 'transparent',
+        backgroundColor: '#3b5998',
+        borderWidth: 0,
     },
     fbText: {
-        color: '#3b5998',
-        fontSize: getFontSize(18),
-        paddingLeft: 10
+        fontFamily: 'Heebo-Bold',
+        color: 'white',
     }
 });
 

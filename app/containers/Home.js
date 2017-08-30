@@ -171,6 +171,7 @@ const Home = React.createClass({
                 currentProtein = data.macro_plan_day.current_logs.protein;
                 currentCal = calCalories(currentFats, currentCarbs, currentProtein);
             }
+            console.log(data.training_day)
 
             content = (
                 <View>
@@ -185,9 +186,12 @@ const Home = React.createClass({
                         <View>
                             {data && data.macro_plan_day ?
                                 <View style={[styles.box, {marginBottom: 5}]}>
-                                    <Text style={styles.formCalories}>
-                                        NUTRITION PLAN
-                                    </Text>
+                                    <View style={styles.boxHeader}>
+                                        <MaterialIcon name="donut-small" size={getFontSize(22)}/>
+                                        <Text style={styles.formCalories}>
+                                            NUTRITION PLAN
+                                        </Text>
+                                    </View>
                                     <View style={[styles.row, {alignItems: 'center'}]}>
                                         <View style={[styles.calorieBox, {justifyContent: 'flex-end'}]}>
                                             <View style={{paddingRight: 20}}>
@@ -218,25 +222,39 @@ const Home = React.createClass({
                                             </View>
                                         </View>
                                     </View>
-                                    <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
+                                    <View style={[styles.row, {
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        paddingTop: 10,
+                                        paddingBottom: 10
+                                    }]}>
                                         <View style={styles.details}>
-                                            <Circle size={getFontSize(80)} progress={currentFats / fats}
+                                            <Circle size={getFontSize(60)} progress={currentFats / fats}
                                                     unfilledColor={unfilledColor} borderWidth={0} color="#1fc16c"
                                                     thickness={5} formatText={() => "Fats"} showsText={true}/>
-                                            <Text style={styles.smallText}>{`${fats - currentFats}g left`}</Text>
+                                            <Text
+                                                style={[styles.smallText, (fats - currentFats < 0) ? GlobalStyle.redText : null]}>
+                                                {`${fats - currentFats}g left`}
+                                            </Text>
                                         </View>
                                         <View style={styles.details}>
-                                            <Circle size={getFontSize(80)} progress={currentCarbs / carbs}
+                                            <Circle size={getFontSize(60)} progress={currentProtein / protein}
+                                                    unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"
+                                                    thickness={5} formatText={() => "Protein"} showsText={true}/>
+                                            <Text
+                                                style={[styles.smallText, (protein - currentProtein < 0) ? GlobalStyle.redText : null]}>
+                                                {`${protein - currentProtein}g left`}
+                                            </Text>
+                                        </View>
+                                        <View style={styles.details}>
+                                            <Circle size={getFontSize(60)} progress={currentCarbs / carbs}
                                                     unfilledColor={unfilledColor} borderWidth={0} color="#a56dd1"
                                                     thickness={5} formatText={() => "Carbs"} showsText={true}/>
-                                            <Text style={styles.smallText}>{`${carbs - currentCarbs}g left`}</Text>
+                                            <Text
+                                                style={[styles.smallText, (carbs - currentCarbs < 0) ? GlobalStyle.redText : null]}>
+                                                {`${carbs - currentCarbs}g left`}
+                                            </Text>
                                         </View>
-                                    </View>
-                                    <View style={{alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>
-                                        <Circle size={getFontSize(80)} progress={currentProtein / protein}
-                                                unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"
-                                                thickness={5} formatText={() => "Protein"} showsText={true}/>
-                                        <Text style={styles.smallText}>{`${protein - currentProtein}g left`}</Text>
                                     </View>
                                     <SubmitButton onPress={this._redirect.bind(null, 'CreateMacroLog', {
                                         macro_plan_day: data.macro_plan_day,
@@ -254,27 +272,52 @@ const Home = React.createClass({
                                 </View>
                             }
                             {data && data.training_day ?
-                                <TouchableOpacity activeOpacity={.6} style={[styles.box, {
-                                    marginBottom: 5,
-                                    // alignItems: 'center',
-                                    justifyContent: 'center'
-                                }]} onPress={this._toLogWorkout.bind(null, data)}>
-                                    <Text style={styles.textTitle}>{data.training_day.name}</Text>
-                                    <Text style={styles.h2Title}>{data.training_day.exercises.length} Exercises</Text>
+                                <View style={[styles.box, {marginBottom: 5}]}>
+                                    <View
+                                        style={[styles.boxHeader, {borderBottomWidth: 1, borderColor: unfilledColor}]}>
+                                        <MaterialIcon name="directions-run" size={getFontSize(22)}/>
+                                        <Text style={styles.formCalories}>
+                                            WORKOUT
+                                        </Text>
+                                    </View>
+                                    <View style={[{marginLeft: 40, paddingTop: 5}]}>
+                                        <Text style={{
+                                            fontSize: getFontSize(18),
+                                            fontFamily: 'Heebo-Medium'
+                                        }}>{data.training_day.name}</Text>
+                                        <View style={[styles.boxHeader, {paddingLeft: 10}]}>
+                                            <FontIcon name="circle" size={getFontSize(8)} color="grey"/>
+                                            <Text style={styles.h2Title}>
+                                                {data.training_day.exercises.length} {data.training_day.exercises.length === 1 ? 'Exercise' : 'Exercises'}
+                                            </Text>
+                                        </View>
+                                    </View>
+
                                     {!data.training_day.logged_today ?
-                                        <Text style={styles.simpleTitle}>Start Workout</Text>
+                                        <SubmitButton onPress={this._toLogWorkout.bind(null, data)} text="Start Workout"
+                                                      buttonStyle={styles.logButton}/>
                                         : null
                                     }
 
-                                </TouchableOpacity>
+                                </View>
                                 :
-                                <View
-                                    style={[styles.box, {
-                                        marginBottom: 5,
-                                        alignItems: 'center',
-                                        justifyContent: 'center'
-                                    }]}>
-                                    <Text style={styles.textTitle}>No Workout</Text>
+                                <View style={[styles.box, {marginBottom: 5}]}>
+                                    <View
+                                        style={[styles.boxHeader, {borderBottomWidth: 1, borderColor: unfilledColor}]}>
+                                        <MaterialIcon name="directions-run" size={getFontSize(22)}/>
+                                        <Text style={styles.formCalories}>
+                                            WORKOUT
+                                        </Text>
+                                    </View>
+                                    <View style={[{paddingTop: 20, paddingBottom: 20}]}>
+                                        <Text style={{
+                                            fontSize: getFontSize(18),
+                                            fontFamily: 'Heebo-Medium',
+                                            textAlign: 'center',
+                                        }}>NO WORKOUT TODAY</Text>
+
+                                    </View>
+
                                 </View>
                             }
                         </View>
@@ -354,7 +397,7 @@ const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: '#f1f1f3'
+        // backgroundColor: '#f1f1f3'
     },
     contentContainerStyle: {
         // flex: 1,
@@ -375,13 +418,19 @@ const styles = StyleSheet.create({
         // paddingBottom: 3,
         alignItems: 'center'
     },
-    formCalories: {
-        fontFamily: 'Heebo-Bold',
-        alignSelf: 'center',
+    boxHeader: {
         paddingTop: 10,
         paddingBottom: 10,
-        fontSize: getFontSize(20),
-        color: 'black'
+        paddingLeft: 10,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    formCalories: {
+        fontFamily: 'Heebo-Bold',
+        // alignSelf: 'center',
+        fontSize: getFontSize(18),
+        color: 'black',
+        paddingLeft: 10,
     },
     calorieBox: {
         flex: .4,
@@ -399,7 +448,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         borderRadius: 30,
         height: 35,
-        backgroundColor: 'rgba(0, 175, 163, 1)'
     },
     box: {
         justifyContent: 'center',
@@ -417,16 +465,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     h2Title: {
-        fontSize: getFontSize(15),
         fontFamily: 'Heebo-Medium',
-        paddingBottom: 5,
-    },
-    simpleTitle: {
-        fontSize: getFontSize(16),
+        paddingLeft: 5,
         color: '#b1aea5',
-        fontFamily: 'Heebo-Medium',
-        // margin: 10,
-        textAlign: 'center'
     },
     topBar: {
         height: Platform.OS === 'ios' ? 44 : 56,
@@ -470,7 +511,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     smallText: {
-        paddingTop: 5
+        paddingTop: 5,
+        color: '#00AFA3',
     }
 });
 
