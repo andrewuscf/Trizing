@@ -12,6 +12,8 @@ export function updateProfile(data, asyncActions) {
             {name: 'first_name', data: data.first_name},
             {name: 'last_name', data: data.last_name},
             {name: 'phone_number', data: data.phone_number.toString()},
+            {name: 'date_of_birth', data: data.date_of_birth},
+            {name: 'gender', data: parseInt(data.gender)},
         ]
         if (data.avatar.uri) {
             arrayData.push({name: 'avatar', filename: 'avatar.jpg', data: data.avatar.data});

@@ -23,6 +23,7 @@ import {
 } from 'react-native-popup-menu';
 import _ from 'lodash';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import moment from 'moment';
 
 import {getFontSize, resetNav} from '../../actions/utils';
 
@@ -34,6 +35,7 @@ import AvatarImage from '../../components/AvatarImage';
 import FloatingLabel from '../../components/tcomb/FloatingLabel';
 import Loading from '../../components/Loading';
 import {ModalPicker} from '../../components/ModalPicker';
+import {ModalDatePicker} from '../../components/ModalDatePicker';
 import SubmitButton from '../../components/SubmitButton';
 
 
@@ -45,6 +47,11 @@ function formatPhoneNumber(s) {
     return s.match(new RegExp('.{1,4}$|.{1,3}', 'g')).join("-");
 }
 
+const myFormatFunction = (format, date) => {
+    return moment(date).format(format);
+};
+
+
 const EditProfile = React.createClass({
     getInitialState() {
         let initData = {
@@ -53,15 +60,19 @@ const EditProfile = React.createClass({
             imageError: false,
             progress: 0
         };
-        if (this.props.RequestUser) {
+        const user = this.props.RequestUser;
+        if (user) {
             initData = {
                 ...initData,
+                date_of_birth: user.profile.date_of_birth ? moment(user.profile.date_of_birth) : null,
                 value: {
-                    username: this.props.RequestUser.username,
-                    first_name: this.props.RequestUser.profile.first_name,
-                    last_name: this.props.RequestUser.profile.last_name,
-                    phone_number: this.props.RequestUser.profile.phone_number,
-                    type: this.props.RequestUser.type
+                    username: user.username,
+                    first_name: user.profile.first_name,
+                    last_name: user.profile.last_name,
+                    phone_number: user.profile.phone_number,
+                    type: user.type,
+                    date_of_birth: user.profile.date_of_birth ? moment(user.profile.date_of_birth).toDate() : null,
+                    gender: user.profile.gender ? user.profile.gender.toString() : null,
                 }
             }
         }
@@ -69,7 +80,10 @@ const EditProfile = React.createClass({
     },
 
     onChange(value) {
-        this.setState({value});
+        this.setState({
+            value: value,
+            date_of_birth: value.date_of_birth ? value.date_of_birth : this.state.date_of_birth,
+        });
     },
 
     clearForm() {
@@ -81,15 +95,18 @@ const EditProfile = React.createClass({
     },
 
     componentDidUpdate(prevProps) {
-        if (!prevProps.RequestUser && this.props.RequestUser) {
+        const user = this.props.RequestUser;
+        if (!prevProps.RequestUser && user) {
             this.setState({
                 value: {
                     ...this.state.value,
-                    username: this.props.RequestUser.username,
-                    first_name: this.props.RequestUser.profile.first_name,
-                    last_name: this.props.RequestUser.profile.last_name,
-                    phone_number: this.props.RequestUser.profile.phone_number,
-                    type: this.props.RequestUser.type ? this.props.RequestUser.type : null
+                    username: user.username,
+                    first_name: user.profile.first_name,
+                    last_name: user.profile.last_name,
+                    phone_number: user.profile.phone_number,
+                    type: user.type ? this.props.RequestUser.type : null,
+                    date_of_birth: user.profile.date_of_birth ? moment(user.profile.date_of_birth).toDate() : null,
+                    gender: user.profile.gender ? user.profile.gender.toString() : null,
                 }
             })
         }
@@ -102,7 +119,7 @@ const EditProfile = React.createClass({
         }
     },
 
-    asyncActions(progress){
+    asyncActions(progress) {
         this.setState({progress: progress})
     },
 
@@ -114,7 +131,6 @@ const EditProfile = React.createClass({
             mediaType: 'photo',
             includeBase64: true,
         }).then(image => {
-            console.log(image)
             this.setState({
                 previewImage: {
                     ...image,
@@ -148,24 +164,35 @@ const EditProfile = React.createClass({
         }
     },
 
-    _onSubmit(){
+    _onSubmit() {
         let values = this.refs.form.getValue();
-        if (values && (this.state.previewImage || this.props.RequestUser.profile.avatar)) {
+        console.log(values)
+        if (values && (this.state.previewImage || this.props.RequestUser.profile.avatar) && this.state.date_of_birth) {
+            const age = moment().diff(moment(this.state.date_of_birth), 'years');
+            if (age < 13) {
+                Alert.alert(
+                    'Minimum age is 13 years old',
+                    '',
+                    [
+                        {text: 'OK'}
+                    ]
+                );
+                return;
+            }
+
             const data = {
                 username: values.username,
                 type: values.type
             };
-            // const data = [
-            //     {name: 'username', data: values.username},
-            //     {name: 'profile', data: {name: 'avatar', filename: 'avatar.png',}}
-            // ]
             let profileData = {
                 first_name: values.first_name,
                 last_name: values.last_name,
                 phone_number: values.phone_number,
                 avatar: {
                     ...this.state.previewImage
-                }
+                },
+                date_of_birth: moment(values.date_of_birth).format("YYYY-MM-DD"),
+                gender: values.gender,
             };
             this.props.actions.updateUser(data, profileData, this.asyncActions);
         }
@@ -217,6 +244,27 @@ const EditProfile = React.createClass({
                     factory: FloatingLabel,
                     autoCapitalize: 'words'
                 },
+                date_of_birth: {
+                    mode: 'date',
+                    maximumDate: moment().add(1, "years").toDate(),
+                    config: {
+                        format: (date) => {
+                            if (!this.state.date_of_birth) {
+                                return 'Birthday'
+                            } else {
+                                return myFormatFunction("MMMM DD YYYY", date)
+                            }
+                        },
+                    },
+                    label: 'Birthday',
+                    factory: Platform.OS === 'ios' ? ModalDatePicker : null,
+                    hasError: !this.state.date_of_birth
+                },
+                gender: {
+                    label: 'Gender',
+                    factory: Platform.OS === 'ios' ? ModalPicker : null,
+                    nullOption: {value: '', text: 'Gender'},
+                },
                 first_name: {
                     onSubmitEditing: () => this.refs.form.getComponent('last_name').refs.input.focus(),
                     factory: FloatingLabel,
@@ -253,6 +301,8 @@ const EditProfile = React.createClass({
             }
             let Profile = t.struct({
                 username: t.String,
+                date_of_birth: t.Date,
+                gender: GENDER_TYPES,
                 first_name: t.String,
                 last_name: t.String,
                 phone_number: t.String
@@ -261,6 +311,8 @@ const EditProfile = React.createClass({
                 Profile = t.struct({
                     type: ACCOUNT_Type,
                     username: t.String,
+                    date_of_birth: t.Date,
+                    gender: GENDER_TYPES,
                     first_name: t.String,
                     last_name: t.String,
                     phone_number: t.String,
@@ -280,7 +332,7 @@ const EditProfile = React.createClass({
                             <MenuTrigger>
                                 <AvatarImage image={userImage}
                                              style={[styles.avatar, this.state.imageError ? {
-                                                 borderColor: 'red',
+                                                 borderColor: '#a94442',
                                                  borderWidth: 1
                                              } : null]}/>
                                 <Text style={styles.changePhotoText}>
@@ -290,7 +342,7 @@ const EditProfile = React.createClass({
                             <MenuOptions
                                 optionsContainerStyle={{alignSelf: 'center', width: 300, marginTop: 120}}>
                                 <MenuOption
-                                    style={[styles.menuOption, {borderBottomWidth: 1, borderColor: 'grey'}]}
+                                    style={[styles.menuOption, {borderBottomWidth: .5, borderColor: 'grey'}]}
                                     onSelect={this.toggleRoll} text='From Camera Roll'/>
                                 <MenuOption style={[styles.menuOption]}
                                             onSelect={this.toggleCamera}>
@@ -315,14 +367,13 @@ const EditProfile = React.createClass({
                                       text='LOG OUT'/>
 
 
-
                     </KeyboardAwareScrollView>
 
 
                 </View>
             );
         } else {
-            return <Loading />
+            return <Loading/>
         }
 
     }
@@ -333,6 +384,12 @@ EditProfile.navigationOptions = {
 };
 
 
+const GENDER_TYPES = t.enums({
+    1: 'Male',
+    2: 'Female',
+});
+
+
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
@@ -341,7 +398,6 @@ const styles = StyleSheet.create({
     menuStyling: {
         justifyContent: 'center',
         alignItems: 'center',
-        paddingBottom: 30,
         marginTop: 20
     },
     avatar: {
@@ -385,7 +441,7 @@ stylesheet.formGroup = {
     error: {
         ...stylesheet.formGroup.error,
         justifyContent: 'center',
-        borderColor: 'red',
+        borderColor: '#a94442',
         borderBottomWidth: 1,
     }
 };
@@ -401,6 +457,43 @@ stylesheet.textbox = {
         ...stylesheet.textbox.error,
         borderWidth: 0,
         marginBottom: 0,
+    }
+};
+
+stylesheet.pickerValue = {
+    ...stylesheet.pickerValue,
+    normal: {
+        ...stylesheet.pickerValue.normal,
+    },
+    error: {
+        ...stylesheet.pickerValue.error,
+        color: '#a94442',
+    }
+};
+
+stylesheet.dateValue = {
+    ...stylesheet.dateValue,
+    normal: {
+        ...stylesheet.dateValue.normal,
+        padding: 0
+    },
+    error: {
+        ...stylesheet.dateValue.error,
+        padding: 0
+    }
+};
+
+stylesheet.dateTouchable = {
+    ...stylesheet.dateTouchable,
+    normal: {
+        ...stylesheet.dateTouchable.normal,
+        borderColor: '#e1e3df',
+        borderBottomWidth: 1,
+    },
+    error: {
+        ...stylesheet.dateTouchable.error,
+        borderColor: '#a94442',
+        borderBottomWidth: 1,
     }
 };
 

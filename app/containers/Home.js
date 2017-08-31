@@ -362,14 +362,14 @@ const Home = React.createClass({
                         </TouchableOpacity>
                     </View>
                     {content}
-                    {/*</View>*/}
                 </ScrollView>
 
 
-                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" offsetX={10} offsetY={10}>
+                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right"
+                              icon={isTrainer? null : <MaterialIcon name="search" size={getFontSize(20)} color="white"/>}>
                     <ActionButton.Item buttonColor='#FD795B' title="Workouts"
                                        onPress={() => navigate('ProgramList')}>
-                        <CustomIcon name="barbell" size={getFontSize(22)} color="white"/>
+                        <CustomIcon name="weight" size={getFontSize(22)} color="white"/>
                     </ActionButton.Item>
                     {isTrainer ?
                         <ActionButton.Item buttonColor='#FD795B' title="Surveys"
@@ -379,7 +379,7 @@ const Home = React.createClass({
                         : <View/>
                     }
                     <ActionButton.Item buttonColor='#FD795B'
-                                       title={isTrainer ? "Manage Clients" : "Find a trainer"}
+                                       title={isTrainer ? "Clients" : "Trainers"}
                                        onPress={() => navigate('ManageClients')}>
                         <CustomIcon name="users" color="white" size={getFontSize(22)}/>
                     </ActionButton.Item>
@@ -396,11 +396,9 @@ const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
         flexDirection: 'column',
-        // backgroundColor: '#f1f1f3'
     },
     contentContainerStyle: {
-        // flex: 1,
-        // flexDirection: 'column',
+        paddingBottom: 50,
     },
     row: {
         flexDirection: 'row',
@@ -412,9 +410,7 @@ const styles = StyleSheet.create({
     details: {
         flexDirection: 'column',
         flex: 1,
-        // backgroundColor: 'transparent',
         paddingTop: 5,
-        // paddingBottom: 3,
         alignItems: 'center'
     },
     boxHeader: {
@@ -426,7 +422,6 @@ const styles = StyleSheet.create({
     },
     formCalories: {
         fontFamily: 'Heebo-Bold',
-        // alignSelf: 'center',
         fontSize: getFontSize(18),
         color: 'black',
         paddingLeft: 10,
