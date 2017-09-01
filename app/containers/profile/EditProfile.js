@@ -233,6 +233,7 @@ const EditProfile = React.createClass({
         const user = this.props.RequestUser;
         let options = {
             stylesheet: stylesheet,
+            auto: 'none',
             fields: {
                 type: {
                     nullOption: {value: '', text: 'Choose a Profile Type'},
@@ -255,12 +256,12 @@ const EditProfile = React.createClass({
                             }
                         },
                     },
-                    label: 'Birthday',
+                    label: Platform.OS === 'ios' ? 'Birthday' : '',
                     factory: Platform.OS === 'ios' ? ModalDatePicker : null,
                     hasError: !this.state.date_of_birth
                 },
                 gender: {
-                    label: 'Gender',
+                    label: Platform.OS === 'ios' ? 'Gender' : '',
                     factory: Platform.OS === 'ios' ? ModalPicker : null,
                     nullOption: {value: '', text: 'Gender'},
                 },
@@ -474,7 +475,7 @@ stylesheet.dateValue = {
     ...stylesheet.dateValue,
     normal: {
         ...stylesheet.dateValue.normal,
-        padding: 0
+        padding: Platform.OS === 'ios' ? 0 : 7
     },
     error: {
         ...stylesheet.dateValue.error,
