@@ -166,7 +166,6 @@ const EditProfile = React.createClass({
 
     _onSubmit() {
         let values = this.refs.form.getValue();
-        console.log(values)
         if (values && (this.state.previewImage || this.props.RequestUser.profile.avatar) && this.state.date_of_birth) {
             const age = moment().diff(moment(this.state.date_of_birth), 'years');
             if (age < 13) {
