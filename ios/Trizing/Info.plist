@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Simplylift</string>
+	<string>SimpleCoach</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -36,7 +36,7 @@
 	<key>FacebookAppID</key>
 	<string>1822005241396103</string>
 	<key>FacebookDisplayName</key>
-	<string>Simplylift</string>
+	<string>SimpleCoach</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

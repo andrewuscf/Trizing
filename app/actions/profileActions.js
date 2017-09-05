@@ -2,7 +2,7 @@
 
 import * as types from './actionTypes';
 import {fetchData, API_ENDPOINT, refreshPage, checkStatus} from './utils';
-import RNFetchBlob from 'react-native-fetch-blob'
+import RNFetchBlob from 'react-native-fetch-blob';
 
 
 export function updateProfile(data, asyncActions) {

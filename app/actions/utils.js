@@ -34,6 +34,19 @@ export function fetchData(method, body = null, token = null, headers = null, get
     return data;
 }
 
+export function setHeaders(token = null, headers = null) {
+    let newHeader = headers ? headers : {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    };
+
+    if (token) {
+        newHeader['Authorization'] = `Token ${token}`;
+    }
+
+    return newHeader;
+}
+
 export function checkStatus(response) {
     if (response.status === 204) {
         return {deleted: true}
@@ -41,7 +54,7 @@ export function checkStatus(response) {
         return response.json();
     } else {
         console.log(response.json());
-        let error = new Error(response.statusText ? response.statusText: null);
+        let error = new Error(response.statusText ? response.statusText : null);
         error.response = response;
         throw error;
     }

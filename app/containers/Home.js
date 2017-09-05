@@ -188,7 +188,7 @@ const Home = React.createClass({
                                     <View style={styles.boxHeader}>
                                         <MaterialIcon name="donut-small" size={getFontSize(22)}/>
                                         <Text style={styles.formCalories}>
-                                            NUTRITION PLAN
+                                            Nutrition Plan
                                         </Text>
                                     </View>
                                     <View style={[styles.row, {alignItems: 'center'}]}>
@@ -263,7 +263,6 @@ const Home = React.createClass({
                                 </View>
                                 : <View
                                     style={[styles.box, {
-                                        marginBottom: 5,
                                         alignItems: 'center',
                                         justifyContent: 'center'
                                     }]}>
@@ -271,12 +270,12 @@ const Home = React.createClass({
                                 </View>
                             }
                             {data && data.training_day ?
-                                <View style={[styles.box, {marginBottom: 5}]}>
+                                <View style={[styles.box]}>
                                     <View
                                         style={[styles.boxHeader, {borderBottomWidth: 1, borderColor: unfilledColor}]}>
                                         <MaterialIcon name="directions-run" size={getFontSize(22)}/>
                                         <Text style={styles.formCalories}>
-                                            WORKOUT
+                                            Workout
                                         </Text>
                                     </View>
                                     <View style={[{marginLeft: 40, paddingTop: 5}]}>
@@ -300,12 +299,12 @@ const Home = React.createClass({
 
                                 </View>
                                 :
-                                <View style={[styles.box, {marginBottom: 5}]}>
+                                <View style={[styles.box]}>
                                     <View
                                         style={[styles.boxHeader, {borderBottomWidth: 1, borderColor: unfilledColor}]}>
                                         <MaterialIcon name="directions-run" size={getFontSize(22)}/>
                                         <Text style={styles.formCalories}>
-                                            WORKOUT
+                                            Workout
                                         </Text>
                                     </View>
                                     <View style={[{paddingTop: 20, paddingBottom: 20}]}>
@@ -319,6 +318,27 @@ const Home = React.createClass({
 
                                 </View>
                             }
+                            <View style={[styles.box]}>
+                                <View
+                                    style={[styles.boxHeader, {borderBottomWidth: 1, borderColor: unfilledColor}]}>
+                                    <FontIcon name="balance-scale" size={getFontSize(20)}/>
+                                    <Text style={styles.formCalories}>
+                                        Weight Progress
+                                    </Text>
+                                </View>
+                                <View style={[{paddingTop: 20, paddingBottom: 20}]}>
+                                    <Text style={{
+                                        fontSize: getFontSize(18),
+                                        fontFamily: 'Heebo-Medium',
+                                        textAlign: 'center',
+                                    }}>NO WEIGHT PROGRESS</Text>
+
+                                    <SubmitButton onPress={()=> console.log('hit')} text="LOG WEIGHT"
+                                                  buttonStyle={styles.logButton}/>
+
+                                </View>
+
+                            </View>
                         </View>
                         : <Loading style={{paddingTop: 40}}/>
                     }
@@ -346,7 +366,6 @@ const Home = React.createClass({
                                                             onRefresh={() => this.getNeeded(true)}/>}
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
 
-                    {/*<View style={{flex: .8}}>*/}
                     <View style={[styles.todayTitle, {justifyContent: 'space-between'}]}>
                         <TouchableOpacity onPress={this.subtractDay} style={styles.arrowStyle}>
                             <MaterialIcon name="keyboard-arrow-left" size={getFontSize(24)} color='#00AFA3'/>
@@ -366,7 +385,8 @@ const Home = React.createClass({
 
 
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right"
-                              icon={isTrainer? null : <MaterialIcon name="search" size={getFontSize(20)} color="white"/>}>
+                              icon={isTrainer ? null :
+                                  <MaterialIcon name="search" size={getFontSize(20)} color="white"/>}>
                     <ActionButton.Item buttonColor='#FD795B' title="Workouts"
                                        onPress={() => navigate('ProgramList')}>
                         <CustomIcon name="weight" size={getFontSize(22)} color="white"/>
@@ -449,7 +469,8 @@ const styles = StyleSheet.create({
         borderWidth: .5,
         borderColor: '#e1e3df',
         borderRadius: 5,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        marginBottom: 5,
     },
     textTitle: {
         fontSize: getFontSize(22),

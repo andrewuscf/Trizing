@@ -1,4 +1,4 @@
 import React, { AppRegistry } from 'react-native';
-import Simplylift from './app/AppWrapper';
+import SimpleCoach from './app/AppWrapper';
 
-AppRegistry.registerComponent('Simplylift', () => Simplylift);
+AppRegistry.registerComponent('SimpleCoach', () => SimpleCoach);

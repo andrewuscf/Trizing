@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     StyleSheet,
-    Text,
     View,
     TextInput,
     Platform,
@@ -13,9 +12,9 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import fetch from 'react-native-cancelable-fetch';
+import RNFetchBlob from 'react-native-fetch-blob';
 
-import {fetchData, API_ENDPOINT, checkStatus, getFontSize} from '../../actions/utils';
+import {fetchData, API_ENDPOINT, checkStatus, getFontSize, setHeaders} from '../../actions/utils';
 import GlobalStyle from '../globalStyle';
 
 import * as HomeActions from '../../actions/homeActions';
@@ -31,7 +30,9 @@ const ManageClients = React.createClass({
             filterText: null,
             showCancel: false,
             iconColor: '#a7a59f',
-            fetchedUsers: []
+            fetchedUsers: [],
+            fetchedNext: null,
+            loading: false,
         }
     },
 
@@ -58,15 +59,28 @@ const ManageClients = React.createClass({
     },
 
     getUsersList(text) {
+        this.setState({loading: true});
+
         let url = `${API_ENDPOINT}user/list/`;
         if (text) url += `?search=${text}`;
-        fetch(url, fetchData('GET', null, this.props.UserToken), 1)
-            .then(checkStatus)
-            .then(data => {
-                this.setState({
-                    fetchedUsers: data.results
-                });
+        if (this.currentGET) {
+            this.currentGET.cancel((err)=>console.log(err));
+            this.currentGET = null;
+        }
+
+        this.currentGET = RNFetchBlob.fetch('GET', url, setHeaders(this.props.UserToken));
+        this.currentGET.then((res) => {
+            let json = res.json();
+            this.setState({
+                fetchedUsers: json.results,
+                fetchedNext: json.next,
+                loading: false,
             });
+
+        }).catch((errorMessage, statusCode) => {
+            this.setState({loading: false});
+            console.log(statusCode)
+        });
     },
 
     filterPeople() {
@@ -85,12 +99,11 @@ const ManageClients = React.createClass({
     },
 
     textChange(text) {
-        if (text) {
-            this.getUsersList(text);
-        } else {
+        this.getUsersList(text);
+        if (!text && !this.props.RequestUser.type === 1) {
             this.props.actions.getClients(true);
         }
-        this.setState({filterText: text});
+        this.setState({filterText: text, showCancel: !!text});
     },
 
     clickCancel: function () {
@@ -100,6 +113,7 @@ const ManageClients = React.createClass({
             iconColor: '#a7a59f',
             fetchedUsers: []
         });
+        this.getUsersList('');
     },
 
     _renderCancel: function () {
@@ -137,14 +151,19 @@ const ManageClients = React.createClass({
 
 
     renderRow(person) {
-        const isTrainer = this.props.RequestUser.type === 1;
+        const isTrainer = person.type === 1;
         if (isTrainer) {
-            return <PersonBox navigate={this.props.navigation.navigate} person={person} RequestUser={this.props.RequestUser}
-                              removeClient={this.props.actions.removeClient}
-                              sendRequest={this.props.actions.sendRequest}/>;
+            return <TrainerBox trainer={person} navigate={this.props.navigation.navigate}/>
         }
-        return <TrainerBox trainer={person} navigate={this.props.navigation.navigate}/>
+        return <PersonBox navigate={this.props.navigation.navigate} person={person}
+                          RequestUser={this.props.RequestUser}
+                          removeClient={this.props.actions.removeClient}
+                          sendRequest={this.props.actions.sendRequest}/>;
 
+    },
+
+    _onEndReached() {
+        if (this.state.fetchedNext && !this.state.loading) this.getUsersList(this.state.fetchedNext);
     },
 
 
@@ -162,6 +181,8 @@ const ManageClients = React.createClass({
                       style={styles.container} enableEmptySections={true}
                       dataSource={dataSource}
                       renderRow={this.renderRow}
+                      onEndReached={this._onEndReached}
+                      onEndReachedThreshold={400}
             />
         );
 
@@ -177,6 +198,7 @@ const styles = StyleSheet.create({
     filterInput: {
         flex: 1,
         width: 105,
+        height: 40,
         color: '#797979',
         fontFamily: 'Heebo-Medium',
         borderWidth: 0,
@@ -188,7 +210,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 40,
         margin: 10,
-        padding:10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
         borderWidth: 1,
         borderColor: '#e1e3df',
         borderRadius: 20,
