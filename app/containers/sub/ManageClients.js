@@ -196,26 +196,24 @@ const styles = StyleSheet.create({
         paddingBottom: 20
     },
     filterInput: {
+        fontFamily: 'Heebo-Medium',
         flex: 1,
         width: 105,
-        height: 40,
         color: '#797979',
-        fontFamily: 'Heebo-Medium',
+        fontSize: 14,
         borderWidth: 0,
         backgroundColor: 'transparent',
-        paddingLeft: 5,
+        paddingLeft: 5
     },
     subNav: {
-        flex: 1,
         flexDirection: 'row',
-        height: 40,
-        margin: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 10,
-        borderWidth: 1,
+        height: 40,
+        marginLeft: 10,
+        marginRight: 10,
+        borderBottomWidth: 1,
         borderColor: '#e1e3df',
-        borderRadius: 20,
     },
     sectionTitle: {
         paddingTop: 5,

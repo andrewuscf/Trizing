@@ -78,16 +78,18 @@ export default function homeReducers(state = initialState, action = null) {
         case constants.CREATE_WORKOUT_LOG:
             return {
                 ...state,
-                ActiveData: state.ActiveData.map(active_data =>
-                    (active_data.date === moment.utc(action.response.date).local().format("YYYY-MM-DD")) ?
-                        {
-                            ...active_data,
-                            training_day: {
-                                ...active_data.training_day,
-                                logged_today: moment().isSame(moment.utc(action.response.date).local(), 'day')
+                ActiveData: state.ActiveData.map(active_data => {
+                        if (moment(active_data.date).isSame(moment(action.response[0].date).local())) {
+                            return {
+                                ...active_data,
+                                training_day: {
+                                    ...active_data.training_day,
+                                    logged_today: true
+                                }
                             }
-                        } :
-                        active_data
+                        }
+                        return active_data
+                    }
                 ),
                 Loading_Active: false,
             };

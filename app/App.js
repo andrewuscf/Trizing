@@ -11,7 +11,7 @@ import FCM, {
 import {MenuContext} from 'react-native-popup-menu';
 import {
     setCustomText,
-    setCustomImage,
+    setCustomTouchableOpacity,
 } from 'react-native-global-props';
 
 
@@ -25,6 +25,9 @@ setCustomText({
         fontSize: getFontSize(14),
         fontFamily: 'Heebo-Regular',
     }
+});
+setCustomTouchableOpacity({
+    hitSlop: { top: 15, right: 15, left: 15, bottom: 15 }
 });
 
 const App = React.createClass({

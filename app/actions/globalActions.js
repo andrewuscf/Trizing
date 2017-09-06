@@ -515,11 +515,11 @@ export function logSets(data, asyncActions) {
             fetchData('POST', JSONDATA, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
                 if (responseJson.length) {
-                    asyncActions(true)
+                    asyncActions(true);
+                    return dispatch({type: types.CREATE_WORKOUT_LOG, response: responseJson});
                 } else {
                     asyncActions(false)
                 }
-                return dispatch({type: types.CREATE_WORKOUT_LOG, response: responseJson});
             }).catch((e) => asyncActions(false));
     }
 }
