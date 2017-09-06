@@ -79,7 +79,7 @@ const WorkoutDaySession = React.createClass({
                                         set_group={set_group} key={i} log={true}/>)
         });
         return (
-            <View style={{flex: 1, backgroundColor: '#f1f1f3'}}>
+            <View style={{flex: 1}}>
                 <KeyboardAwareScrollView extraHeight={130} showsVerticalScrollIndicator={false}
                                          contentContainerStyle={{paddingBottom: 50}}>
                     {exercises}

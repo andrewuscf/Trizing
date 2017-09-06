@@ -135,11 +135,23 @@ const DisplayExerciseBox = React.createClass({
         }
 
         return (
-            <TouchableOpacity style={[styles.displayWorkoutBox, {flexDirection: 'row'}]} onPress={this.toggleDetails}>
-                {this.props.set_group.exercise.image ?
-                    <AvatarImage image={this.props.set_group.exercise.image} style={styles.exerciseImage} cache={true}/>
-                    : null
-                }
+            <TouchableOpacity style={[styles.displayWorkoutBox, {flexDirection: 'row', alignItems: 'center'}]}
+                              onPress={this.toggleDetails}>
+                {/*{this.props.set_group.exercise.image ?*/}
+                {/*<AvatarImage image={this.props.set_group.exercise.image} style={styles.exerciseImage} cache={true}/>*/}
+                {/*: null*/}
+                {/*}*/}
+                <View
+                    style={[styles.setCircle, this.state.isComplete ? {borderColor: 'green'} : {borderColor: '#ff473d'}]}>
+                    <Text
+                        style={[{fontSize: getFontSize(12)}, this.state.isComplete ? {color: 'green'} : {color: '#ff473d'}]}>
+                        {this.props.set_group.sets.length}
+                    </Text>
+                    <Text
+                        style={[{fontSize: getFontSize(10)}, this.state.isComplete ? {color: 'green'} : {color: '#ff473d'}]}>
+                        {this.props.set_group.sets.length === 1 ? 'SET' : 'SETS'}
+                    </Text>
+                </View>
                 <View style={{flexDirection: 'column', flex: 1}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Text style={styles.simpleTitle}>{trunc(this.props.set_group.exercise.name, 30)}</Text>
@@ -157,18 +169,16 @@ const DisplayExerciseBox = React.createClass({
                                     <MenuOption onSelect={this._onDelete} text='Delete'/>
                                 </MenuOptions>
                             </Menu>
-                            : this.state.isComplete ?
-                                <MaterialIcon name="check-circle" size={getFontSize(20)} color="green"/> :
-                                !this.state.showDetails ?
-                                    <MaterialIcon name="keyboard-arrow-down" size={getFontSize(32)}/> :
-                                    <MaterialIcon name="keyboard-arrow-up" size={getFontSize(32)}/>
+                            : !this.state.showDetails ?
+                                <MaterialIcon name="keyboard-arrow-right" size={getFontSize(32)}/> :
+                                <MaterialIcon name="keyboard-arrow-up" size={getFontSize(32)}/>
 
                         }
                     </View>
-                    {!this.state.showDetails ?
-                        <View style={styles.dateSection}/>
-                        : null
-                    }
+                    {/*{!this.state.showDetails ?*/}
+                    {/*<View style={styles.dateSection}/>*/}
+                    {/*: null*/}
+                    {/*}*/}
                     <View style={[this.state.showDetails ? {flex: 1, opacity: 1} : {width: 0, height: 0, opacity: 0}]}>
                         <View style={styles.rowSection}>
                             <View style={styles.topSection}>
@@ -231,7 +241,19 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         // margin: 10,
         // marginBottom: 5,
-        borderRadius: 5,
+        borderColor: '#e1e3df',
+        borderBottomWidth: .5,
+    },
+    setCircle: {
+        borderWidth: 1,
+        borderColor: 'black',
+        borderRadius: 25,
+        width: 50,
+        height: 50,
+        padding: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10
     },
     simpleTitle: {
         fontSize: getFontSize(18),
@@ -252,15 +274,15 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         flex: 1
     },
-    dateSection: {
-        marginLeft: 5,
-        marginRight: 5,
-        paddingTop: 5,
-        borderColor: '#e1e3df',
-        borderTopWidth: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
+    // dateSection: {
+    //     marginLeft: 5,
+    //     marginRight: 5,
+    //     paddingTop: 5,
+    //     borderColor: '#e1e3df',
+    //     borderTopWidth: 1,
+    //     flexDirection: 'row',
+    //     alignItems: 'center',
+    // },
     day: {
         fontSize: getFontSize(18),
         fontFamily: 'Heebo-Medium',
@@ -278,10 +300,10 @@ const styles = StyleSheet.create({
         // paddingBottom: 5
     },
     exerciseImage: {
-        resizeMode:"contain",
+        resizeMode: "contain",
         padding: 10,
         marginRight: 10,
-        borderColor:    '#e1e3df',
+        borderColor: '#e1e3df',
         borderWidth: 1,
     }
 });
