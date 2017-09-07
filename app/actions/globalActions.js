@@ -1,11 +1,14 @@
 'use strict';
 import * as types from './actionTypes';
-import {fetchData, API_ENDPOINT, refreshPage, SITE, checkStatus} from './utils';
+import {fetchData, API_ENDPOINT, refreshPage, SITE, checkStatus, setHeaders} from './utils';
 import {AsyncStorage, Platform} from 'react-native';
 import {LoginManager} from 'react-native-fbsdk';
 import momentTz from 'moment-timezone';
 import _ from 'lodash';
 import {ImageCache} from "react-native-img-cache";
+import RNFetchBlob from 'react-native-fetch-blob';
+import configureStore from '../stores/configureStore';
+import {persistStore} from 'redux-persist';
 
 
 import {getClients, getActiveData} from './homeActions';
@@ -49,6 +52,7 @@ export function setDeviceForNotification(token) {
 
 export function removeToken(token) {
     return (dispatch) => {
+        persistStore(configureStore(), {storage: AsyncStorage}).purge();
         ImageCache.get().clear();
         AsyncStorage.removeItem('USER_TOKEN');
         LoginManager.logOut();
@@ -95,40 +99,45 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
         }
         const timeZone = momentTz.tz.guess();
         if (timeZone) url += `?timezone=${timeZone}`;
-        return fetch(url, fetchData('GET', null, getState().Global.UserToken))
-            .then(checkStatus)
-            .then((responseJson) => {
-                if (responseJson.detail)
-                    return dispatch(removeToken());
-                return dispatch({type: types.LOAD_REQUEST_USER, request_user: responseJson});
-            }).catch((error) => {
+
+        return RNFetchBlob.fetch('GET', url, setHeaders(getState().Global.UserToken)).then((res) => {
+            let responseJson = res.json();
+            if (responseJson.detail)
                 return dispatch(removeToken());
-            })
+            return dispatch({type: types.LOAD_REQUEST_USER, request_user: responseJson});
+        }).catch((errorMessage, statusCode) => {
+            console.log(statusCode);
+            return dispatch(removeToken());
+        });
     }
 }
 
 
-export function resetPassword(data) {
+export function resetPassword(data, asyncActions) {
+    asyncActions(true);
     return (dispatch, getState) => {
         const JSONData = JSON.stringify(data);
-        return fetch(`${API_ENDPOINT}auth/password/reset/`, fetchData('POST', JSONData))
+
+        return RNFetchBlob.fetch('POST', `${API_ENDPOINT}auth/password/reset/`,
+            setHeaders(getState().Global.UserToken), JSONData)
             .then((response) => {
-                if (response.status == 204) {
-                    return dispatch({
-                        type: types.API_ERROR, error: JSON.stringify({
-                            title: 'Reset password sent',
-                            text: 'Please check your email for the reset password link'
-                        })
-                    });
-                } else {
-                    return dispatch({
-                        type: types.API_ERROR, error: JSON.stringify({
-                            title: 'Request could not be performed.',
-                            text: 'Please try again later.'
-                        })
-                    });
-                }
-            })
+                asyncActions(false);
+                return dispatch({
+                    type: types.API_ERROR, error: JSON.stringify({
+                        title: 'Reset password sent',
+                        text: 'Please check your email for the reset password link'
+                    })
+                });
+            }).catch((errorMessage, statusCode) => {
+                console.log(statusCode);
+                asyncActions(false);
+                return dispatch({
+                    type: types.API_ERROR, error: JSON.stringify({
+                        title: 'Request could not be performed.',
+                        text: 'Please try again later.'
+                    })
+                });
+            });
     }
 }
 

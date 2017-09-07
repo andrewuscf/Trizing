@@ -55,7 +55,7 @@ const ResetPassword = React.createClass({
         Keyboard.dismiss();
         const formValues = this.refs.form.getValue();
         if (formValues) {
-            this.props.actions.resetPassword(formValues);
+            this.props.actions.resetPassword(formValues, this.asyncActions);
             this.setState({value: null});
         }
     },
