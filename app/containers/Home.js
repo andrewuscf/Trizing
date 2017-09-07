@@ -385,6 +385,7 @@ const Home = React.createClass({
                             refreshControl={<RefreshControl refreshing={this.props.Refreshing}
                                                             onRefresh={() => this.getNeeded(true)}/>}
                             onScroll={this._onScroll}
+                            scrollEventThrottle={15}
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
 
                     <View style={[styles.todayTitle, {justifyContent: 'space-between'}]}>
