@@ -7,6 +7,7 @@ import {
     RefreshControl,
     ScrollView,
     Dimensions,
+    LayoutAnimation
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -25,6 +26,12 @@ import Loading from '../components/Loading';
 
 
 const Calendar = React.createClass({
+    getInitialState() {
+        return {
+            isActionButtonVisible: true
+        }
+    },
+
     componentDidMount() {
         if (!this.props.Events.length) {
             this.props.actions.getEvents();
@@ -55,6 +62,25 @@ const Calendar = React.createClass({
                 <Text style={styles.sectionTitle}>{category}</Text>
             </View>
         );
+    },
+
+    _listViewOffset: 0,
+
+    _onScroll(event) {
+        const CustomLayoutLinear = {
+            duration: 100,
+            create: {type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity},
+            update: {type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity},
+            delete: {type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity}
+        };
+        const currentOffset = event.nativeEvent.contentOffset.y;
+        const direction = (currentOffset > 0 && currentOffset > this._listViewOffset) ? 'down' : 'up';
+        const isActionButtonVisible = direction === 'up';
+        if (isActionButtonVisible !== this.state.isActionButtonVisible) {
+            LayoutAnimation.configureNext(CustomLayoutLinear);
+            this.setState({isActionButtonVisible})
+        }
+        this._listViewOffset = currentOffset;
     },
 
     convertToMap() {
@@ -89,6 +115,7 @@ const Calendar = React.createClass({
                 <ScrollView contentContainerStyle={styles.scrollContainer} ref="calendar_list"
                             style={GlobalStyle.noHeaderContainer}
                             showsVerticalScrollIndicator={false}
+                            onScroll={this._onScroll}
                             refreshControl={<RefreshControl refreshing={this.props.Refreshing}
                                                             onRefresh={this._refresh}/>}>
                     <View style={styles.noRequests}>
@@ -110,7 +137,8 @@ const Calendar = React.createClass({
                           showsVerticalScrollIndicator={false}
                           refreshControl={<RefreshControl refreshing={this.props.Refreshing}
                                                           onRefresh={this._refresh}/>}
-                          style={GlobalStyle.noHeaderContainer}
+                          onScroll={this._onScroll}
+                          style={GlobalStyle.container}
                           enableEmptySections={true}
                           dataSource={dataSource} onEndReached={this.onEndReached}
                           onEndReachedThreshold={Dimensions.get('window').height}
@@ -145,7 +173,7 @@ const Calendar = React.createClass({
         return (
             <View style={styles.scrollContainer}>
                 {content}
-                {subMenu}
+                {this.state.isActionButtonVisible ? subMenu: null}
             </View>
         );
     }
@@ -155,7 +183,7 @@ const Calendar = React.createClass({
 const styles = StyleSheet.create({
     scrollContainer: {
         flex: 1,
-        backgroundColor: '#f1f1f3'
+        // backgroundColor: '#f1f1f3'
     },
     noRequests: {
         flex: 1,

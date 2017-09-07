@@ -18,7 +18,6 @@ import moment from 'moment';
 import {getFontSize, trunc} from '../../actions/utils';
 
 
-import AvatarImage from '../../components/AvatarImage';
 import SetLogBox from '../../components/SetLogBox';
 import GlobalStyle from "../../containers/globalStyle";
 

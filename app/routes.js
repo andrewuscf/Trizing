@@ -202,7 +202,7 @@ const CalendarNav = StackNavigator({
     Calendar: {
         screen: Calendar,
         navigationOptions: {
-            header: null,
+            headerTitle: 'Calendar',
         }
     },
     CreateEvent: {screen: paramsToProps(CreateEvent)},

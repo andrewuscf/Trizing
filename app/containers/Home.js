@@ -6,7 +6,8 @@ import {
     RefreshControl,
     ScrollView,
     TouchableOpacity,
-    Platform
+    Platform,
+    LayoutAnimation
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -41,9 +42,9 @@ const Home = React.createClass({
     getInitialState() {
         return {
             dataDate: moment(),
+            isActionButtonVisible: true
         }
     },
-
 
     componentDidMount() {
         if (this.props.RequestUser.type === 1 && !this.props.Clients.length) {
@@ -74,6 +75,25 @@ const Home = React.createClass({
                 date: this.state.dataDate.format("YYYY-MM-DD")
             })
         }
+    },
+
+    _listViewOffset: 0,
+
+    _onScroll(event) {
+        const CustomLayoutLinear = {
+            duration: 100,
+            create: {type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity},
+            update: {type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity},
+            delete: {type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity}
+        };
+        const currentOffset = event.nativeEvent.contentOffset.y;
+        const direction = (currentOffset > 0 && currentOffset > this._listViewOffset) ? 'down' : 'up';
+        const isActionButtonVisible = direction === 'up';
+        if (isActionButtonVisible !== this.state.isActionButtonVisible) {
+            LayoutAnimation.configureNext(CustomLayoutLinear);
+            this.setState({isActionButtonVisible})
+        }
+        this._listViewOffset = currentOffset;
     },
 
     renderNotifications() {
@@ -333,7 +353,7 @@ const Home = React.createClass({
                                         textAlign: 'center',
                                     }}>NO WEIGHT PROGRESS</Text>
 
-                                    <SubmitButton onPress={()=> console.log('hit')} text="LOG WEIGHT"
+                                    <SubmitButton onPress={() => console.log('hit')} text="LOG WEIGHT"
                                                   buttonStyle={styles.logButton}/>
 
                                 </View>
@@ -364,6 +384,7 @@ const Home = React.createClass({
                 <ScrollView ref='home_scroll' showsVerticalScrollIndicator={false}
                             refreshControl={<RefreshControl refreshing={this.props.Refreshing}
                                                             onRefresh={() => this.getNeeded(true)}/>}
+                            onScroll={this._onScroll}
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
 
                     <View style={[styles.todayTitle, {justifyContent: 'space-between'}]}>
@@ -383,28 +404,31 @@ const Home = React.createClass({
                     {content}
                 </ScrollView>
 
+                {this.state.isActionButtonVisible ?
 
-                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right"
-                              icon={isTrainer ? null :
-                                  <MaterialIcon name="search" size={getFontSize(20)} color="white"/>}>
-                    <ActionButton.Item buttonColor='#FD795B' title="Workouts"
-                                       onPress={() => navigate('ProgramList')}>
-                        <CustomIcon name="weight" size={getFontSize(22)} color="white"/>
-                    </ActionButton.Item>
-                    {isTrainer ?
-                        <ActionButton.Item buttonColor='#FD795B' title="Surveys"
-                                           onPress={() => navigate('SurveyList')}>
-                            <MaterialIcon name="question-answer" size={getFontSize(22)} color="white"/>
+                    <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right"
+                                  icon={isTrainer ? null :
+                                      <MaterialIcon name="search" size={getFontSize(20)} color="white"/>}>
+                        <ActionButton.Item buttonColor='#FD795B' title="Workouts"
+                                           onPress={() => navigate('ProgramList')}>
+                            <CustomIcon name="weight" size={getFontSize(22)} color="white"/>
                         </ActionButton.Item>
-                        : <View/>
-                    }
-                    <ActionButton.Item buttonColor='#FD795B'
-                                       title={isTrainer ? "Clients" : "Trainers"}
-                                       onPress={() => navigate('ManageClients')}>
-                        <CustomIcon name="users" color="white" size={getFontSize(22)}/>
-                    </ActionButton.Item>
+                        {isTrainer ?
+                            <ActionButton.Item buttonColor='#FD795B' title="Surveys"
+                                               onPress={() => navigate('SurveyList')}>
+                                <MaterialIcon name="question-answer" size={getFontSize(22)} color="white"/>
+                            </ActionButton.Item>
+                            : <View/>
+                        }
+                        <ActionButton.Item buttonColor='#FD795B'
+                                           title={isTrainer ? "Clients" : "Trainers"}
+                                           onPress={() => navigate('ManageClients')}>
+                            <CustomIcon name="users" color="white" size={getFontSize(22)}/>
+                        </ActionButton.Item>
 
-                </ActionButton>
+                    </ActionButton>
+                    : null
+                }
             </View>
         )
     }
