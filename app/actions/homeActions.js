@@ -50,10 +50,9 @@ export function sendRequest(data) {
 
 export function getActiveData(date, refresh) {
     return (dispatch, getState) => {
+        dispatch({type: types.LOADING_ACTIVE_DATA});
         if (refresh) {
             dispatch(refreshPage());
-        } else {
-            dispatch({type: types.LOADING_ACTIVE_DATA})
         }
         let url = `${API_ENDPOINT}user/active/${getState().Global.RequestUser.id}/?for_date=${date}`;
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
