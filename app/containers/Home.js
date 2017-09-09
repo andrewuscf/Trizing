@@ -253,16 +253,7 @@ const Home = React.createClass({
                                                     thickness={5} formatText={() => "Fats"} showsText={true}/>
                                             <Text
                                                 style={[styles.smallText, (fats - currentFats < 0) ? GlobalStyle.redText : null]}>
-                                                {`${fats - currentFats}g left`}
-                                            </Text>
-                                        </View>
-                                        <View style={styles.details}>
-                                            <Circle size={getFontSize(60)} progress={currentProtein / protein}
-                                                    unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"
-                                                    thickness={5} formatText={() => "Protein"} showsText={true}/>
-                                            <Text
-                                                style={[styles.smallText, (protein - currentProtein < 0) ? GlobalStyle.redText : null]}>
-                                                {`${protein - currentProtein}g left`}
+                                                {`${fats - currentFats}g ${(fats - currentFats < 0) ? 'over' : 'left'}`}
                                             </Text>
                                         </View>
                                         <View style={styles.details}>
@@ -271,7 +262,16 @@ const Home = React.createClass({
                                                     thickness={5} formatText={() => "Carbs"} showsText={true}/>
                                             <Text
                                                 style={[styles.smallText, (carbs - currentCarbs < 0) ? GlobalStyle.redText : null]}>
-                                                {`${carbs - currentCarbs}g left`}
+                                                {`${carbs - currentCarbs}g ${(carbs - currentCarbs < 0) ? 'over' : 'left'}`}
+                                            </Text>
+                                        </View>
+                                        <View style={styles.details}>
+                                            <Circle size={getFontSize(60)} progress={currentProtein / protein}
+                                                    unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"
+                                                    thickness={5} formatText={() => "Protein"} showsText={true}/>
+                                            <Text
+                                                style={[styles.smallText, (protein - currentProtein < 0) ? GlobalStyle.redText : null]}>
+                                                {`${protein - currentProtein}g ${(protein - currentProtein < 0) ? 'over' : 'left'}`}
                                             </Text>
                                         </View>
                                     </View>

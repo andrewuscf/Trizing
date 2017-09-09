@@ -56,8 +56,7 @@ export function getActiveData(date, refresh) {
             dispatch({type: types.LOADING_ACTIVE_DATA})
         }
         let url = `${API_ENDPOINT}user/active/${getState().Global.RequestUser.id}/?for_date=${date}`;
-        return fetch(url,
-            fetchData('GET', null, getState().Global.UserToken))
+        return fetch(url, fetchData('GET', null, getState().Global.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.LOAD_ACTIVE_DATA, response: {...responseJson, date: date}});

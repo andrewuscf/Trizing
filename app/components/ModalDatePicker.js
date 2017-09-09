@@ -83,7 +83,6 @@ export class ModalDatePicker extends t.form.DatePicker {
 
     getTemplate() {
         return (locals) => {
-            console.log(locals.value)
             let formattedValue = String(locals.value);
             if (locals.config) {
                 if (locals.config.format) {

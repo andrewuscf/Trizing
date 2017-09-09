@@ -58,8 +58,10 @@ export default function homeReducers(state = initialState, action = null) {
             if (activeIndex === -1) {
                 newData = [...state.ActiveData, action.response];
             } else {
-                newData = state.ActiveData.slice(0, activeIndex).concat(state.ActiveData.slice(activeIndex + 1)).push(action.response)
-                // state.ActiveData[index] = action.response;
+                newData = [
+                    ...state.ActiveData.slice(0, activeIndex).concat(state.ActiveData.slice(activeIndex + 1)),
+                    action.response
+                ];
             }
             return {
                 ...state,

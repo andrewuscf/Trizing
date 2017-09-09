@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, Platform, ActivityIndicator} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, Platform, ActivityIndicator, Keyboard} from 'react-native';
 import {getFontSize} from '../actions/utils';
 
 import CustomIcon from './CustomIcon';
@@ -9,6 +9,11 @@ const Save = React.createClass({
     propTypes: {
         save: React.PropTypes.func.isRequired,
         disabled: React.PropTypes.bool.isRequired,
+    },
+
+    _onPress() {
+        Keyboard.dismiss();
+        this.props.save();
     },
 
     render() {
@@ -23,7 +28,7 @@ const Save = React.createClass({
             content = <CustomIcon name="done" size={getFontSize(25)} color='#00AFA3'/>;
         }
         return (
-            <TouchableOpacity style={styles.container} onPress={this.props.save} disabled={this.props.disabled}>
+            <TouchableOpacity style={styles.container} onPress={this._onPress} disabled={this.props.disabled}>
                 {content}
             </TouchableOpacity>
         );

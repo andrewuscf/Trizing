@@ -83,6 +83,8 @@ const defaultNavigationOptions = {
     headerBackTitle: null,
     headerTitleStyle: {
         alignSelf: 'center',
+        fontFamily: 'Heebo-Bold',
+        textAlign:'center',
     },
     headerTintColor: globalBlue,
     gesturesEnabled: true

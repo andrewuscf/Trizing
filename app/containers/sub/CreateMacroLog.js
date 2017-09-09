@@ -4,8 +4,7 @@ import {
     Text,
     StyleSheet,
     ListView,
-    Platform,
-    Dimensions
+    Platform
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -13,15 +12,13 @@ import t from 'tcomb-form-native';
 import moment from 'moment';
 import DropdownAlert from 'react-native-dropdownalert';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Bar} from 'react-native-progress';
+import {Bar, Circle} from 'react-native-progress';
 import _ from 'lodash';
 
 import {addMacroLog} from '../../actions/homeActions';
-
-
 import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../actions/utils';
 
-
+import GlobalStyle from '../globalStyle';
 import InputAccessory from '../../components/InputAccessory';
 import MacroLogBox from '../../components/MacroLogBox';
 
@@ -52,6 +49,9 @@ const CreateMacroLog = React.createClass({
             refreshing: false,
             loading: false,
             disabled: false,
+            currentFats: this.props.macro_plan_day.current_logs.fats ? this.props.macro_plan_day.current_logs.fats : 0,
+            currentCarbs: this.props.macro_plan_day.current_logs.carbs ? this.props.macro_plan_day.current_logs.carbs : 0,
+            currentProtein: this.props.macro_plan_day.current_logs.protein ? this.props.macro_plan_day.current_logs.protein : 0,
         }
     },
 
@@ -107,6 +107,7 @@ const CreateMacroLog = React.createClass({
                 .then((responseJson) => {
                     if (responseJson.id) {
                         this.props.actions.addMacroLog(responseJson);
+                        console.log(responseJson.protein)
                         this.setState({
                             macro_response: {
                                 ...this.state.macro_response,
@@ -114,7 +115,10 @@ const CreateMacroLog = React.createClass({
                                     responseJson,
                                     ...this.state.macro_response.results
                                 ]
-                            }
+                            },
+                            currentFats: this.state.currentFats + responseJson.fats,
+                            currentCarbs: this.state.currentCarbs + responseJson.carbs,
+                            currentProtein: this.state.currentProtein + responseJson.protein
                         });
                         this.asyncActions(true);
                     } else {
@@ -158,34 +162,38 @@ const CreateMacroLog = React.createClass({
         const protein = (this.props.macro_plan_day.protein) ? this.props.macro_plan_day.protein : 0;
         const carbs = (this.props.macro_plan_day.carbs) ? this.props.macro_plan_day.carbs : 0;
 
-
-        let currentFats = this.props.macro_plan_day.current_logs.fats ? this.props.macro_plan_day.current_logs.fats : 0;
-        let currentCarbs = this.props.macro_plan_day.current_logs.carbs ? this.props.macro_plan_day.current_logs.carbs : 0;
-        let currentProtein = this.props.macro_plan_day.current_logs.protein ? this.props.macro_plan_day.current_logs.protein : 0;
-
         return (
             <View>
-                <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center', paddingTop: 10}]}>
+
+                <View style={[styles.row, {
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingTop: 10,
+                    paddingBottom: 10
+                }]}>
                     <View style={styles.details}>
-                        <Text style={styles.sectionTitle}>Fats</Text>
-                        <Text style={styles.smallText}>{`${fats}g`}</Text>
-                        <Bar progress={currentFats / fats} width={80}
-                             borderWidth={0} height={5} borderRadius={20} unfilledColor="grey"/>
-                        <Text style={styles.smallText}>{`${fats - currentFats}g left`}</Text>
+                        <Circle size={getFontSize(60)} progress={this.state.currentFats / fats}
+                                unfilledColor={unfilledColor} borderWidth={0} color="#1fc16c"
+                                thickness={5} formatText={() => "Fats"} showsText={true}/>
+                        <Text style={[styles.smallText, (fats - this.state.currentFats < 0) ? GlobalStyle.redText : null]}>
+                            {`${fats - this.state.currentFats}g ${(fats - this.state.currentFats < 0) ? 'over' : 'left'}`}
+                        </Text>
                     </View>
                     <View style={styles.details}>
-                        <Text style={styles.sectionTitle}>Carbs</Text>
-                        <Text style={styles.smallText}>{`${carbs}g`}</Text>
-                        <Bar progress={currentCarbs / carbs} width={80}
-                             borderWidth={0} height={5} borderRadius={20} unfilledColor="grey"/>
-                        <Text style={styles.smallText}>{`${carbs - currentCarbs}g left`}</Text>
+                        <Circle size={getFontSize(60)} progress={this.state.currentCarbs / carbs}
+                                unfilledColor={unfilledColor} borderWidth={0} color="#a56dd1"
+                                thickness={5} formatText={() => "Carbs"} showsText={true}/>
+                        <Text style={[styles.smallText, (carbs - this.state.currentCarbs < 0) ? GlobalStyle.redText : null]}>
+                            {`${carbs - this.state.currentCarbs}g ${(carbs - this.state.currentCarbs < 0) ? 'over' : 'left'}`}
+                        </Text>
                     </View>
                     <View style={styles.details}>
-                        <Text style={styles.sectionTitle}>Protein</Text>
-                        <Text style={styles.smallText}>{`${protein}g`}</Text>
-                        <Bar progress={currentProtein / protein} width={80}
-                             borderWidth={0} height={5} borderRadius={20} unfilledColor="grey"/>
-                        <Text style={styles.smallText}>{`${protein - currentProtein}g left`}</Text>
+                        <Circle size={getFontSize(60)} progress={this.state.currentProtein / protein}
+                                unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"
+                                thickness={5} formatText={() => "Protein"} showsText={true}/>
+                        <Text style={[styles.smallText, (protein - this.state.currentProtein < 0) ? GlobalStyle.redText : null]}>
+                            {`${protein - this.state.currentProtein}g ${(protein - this.state.currentProtein < 0) ? 'over' : 'left'}`}
+                        </Text>
                     </View>
                 </View>
                 <View style={{margin: 10}}>
@@ -241,6 +249,8 @@ CreateMacroLog.navigationOptions = ({navigation}) => {
     }
 };
 
+const unfilledColor = 'rgba(0, 0, 0, 0.1)';
+
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
@@ -264,14 +274,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Heebo-Bold',
         color: '#00AFA3'
     },
-    details: {
-        flexDirection: 'column',
-        flex: 1,
-        backgroundColor: 'transparent',
-        paddingTop: 3,
-        paddingBottom: 3,
-        alignItems: 'center'
-    },
     totalBox: {
         paddingTop: 10,
         paddingBottom: 10,
@@ -279,6 +281,16 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         flexDirection: 'row',
         justifyContent: 'space-between'
+    },
+    details: {
+        flexDirection: 'column',
+        flex: 1,
+        paddingTop: 5,
+        alignItems: 'center'
+    },
+    smallText: {
+        paddingTop: 5,
+        color: '#00AFA3',
     }
 });
 
