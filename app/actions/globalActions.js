@@ -7,8 +7,6 @@ import momentTz from 'moment-timezone';
 import _ from 'lodash';
 import {ImageCache} from "react-native-img-cache";
 import RNFetchBlob from 'react-native-fetch-blob';
-import configureStore from '../stores/configureStore';
-import {persistStore} from 'redux-persist';
 
 
 import {getClients, getActiveData} from './homeActions';
@@ -52,12 +50,11 @@ export function setDeviceForNotification(token) {
 
 export function removeToken(token) {
     return (dispatch) => {
-        persistStore(configureStore(), {storage: AsyncStorage}).purge();
-        ImageCache.get().clear();
         AsyncStorage.removeItem('USER_TOKEN');
-        LoginManager.logOut();
         if (token) dispatch(removeDeviceNotification(token));
         dispatch({type: types.REMOVE_TOKEN});
+        ImageCache.get().clear();
+        LoginManager.logOut();
     };
 }
 
