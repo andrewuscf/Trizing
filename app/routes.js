@@ -172,7 +172,7 @@ const HomeNav = StackNavigator({
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
                       disabled={state.params.disabled ? state.params.disabled : false}/>
-                : <View />,
+                : null,
             headerTitle: state.params && state.params.headerTitle ? state.params.headerTitle : null,
             ...defaultNavigationOptions,
         };
@@ -219,7 +219,7 @@ const CalendarNav = StackNavigator({
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
                       disabled={state.params.disabled ? state.params.disabled : false}/>
-                : <View />,
+                : null,
             ...defaultNavigationOptions,
         };
     },
@@ -247,7 +247,7 @@ const ChatNav = StackNavigator({
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
                       disabled={state.params.disabled ? state.params.disabled : false}/>
-                : <View />,
+                : null,
             ...defaultNavigationOptions,
         };
     },
@@ -376,7 +376,7 @@ export const AppNavigator = StackNavigator({
             headerRight: state.params && state.params.handleSave ?
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
                       disabled={state.params.disabled ? state.params.disabled : false}/>
-                : <View />,
+                : null,
             ...defaultNavigationOptions,
         };
     },
