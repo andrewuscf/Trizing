@@ -2,7 +2,7 @@
 import {Platform, PixelRatio} from 'react-native';
 import {NavigationActions} from 'react-navigation';
 
-export const SITE = 'https://simplylift-staging.herokuapp.com/';
+export const SITE = 'https://simplecoach-staging.herokuapp.com/';
 // export const SITE = 'http://localhost:8000/';
 
 export const API_ENDPOINT = `${SITE}api/v1/`;
