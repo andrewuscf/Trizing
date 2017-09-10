@@ -24,6 +24,13 @@ const SplashScreen = React.createClass({
 
     componentDidMount() {
         this.props.initializeApp();
+        if (this.props.AppIsReady) {
+            if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
+                this._navigateTo('Main')
+            } else if (this.props.RequestUser && !this.props.RequestUser.profile.completed) {
+                this._navigateTo('EditProfile')
+            }
+        }
     },
 
     componentDidUpdate() {

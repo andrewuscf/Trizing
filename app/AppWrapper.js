@@ -11,7 +11,7 @@ import App from './App';
 const store = configureStore();
 
 
-persistStore(store, {storage: AsyncStorage, blacklist: ["Global", "AppReducers"]});
+persistStore(store, {storage: AsyncStorage});
 
 
 const AppWrapper = React.createClass({
