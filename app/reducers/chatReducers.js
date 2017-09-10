@@ -10,7 +10,7 @@ const initialState = {
     ChatIsLoading: true,
 };
 
-export default function AppReducers(state = initialState, action = null) {
+export default function chatReducers(state = initialState, action = null) {
     switch (action.type) {
         case constants.LOAD_ROOMS:
             const rooms = (action.refresh) ? action.response.results : [

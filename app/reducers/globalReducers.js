@@ -7,14 +7,11 @@ const initialState = {
     AppIsReady: false,
     RequestUser: null,
     UserToken: '',
-    Route: null,
     Refreshing: false,
-    Error: null,
     Questionnaires: [],
     QuestionnairesNext: null,
     Schedules: [],
     SchedulesNext: null,
-    tabBarOpen: true
 };
 
 export default function AppReducers(state = initialState, action = null) {
@@ -30,17 +27,10 @@ export default function AppReducers(state = initialState, action = null) {
             return {
                 ...state,
                 UserToken: action.token,
-                Error: null
             };
 
         case constants.REMOVE_TOKEN:
             return initialState;
-
-        case constants.SET_ACTIVE_ROUTE:
-            return {
-                ...state,
-                Route: action.routeName
-            };
 
         case constants.LOAD_REQUEST_USER:
             return {
@@ -56,22 +46,10 @@ export default function AppReducers(state = initialState, action = null) {
                 Refreshing: true
             };
 
-        case constants.API_ERROR:
-            return {
-                ...state,
-                Error: action.error
-            };
 
         case constants.REGISTER_USER:
             return {
                 ...state,
-                Error: action.message
-            };
-
-        case constants.CLEAR_API_ERROR:
-            return {
-                ...state,
-                Error: null
             };
 
         case constants.UPDATE_USER:
@@ -167,7 +145,6 @@ export default function AppReducers(state = initialState, action = null) {
                 )
             };
 
-
         case constants.NEW_NOTIFICATION:
             return Object.assign({}, state, {
                 RequestUser: state.RequestUser ? {
@@ -175,13 +152,6 @@ export default function AppReducers(state = initialState, action = null) {
                     unread_notifications: true
                 } : null
             });
-
-        case constants.TOGGLE_TAB_BAR:
-            return {
-                ...state,
-                tabBarOpen: action.result
-            }
-
 
         default:
             return state

@@ -33,16 +33,6 @@ setCustomTouchableOpacity({
 const App = React.createClass({
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.Error) {
-            const Error = JSON.parse(this.props.Error);
-            Alert.alert(
-                Error.title,
-                Error.text,
-                [
-                    {text: 'OK', onPress: () => this.props.actions.clearAPIError()},
-                ]
-            );
-        }
 
         if (!prevProps.RequestUser && this.props.RequestUser && this.props.RequestUser != prevProps.RequestUser) {
             this.setUpNotifications();
@@ -99,12 +89,6 @@ const App = React.createClass({
         this.notificationListener.remove();
         this.refreshTokenListener.remove();
     },
-
-
-    // itemChangedFocus(route) {
-    //     this.props.actions.setActiveRoute(route.name);
-    // },
-
 
     render() {
         return <MenuContext lazyRender={200}><AppNavigator/></MenuContext>;

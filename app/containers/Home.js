@@ -573,7 +573,6 @@ const dispatchToProps = (dispatch) => {
         actions: bindActionCreators(HomeActions, dispatch),
         getNotifications: bindActionCreators(GlobalActions.getNotifications, dispatch),
         readNotification: bindActionCreators(GlobalActions.readNotification, dispatch),
-        toggleTabBar: bindActionCreators(GlobalActions.toggleTabBar, dispatch),
     }
 };
 

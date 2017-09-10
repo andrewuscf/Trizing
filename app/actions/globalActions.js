@@ -58,10 +58,6 @@ export function removeToken(token) {
     };
 }
 
-export function setActiveRoute(routeName) {
-    return {type: types.SET_ACTIVE_ROUTE, routeName: routeName}
-}
-
 export function login(data, asyncActions) {
     asyncActions(true);
     const body = JSON.stringify(data);
@@ -529,9 +525,3 @@ export function logSets(data, asyncActions) {
             }).catch((e) => asyncActions(false));
     }
 }
-
-
-export function toggleTabBar(result) {
-    return {type: types.TOGGLE_TAB_BAR, result}
-}
-
