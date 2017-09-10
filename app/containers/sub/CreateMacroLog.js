@@ -172,26 +172,32 @@ const CreateMacroLog = React.createClass({
                     paddingBottom: 10
                 }]}>
                     <View style={styles.details}>
-                        <Circle size={getFontSize(60)} progress={this.state.currentFats / fats}
+                        <Circle size={getFontSize(60)}
+                                progress={this.state.currentFats !== 0 ? (this.state.currentFats / fats) : 0}
                                 unfilledColor={unfilledColor} borderWidth={0} color="#1fc16c"
                                 thickness={5} formatText={() => "Fats"} showsText={true}/>
-                        <Text style={[styles.smallText, (fats - this.state.currentFats < 0) ? GlobalStyle.redText : null]}>
+                        <Text
+                            style={[styles.smallText, (fats - this.state.currentFats < 0) ? GlobalStyle.redText : null]}>
                             {`${fats - this.state.currentFats}g ${(fats - this.state.currentFats < 0) ? 'over' : 'left'}`}
                         </Text>
                     </View>
                     <View style={styles.details}>
-                        <Circle size={getFontSize(60)} progress={this.state.currentCarbs / carbs}
+                        <Circle size={getFontSize(60)}
+                                progress={this.state.currentCarbs !== 0 ? (this.state.currentCarbs / carbs) : 0}
                                 unfilledColor={unfilledColor} borderWidth={0} color="#a56dd1"
                                 thickness={5} formatText={() => "Carbs"} showsText={true}/>
-                        <Text style={[styles.smallText, (carbs - this.state.currentCarbs < 0) ? GlobalStyle.redText : null]}>
+                        <Text
+                            style={[styles.smallText, (carbs - this.state.currentCarbs < 0) ? GlobalStyle.redText : null]}>
                             {`${carbs - this.state.currentCarbs}g ${(carbs - this.state.currentCarbs < 0) ? 'over' : 'left'}`}
                         </Text>
                     </View>
                     <View style={styles.details}>
-                        <Circle size={getFontSize(60)} progress={this.state.currentProtein / protein}
+                        <Circle size={getFontSize(60)}
+                                progress={this.state.currentProtein !== 0 ? (this.state.currentProtein / protein) : 0}
                                 unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"
                                 thickness={5} formatText={() => "Protein"} showsText={true}/>
-                        <Text style={[styles.smallText, (protein - this.state.currentProtein < 0) ? GlobalStyle.redText : null]}>
+                        <Text
+                            style={[styles.smallText, (protein - this.state.currentProtein < 0) ? GlobalStyle.redText : null]}>
                             {`${protein - this.state.currentProtein}g ${(protein - this.state.currentProtein < 0) ? 'over' : 'left'}`}
                         </Text>
                     </View>

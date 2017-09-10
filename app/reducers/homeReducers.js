@@ -10,7 +10,20 @@ const initialState = {
     ActiveData: [],
     Refreshing: false,
     HomeIsLoading: true,
-    Loading_Active: false
+    WeightLogs: {
+        month: {
+            results: [],
+            next: null
+        },
+        three_months: {
+            results: [],
+            next: null
+        },
+        year: {
+            results: [],
+            next: null
+        }
+    },
 };
 
 export default function homeReducers(state = initialState, action = null) {
@@ -68,14 +81,8 @@ export default function homeReducers(state = initialState, action = null) {
                 ActiveData: newData,
                 Refreshing: false,
                 HomeIsLoading: false,
-                Loading_Active: false
             };
 
-        case constants.LOADING_ACTIVE_DATA:
-            return {
-                ...state,
-                Loading_Active: true
-            };
 
         case constants.CREATE_WORKOUT_LOG:
             return {
@@ -93,7 +100,6 @@ export default function homeReducers(state = initialState, action = null) {
                         return active_data
                     }
                 ),
-                Loading_Active: false,
             };
 
         case constants.ADD_MACRO_LOG:
@@ -116,7 +122,29 @@ export default function homeReducers(state = initialState, action = null) {
                         return active_data
                     }
                 ),
-                Loading_Active: false,
+            };
+
+        case constants.LOAD_WEIGHT_LOGS:
+            const WeightLogs = state.WeightLogs;
+            if (action.timeFrame === "month") {
+                WeightLogs["month"] = {
+                    results: (action.refresh) ? action.response.results : state.WeightLogs.month.results.concat(action.response.results),
+                    next: action.next
+                }
+            } else if (action.timeFrame === "three_months") {
+                WeightLogs["three_months"] = {
+                    results: (action.refresh) ? action.response.results : state.WeightLogs.three_months.results.concat(action.response.results),
+                    next: action.next
+                }
+            } else if (action.timeFrame === "year") {
+                WeightLogs["year"] = {
+                    results: (action.refresh) ? action.response.results : state.WeightLogs.year.results.concat(action.response.results),
+                    next: action.next
+                }
+            }
+            return {
+                ...state,
+                WeightLogs: WeightLogs
             };
 
 

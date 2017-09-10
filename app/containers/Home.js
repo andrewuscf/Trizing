@@ -42,21 +42,25 @@ const Home = React.createClass({
     getInitialState() {
         return {
             dataDate: moment(),
-            isActionButtonVisible: true
+            isActionButtonVisible: true,
+            weightTimeFrame: 'month'
         }
     },
 
     componentDidMount() {
-        if (this.props.RequestUser.type === 1 && !this.props.Clients.length) {
-            this.getNeeded();
-        } else if (this.props.RequestUser.type === 2 && !this.props.ActiveData.length) {
-            this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), false)
-        }
+        // if (this.props.RequestUser.type === 1 && !this.props.Clients.length) {
+        //     this.getNeeded();
+        // } else if (this.props.RequestUser.type === 2 && !this.props.ActiveData.length) {
+        //     this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), false)
+        // }
+        this.getNeeded();
     },
 
     getNeeded(refresh = false) {
         if (this.props.RequestUser.type === 1) {
             this.props.actions.getClients(refresh);
+        } else {
+            this.props.actions.getWeightLogs(this.state.weightTimeFrame, refresh)
         }
         this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), refresh);
         if (refresh) {
@@ -194,14 +198,13 @@ const Home = React.createClass({
 
             content = (
                 <View>
-                    {!data && !this.props.Loading_Active ?
+                    {!data ?
                         <View style={styles.emptyClients}>
                             <Text style={styles.emptyClientsText}>Get started by finding a trainer</Text>
                             <Text style={styles.emptyClientsText}>or workout program.</Text>
                         </View>
                         : null
                     }
-                    {!this.props.Loading_Active ?
                         <View>
                             {data && data.macro_plan_day ?
                                 <View style={[styles.box, {marginBottom: 5}]}>
@@ -248,7 +251,8 @@ const Home = React.createClass({
                                         paddingBottom: 10
                                     }]}>
                                         <View style={styles.details}>
-                                            <Circle size={getFontSize(60)} progress={currentFats / fats}
+                                            <Circle size={getFontSize(60)}
+                                                    progress={currentFats !== 0 ? (currentFats / fats) : currentFats}
                                                     unfilledColor={unfilledColor} borderWidth={0} color="#1fc16c"
                                                     thickness={5} formatText={() => "Fats"} showsText={true}/>
                                             <Text
@@ -257,7 +261,8 @@ const Home = React.createClass({
                                             </Text>
                                         </View>
                                         <View style={styles.details}>
-                                            <Circle size={getFontSize(60)} progress={currentCarbs / carbs}
+                                            <Circle size={getFontSize(60)}
+                                                    progress={currentCarbs !== 0 ? (currentCarbs / carbs) : currentCarbs}
                                                     unfilledColor={unfilledColor} borderWidth={0} color="#a56dd1"
                                                     thickness={5} formatText={() => "Carbs"} showsText={true}/>
                                             <Text
@@ -266,7 +271,8 @@ const Home = React.createClass({
                                             </Text>
                                         </View>
                                         <View style={styles.details}>
-                                            <Circle size={getFontSize(60)} progress={currentProtein / protein}
+                                            <Circle size={getFontSize(60)}
+                                                    progress={currentProtein !== 0 ? (currentProtein / protein) : currentProtein}
                                                     unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"
                                                     thickness={5} formatText={() => "Protein"} showsText={true}/>
                                             <Text
@@ -360,8 +366,6 @@ const Home = React.createClass({
 
                             </View>
                         </View>
-                        : <Loading style={{paddingTop: 40}}/>
-                    }
 
                 </View>
             );
