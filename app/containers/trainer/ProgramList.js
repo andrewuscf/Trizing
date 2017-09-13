@@ -7,6 +7,7 @@ import {
     RefreshControl,
     TouchableOpacity,
     Platform,
+    LayoutAnimation
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -19,16 +20,44 @@ import GlobalStyle from '../globalStyle';
 import {getFontSize} from '../../actions/utils';
 
 import CustomIcon from '../../components/CustomIcon';
+import EditButton from '../../components/EditButton';
 
 const ProgramList = React.createClass({
     propTypes: {
         Refreshing: React.PropTypes.bool.isRequired,
     },
 
+    getInitialState() {
+        return {
+            tab: 1,
+            isActionButtonVisible: true
+        }
+    },
 
     componentDidMount() {
         if (!this.props.Schedules.length) this.getNeeded();
     },
+
+
+    _listViewOffset: 0,
+
+    _onScroll(event) {
+        const CustomLayoutLinear = {
+            duration: 100,
+            create: {type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity},
+            update: {type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity},
+            delete: {type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity}
+        };
+        const currentOffset = event.nativeEvent.contentOffset.y;
+        const direction = (currentOffset > 0 && currentOffset > this._listViewOffset) ? 'down' : 'up';
+        const isActionButtonVisible = direction === 'up';
+        if (isActionButtonVisible !== this.state.isActionButtonVisible) {
+            LayoutAnimation.configureNext(CustomLayoutLinear);
+            this.setState({isActionButtonVisible})
+        }
+        this._listViewOffset = currentOffset;
+    },
+
 
     getNeeded(refresh = false) {
         if (this.props.RequestUser.type === 1) {
@@ -36,6 +65,9 @@ const ProgramList = React.createClass({
         }
     },
 
+    _onTabPress(tab) {
+        if (tab !== this.state.tab) this.setState({tab: tab});
+    },
 
     _refresh() {
         this.getNeeded(true);
@@ -89,6 +121,21 @@ const ProgramList = React.createClass({
         )
     },
 
+    renderHeader() {
+        return (
+            <View style={[styles.tabbarView, GlobalStyle.simpleBottomBorder]}>
+                <TouchableOpacity style={[styles.tabView, (this.state.tab === 1) ? styles.selectedTab : null]}
+                                  onPress={this._onTabPress.bind(null, 1)}>
+                    <Text style={(this.state.tab === 1) ? styles.selectedText : null}>My Programs</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.tabView, (this.state.tab === 2) ? styles.selectedTab : null]}
+                                  onPress={this._onTabPress.bind(null, 2)}>
+                    <Text style={(this.state.tab === 2) ? styles.selectedText : null}>Purchase</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    },
+
 
     render() {
         const isTrainer = this.props.RequestUser.type === 1;
@@ -104,16 +151,15 @@ const ProgramList = React.createClass({
                                                           onRefresh={this._refresh}/>}
                           enableEmptySections={true} dataSource={ProgramsDs} showsVerticalScrollIndicator={false}
                           renderRow={this.renderRow}
+                          renderHeader={this.renderHeader}
+                          onScroll={this._onScroll}
                 />
-                {isTrainer ?
-                    <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
+                <EditButton isActionButtonVisible={!!(isTrainer && this.state.isActionButtonVisible)}>
                         <ActionButton.Item buttonColor='#3498db' title="New Workout template"
-                                           onPress={() => navigate('CreateSchedule')}>
+                                                    onPress={() => navigate('CreateSchedule')}>
                             <CustomIcon name="barbell" color="white" size={getFontSize(30)}/>
                         </ActionButton.Item>
-                    </ActionButton>
-                    : null
-                }
+                </EditButton>
             </View>
         )
     }
@@ -145,7 +191,6 @@ const styles = StyleSheet.create({
     leftSection: {
         flex: .9,
         margin: 10,
-        // flexDirection: 'row'
     },
     link: {
         flexDirection: 'row',
@@ -155,7 +200,31 @@ const styles = StyleSheet.create({
     },
     linkArrow: {
         flex: .1
-    }
+    },
+    tabbarView: {
+        height: 50,
+        opacity: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white'
+    },
+    tabView: {
+        flex: 1,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    selectedTab: {
+        borderBottomWidth: 2,
+        borderBottomColor: '#00AFA3',
+        marginLeft: 5,
+        marginRight: 5,
+    },
+    selectedText: {
+        color: '#00AFA3',
+        fontFamily: 'Heebo-Medium',
+    },
 });
 
 const stateToProps = (state) => {

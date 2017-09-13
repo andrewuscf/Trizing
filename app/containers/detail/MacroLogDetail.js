@@ -9,7 +9,7 @@ import {
     Dimensions
 } from 'react-native';
 import {connect} from 'react-redux';
-import * as Progress from 'react-native-progress';
+import {Circle} from 'react-native-progress';
 import moment from 'moment';
 import {Bar} from 'react-native-pathjs-charts';
 import FontIcon from 'react-native-vector-icons/FontAwesome';
@@ -37,31 +37,44 @@ let MacroLogList = React.createClass({
         // calories = (9 * fats) + (4 * protein) + (4 * carbs);
 
 
-        const {currentFats, currentcarbs, currentprotein} = this.props.logged_data;
-        // let calories = (9 * currentFats) + (4 * currentcarbs) + (4 * currentprotein);
+        const {currentFats, currentCarbs, currentProtein} = this.props.logged_data;
         return (
             <View>
-                <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center', paddingTop: 10}]}>
+                <View style={[styles.row, {
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingTop: 10,
+                    paddingBottom: 10
+                }]}>
                     <View style={styles.details}>
-                        <Text style={styles.sectionTitle}>Fats</Text>
-                        <Text style={styles.smallText}>{`${fats}g`}</Text>
-                        <Progress.Bar progress={currentFats / fats} width={80}
-                                      borderWidth={0} height={5} borderRadius={20} unfilledColor="grey"/>
-                        <Text style={styles.smallText}>{`${fats - currentFats}g left`}</Text>
+                        <Circle size={getFontSize(60)}
+                                progress={currentFats !== 0 ? (currentFats / fats) : 0}
+                                unfilledColor={unfilledColor} borderWidth={0} color="#1fc16c"
+                                thickness={5} formatText={() => "Fats"} showsText={true}/>
+                        <Text
+                            style={[styles.smallText, (fats - currentFats < 0) ? GlobalStyle.redText : null]}>
+                            {`${fats - currentFats}g ${(fats - currentFats < 0) ? 'over' : 'left'}`}
+                        </Text>
                     </View>
                     <View style={styles.details}>
-                        <Text style={styles.sectionTitle}>Carbs</Text>
-                        <Text style={styles.smallText}>{`${carbs}g`}</Text>
-                        <Progress.Bar progress={currentcarbs / carbs} width={80}
-                                      borderWidth={0} height={5} borderRadius={20} unfilledColor="grey"/>
-                        <Text style={styles.smallText}>{`${carbs - currentcarbs}g left`}</Text>
+                        <Circle size={getFontSize(60)}
+                                progress={currentCarbs !== 0 ? (currentCarbs / carbs) : 0}
+                                unfilledColor={unfilledColor} borderWidth={0} color="#a56dd1"
+                                thickness={5} formatText={() => "Carbs"} showsText={true}/>
+                        <Text
+                            style={[styles.smallText, (carbs - currentCarbs < 0) ? GlobalStyle.redText : null]}>
+                            {`${carbs - currentCarbs}g ${(carbs - currentCarbs < 0) ? 'over' : 'left'}`}
+                        </Text>
                     </View>
                     <View style={styles.details}>
-                        <Text style={styles.sectionTitle}>Protein</Text>
-                        <Text style={styles.smallText}>{`${protein}g`}</Text>
-                        <Progress.Bar progress={currentprotein / protein} width={80}
-                                      borderWidth={0} height={5} borderRadius={20} unfilledColor="grey"/>
-                        <Text style={styles.smallText}>{`${protein - currentprotein}g left`}</Text>
+                        <Circle size={getFontSize(60)}
+                                progress={currentProtein !== 0 ? (currentProtein / protein) : 0}
+                                unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"
+                                thickness={5} formatText={() => "Protein"} showsText={true}/>
+                        <Text
+                            style={[styles.smallText, (protein - currentProtein < 0) ? GlobalStyle.redText : null]}>
+                            {`${protein - currentProtein}g ${(protein - currentProtein < 0) ? 'over' : 'left'}`}
+                        </Text>
                     </View>
                 </View>
                 <Text style={[styles.sectionTitle, {paddingLeft: 10}]}>Nutrition Logs</Text>
@@ -87,6 +100,8 @@ let MacroLogList = React.createClass({
     }
 });
 
+const unfilledColor = 'rgba(0, 0, 0, 0.1)';
+
 
 const MacroLogDetail = React.createClass({
     propTypes: {
@@ -108,20 +123,6 @@ const MacroLogDetail = React.createClass({
     componentDidMount() {
         this.getMacroLogs()
     },
-
-    // getMacroLogs(start_date, end_date) {
-    //     let url = `${API_ENDPOINT}training/macros/logs/?date=${this.props.macro_log.date.format("YYYY-MM-DD")}&user=${this.props.macro_log.user.id}`;
-    //
-    //     fetch(url,
-    //         fetchData('GET', null, this.props.UserToken))
-    //         .then(checkStatus)
-    //         .then((responseJson) => {
-    //             this.setState({
-    //                 macro_response: responseJson,
-    //                 refreshing: false
-    //             })
-    //         });
-    // },
 
     getMacroLogs(start_date, end_date) {
         const initDate = moment(this.props.macro_log.date);
@@ -148,12 +149,12 @@ const MacroLogDetail = React.createClass({
         console.log(this.state.macro_response);
 
         let currentFats = 0;
-        let currentcarbs = 0;
-        let currentprotein = 0;
+        let currentCarbs = 0;
+        let currentProtein = 0;
         this.state.macro_response.results.forEach((log) => {
             currentFats += log.fats;
-            currentcarbs += log.carbs;
-            currentprotein += log.protein;
+            currentCarbs += log.carbs;
+            currentProtein += log.protein;
         });
 
         const data = [
@@ -163,7 +164,7 @@ const MacroLogDetail = React.createClass({
                     "name": "carbs"
                 },
                 {
-                    "v": currentcarbs,
+                    "v": currentCarbs,
                     "name": "Logged carbs"
                 }
             ],
@@ -173,7 +174,7 @@ const MacroLogDetail = React.createClass({
                     "name": "protein"
                 },
                 {
-                    "v": currentprotein,
+                    "v": currentProtein,
                     "name": "Logged protein"
                 }
             ],
@@ -205,7 +206,7 @@ const MacroLogDetail = React.createClass({
                 {this.state.tab === 1
                     ? <MacroLogList logs={this.state.macro_response.results}
                                     macro_plan_day={this.props.macro_log.macro_plan_day}
-                                    logged_data={{currentFats, currentcarbs, currentprotein}}/>
+                                    logged_data={{currentFats, currentCarbs, currentProtein}}/>
                     : <View style={{paddingTop: 20}}><Bar data={data} options={options} accessorKey='v'/></View>
                 }
             </View>

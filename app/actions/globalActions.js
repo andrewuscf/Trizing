@@ -7,6 +7,7 @@ import momentTz from 'moment-timezone';
 import _ from 'lodash';
 import {ImageCache} from "react-native-img-cache";
 import RNFetchBlob from 'react-native-fetch-blob';
+import {purgeStoredState} from 'redux-persist';
 
 
 import {getClients, getActiveData} from './homeActions';
@@ -15,9 +16,16 @@ import {getClients, getActiveData} from './homeActions';
 export function initializeApp() {
     return (dispatch, getState) => {
         AsyncStorage.getItem('USER_TOKEN', (err, result) => {
-            console.log(result)
-            if (result) dispatch(setTokenInRedux(result));
-            else dispatch({type: types.NOT_LOGGED_IN});
+            if (result) {
+                dispatch(setTokenInRedux(result));
+            }
+            else {
+                return purgeStoredState({storage: AsyncStorage}).then(() => {
+                    dispatch({type: types.NOT_LOGGED_IN});
+                }).catch(() => {
+                    console.log('purge of someReducer failed')
+                });
+            }
         });
     }
 }
@@ -51,11 +59,15 @@ export function setDeviceForNotification(token) {
 
 export function removeToken(token) {
     return (dispatch) => {
-        AsyncStorage.removeItem('USER_TOKEN');
-        if (token) dispatch(removeDeviceNotification(token));
-        dispatch({type: types.REMOVE_TOKEN});
-        ImageCache.get().clear();
-        LoginManager.logOut();
+        return purgeStoredState({storage: AsyncStorage}).then(() => {
+            AsyncStorage.removeItem('USER_TOKEN');
+            ImageCache.get().clear();
+            LoginManager.logOut();
+            if (token) dispatch(removeDeviceNotification(token));
+            dispatch({type: types.REMOVE_TOKEN});
+        }).catch(() => {
+            console.log('purge of someReducer failed')
+        })
     };
 }
 

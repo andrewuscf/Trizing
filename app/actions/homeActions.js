@@ -73,16 +73,15 @@ export function getWeightLogs(timeFrame, refresh) {
         let url = `${API_ENDPOINT}training/weight/logs/`;
         const today = moment();
         if (timeFrame === "month") {
-            url += `?start_date=${today.format("YYYY-MM-DD")}&end_date=${today.subtract(1, 'month').format("YYYY-MM-DD")}`;
+            url += `?start_date=${today.subtract(1, 'month').format("YYYY-MM-DD")}`;
         } else if (timeFrame === "three_months") {
-            url += `?start_date=${today.format("YYYY-MM-DD")}&end_date=${today.subtract(3, 'month').format("YYYY-MM-DD")}`;
+            url += `?start_date=${today.subtract(3, 'month').format("YYYY-MM-DD")}`;
         } else if (timeFrame === "year") {
-            url += `?start_date=${today.format("YYYY-MM-DD")}&end_date=${today.subtract(1, 'year').format("YYYY-MM-DD")}`;
+            url += `?start_date=${today.subtract(1, 'year').format("YYYY-MM-DD")}`;
         }
 
         return RNFetchBlob.fetch('GET', url, setHeaders(getState().Global.UserToken)).then((res) => {
             let responseJson = res.json();
-            console.log(responseJson)
             return dispatch({type: types.LOAD_WEIGHT_LOGS, response: responseJson, timeFrame: timeFrame, refresh: refresh});
         }).catch((errorMessage, statusCode) => {
             console.log(errorMessage);

@@ -21,6 +21,7 @@ import GlobalStyle from './globalStyle';
 
 
 import CustomIcon from '../components/CustomIcon';
+import EditButton from '../components/EditButton';
 import ChatRoomBox from '../components/ChatRoomBox';
 import Loading from '../components/Loading';
 
@@ -93,15 +94,12 @@ const Chat = React.createClass({
                                                                    RequestUser={this.props.RequestUser}
                                                                    _redirect={this._redirect}/>}
                     />
-                    {this.state.isActionButtonVisible ?
-                        <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
-                            <ActionButton.Item buttonColor='#FD795B' title="New Chat"
-                                               onPress={this.newChat}>
-                                <CustomIcon name="new-note" color="white" size={22}/>
-                            </ActionButton.Item>
-                        </ActionButton>
-                        : null
-                    }
+                    <EditButton isActionButtonVisible={this.state.isActionButtonVisible}>
+                        <ActionButton.Item buttonColor='#FD795B' title="New Chat"
+                                           onPress={this.newChat}>
+                            <CustomIcon name="new-note" color="white" size={22}/>
+                        </ActionButton.Item>
+                    </EditButton>
                 </View>
             );
         }
@@ -116,15 +114,12 @@ const Chat = React.createClass({
                         You should chat with your trainer or fellow clients.
                     </Text>
                 </View>
-                {this.state.isActionButtonVisible ?
-                    <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
-                        <ActionButton.Item buttonColor='#FD795B' title="New Chat"
-                                           onPress={this.newChat}>
-                            <CustomIcon name="new-note" color="white" size={22}/>
-                        </ActionButton.Item>
-                    </ActionButton>
-                    : null
-                }
+                <EditButton isActionButtonVisible={this.state.isActionButtonVisible}>
+                    <ActionButton.Item buttonColor='#FD795B' title="New Chat"
+                                       onPress={this.newChat}>
+                        <CustomIcon name="new-note" color="white" size={22}/>
+                    </ActionButton.Item>
+                </EditButton>
             </ScrollView>
         );
     }

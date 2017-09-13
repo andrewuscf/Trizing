@@ -28,7 +28,9 @@ import GlobalStyle from './globalStyle';
 
 
 import CustomIcon from '../components/CustomIcon';
+import EditButton from '../components/EditButton';
 import Loading from '../components/Loading';
+import WeightGraph from '../components/WeightGraph';
 import PeopleBar from '../components/PeopleBar';
 import SubmitButton from '../components/SubmitButton';
 
@@ -53,7 +55,7 @@ const Home = React.createClass({
         // } else if (this.props.RequestUser.type === 2 && !this.props.ActiveData.length) {
         //     this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), false)
         // }
-        this.getNeeded();
+        this.getNeeded(true);
     },
 
     getNeeded(refresh = false) {
@@ -149,6 +151,13 @@ const Home = React.createClass({
         }
     },
 
+    changeTimeFrame(timeFrame) {
+        if (this.state.weightTimeFrame !== timeFrame) {
+            this.setState({weightTimeFrame: timeFrame});
+            this.props.actions.getWeightLogs(timeFrame)
+        }
+    },
+
 
     render() {
         const user = this.props.RequestUser;
@@ -196,6 +205,13 @@ const Home = React.createClass({
                 currentCal = calCalories(currentFats, currentCarbs, currentProtein);
             }
 
+            let weightLogs = this.props.WeightLogs.month.results;
+            if (this.state.weightTimeFrame === 'three_months') {
+                weightLogs = this.props.WeightLogs.three_months.results;
+            } else if (this.state.weightTimeFrame === 'year') {
+                weightLogs = this.props.WeightLogs.year.results;
+            }
+
             content = (
                 <View>
                     {!data ?
@@ -205,151 +221,132 @@ const Home = React.createClass({
                         </View>
                         : null
                     }
-                        <View>
-                            {data && data.macro_plan_day ?
-                                <View style={[styles.box, {marginBottom: 5}]}>
-                                    <View style={styles.boxHeader}>
-                                        <MaterialIcon name="donut-small" size={getFontSize(22)}/>
-                                        <Text style={styles.formCalories}>
-                                            Nutrition Plan
-                                        </Text>
-                                    </View>
-                                    <View style={[styles.row, {alignItems: 'center'}]}>
-                                        <View style={[styles.calorieBox, {justifyContent: 'flex-end'}]}>
-                                            <View style={{paddingRight: 20}}>
-                                                <Text
-                                                    style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>CAL</Text>
-                                                <Text style={{
-                                                    fontFamily: 'Heebo-Medium',
-                                                    textAlign: 'right'
-                                                }}>EATEN</Text>
-                                            </View>
+                    <View>
+                        {data && data.macro_plan_day ?
+                            <View style={[styles.box, {marginBottom: 5}]}>
+                                <View style={styles.boxHeader}>
+                                    <MaterialIcon name="donut-small" size={getFontSize(22)}/>
+                                    <Text style={styles.formCalories}>
+                                        Nutrition Plan
+                                    </Text>
+                                </View>
+                                <View style={[styles.row, {alignItems: 'center'}]}>
+                                    <View style={[styles.calorieBox, {justifyContent: 'flex-end'}]}>
+                                        <View style={{paddingRight: 20}}>
+                                            <Text
+                                                style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>CAL</Text>
                                             <Text style={{
-                                                fontFamily: 'Heebo-Bold',
-                                                color: 'black',
-                                                fontSize: getFontSize(24),
-                                            }}>{currentCal}</Text>
+                                                fontFamily: 'Heebo-Medium',
+                                                textAlign: 'right'
+                                            }}>EATEN</Text>
                                         </View>
-                                        <View style={{flex: .1}}/>
-                                        <View style={[styles.calorieBox]}>
-                                            <Text style={{
-                                                fontFamily: 'Heebo-Bold',
-                                                color: 'black',
-                                                fontSize: getFontSize(24)
-                                            }}>{calories - currentCal}</Text>
-                                            <View style={{paddingLeft: 20}}>
-                                                <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>CAL</Text>
-                                                <Text
-                                                    style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>LEFT</Text>
-                                            </View>
+                                        <Text style={{
+                                            fontFamily: 'Heebo-Bold',
+                                            color: 'black',
+                                            fontSize: getFontSize(24),
+                                        }}>{currentCal}</Text>
+                                    </View>
+                                    <View style={{flex: .1}}/>
+                                    <View style={[styles.calorieBox]}>
+                                        <Text style={{
+                                            fontFamily: 'Heebo-Bold',
+                                            color: 'black',
+                                            fontSize: getFontSize(24)
+                                        }}>{calories - currentCal}</Text>
+                                        <View style={{paddingLeft: 20}}>
+                                            <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>CAL</Text>
+                                            <Text
+                                                style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>LEFT</Text>
                                         </View>
                                     </View>
-                                    <View style={[styles.row, {
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        paddingTop: 10,
-                                        paddingBottom: 10
-                                    }]}>
-                                        <View style={styles.details}>
-                                            <Circle size={getFontSize(60)}
-                                                    progress={currentFats !== 0 ? (currentFats / fats) : currentFats}
-                                                    unfilledColor={unfilledColor} borderWidth={0} color="#1fc16c"
-                                                    thickness={5} formatText={() => "Fats"} showsText={true}/>
-                                            <Text
-                                                style={[styles.smallText, (fats - currentFats < 0) ? GlobalStyle.redText : null]}>
-                                                {`${fats - currentFats}g ${(fats - currentFats < 0) ? 'over' : 'left'}`}
-                                            </Text>
-                                        </View>
-                                        <View style={styles.details}>
-                                            <Circle size={getFontSize(60)}
-                                                    progress={currentCarbs !== 0 ? (currentCarbs / carbs) : currentCarbs}
-                                                    unfilledColor={unfilledColor} borderWidth={0} color="#a56dd1"
-                                                    thickness={5} formatText={() => "Carbs"} showsText={true}/>
-                                            <Text
-                                                style={[styles.smallText, (carbs - currentCarbs < 0) ? GlobalStyle.redText : null]}>
-                                                {`${carbs - currentCarbs}g ${(carbs - currentCarbs < 0) ? 'over' : 'left'}`}
-                                            </Text>
-                                        </View>
-                                        <View style={styles.details}>
-                                            <Circle size={getFontSize(60)}
-                                                    progress={currentProtein !== 0 ? (currentProtein / protein) : currentProtein}
-                                                    unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"
-                                                    thickness={5} formatText={() => "Protein"} showsText={true}/>
-                                            <Text
-                                                style={[styles.smallText, (protein - currentProtein < 0) ? GlobalStyle.redText : null]}>
-                                                {`${protein - currentProtein}g ${(protein - currentProtein < 0) ? 'over' : 'left'}`}
-                                            </Text>
-                                        </View>
-                                    </View>
-                                    <SubmitButton onPress={this._redirect.bind(null, 'CreateMacroLog', {
-                                        macro_plan_day: data.macro_plan_day,
-                                        date: this.state.dataDate
-                                    })} text="LOG NUTRITION" buttonStyle={styles.logButton}/>
-
                                 </View>
-                                : <View
-                                    style={[styles.box, {
-                                        alignItems: 'center',
-                                        justifyContent: 'center'
-                                    }]}>
-                                    <Text style={styles.textTitle}>No Nutrition Plan Today</Text>
-                                </View>
-                            }
-                            {data && data.training_day ?
-                                <View style={[styles.box]}>
-                                    <View
-                                        style={[styles.boxHeader, {borderBottomWidth: 1, borderColor: unfilledColor}]}>
-                                        <MaterialIcon name="directions-run" size={getFontSize(22)}/>
-                                        <Text style={styles.formCalories}>
-                                            Workout
+                                <View style={[styles.row, {
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    paddingTop: 10,
+                                    paddingBottom: 10
+                                }]}>
+                                    <View style={styles.details}>
+                                        <Circle size={getFontSize(60)}
+                                                progress={currentFats !== 0 ? (currentFats / fats) : currentFats}
+                                                unfilledColor={unfilledColor} borderWidth={0} color="#1fc16c"
+                                                thickness={5} formatText={() => "Fats"} showsText={true}/>
+                                        <Text
+                                            style={[styles.smallText, (fats - currentFats < 0) ? GlobalStyle.redText : null]}>
+                                            {`${fats - currentFats}g ${(fats - currentFats < 0) ? 'over' : 'left'}`}
                                         </Text>
                                     </View>
-                                    <View style={[{marginLeft: 40, paddingTop: 5}]}>
-                                        <Text style={{
-                                            fontSize: getFontSize(18),
-                                            fontFamily: 'Heebo-Medium'
-                                        }}>{data.training_day.name}</Text>
-                                        <View style={[styles.boxHeader, {paddingLeft: 10}]}>
-                                            <FontIcon name="circle" size={getFontSize(8)} color="grey"/>
-                                            <Text style={styles.h2Title}>
-                                                {data.training_day.exercises.length} {data.training_day.exercises.length === 1 ? 'Exercise' : 'Exercises'}
-                                            </Text>
-                                        </View>
-                                    </View>
-
-                                    {!data.training_day.logged_today ?
-                                        <SubmitButton onPress={this._toLogWorkout.bind(null, data)} text="START WORKOUT"
-                                                      buttonStyle={styles.logButton}/>
-                                        : null
-                                    }
-
-                                </View>
-                                :
-                                <View style={[styles.box]}>
-                                    <View
-                                        style={[styles.boxHeader, {borderBottomWidth: 1, borderColor: unfilledColor}]}>
-                                        <MaterialIcon name="directions-run" size={getFontSize(22)}/>
-                                        <Text style={styles.formCalories}>
-                                            Workout
+                                    <View style={styles.details}>
+                                        <Circle size={getFontSize(60)}
+                                                progress={currentCarbs !== 0 ? (currentCarbs / carbs) : currentCarbs}
+                                                unfilledColor={unfilledColor} borderWidth={0} color="#a56dd1"
+                                                thickness={5} formatText={() => "Carbs"} showsText={true}/>
+                                        <Text
+                                            style={[styles.smallText, (carbs - currentCarbs < 0) ? GlobalStyle.redText : null]}>
+                                            {`${carbs - currentCarbs}g ${(carbs - currentCarbs < 0) ? 'over' : 'left'}`}
                                         </Text>
                                     </View>
-                                    <View style={[{paddingTop: 20, paddingBottom: 20}]}>
-                                        <Text style={{
-                                            fontSize: getFontSize(18),
-                                            fontFamily: 'Heebo-Medium',
-                                            textAlign: 'center',
-                                        }}>NO WORKOUT TODAY</Text>
-
+                                    <View style={styles.details}>
+                                        <Circle size={getFontSize(60)}
+                                                progress={currentProtein !== 0 ? (currentProtein / protein) : currentProtein}
+                                                unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"
+                                                thickness={5} formatText={() => "Protein"} showsText={true}/>
+                                        <Text
+                                            style={[styles.smallText, (protein - currentProtein < 0) ? GlobalStyle.redText : null]}>
+                                            {`${protein - currentProtein}g ${(protein - currentProtein < 0) ? 'over' : 'left'}`}
+                                        </Text>
                                     </View>
-
                                 </View>
-                            }
+                                <SubmitButton onPress={this._redirect.bind(null, 'CreateMacroLog', {
+                                    macro_plan_day: data.macro_plan_day,
+                                    date: this.state.dataDate
+                                })} text="LOG NUTRITION" buttonStyle={styles.logButton}/>
+
+                            </View>
+                            : <View
+                                style={[styles.box, {
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }]}>
+                                <Text style={styles.textTitle}>No Nutrition Plan Today</Text>
+                            </View>
+                        }
+                        {data && data.training_day ?
                             <View style={[styles.box]}>
                                 <View
                                     style={[styles.boxHeader, {borderBottomWidth: 1, borderColor: unfilledColor}]}>
-                                    <FontIcon name="balance-scale" size={getFontSize(20)}/>
+                                    <MaterialIcon name="directions-run" size={getFontSize(22)}/>
                                     <Text style={styles.formCalories}>
-                                        Weight Progress
+                                        Workout
+                                    </Text>
+                                </View>
+                                <View style={[{marginLeft: 40, paddingTop: 5}]}>
+                                    <Text style={{
+                                        fontSize: getFontSize(18),
+                                        fontFamily: 'Heebo-Medium'
+                                    }}>{data.training_day.name}</Text>
+                                    <View style={[styles.boxHeader, {paddingLeft: 10}]}>
+                                        <FontIcon name="circle" size={getFontSize(8)} color="grey"/>
+                                        <Text style={styles.h2Title}>
+                                            {data.training_day.exercises.length} {data.training_day.exercises.length === 1 ? 'Exercise' : 'Exercises'}
+                                        </Text>
+                                    </View>
+                                </View>
+
+                                {!data.training_day.logged_today ?
+                                    <SubmitButton onPress={this._toLogWorkout.bind(null, data)} text="START WORKOUT"
+                                                  buttonStyle={styles.logButton}/>
+                                    : null
+                                }
+
+                            </View>
+                            :
+                            <View style={[styles.box]}>
+                                <View
+                                    style={[styles.boxHeader, {borderBottomWidth: 1, borderColor: unfilledColor}]}>
+                                    <MaterialIcon name="directions-run" size={getFontSize(22)}/>
+                                    <Text style={styles.formCalories}>
+                                        Workout
                                     </Text>
                                 </View>
                                 <View style={[{paddingTop: 20, paddingBottom: 20}]}>
@@ -357,15 +354,49 @@ const Home = React.createClass({
                                         fontSize: getFontSize(18),
                                         fontFamily: 'Heebo-Medium',
                                         textAlign: 'center',
-                                    }}>NO WEIGHT PROGRESS</Text>
-
-                                    <SubmitButton onPress={() => console.log('hit')} text="LOG WEIGHT"
-                                                  buttonStyle={styles.logButton}/>
+                                    }}>NO WORKOUT TODAY</Text>
 
                                 </View>
 
                             </View>
+                        }
+                        <View style={[styles.box]}>
+                            <View
+                                style={[styles.boxHeader, {borderBottomWidth: 1, borderColor: unfilledColor}]}>
+                                <FontIcon name="balance-scale" size={getFontSize(20)}/>
+                                <Text style={styles.formCalories}>
+                                    Weight Progress
+                                </Text>
+                            </View>
+                            {weightLogs.length && weightLogs.length.length > 0 ?
+                                <View style={{flexDirection: 'row'}}>
+                                    <TouchableOpacity style={styles.weightChangeButton}
+                                                      onPress={() => this.changeTimeFrame('month')}>
+                                        <Text>Month</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.weightChangeButton}
+                                                      onPress={() => this.changeTimeFrame('three_months')}>
+                                        <Text>Three Months</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.weightChangeButton}
+                                                      onPress={() => this.changeTimeFrame('year')}>
+                                        <Text>Year</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                : null
+                            }
+                            <View style={[{paddingTop: 20, paddingBottom: 20}]}>
+                                {weightLogs.length && weightLogs.length.length > 0 ? <WeightGraph data={weightLogs}/>
+                                    : null
+                                }
+
+                                <SubmitButton onPress={() => console.log('hit')} text="LOG WEIGHT"
+                                              buttonStyle={styles.logButton}/>
+
+                            </View>
+
                         </View>
+                    </View>
 
                 </View>
             );
@@ -409,31 +440,27 @@ const Home = React.createClass({
                     {content}
                 </ScrollView>
 
-                {this.state.isActionButtonVisible ?
 
-                    <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right"
-                                  icon={isTrainer ? null :
-                                      <MaterialIcon name="search" size={getFontSize(20)} color="white"/>}>
-                        <ActionButton.Item buttonColor='#FD795B' title="Workouts"
-                                           onPress={() => navigate('ProgramList')}>
-                            <CustomIcon name="weight" size={getFontSize(22)} color="white"/>
+                <EditButton icon={isTrainer ? null : <MaterialIcon name="search" size={getFontSize(20)} color="white"/>}
+                            isActionButtonVisible={this.state.isActionButtonVisible}>
+                    <ActionButton.Item buttonColor='#FD795B' title="Workouts"
+                                       onPress={() => navigate('ProgramList')}>
+                        <CustomIcon name="weight" size={getFontSize(22)} color="white"/>
+                    </ActionButton.Item>
+                    {isTrainer ?
+                        <ActionButton.Item buttonColor='#FD795B' title="Surveys"
+                                           onPress={() => navigate('SurveyList')}>
+                            <MaterialIcon name="question-answer" size={getFontSize(22)} color="white"/>
                         </ActionButton.Item>
-                        {isTrainer ?
-                            <ActionButton.Item buttonColor='#FD795B' title="Surveys"
-                                               onPress={() => navigate('SurveyList')}>
-                                <MaterialIcon name="question-answer" size={getFontSize(22)} color="white"/>
-                            </ActionButton.Item>
-                            : <View/>
-                        }
-                        <ActionButton.Item buttonColor='#FD795B'
-                                           title={isTrainer ? "Clients" : "Trainers"}
-                                           onPress={() => navigate('ManageClients')}>
-                            <CustomIcon name="users" color="white" size={getFontSize(22)}/>
-                        </ActionButton.Item>
+                        : <View/>
+                    }
+                    <ActionButton.Item buttonColor='#FD795B'
+                                       title={isTrainer ? "Clients" : "Trainers"}
+                                       onPress={() => navigate('ManageClients')}>
+                        <CustomIcon name="users" color="white" size={getFontSize(22)}/>
+                    </ActionButton.Item>
 
-                    </ActionButton>
-                    : null
-                }
+                </EditButton>
             </View>
         )
     }
@@ -558,6 +585,12 @@ const styles = StyleSheet.create({
     smallText: {
         paddingTop: 5,
         color: '#00AFA3',
+    },
+    weightChangeButton: {
+        borderColor: 'blue',
+        borderWidth: .5,
+        flex: 1 / 3,
+        alignItems: 'center'
     }
 });
 

@@ -21,6 +21,7 @@ import * as CalendarActions from '../actions/calendarActions';
 import GlobalStyle from './globalStyle';
 import {getFontSize} from '../actions/utils';
 
+import EditButton from '../components/EditButton';
 import EventBox from '../components/EventBox';
 import Loading from '../components/Loading';
 
@@ -149,7 +150,7 @@ const Calendar = React.createClass({
         }
         if (isTrainer) {
             subMenu = (
-                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
+                <EditButton isActionButtonVisible={this.state.isActionButtonVisible}>
                     <ActionButton.Item buttonColor='#FD795B' title="New Client Check-In"
                                        onPress={() => this.goToCreate('chk')}>
                         <MaterialIcon name="event-available" color="white" size={22}/>
@@ -158,22 +159,22 @@ const Calendar = React.createClass({
                                        onPress={() => this.goToCreate('eve')}>
                         <MaterialIcon name="event" color="white" size={22}/>
                     </ActionButton.Item>
-                </ActionButton>
+                </EditButton>
             )
         } else {
             subMenu = (
-                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right">
+                <EditButton isActionButtonVisible={this.state.isActionButtonVisible}>
                     <ActionButton.Item buttonColor='#9b59b6' title="New Event"
                                        onPress={() => this.goToCreate('eve')}>
                         <MaterialIcon name="event" color="white" size={22}/>
                     </ActionButton.Item>
-                </ActionButton>
+                </EditButton>
             )
         }
         return (
             <View style={styles.scrollContainer}>
                 {content}
-                {this.state.isActionButtonVisible ? subMenu: null}
+                {subMenu}
             </View>
         );
     }

@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, ActivityIndicator, StyleSheet, Text, TouchableOpacity, Image, Dimensions} from 'react-native';
+import {View, ActivityIndicator, StyleSheet, Text, Image, Dimensions, AsyncStorage} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {purgeStoredState} from 'redux-persist';
 
 import * as GlobalActions from '../actions/globalActions';
 import {resetNav, letterSpacing, getFontSize} from '../actions/utils';
@@ -24,22 +25,21 @@ const SplashScreen = React.createClass({
 
     componentDidMount() {
         this.props.initializeApp();
-        if (this.props.AppIsReady) {
-            if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
-                this._navigateTo('Main')
-            } else if (this.props.RequestUser && !this.props.RequestUser.profile.completed) {
-                this._navigateTo('EditProfile')
-            }
-        }
     },
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         if (this.props.AppIsReady) {
             if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
                 this._navigateTo('Main')
             } else if (this.props.RequestUser && !this.props.RequestUser.profile.completed) {
                 this._navigateTo('EditProfile')
             }
+        } else if (!this.props.AppIsReady && this.props.AppIsReady !== prevProps.AppIsReady) {
+            return purgeStoredState({storage: AsyncStorage}).then(() => {
+                this.props.removeToken();
+            }).catch(() => {
+                console.log('purge of someReducer failed')
+            });
         }
     },
 

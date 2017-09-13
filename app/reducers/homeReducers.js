@@ -128,17 +128,20 @@ export default function homeReducers(state = initialState, action = null) {
             const WeightLogs = state.WeightLogs;
             if (action.timeFrame === "month") {
                 WeightLogs["month"] = {
-                    results: (action.refresh) ? action.response.results : state.WeightLogs.month.results.concat(action.response.results),
+                    results: (action.refresh) ? action.response.results :
+                        _.uniqBy([...action.response.results, ...state.WeightLogs.month.results], 'id'),
                     next: action.next
                 }
             } else if (action.timeFrame === "three_months") {
                 WeightLogs["three_months"] = {
-                    results: (action.refresh) ? action.response.results : state.WeightLogs.three_months.results.concat(action.response.results),
+                    results: (action.refresh) ? action.response.results :
+                        _.uniqBy([...action.response.results, ...state.WeightLogs.three_months.results], 'id'),
                     next: action.next
                 }
             } else if (action.timeFrame === "year") {
                 WeightLogs["year"] = {
-                    results: (action.refresh) ? action.response.results : state.WeightLogs.year.results.concat(action.response.results),
+                    results: (action.refresh) ? action.response.results :
+                        _.uniqBy([...action.response.results, ...state.WeightLogs.year.results], 'id'),
                     next: action.next
                 }
             }
