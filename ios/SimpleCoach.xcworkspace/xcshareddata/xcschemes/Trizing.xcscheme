@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "Trizing.app"
-               BlueprintName = "Trizing"
-               ReferencedContainer = "container:Trizing.xcodeproj">
+               BuildableName = "SimpleCoach.app"
+               BlueprintName = "SimpleCoach"
+               ReferencedContainer = "container:SimpleCoach.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,16 +47,16 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Trizing.app"
-            BlueprintName = "Trizing"
-            ReferencedContainer = "container:Trizing.xcodeproj">
+            BuildableName = "SimpleCoach.app"
+            BlueprintName = "SimpleCoach"
+            ReferencedContainer = "container:SimpleCoach.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -70,9 +70,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Trizing.app"
-            BlueprintName = "Trizing"
-            ReferencedContainer = "container:Trizing.xcodeproj">
+            BuildableName = "SimpleCoach.app"
+            BlueprintName = "SimpleCoach"
+            ReferencedContainer = "container:SimpleCoach.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -84,16 +84,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Trizing.app"
-            BlueprintName = "Trizing"
-            ReferencedContainer = "container:Trizing.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

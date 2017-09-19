@@ -60,11 +60,11 @@ export function setDeviceForNotification(token) {
 export function removeToken(token) {
     return (dispatch) => {
         return purgeStoredState({storage: AsyncStorage}).then(() => {
+            dispatch({type: types.REMOVE_TOKEN});
             AsyncStorage.removeItem('USER_TOKEN');
             ImageCache.get().clear();
             LoginManager.logOut();
             if (token) dispatch(removeDeviceNotification(token));
-            dispatch({type: types.REMOVE_TOKEN});
         }).catch(() => {
             console.log('purge of someReducer failed')
         })

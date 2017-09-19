@@ -71,7 +71,7 @@ const SplashScreen = React.createClass({
                        {/*source={require('../assets/images/background.jpg')}/>*/}
                 <View style={styles.top}>
                     <Image style={styles.logo} source={require('../assets/images/new-logo.png')}/>
-                    <Text style={[styles.trizing, GlobalStyle.redText]}>{letterSpacing('SimpleCoach', 3)}</Text>
+                    <Text style={[styles.titleStyle, GlobalStyle.redText]}>{letterSpacing('SimpleCoach', 3)}</Text>
                 </View>
                 <View style={styles.center} onLayout={this.setSize}>
                     {/*<View style={{flex: 1}}>*/}
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50
     },
-    trizing: {
+    titleStyle: {
         fontFamily: 'Heebo-Bold',
         fontSize: getFontSize(32),
         paddingLeft: 5

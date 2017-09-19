@@ -1,11 +1,11 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '8.0'
 
-target 'Trizing' do
+target 'SimpleCoach' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
   use_frameworks!
 
-  # Pods for Trizing
+  # Pods for SimpleCoach
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
@@ -13,20 +13,20 @@ target 'Trizing' do
   pod 'RSKImageCropper'
   pod 'QBImagePickerController'
 
-  target 'TrizingTests' do
+  target 'SimpleCoachTests' do
     inherit! :search_paths
     # Pods for testing
   end
 
 end
 
-target 'Trizing-tvOS' do
+target 'SimpleCoach-tvOS' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
   # use_frameworks!
 
-  # Pods for Trizing-tvOS
+  # Pods for SimpleCoach-tvOS
 
-  target 'Trizing-tvOSTests' do
+  target 'SimpleCoach-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
