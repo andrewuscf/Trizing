@@ -3,6 +3,7 @@ import {
     View,
     Text,
     StyleSheet,
+    Platform
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -13,12 +14,9 @@ import DropdownAlert from 'react-native-dropdownalert';
 import * as GlobalActions from '../../actions/globalActions';
 
 import SelectInput from '../../components/SelectInput';
+import {ModalPicker} from '../../components/ModalPicker';
 
 const Form = t.form.Form;
-
-let Schedule = t.struct({
-    name: t.String,
-});
 
 const CreateSchedule = React.createClass({
     propTypes: {
@@ -75,6 +73,7 @@ const CreateSchedule = React.createClass({
                     training_plan: this.props.training_plan
                 }
             }
+            console.log(values)
             this.props.actions.createSchedule(values, this.asyncActions);
         }
     },
@@ -89,7 +88,30 @@ const CreateSchedule = React.createClass({
         this.setState({value});
     },
 
+    getType() {
+        const skill_levels = t.enums({
+            1: 'Beginner',
+            2: 'Intermediate',
+            3: 'Advanced'
+        });
+        if (this.state.value && this.state.value.for_sale) {
+            return t.struct({
+                name: t.String,
+                for_sale: t.Boolean,
+                cost: t.Number,
+                skill_level: skill_levels
+            });
+        } else {
+            return  t.struct({
+                name: t.String,
+                for_sale: t.Boolean,
+                skill_level: skill_levels
+            });
+        }
+    },
+
     render: function () {
+        const Schedule = this.getType();
         let options = {
             stylesheet: stylesheet,
             fields: {
@@ -100,6 +122,11 @@ const CreateSchedule = React.createClass({
                     maxLength: 40,
                     autoCapitalize: 'sentences',
                     multiline: true,
+                },
+                skill_level: {
+                    label: 'SKILL LEVEL',
+                    nullOption: {value: '', text: 'Choose a skill level.'},
+                    factory: Platform.OS =='ios'? ModalPicker: null
                 },
             }
         };

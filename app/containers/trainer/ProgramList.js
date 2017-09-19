@@ -11,13 +11,12 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import _ from 'lodash';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
 
 import * as GlobalActions from '../../actions/globalActions';
 import GlobalStyle from '../globalStyle';
-import {getFontSize} from '../../actions/utils';
+import {getFontSize, isATrainer} from '../../actions/utils';
 
 import CustomIcon from '../../components/CustomIcon';
 import EditButton from '../../components/EditButton';
@@ -25,17 +24,18 @@ import EditButton from '../../components/EditButton';
 const ProgramList = React.createClass({
     propTypes: {
         Refreshing: React.PropTypes.bool.isRequired,
+        tab: React.PropTypes.number
     },
 
     getInitialState() {
         return {
-            tab: 1,
+            tab: this.props.tab ? this.props.tab : 1,
             isActionButtonVisible: true
         }
     },
 
     componentDidMount() {
-        if (!this.props.Schedules.length) this.getNeeded();
+        this.getNeeded(true);
     },
 
 
@@ -60,8 +60,10 @@ const ProgramList = React.createClass({
 
 
     getNeeded(refresh = false) {
-        if (this.props.RequestUser.type === 1) {
+        if (isATrainer(this.props.RequestUser.type)) {
             this.props.getSchedules('?template=true', refresh);
+        } else {
+            this.props.getSchedules('', refresh);
         }
     },
 
@@ -81,15 +83,15 @@ const ProgramList = React.createClass({
     },
 
     convertToMap: function () {
-        const chatMap = {'Workout Templates': [], 'Messages': []};
+        const workoutMap = {'Workout Templates': [], 'Messages': []};
         this.props.ChatRooms.forEach((chatroom) => {
             if (chatroom.team || chatroom.activity) {
-                chatMap['Group Chats'].push(chatroom);
+                workoutMap['Group Chats'].push(chatroom);
             } else {
-                chatMap['Messages'].push(chatroom);
+                workoutMap['Messages'].push(chatroom);
             }
         });
-        return chatMap;
+        return workoutMap;
 
     },
 
@@ -99,13 +101,21 @@ const ProgramList = React.createClass({
         return <Text style={styles.sectionTitle}>{category}</Text>;
     },
 
+    goToProgram(program) {
+        if (isATrainer(this.props.RequestUser.type)) {
+            this.props.navigation.navigate('EditSchedule', {scheduleId: program.id});
+        } else {
+            // this.props.navigation.navigate('ScheduleDetail', {scheduleId: program});
+        }
+    },
+
 
     renderRow(program) {
         let duration = 0;
+        console.log(program)
         program.workouts.forEach((workout) => duration += workout.duration);
         return (
-            <TouchableOpacity style={styles.link}
-                              onPress={this._redirect.bind(null, 'EditSchedule', {scheduleId: program.id})}>
+            <TouchableOpacity style={styles.link} onPress={this.goToProgram.bind(null, program)}>
                 <View style={styles.leftSection}>
                     <Text style={styles.simpleTitle}>{program.name}</Text>
                     <View style={styles.row}>
@@ -130,7 +140,7 @@ const ProgramList = React.createClass({
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.tabView, (this.state.tab === 2) ? styles.selectedTab : null]}
                                   onPress={this._onTabPress.bind(null, 2)}>
-                    <Text style={(this.state.tab === 2) ? styles.selectedText : null}>Purchase</Text>
+                    <Text style={(this.state.tab === 2) ? styles.selectedText : null}>Find Programs</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -138,12 +148,10 @@ const ProgramList = React.createClass({
 
 
     render() {
-        const isTrainer = this.props.RequestUser.type === 1;
+        const isTrainer = isATrainer(this.props.RequestUser.type);
         const {navigate} = this.props.navigation;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        const ProgramsDs = ds.cloneWithRows(_.filter(this.props.Schedules, function (o) {
-            return !o.training_plan;
-        }));
+        const ProgramsDs = ds.cloneWithRows(this.props.Schedules);
         return (
             <View style={{flex: 1}}>
                 <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
@@ -155,10 +163,10 @@ const ProgramList = React.createClass({
                           onScroll={this._onScroll}
                 />
                 <EditButton isActionButtonVisible={!!(isTrainer && this.state.isActionButtonVisible)}>
-                        <ActionButton.Item buttonColor='#3498db' title="New Workout template"
-                                                    onPress={() => navigate('CreateSchedule')}>
-                            <CustomIcon name="barbell" color="white" size={getFontSize(30)}/>
-                        </ActionButton.Item>
+                    <ActionButton.Item buttonColor='#3498db' title="New Workout template"
+                                       onPress={() => navigate('CreateSchedule')}>
+                        <CustomIcon name="barbell" color="white" size={getFontSize(30)}/>
+                    </ActionButton.Item>
                 </EditButton>
             </View>
         )
@@ -218,12 +226,9 @@ const styles = StyleSheet.create({
     selectedTab: {
         borderBottomWidth: 2,
         borderBottomColor: '#00AFA3',
-        marginLeft: 5,
-        marginRight: 5,
     },
     selectedText: {
         color: '#00AFA3',
-        fontFamily: 'Heebo-Medium',
     },
 });
 

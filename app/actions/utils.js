@@ -64,6 +64,10 @@ export function refreshPage() {
     return {type: REFRESHING}
 }
 
+export function isATrainer(userType) {
+    return userType === 1;
+}
+
 export function getFontSize(size = 22) {
     // return Math.floor(size * 0.7);
     if (Platform.OS === 'ios') {
