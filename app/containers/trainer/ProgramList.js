@@ -112,7 +112,6 @@ const ProgramList = React.createClass({
 
     renderRow(program) {
         let duration = 0;
-        console.log(program)
         program.workouts.forEach((workout) => duration += workout.duration);
         return (
             <TouchableOpacity style={styles.link} onPress={this.goToProgram.bind(null, program)}>

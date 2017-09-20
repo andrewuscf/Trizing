@@ -147,7 +147,8 @@ export default function homeReducers(state = initialState, action = null) {
             }
             return {
                 ...state,
-                WeightLogs: WeightLogs
+                WeightLogs: WeightLogs,
+                HomeIsLoading: false,
             };
 
 

@@ -68,6 +68,17 @@ export function isATrainer(userType) {
     return userType === 1;
 }
 
+export function convertSkill(skill) {
+    if (skill === 1) {
+        return 'Beginner'
+    } else if (skill === 2){
+        return 'Intermediate'
+    } else if (skill === 3) {
+        return 'Advanced'
+    }
+    return 'For All'
+}
+
 export function getFontSize(size = 22) {
     // return Math.floor(size * 0.7);
     if (Platform.OS === 'ios') {

@@ -50,24 +50,22 @@ const Home = React.createClass({
     },
 
     componentDidMount() {
-        // if (this.props.RequestUser.type === 1 && !this.props.Clients.length) {
-        //     this.getNeeded();
-        // } else if (this.props.RequestUser.type === 2 && !this.props.ActiveData.length) {
-        //     this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), false)
-        // }
-        this.getNeeded(true);
+        if (this.props.RequestUser.type === 1 && !this.props.Clients.length) {
+            this.props.actions.getClients(true);
+        } else if (this.props.RequestUser.type === 2 && !this.props.ActiveData.length) {
+            this.props.actions.getWeightLogs(this.state.weightTimeFrame, true);
+            this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), true);
+        }
     },
 
-    getNeeded(refresh = false) {
+    _refresh() {
         if (this.props.RequestUser.type === 1) {
-            this.props.actions.getClients(refresh);
+            this.props.actions.getClients(true);
         } else {
-            this.props.actions.getWeightLogs(this.state.weightTimeFrame, refresh)
+            this.props.actions.getWeightLogs(this.state.weightTimeFrame, true);
+            this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), true);
         }
-        this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), refresh);
-        if (refresh) {
-            this.props.getNotifications(refresh);
-        }
+        this.props.getNotifications(true);
     },
 
     _redirect(routeName, props = null) {
@@ -161,7 +159,7 @@ const Home = React.createClass({
 
     render() {
         const user = this.props.RequestUser;
-        if (!user || this.props.HomeIsLoading) return <Loading/>;
+        if (!user) return <Loading/>;
         const isTrainer = user.type === 1;
         let content = null;
         const {navigate} = this.props.navigation;
@@ -177,9 +175,9 @@ const Home = React.createClass({
                             </Text>
                             <PeopleBar navigate={navigate} people={this.props.Clients}/>
                         </View>
-                        : <View style={styles.emptyClients}>
+                        : !this.props.HomeIsLoading ? <View style={styles.emptyClients}>
                             <Text style={styles.emptyClientsText}>Get started by adding new clients.</Text>
-                        </View>
+                        </View> : null
                     }
                 </View>
             )
@@ -214,7 +212,7 @@ const Home = React.createClass({
 
             content = (
                 <View>
-                    {!data ?
+                    {!data && !this.props.HomeIsLoading ?
                         <View style={styles.emptyClients}>
                             <Text style={styles.emptyClientsText}>Get started by finding a trainer</Text>
                             <Text style={styles.emptyClientsText}>or workout program.</Text>
@@ -303,18 +301,21 @@ const Home = React.createClass({
                                 })} text="LOG NUTRITION" buttonStyle={styles.logButton}/>
 
                             </View>
-                            : <View
-                                style={[styles.box, {
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }]}>
+                            :
+                            <View style={[styles.box]}>
+                                <View style={styles.boxHeader}>
+                                    <MaterialIcon name="donut-small" size={getFontSize(22)}/>
+                                    <Text style={styles.formCalories}>
+                                        Nutrition Plan
+                                    </Text>
+                                </View>
                                 <Text style={styles.textTitle}>No Nutrition Plan Today</Text>
                             </View>
                         }
                         {data && data.training_day ?
                             <View style={[styles.box]}>
                                 <View
-                                    style={[styles.boxHeader, {borderBottomWidth: 1, borderColor: unfilledColor}]}>
+                                    style={[styles.boxHeader]}>
                                     <MaterialIcon name="directions-run" size={getFontSize(22)}/>
                                     <Text style={styles.formCalories}>
                                         Workout
@@ -343,26 +344,18 @@ const Home = React.createClass({
                             :
                             <View style={[styles.box]}>
                                 <View
-                                    style={[styles.boxHeader, {borderBottomWidth: 1, borderColor: unfilledColor}]}>
+                                    style={[styles.boxHeader]}>
                                     <MaterialIcon name="directions-run" size={getFontSize(22)}/>
                                     <Text style={styles.formCalories}>
                                         Workout
                                     </Text>
                                 </View>
-                                <View style={[{paddingTop: 20, paddingBottom: 20}]}>
-                                    <Text style={{
-                                        fontSize: getFontSize(18),
-                                        fontFamily: 'Heebo-Medium',
-                                        textAlign: 'center',
-                                    }}>NO WORKOUT TODAY</Text>
-
-                                </View>
-
+                                <Text style={styles.textTitle}>No Workout Today</Text>
                             </View>
                         }
                         <View style={[styles.box]}>
                             <View
-                                style={[styles.boxHeader, {borderBottomWidth: 1, borderColor: unfilledColor}]}>
+                                style={[styles.boxHeader]}>
                                 <FontIcon name="balance-scale" size={getFontSize(20)}/>
                                 <Text style={styles.formCalories}>
                                     Weight Progress
@@ -418,7 +411,7 @@ const Home = React.createClass({
                 </View>
                 <ScrollView ref='home_scroll' showsVerticalScrollIndicator={false}
                             refreshControl={<RefreshControl refreshing={this.props.Refreshing}
-                                                            onRefresh={() => this.getNeeded(true)}/>}
+                                                            onRefresh={this._refresh}/>}
                             onScroll={this._onScroll}
                             scrollEventThrottle={15}
                             style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
@@ -494,7 +487,9 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 10,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderColor: unfilledColor
     },
     formCalories: {
         fontFamily: 'Heebo-Bold',

@@ -53,18 +53,25 @@ export function setDeviceForNotification(token) {
             type: Platform.OS
         };
         const sendData = JSON.stringify(JSONData);
-        return fetch(`${API_ENDPOINT}devices/`, fetchData('POST', sendData, getState().Global.UserToken))
+        return RNFetchBlob.fetch('POST', `${API_ENDPOINT}devices/`,
+            setHeaders(getState().Global.UserToken), sendData)
+            .then((response) => {
+                const jsonReponse = response.json();
+                console.log(jsonReponse)
+            }).catch((errorMessage, statusCode) => {
+                console.log(errorMessage);
+            });
     }
 }
 
 export function removeToken(token) {
     return (dispatch) => {
         return purgeStoredState({storage: AsyncStorage}).then(() => {
-            dispatch({type: types.REMOVE_TOKEN});
+            if (token) dispatch(removeDeviceNotification(token));
             AsyncStorage.removeItem('USER_TOKEN');
             ImageCache.get().clear();
             LoginManager.logOut();
-            if (token) dispatch(removeDeviceNotification(token));
+            dispatch({type: types.REMOVE_TOKEN});
         }).catch(() => {
             console.log('purge of someReducer failed')
         })

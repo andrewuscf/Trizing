@@ -23,7 +23,8 @@ import {
 } from 'react-native-popup-menu';
 
 import * as GlobalActions from '../../actions/globalActions';
-import {fetchData, API_ENDPOINT, getFontSize, checkStatus} from '../../actions/utils';
+import {fetchData, API_ENDPOINT, getFontSize, checkStatus, convertSkill} from '../../actions/utils';
+import GlobalStyle from '../../containers/globalStyle';
 
 
 import CustomIcon from '../../components/CustomIcon';
@@ -43,6 +44,7 @@ const EditSchedule = React.createClass({
 
     componentDidMount() {
         const schedule = _.find(this.props.Schedules, {id: this.props.scheduleId});
+        console.log(schedule)
         if (schedule) {
             this.props.navigation.setParams({headerTitle: schedule.name});
             this.setState({schedule: schedule});
@@ -107,7 +109,25 @@ const EditSchedule = React.createClass({
     },
 
     renderHeader() {
-        return null;
+        const schedule = this.state.schedule;
+        const created = moment.utc(schedule.created_at).local().format('MMMM DD YYYY');
+        return (
+            <View style={[GlobalStyle.simpleBottomBorder, styles.headerContainer]}>
+                <Text style={styles.smallBold}>Duration:
+                    <Text style={styles.notBold}> {schedule.duration} {schedule.duration == 1 ? 'week' : 'weeks'}</Text>
+                </Text>
+                <Text style={styles.smallBold}>Created: <Text style={styles.notBold}>{created}</Text></Text>
+                <Text style={styles.smallBold}>Description: <Text
+                    style={styles.notBold}>{schedule.description}</Text></Text>
+                {schedule.cost ?
+                    <Text style={styles.smallBold}>Cost: <Text
+                        style={styles.notBold}>${parseFloat(schedule.cost).toFixed(2)}</Text></Text> :
+                    null
+                }
+                <Text style={styles.smallBold}>Skill level: <Text
+                    style={styles.notBold}>{convertSkill(schedule.skill_level)}</Text></Text>
+            </View>
+        )
     },
 
     renderRow(workout, index) {
@@ -259,6 +279,17 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(12),
         fontFamily: 'Heebo-Medium',
         color: 'grey'
+    },
+    headerContainer: {
+        paddingTop: 20,
+        paddingBottom: 20,
+        backgroundColor: 'white'
+    },
+    smallBold: {
+        fontSize: 16,
+        fontFamily: 'Heebo-Bold',
+        paddingLeft: 10,
+        paddingBottom: 5
     },
 });
 

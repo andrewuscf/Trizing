@@ -109,7 +109,7 @@ export class ModalPicker extends t.form.Select {
                     <TouchableOpacity style={[touchableStyle]} onPress={() => {
                         this.refs.modal.setVisible(true)
                     }}>
-                        <Text style={pickerValue}>
+                        <Text style={[pickerValue, locals.value ? {} : {color: '#a9a9a9'}]}>
                             {selectedOption.text}
                         </Text>
                     </TouchableOpacity>

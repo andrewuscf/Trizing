@@ -13,7 +13,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 
 import * as GlobalActions from '../../actions/globalActions';
 
-import SelectInput from '../../components/SelectInput';
+import InputAccessory from '../../components/InputAccessory';
 import {ModalPicker} from '../../components/ModalPicker';
 
 const Form = t.form.Form;
@@ -26,7 +26,6 @@ const CreateSchedule = React.createClass({
     getInitialState() {
         return {
             Error: null,
-            template: null,
             value: null,
             disabled: false,
         }
@@ -62,11 +61,6 @@ const CreateSchedule = React.createClass({
         let values = this.refs.form.getValue();
         if (values) {
             this.setState({disabled: true});
-            if (this.state.template)
-                values = {
-                    ...values,
-                    template: this.state.template
-                };
             if (this.props.training_plan) {
                 values = {
                     ...values,
@@ -76,12 +70,6 @@ const CreateSchedule = React.createClass({
             console.log(values)
             this.props.actions.createSchedule(values, this.asyncActions);
         }
-    },
-
-    selectTemplate(id) {
-        this.setState({
-            template: id
-        });
     },
 
     onChange(value) {
@@ -94,40 +82,115 @@ const CreateSchedule = React.createClass({
             2: 'Intermediate',
             3: 'Advanced'
         });
+
+        const templates = {};
+        _.filter(this.props.Schedules, function (o) {
+            return !o.training_plan;
+        }).forEach((category) => {
+            templates[category.id] = category.name
+        });
+        const template_list = t.enums(templates);
+        let struct = {
+            name: t.String,
+            for_sale: t.Boolean,
+            skill_level: t.maybe(skill_levels),
+            description: t.maybe(t.String),
+            template: t.maybe(template_list)
+        };
         if (this.state.value && this.state.value.for_sale) {
-            return t.struct({
-                name: t.String,
-                for_sale: t.Boolean,
+            struct = {
+                ...struct,
                 cost: t.Number,
-                skill_level: skill_levels
-            });
-        } else {
-            return  t.struct({
-                name: t.String,
-                for_sale: t.Boolean,
-                skill_level: skill_levels
-            });
+            }
         }
+        return t.struct(struct)
     },
 
     render: function () {
         const Schedule = this.getType();
         let options = {
             stylesheet: stylesheet,
+            auto: 'placeholders',
+            order: ['name', 'description', 'skill_level', 'for_sale', 'cost', 'template'],
             fields: {
                 name: {
-                    label: 'Program Name',
-                    placeholder: this.props.training_plan ? `This name will be displayed to your client` : `'HIIT Program'`,
-                    onSubmitEditing: () => this._onSubmit(),
+                    placeholder: this.props.training_plan ? `This name will be displayed to your client` : `Program Name`,
+                    onSubmitEditing: () => this.refs.form.getComponent('description').refs.input.focus(),
                     maxLength: 40,
                     autoCapitalize: 'sentences',
+                },
+                description: {
+                    maxLength: 500,
+                    autoCapitalize: 'sentences',
                     multiline: true,
+                    stylesheet: {
+                        ...stylesheet,
+                        textbox: {
+                            ...stylesheet.textbox,
+                            normal: {
+                                ...stylesheet.textbox.normal,
+                                height: 100
+                            },
+                            error: {
+                                ...stylesheet.textbox.error,
+                                height: 100
+                            }
+                        }
+                    }
                 },
                 skill_level: {
                     label: 'SKILL LEVEL',
                     nullOption: {value: '', text: 'Choose a skill level.'},
-                    factory: Platform.OS =='ios'? ModalPicker: null
+                    factory: Platform.OS == 'ios' ? ModalPicker : null,
+                    stylesheet: {
+                        ...stylesheet,
+                        textbox: {
+                            ...stylesheet.textbox,
+                            normal: {
+                                ...stylesheet.textbox.normal,
+                                height: 100
+                            },
+                            error: {
+                                ...stylesheet.textbox.error,
+                                height: 100
+                            }
+                        }
+                    }
                 },
+                for_sale: {
+                    stylesheet: {
+                        ...stylesheet,
+                        controlLabel: {
+                            ...stylesheet.controlLabel,
+                            normal: {
+                                ...stylesheet.controlLabel.normal,
+                                flex: 1,
+                                margin: 0,
+                            },
+                            error: {
+                                ...stylesheet.controlLabel.error,
+                                flex: 1,
+                                margin: 0,
+                            }
+                        },
+                        formGroup: {
+                            ...stylesheet.formGroup,
+                            normal: {
+                                ...stylesheet.formGroup.normal,
+                                flexDirection: 'row',
+                                paddingTop: 10
+                            },
+                            error: {
+                                ...stylesheet.formGroup.error,
+                                flexDirection: 'row',
+                            }
+                        },
+                    }
+                },
+                template: {
+                    nullOption: {value: '', text: 'Use Template'},
+                    factory: Platform.OS == 'ios' ? ModalPicker : null,
+                }
             }
         };
         return (
@@ -139,16 +202,8 @@ const CreateSchedule = React.createClass({
                     onChange={this.onChange}
                     value={this.state.value}
                 />
-                <View style={styles.templateSection}>
-                    <Text>Use Template:</Text>
-                    <SelectInput ref='schedule_templates' options={[
-                        ..._.filter(this.props.Schedules, function (o) {
-                            return !o.training_plan;
-                        }),
-                        {id: null, name: 'None'}
-                    ]} selectedId={this.state.template} submitChange={this.selectTemplate}/>
-                </View>
                 <DropdownAlert ref={(ref) => this.dropdown = ref}/>
+                <InputAccessory/>
             </View>
         )
     }
@@ -164,59 +219,50 @@ stylesheet.formGroup = {
     ...stylesheet.formGroup,
     normal: {
         ...stylesheet.formGroup.normal,
-        paddingTop: 20,
-        backgroundColor: 'white',
         borderColor: '#e1e3df',
-        borderBottomWidth: 1,
+        borderWidth: 1,
+        padding: 5,
+        backgroundColor: 'white',
+        margin: 10,
+        marginBottom: 0,
+        borderRadius: 5,
     },
     error: {
         ...stylesheet.formGroup.error,
-        paddingTop: 20,
+        borderColor: 'red',
         backgroundColor: 'white',
-        borderColor: '#e1e3df',
-        borderBottomWidth: 1,
+        borderWidth: 1,
+        padding: 5,
+        margin: 10,
+        marginBottom: 5,
+        borderRadius: 5,
     }
 };
-//
 stylesheet.textbox = {
     ...stylesheet.textbox,
     normal: {
         ...stylesheet.textbox.normal,
         borderWidth: 0,
-        marginTop: 5,
         marginBottom: 0,
-        fontSize: 24,
-        minHeight: 80,
     },
     error: {
         ...stylesheet.textbox.error,
         borderWidth: 0,
-        marginTop: 5,
         marginBottom: 0,
-        fontSize: 24
     }
 };
 
-stylesheet.textboxView = {
-    ...stylesheet.textboxView,
+stylesheet.pickerValue = {
+    ...stylesheet.pickerValue,
     normal: {
-        ...stylesheet.textboxView.normal,
-        borderWidth: 0,
-        borderRadius: 0,
-        backgroundColor: 'transparent',
-        minHeight: 80,
+        ...stylesheet.pickerValue.normal,
+        color: '#000000'
     },
     error: {
-        ...stylesheet.textboxView.error,
-        borderWidth: 0,
-        borderRadius: 0,
-        backgroundColor: 'transparent',
-        minHeight: 80,
+        ...stylesheet.pickerValue.error,
+        color: 'red'
     }
 };
-
-stylesheet.controlLabel.normal.marginLeft = 5;
-stylesheet.controlLabel.error.marginLeft = 5;
 
 const styles = StyleSheet.create({
     flexCenter: {
@@ -231,15 +277,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontFamily: 'Heebo-Bold',
     },
-    templateSection:{
-        padding: 10,
-        backgroundColor: 'white',
-        borderColor: '#e1e3df',
-        borderBottomWidth: 1,
-        borderTopWidth: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    }
 });
 
 
