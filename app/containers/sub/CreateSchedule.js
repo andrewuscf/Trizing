@@ -140,7 +140,7 @@ const CreateSchedule = React.createClass({
                 },
                 skill_level: {
                     label: 'SKILL LEVEL',
-                    nullOption: {value: '', text: 'Choose a skill level.'},
+                    nullOption: {value: '', text: 'Choose a skill level'},
                     factory: Platform.OS == 'ios' ? ModalPicker : null,
                     stylesheet: {
                         ...stylesheet,
