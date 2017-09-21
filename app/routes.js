@@ -82,9 +82,9 @@ const defaultNavigationOptions = {
     },
     headerBackTitle: null,
     headerTitleStyle: {
-        alignSelf: 'center',
+        // alignSelf: 'center',
         fontFamily: 'Heebo-Bold',
-        textAlign:'center',
+        // textAlign:'center',
     },
     headerTintColor: globalBlue,
     gesturesEnabled: true

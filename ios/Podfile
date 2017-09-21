@@ -9,7 +9,7 @@ target 'SimpleCoach' do
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
-  pod 'Firebase/Messaging'
+  pod 'Firebase/Messaging', '4.0.0'
   pod 'RSKImageCropper'
   pod 'QBImagePickerController'
 
