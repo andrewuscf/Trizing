@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     Platform,
-    Alert
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -13,6 +12,8 @@ import {
     setCustomText,
     setCustomTouchableOpacity,
 } from 'react-native-global-props';
+import t from 'tcomb-form-native';
+import _ from 'lodash';
 
 
 import * as GlobalActions from './actions/globalActions';
@@ -95,6 +96,61 @@ const App = React.createClass({
 
     }
 });
+
+
+const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
+
+stylesheet.formGroup = {
+    ...stylesheet.formGroup,
+    normal: {
+        ...stylesheet.formGroup.normal,
+        borderColor: '#e1e3df',
+        borderWidth: 1,
+        padding: 5,
+        backgroundColor: 'white',
+        margin: 10,
+        marginBottom: 0,
+        borderRadius: 5,
+    },
+    error: {
+        ...stylesheet.formGroup.error,
+        borderColor: 'red',
+        backgroundColor: 'white',
+        borderWidth: 1,
+        padding: 5,
+        margin: 10,
+        marginBottom: 5,
+        borderRadius: 5,
+    }
+};
+stylesheet.textbox = {
+    ...stylesheet.textbox,
+    normal: {
+        ...stylesheet.textbox.normal,
+        borderWidth: 0,
+        marginBottom: 0,
+    },
+    error: {
+        ...stylesheet.textbox.error,
+        borderWidth: 0,
+        marginBottom: 0,
+    }
+};
+
+stylesheet.pickerValue = {
+    ...stylesheet.pickerValue,
+    normal: {
+        ...stylesheet.pickerValue.normal,
+        color: '#000000'
+    },
+    error: {
+        ...stylesheet.pickerValue.error,
+        color: 'red'
+    }
+};
+
+// override globally
+t.form.Form.stylesheet = stylesheet;
 
 
 const stateToProps = (state) => {
