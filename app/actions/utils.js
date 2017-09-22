@@ -76,7 +76,7 @@ export function convertSkill(skill) {
     } else if (skill === 3) {
         return 'Advanced'
     }
-    return 'For All'
+    return 'Everyone'
 }
 
 export function getFontSize(size = 22) {

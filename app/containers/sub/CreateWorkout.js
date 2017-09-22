@@ -84,21 +84,16 @@ const CreateWorkout = React.createClass({
 
     render: function () {
         let options = {
-            i18n: {
-                optional: '',
-                required: '*',
-            },
+            auto: 'placeholders',
             fields: {
                 name: {
-                    label: 'Workout Block Name',
                     onSubmitEditing: () => this.refs.form.getComponent('duration').refs.input.focus(),
-                    placeholder: `'Block 1 of program xy'.`,
+                    placeholder: `Workout Name: 'Block 1'`,
                     autoCapitalize: 'sentences'
                 },
                 duration: {
-                    label: 'Duration',
                     onSubmitEditing: () => this._onSubmit(),
-                    placeholder: `Number of weeks for this block`
+                    placeholder: `Duration : Number of weeks`
                 }
             }
         };

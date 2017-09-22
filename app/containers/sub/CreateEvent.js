@@ -51,6 +51,9 @@ const CreateEvent = React.createClass({
             end_time: null,
             step: 1,
             disabled: false,
+            startError: false,
+            endError: false,
+            dateError: false,
         }
     },
 
@@ -85,6 +88,13 @@ const CreateEvent = React.createClass({
         this.props.navigation.goBack()
     },
 
+    setErrors() {
+        this.setState({
+            dateError: !this.state.date,
+            startError: !this.state.start_time,
+            endError: !this.state.end_time
+        })
+    },
 
     _onSubmit() {
         let values;
@@ -93,6 +103,8 @@ const CreateEvent = React.createClass({
             if (values && this.state.date && this.state.start_time && this.state.end_time) {
                 this.props.navigation.setParams({headerTitle: 'Select Users to Invite', saveText: null});
                 this.setState({step: 2});
+            } else {
+                this.setErrors();
             }
         } else if (this.state.selected.length > 0) {
             this.setState({disabled: true});
@@ -181,7 +193,7 @@ const CreateEvent = React.createClass({
                             }
                         },
                     },
-                    // stylesheet: Platform.OS != 'ios' ? stylesheet : null,
+                    hasError: this.state.dateError,
                     factory: Platform.OS == 'ios' ? ModalDatePicker : null,
                 },
                 start_time: {
@@ -196,7 +208,7 @@ const CreateEvent = React.createClass({
                             }
                         },
                     },
-                    // stylesheet: Platform.OS != 'ios' ? stylesheet : null,
+                    hasError: this.state.startError,
                     factory: Platform.OS == 'ios' ? ModalDatePicker : null,
                 },
                 end_time: {
@@ -211,7 +223,7 @@ const CreateEvent = React.createClass({
                         },
                         minuteInterval: 10,
                     },
-                    // stylesheet: Platform.OS != 'ios' ? stylesheet : null,
+                    hasError: this.state.endError,
                     factory: Platform.OS == 'ios' ? ModalDatePicker : null,
                 }
             }

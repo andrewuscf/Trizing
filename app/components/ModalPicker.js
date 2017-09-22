@@ -89,18 +89,16 @@ export class ModalPicker extends t.form.Select {
             const {stylesheet} = locals;
             let touchableStyle = stylesheet.pickerTouchable.normal;
             let pickerValue = stylesheet.pickerValue.normal;
+            let formGroupStyle = stylesheet.formGroup.normal;
+
             if (locals.hasError) {
                 touchableStyle = stylesheet.pickerTouchable.error;
                 pickerValue = stylesheet.pickerValue.error;
-            }
-
-            let formGroupStyle = stylesheet.formGroup.normal;
-            let controlLabelStyle = stylesheet.controlLabel.normal;
-
-            if (locals.hasError) {
                 formGroupStyle = stylesheet.formGroup.error;
-                controlLabelStyle = stylesheet.controlLabel.error;
             }
+
+
+
             // const label = locals.label ? <Text style={controlLabelStyle} onPress={() => {
             //     this.refs.modal.setVisible(true)
             // }}>{locals.label}</Text> : null;

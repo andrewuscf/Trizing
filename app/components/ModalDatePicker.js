@@ -92,17 +92,12 @@ export class ModalDatePicker extends t.form.DatePicker {
             const stylesheet = locals.stylesheet;
             let touchableStyle = stylesheet.dateTouchable.normal;
             let dateValueStyle = stylesheet.dateValue.normal;
+            let formGroupStyle = stylesheet.formGroup.normal;
+
             if (locals.hasError) {
                 touchableStyle = stylesheet.dateTouchable.error;
                 dateValueStyle = stylesheet.dateValue.error;
-            }
-
-            let formGroupStyle = stylesheet.formGroup.normal;
-            let controlLabelStyle = stylesheet.controlLabel.normal;
-
-            if (locals.hasError) {
                 formGroupStyle = stylesheet.formGroup.error;
-                controlLabelStyle = stylesheet.controlLabel.error;
             }
             return (<View style={formGroupStyle}>
                 <TouchableOpacity style={[touchableStyle]}
