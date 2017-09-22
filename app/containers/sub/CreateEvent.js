@@ -163,7 +163,7 @@ const CreateEvent = React.createClass({
         let options = {
             auto: 'none',
             template: template,
-            stylesheet: topStyle,
+            // stylesheet: topStyle,
             fields: {
                 title: {
                     placeholder: 'Event Name',
@@ -181,7 +181,7 @@ const CreateEvent = React.createClass({
                             }
                         },
                     },
-                    stylesheet: Platform.OS != 'ios' ? stylesheet : null,
+                    // stylesheet: Platform.OS != 'ios' ? stylesheet : null,
                     factory: Platform.OS == 'ios' ? ModalDatePicker : null,
                 },
                 start_time: {
@@ -196,7 +196,7 @@ const CreateEvent = React.createClass({
                             }
                         },
                     },
-                    stylesheet: Platform.OS != 'ios' ? stylesheet : null,
+                    // stylesheet: Platform.OS != 'ios' ? stylesheet : null,
                     factory: Platform.OS == 'ios' ? ModalDatePicker : null,
                 },
                 end_time: {
@@ -211,7 +211,7 @@ const CreateEvent = React.createClass({
                         },
                         minuteInterval: 10,
                     },
-                    stylesheet: Platform.OS != 'ios' ? stylesheet : null,
+                    // stylesheet: Platform.OS != 'ios' ? stylesheet : null,
                     factory: Platform.OS == 'ios' ? ModalDatePicker : null,
                 }
             }

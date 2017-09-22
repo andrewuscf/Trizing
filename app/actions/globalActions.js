@@ -57,7 +57,6 @@ export function setDeviceForNotification(token) {
             setHeaders(getState().Global.UserToken), sendData)
             .then((response) => {
                 const jsonReponse = response.json();
-                console.log(jsonReponse)
             }).catch((errorMessage, statusCode) => {
                 console.log(errorMessage);
             });
@@ -66,15 +65,17 @@ export function setDeviceForNotification(token) {
 
 export function removeToken(token) {
     return (dispatch) => {
-        return purgeStoredState({storage: AsyncStorage}).then(() => {
-            if (token) dispatch(removeDeviceNotification(token));
-            AsyncStorage.removeItem('USER_TOKEN');
-            ImageCache.get().clear();
-            LoginManager.logOut();
-            dispatch({type: types.REMOVE_TOKEN});
-        }).catch(() => {
-            console.log('purge of someReducer failed')
-        })
+        if (token) dispatch(removeDeviceNotification(token));
+        AsyncStorage.removeItem('USER_TOKEN').then(() => {
+            dispatch({type: types.REMOVE_TOKEN}).then(() => {
+                return purgeStoredState({storage: AsyncStorage}).then(() => {
+                    ImageCache.get().clear();
+                    LoginManager.logOut();
+                }).catch(() => {
+                    console.log('purge of someReducer failed')
+                });
+            });
+        });
     };
 }
 

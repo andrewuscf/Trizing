@@ -135,26 +135,26 @@ const CreateMacroLog = React.createClass({
 
     renderHeader() {
         let options = {
-            stylesheet: stylesheet,
+            auto: 'placeholders',
             fields: {
                 name: {
                     onSubmitEditing: () => this.form.getComponent('fats').refs.input.focus(),
-                    label: 'Food name',
-                    placeholder: 'required',
+                    // label: 'Food name',
+                    placeholder: 'Food Name',
                     autoCapitalize: 'words',
                     maxLength: 100
                 },
                 fats: {
                     onSubmitEditing: () => this.form.getComponent('carbs').refs.input.focus(),
-                    placeholder: 'required'
+                    placeholder: 'Fats (g)'
                 },
                 carbs: {
                     onSubmitEditing: () => this.form.getComponent('protein').refs.input.focus(),
-                    placeholder: 'required'
+                    placeholder: 'Carbs (g)'
                 },
                 protein: {
                     onSubmitEditing: () => this._onSubmit(),
-                    placeholder: 'required'
+                    placeholder: 'Protein (g)'
                 },
             }
         };
@@ -299,71 +299,6 @@ const styles = StyleSheet.create({
         color: '#00AFA3',
     }
 });
-
-
-const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
-
-stylesheet.formGroup = {
-    ...stylesheet.formGroup,
-    normal: {
-        ...stylesheet.formGroup.normal,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-        borderColor: '#e1e3df',
-        borderBottomWidth: 1,
-    },
-    error: {
-        ...stylesheet.formGroup.error,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-        borderColor: 'red',
-        borderBottomWidth: 1,
-    }
-};
-
-stylesheet.textbox = {
-    ...stylesheet.textbox,
-    normal: {
-        ...stylesheet.textbox.normal,
-        borderWidth: 0,
-        marginBottom: 0,
-        textAlign: 'center'
-    },
-    error: {
-        ...stylesheet.textbox.error,
-        borderWidth: 0,
-        marginBottom: 0,
-        textAlign: 'center'
-    }
-};
-
-stylesheet.textboxView = {
-    ...stylesheet.textboxView,
-    normal: {
-        ...stylesheet.textboxView.normal,
-        borderWidth: 0,
-        borderRadius: 0,
-        borderBottomWidth: 0,
-        flex: 1,
-        backgroundColor: 'transparent',
-    },
-    error: {
-        ...stylesheet.textboxView.error,
-        borderWidth: 0,
-        borderRadius: 0,
-        borderBottomWidth: 0,
-        flex: 1,
-        backgroundColor: 'transparent',
-    }
-};
-
-stylesheet.controlLabel.normal.flex = 1;
-stylesheet.controlLabel.error.flex = 1;
-stylesheet.controlLabel.normal.marginLeft = 5;
-stylesheet.controlLabel.error.marginLeft = 5;
-
 
 const stateToProps = (state) => {
     return {

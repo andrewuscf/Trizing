@@ -109,7 +109,6 @@ const CreateSchedule = React.createClass({
     render: function () {
         const Schedule = this.getType();
         let options = {
-            stylesheet: stylesheet,
             auto: 'placeholders',
             order: ['name', 'description', 'skill_level', 'for_sale', 'cost', 'template'],
             fields: {
@@ -124,15 +123,15 @@ const CreateSchedule = React.createClass({
                     autoCapitalize: 'sentences',
                     multiline: true,
                     stylesheet: {
-                        ...stylesheet,
+                        ...t.form.Form.defaultProps.stylesheet,
                         textbox: {
-                            ...stylesheet.textbox,
+                            ...t.form.Form.defaultProps.stylesheet.textbox,
                             normal: {
-                                ...stylesheet.textbox.normal,
+                                ...t.form.Form.defaultProps.stylesheet.textbox.normal,
                                 height: 100
                             },
                             error: {
-                                ...stylesheet.textbox.error,
+                                ...t.form.Form.defaultProps.stylesheet.textbox.error,
                                 height: 100
                             }
                         }
@@ -142,46 +141,36 @@ const CreateSchedule = React.createClass({
                     label: 'SKILL LEVEL',
                     nullOption: {value: '', text: 'Choose a skill level'},
                     factory: Platform.OS == 'ios' ? ModalPicker : null,
-                    stylesheet: {
-                        ...stylesheet,
-                        textbox: {
-                            ...stylesheet.textbox,
-                            normal: {
-                                ...stylesheet.textbox.normal,
-                                height: 100
-                            },
-                            error: {
-                                ...stylesheet.textbox.error,
-                                height: 100
-                            }
-                        }
-                    }
                 },
                 for_sale: {
                     stylesheet: {
-                        ...stylesheet,
+                        ...t.form.Form.defaultProps.stylesheet,
                         controlLabel: {
-                            ...stylesheet.controlLabel,
+                            ...t.form.Form.defaultProps.stylesheet.controlLabel,
                             normal: {
-                                ...stylesheet.controlLabel.normal,
+                                ...t.form.Form.defaultProps.stylesheet.controlLabel.normal,
                                 flex: 1,
                                 margin: 0,
+                                fontWeight: '400',
+                                paddingLeft: 10
                             },
                             error: {
-                                ...stylesheet.controlLabel.error,
+                                ...t.form.Form.defaultProps.stylesheet.controlLabel.error,
                                 flex: 1,
                                 margin: 0,
+                                fontWeight: '400',
+                                paddingLeft: 10
                             }
                         },
                         formGroup: {
-                            ...stylesheet.formGroup,
+                            ...t.form.Form.defaultProps.stylesheet.formGroup,
                             normal: {
-                                ...stylesheet.formGroup.normal,
+                                ...t.form.Form.defaultProps.stylesheet.formGroup.normal,
                                 flexDirection: 'row',
                                 paddingTop: 10
                             },
                             error: {
-                                ...stylesheet.formGroup.error,
+                                ...t.form.Form.defaultProps.stylesheet.formGroup.error,
                                 flexDirection: 'row',
                             }
                         },
@@ -211,57 +200,6 @@ const CreateSchedule = React.createClass({
 
 CreateSchedule.navigationOptions = {
     title: 'Create Program',
-};
-
-const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
-
-stylesheet.formGroup = {
-    ...stylesheet.formGroup,
-    normal: {
-        ...stylesheet.formGroup.normal,
-        borderColor: '#e1e3df',
-        borderWidth: 1,
-        padding: 5,
-        backgroundColor: 'white',
-        margin: 10,
-        marginBottom: 0,
-        borderRadius: 5,
-    },
-    error: {
-        ...stylesheet.formGroup.error,
-        borderColor: 'red',
-        backgroundColor: 'white',
-        borderWidth: 1,
-        padding: 5,
-        margin: 10,
-        marginBottom: 5,
-        borderRadius: 5,
-    }
-};
-stylesheet.textbox = {
-    ...stylesheet.textbox,
-    normal: {
-        ...stylesheet.textbox.normal,
-        borderWidth: 0,
-        marginBottom: 0,
-    },
-    error: {
-        ...stylesheet.textbox.error,
-        borderWidth: 0,
-        marginBottom: 0,
-    }
-};
-
-stylesheet.pickerValue = {
-    ...stylesheet.pickerValue,
-    normal: {
-        ...stylesheet.pickerValue.normal,
-        color: '#000000'
-    },
-    error: {
-        ...stylesheet.pickerValue.error,
-        color: 'red'
-    }
 };
 
 const styles = StyleSheet.create({

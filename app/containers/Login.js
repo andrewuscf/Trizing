@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     View,
-    Image,
     Text,
     StyleSheet,
     TouchableOpacity,
@@ -15,8 +14,6 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
-import _ from 'lodash';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import * as GlobalActions from '../actions/globalActions';
@@ -35,8 +32,6 @@ const Login = React.createClass({
             keyboard: false,
             busy: false,
             options: {
-                // stylesheet: fullWidthLineInputs,
-                stylesheet: stylesheet,
                 auto: 'placeholders',
                 fields: {
                     username: {
@@ -202,32 +197,6 @@ const styles = StyleSheet.create({
     }
 });
 
-const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
-
-stylesheet.formGroup = {
-    ...stylesheet.formGroup,
-    normal: {
-        ...stylesheet.formGroup.normal,
-        marginRight: 20,
-        marginLeft: 20,
-        borderColor: '#d4d4d4',
-    },
-    error: {
-        ...stylesheet.formGroup.error,
-        marginRight: 20,
-        marginLeft: 20,
-        borderColor: '#d4d4d4',
-    }
-};
-stylesheet.textbox = {
-    ...stylesheet.textbox,
-    normal: {
-        ...stylesheet.textbox.normal,
-    },
-    error: {
-        ...stylesheet.textbox.error,
-    }
-};
 
 const stateToProps = (state) => {
     return state.Global;

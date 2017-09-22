@@ -6,7 +6,6 @@ import {
     Alert,
     Keyboard,
     Dimensions,
-    TouchableOpacity,
     Platform
 } from 'react-native';
 import {bindActionCreators} from 'redux';
@@ -21,7 +20,6 @@ import {
     MenuOption,
     MenuTrigger,
 } from 'react-native-popup-menu';
-import _ from 'lodash';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import moment from 'moment';
 
@@ -32,7 +30,6 @@ import {removeToken} from '../../actions/globalActions';
 import {EMPTY_AVATAR} from '../../assets/constants';
 
 import AvatarImage from '../../components/AvatarImage';
-import FloatingLabel from '../../components/tcomb/FloatingLabel';
 import Loading from '../../components/Loading';
 import {ModalPicker} from '../../components/ModalPicker';
 import {ModalDatePicker} from '../../components/ModalDatePicker';
@@ -232,7 +229,6 @@ const EditProfile = React.createClass({
     render() {
         const user = this.props.RequestUser;
         let options = {
-            stylesheet: stylesheet,
             auto: 'none',
             fields: {
                 type: {
@@ -241,7 +237,6 @@ const EditProfile = React.createClass({
                 },
                 username: {
                     onSubmitEditing: () => this.refs.form.getComponent('first_name').refs.input.focus(),
-                    factory: FloatingLabel,
                     autoCapitalize: 'words'
                 },
                 date_of_birth: {
@@ -267,16 +262,13 @@ const EditProfile = React.createClass({
                 },
                 first_name: {
                     onSubmitEditing: () => this.refs.form.getComponent('last_name').refs.input.focus(),
-                    factory: FloatingLabel,
                     autoCapitalize: 'words'
                 },
                 last_name: {
                     onSubmitEditing: () => this.refs.form.getComponent('phone_number').refs.input.focus(),
-                    factory: FloatingLabel,
                     autoCapitalize: 'words',
                 },
                 phone_number: {
-                    factory: FloatingLabel,
                     onSubmitEditing: () => Keyboard.dismiss(),
                     keyboardType: 'number-pad',
                     transformer: {
@@ -353,15 +345,13 @@ const EditProfile = React.createClass({
                         </Menu>
 
 
-                        <View style={{marginLeft: 20, marginRight: 20}}>
-                            <Form
-                                ref="form"
-                                type={Profile}
-                                options={options}
-                                value={this.state.value}
-                                onChange={this.onChange}
-                            />
-                        </View>
+                        <Form
+                            ref="form"
+                            type={Profile}
+                            options={options}
+                            value={this.state.value}
+                            onChange={this.onChange}
+                        />
 
                         <SubmitButton onPress={this._logOut}
                                       text='LOG OUT'/>
@@ -426,76 +416,6 @@ const ACCOUNT_Type = t.enums({
     2: 'Client'
 });
 
-
-const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
-
-stylesheet.formGroup = {
-    ...stylesheet.formGroup,
-    normal: {
-        ...stylesheet.formGroup.normal,
-        justifyContent: 'center',
-        margin: 0,
-        borderColor: '#e1e3df',
-        borderBottomWidth: 1,
-    },
-    error: {
-        ...stylesheet.formGroup.error,
-        justifyContent: 'center',
-        borderColor: '#a94442',
-        borderBottomWidth: 1,
-    }
-};
-
-stylesheet.textbox = {
-    ...stylesheet.textbox,
-    normal: {
-        ...stylesheet.textbox.normal,
-        borderWidth: 0,
-        margin: 0,
-    },
-    error: {
-        ...stylesheet.textbox.error,
-        borderWidth: 0,
-        marginBottom: 0,
-    }
-};
-
-stylesheet.pickerValue = {
-    ...stylesheet.pickerValue,
-    normal: {
-        ...stylesheet.pickerValue.normal,
-    },
-    error: {
-        ...stylesheet.pickerValue.error,
-        color: '#a94442',
-    }
-};
-
-stylesheet.dateValue = {
-    ...stylesheet.dateValue,
-    normal: {
-        ...stylesheet.dateValue.normal,
-        padding: Platform.OS === 'ios' ? 0 : 7
-    },
-    error: {
-        ...stylesheet.dateValue.error,
-        padding: 0
-    }
-};
-
-stylesheet.dateTouchable = {
-    ...stylesheet.dateTouchable,
-    normal: {
-        ...stylesheet.dateTouchable.normal,
-        borderColor: '#e1e3df',
-        borderBottomWidth: 1,
-    },
-    error: {
-        ...stylesheet.dateTouchable.error,
-        borderColor: '#a94442',
-        borderBottomWidth: 1,
-    }
-};
 
 const stateToProps = (state) => {
     return {

@@ -96,12 +96,20 @@ export class ModalDatePicker extends t.form.DatePicker {
                 touchableStyle = stylesheet.dateTouchable.error;
                 dateValueStyle = stylesheet.dateValue.error;
             }
-            return (<View>
-                <TouchableOpacity style={[styles.button, touchableStyle]}
+
+            let formGroupStyle = stylesheet.formGroup.normal;
+            let controlLabelStyle = stylesheet.controlLabel.normal;
+
+            if (locals.hasError) {
+                formGroupStyle = stylesheet.formGroup.error;
+                controlLabelStyle = stylesheet.controlLabel.error;
+            }
+            return (<View style={formGroupStyle}>
+                <TouchableOpacity style={[touchableStyle]}
                                   onPress={() => {
                                       this.refs.modal.setVisible(true)
                                   }}>
-                    <Text style={[styles.buttonText, dateValueStyle]}>{formattedValue}</Text>
+                    <Text style={[dateValueStyle]}>{formattedValue}</Text>
                 </TouchableOpacity>
                 <StandaloneModal ref="modal">
                     <View style={styles.innerModal}>
@@ -142,22 +150,4 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: '#2e7fb2'
     },
-    button: {
-        backgroundColor: 'white',
-        height: 40,
-        paddingVertical: (Platform.OS === 'ios') ? 7 : 0,
-        paddingHorizontal: 7,
-        marginBottom: 10,
-        borderRadius: 4,
-        borderWidth: 0,
-        justifyContent: 'center'
-    },
-    buttonText: {
-        fontSize: 17,
-        color: '#000000'
-    },
-    customError: {
-        borderColor: '#a94442',
-        borderWidth: 1
-    }
 });

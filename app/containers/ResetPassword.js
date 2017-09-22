@@ -9,7 +9,6 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
-import _ from 'lodash';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import * as GlobalActions from '../actions/globalActions';
@@ -27,8 +26,6 @@ const ResetPassword = React.createClass({
             keyboard: false,
             busy: false,
             options: {
-                // stylesheet: fullWidthLineInputs,
-                stylesheet: stylesheet,
                 auto: 'placeholders',
                 fields: {
                     email: {
@@ -127,33 +124,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#00AFA3'
     },
 });
-
-const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
-
-stylesheet.formGroup = {
-    ...stylesheet.formGroup,
-    normal: {
-        ...stylesheet.formGroup.normal,
-        marginRight: 20,
-        marginLeft: 20,
-        borderColor: '#d4d4d4',
-    },
-    error: {
-        ...stylesheet.formGroup.error,
-        marginRight: 20,
-        marginLeft: 20,
-        borderColor: '#d4d4d4',
-    }
-};
-stylesheet.textbox = {
-    ...stylesheet.textbox,
-    normal: {
-        ...stylesheet.textbox.normal,
-    },
-    error: {
-        ...stylesheet.textbox.error,
-    }
-};
 
 
 const dispatchToProps = (dispatch) => {
