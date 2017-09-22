@@ -176,6 +176,9 @@ const CreateSchedule = React.createClass({
                         },
                     }
                 },
+                cost: {
+                    placeholder: '$ Cost'
+                },
                 template: {
                     nullOption: {value: '', text: 'Use Template'},
                     factory: Platform.OS == 'ios' ? ModalPicker : null,
