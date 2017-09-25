@@ -8,7 +8,6 @@ import Save from './components/NavBarSave';
 // Main Pages
 import Home from './containers/Home';
 import Calendar from './containers/Calendar';
-// import Feed from './containers/Feed';
 import Chat from './containers/Chat';
 import Login from './containers/Login';
 import ResetPassword from './containers/ResetPassword';
@@ -28,7 +27,6 @@ import EditWorkoutDay from './containers/edit/EditWorkoutDay';
 // Detail Pages
 import ChatRoom from './containers/detail/ChatRoom';
 import EventDetail from './containers/detail/EventDetail';
-// import PostDetail from './containers/detail/PostDetail';
 import MacroPlanDetail from './containers/detail/MacroPlanDetail';
 import ScheduleDetail from './containers/detail/ScheduleDetail';
 import WorkoutDetail from './containers/detail/WorkoutDetail';
@@ -48,6 +46,7 @@ import CreateChatRoom from './containers/sub/CreateChatRoom';
 import CreateMacroLog from './containers/sub/CreateMacroLog';
 import CreateQuestionnaire from './containers/sub/CreateQuestionnaire';
 import CreateNote from './containers/sub/CreateNote';
+import CreateWeightLog from './containers/sub/CreateWeightLog';
 
 
 // Profile Pages
@@ -105,7 +104,15 @@ const HomeNav = StackNavigator({
             headerTitle: 'Notifications',
         }
     },
-    CreateMacroLog: {screen: paramsToProps(CreateMacroLog)},
+    CreateMacroLog: {
+        screen: paramsToProps(CreateMacroLog)
+    },
+    CreateWeightLog: {
+      screen: paramsToProps(CreateWeightLog),
+        navigationOptions: {
+            headerTitle: 'Log Weight',
+        }
+    },
 
     EditProfile: {screen: EditProfile},
 
@@ -295,13 +302,6 @@ const MainTabNav = TabNavigator({
             tabBarIcon: (data) => <Icon size={24} color={data.tintColor} name="date-range"/>
         }
     },
-    // Feed: {
-    //     screen: Feed,
-    //     navigationOptions: {
-    //         header: null,
-    //         tabBarIcon: (data) => <Icon size={24} color={data.tintColor} name="list"/>
-    //     }
-    // },
 }, {
     tabBarComponent: props => {
         const {navigation, navigationState} = props

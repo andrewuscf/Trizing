@@ -383,7 +383,7 @@ const Home = React.createClass({
                                     : null
                                 }
 
-                                <SubmitButton onPress={() => console.log('hit')} text="LOG WEIGHT"
+                                <SubmitButton onPress={() => navigate('CreateWeightLog')} text="LOG WEIGHT"
                                               buttonStyle={styles.logButton}/>
 
                             </View>

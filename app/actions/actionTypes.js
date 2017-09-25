@@ -37,6 +37,7 @@ export const NEW_NOTIFICATION = 'NEW_NOTIFICATION';
 export const LOAD_ACTIVE_DATA = 'LOAD_ACTIVE_DATA';
 export const ADD_MACRO_LOG = 'ADD_MACRO_LOG';
 export const LOAD_WEIGHT_LOGS = 'LOAD_WEIGHT_LOGS';
+export const ADD_WEIGHT_LOG = 'ADD_WEIGHT_LOG';
 
 // Profile Constants
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';

@@ -64,6 +64,10 @@ export function getActiveData(date, refresh) {
     }
 }
 
+export function addWeightLog(response) {
+    return {type: types.ADD_WEIGHT_LOG, response}
+}
+
 export function addMacroLog(response) {
     return {type: types.ADD_MACRO_LOG, response}
 }

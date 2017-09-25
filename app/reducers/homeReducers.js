@@ -151,6 +151,26 @@ export default function homeReducers(state = initialState, action = null) {
                 HomeIsLoading: false,
             };
 
+        case constants.ADD_WEIGHT_LOG:
+            const newLogs = state.WeightLogs;
+            newLogs["month"] = {
+                ...newLogs["month"],
+                results: _.uniqBy([action.response, ...state.WeightLogs.month.results], 'id'),
+            };
+            newLogs["three_months"] = {
+                ...newLogs["three_months"],
+                results: _.uniqBy([action.response, ...state.WeightLogs.three_months.results], 'id'),
+            };
+            newLogs["year"] = {
+                ...newLogs["year"],
+                results: _.uniqBy([action.response, ...state.WeightLogs.year.results], 'id')
+            };
+            return {
+                ...state,
+                WeightLogs: newLogs,
+                HomeIsLoading: false,
+            };
+
 
         case constants.REMOVE_TOKEN:
             return initialState;

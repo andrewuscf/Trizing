@@ -261,11 +261,6 @@ const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
     },
-    submitText: {
-        color: 'white',
-        fontSize: getFontSize(22),
-        fontFamily: 'Heebo-Bold',
-    },
     title: {
         fontSize: getFontSize(24),
         fontFamily: 'Heebo-Bold',
@@ -279,14 +274,6 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(20),
         fontFamily: 'Heebo-Bold',
         color: '#00AFA3'
-    },
-    totalBox: {
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginRight: 10,
-        marginLeft: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
     },
     details: {
         flexDirection: 'column',
