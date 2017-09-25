@@ -145,14 +145,28 @@ const ProgramList = React.createClass({
         )
     },
 
+    renderFooter(length) {
+        if (length > 0) return null;
+        return (
+            <View style={styles.empty}>
+                <CustomIcon name="weight" size={getFontSize(60)} color="#b1aea5"/>
+                <Text style={styles.emptyText}>
+                    Oh No! {this.state.tab === 1 ? `You currently have no workout programs.`
+                        : 'There are currently no workout programs for sale.'}
+                </Text>
+            </View>
+        )
+    },
+
 
     render() {
         const isTrainer = isATrainer(this.props.RequestUser.type);
         const {navigate} = this.props.navigation;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        const ProgramsDs = ds.cloneWithRows(this.props.Schedules);
+        const showData = this.state.tab === 1 ? this.props.Schedules : [];
+        const ProgramsDs = ds.cloneWithRows(showData);
         return (
-            <View style={{flex: 1}}>
+            <View style={GlobalStyle.container}>
                 <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                           refreshControl={<RefreshControl refreshing={this.props.Refreshing}
                                                           onRefresh={this._refresh}/>}
@@ -160,6 +174,7 @@ const ProgramList = React.createClass({
                           renderRow={this.renderRow}
                           renderHeader={this.renderHeader}
                           onScroll={this._onScroll}
+                          renderFooter={this.renderFooter.bind(null, showData.length)}
                 />
                 <EditButton isActionButtonVisible={!!(isTrainer && this.state.isActionButtonVisible)}>
                     <ActionButton.Item buttonColor='#3498db' title="New Workout template"
@@ -229,6 +244,19 @@ const styles = StyleSheet.create({
     selectedText: {
         color: '#00AFA3',
     },
+    empty: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 20
+    },
+    emptyText: {
+        fontSize: getFontSize(22),
+        color: '#b1aeb9',
+        textAlign: 'center',
+        paddingTop: 20,
+        fontFamily: 'Heebo-Medium'
+    }
 });
 
 const stateToProps = (state) => {

@@ -48,17 +48,18 @@ import CreateQuestionnaire from './containers/sub/CreateQuestionnaire';
 import CreateNote from './containers/sub/CreateNote';
 import CreateWeightLog from './containers/sub/CreateWeightLog';
 
-
 // Profile Pages
 import Profile from './containers/profile/Profile';
 import MyProfile from './containers/profile/MyProfile';
 import EditProfile from './containers/profile/EditProfile';
 
-
 // Trainer Pages
 import ProgramList from './containers/trainer/ProgramList';
 import SurveyList from './containers/trainer/SurveyList';
 import CreateMacroPlan from './containers/trainer/CreateMacroPlan';
+
+// Payments
+import PayoutInfo from './containers/payment/PayoutInfo';
 
 const paramsToProps = (SomeComponent) => {
 // turns this.props.navigation.state.params into this.params.<x>
@@ -167,7 +168,13 @@ const HomeNav = StackNavigator({
         navigationOptions: {
             headerTitle: 'Add Note',
         }
-    }
+    },
+
+
+    // Payments
+    PayoutInfo: {
+        screen: paramsToProps(PayoutInfo)
+    },
 
 
 }, {

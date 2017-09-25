@@ -11,6 +11,8 @@ import {MenuContext} from 'react-native-popup-menu';
 import {
     setCustomText,
     setCustomTouchableOpacity,
+    setCustomScrollView,
+    setCustomListView
 } from 'react-native-global-props';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
@@ -28,6 +30,12 @@ setCustomText({
 });
 setCustomTouchableOpacity({
     hitSlop: {top: 15, right: 15, left: 15, bottom: 15}
+});
+setCustomListView({
+    contentContainerStyle:{paddingBottom: 50}
+});
+setCustomScrollView({
+    contentContainerStyle:{paddingBottom: 50}
 });
 
 const App = React.createClass({

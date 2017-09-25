@@ -39,6 +39,7 @@ PODS:
   - Protobuf (3.4.0)
   - QBImagePickerController (3.4.0)
   - RSKImageCropper (1.6.1)
+  - Stripe (10.1.0)
 
 DEPENDENCIES:
   - FBSDKCoreKit
@@ -47,6 +48,7 @@ DEPENDENCIES:
   - Firebase/Messaging (= 4.0.0)
   - QBImagePickerController
   - RSKImageCropper
+  - Stripe (~> 10.1.0)
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
@@ -62,7 +64,8 @@ SPEC CHECKSUMS:
   Protobuf: 03eef2ee0b674770735cf79d9c4d3659cf6908e8
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   RSKImageCropper: 0df8c99e77a8ea7ca7a8b83ef468556f31584254
+  Stripe: 1c7aa951a075cced500a919d92b687b35d410705
 
-PODFILE CHECKSUM: 3d10d0cfd09debce8311ca9cb06a6d88bf78b20c
+PODFILE CHECKSUM: 36330abf2b0c8cc25dce987c4ce38e208ebfb56b
 
 COCOAPODS: 1.1.1

@@ -414,7 +414,7 @@ const Home = React.createClass({
                                                             onRefresh={this._refresh}/>}
                             onScroll={this._onScroll}
                             scrollEventThrottle={15}
-                            style={styles.scrollView} contentContainerStyle={styles.contentContainerStyle}>
+                            style={styles.scrollView}>
 
                     <View style={[styles.todayTitle, {justifyContent: 'space-between'}]}>
                         <TouchableOpacity onPress={this.subtractDay} style={styles.arrowStyle}>
@@ -465,9 +465,6 @@ const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
         flexDirection: 'column',
-    },
-    contentContainerStyle: {
-        paddingBottom: 50,
     },
     row: {
         flexDirection: 'row',

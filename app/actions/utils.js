@@ -10,6 +10,15 @@ export const API_ENDPOINT = `${SITE}api/v1/`;
 import {REFRESHING} from './actionTypes';
 
 
+export function stripeKey() {
+    if (SITE.indexOf('localhost') !== -1 || SITE.indexOf('staging') !== -1) {
+        return 'pk_test_iorOuqkaw8Dd09Q6awDC7wUo';
+    } else {
+        return 'pk_live_kZftaa4bqEWd5s2qQ9MK2ndD';
+    }
+}
+
+
 export function fetchData(method, body = null, token = null, headers = null, getData = null) {
     let data = {
         method: method,

@@ -120,7 +120,7 @@ const Calendar = React.createClass({
                             refreshControl={<RefreshControl refreshing={this.props.Refreshing}
                                                             onRefresh={this._refresh}/>}>
                     <View style={styles.noRequests}>
-                        <MaterialIcon name="today" size={60} color='#b1aea5'/>
+                        <MaterialIcon name="today" size={getFontSize(60)} color='#b1aea5'/>
                         <Text style={styles.noRequestTitle}>
                             No events. Create one.
                         </Text>
