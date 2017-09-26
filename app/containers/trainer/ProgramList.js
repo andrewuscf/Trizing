@@ -13,24 +13,28 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 import * as GlobalActions from '../../actions/globalActions';
 import GlobalStyle from '../globalStyle';
-import {getFontSize, isATrainer} from '../../actions/utils';
+import {fetchData, API_ENDPOINT, checkStatus, getFontSize, setHeaders, isATrainer} from '../../actions/utils';
 
 import CustomIcon from '../../components/CustomIcon';
 import EditButton from '../../components/EditButton';
 
 const ProgramList = React.createClass({
     propTypes: {
-        Refreshing: React.PropTypes.bool.isRequired,
         tab: React.PropTypes.number
     },
 
     getInitialState() {
         return {
             tab: this.props.tab ? this.props.tab : 1,
-            isActionButtonVisible: true
+            isActionButtonVisible: true,
+            forSale: [],
+            forSaleNext: null,
+            loading: false,
+            refresh: false
         }
     },
 
@@ -58,7 +62,6 @@ const ProgramList = React.createClass({
         this._listViewOffset = currentOffset;
     },
 
-
     getNeeded(refresh = false) {
         if (isATrainer(this.props.RequestUser.type)) {
             this.props.getSchedules('?template=true', refresh);
@@ -67,8 +70,34 @@ const ProgramList = React.createClass({
         }
     },
 
+    getForSale(refresh = false) {
+        this.setState({loading: true});
+        if (refresh) {
+            this.setState({refresh: true});
+        }
+
+        const url = `${API_ENDPOINT}training/program/sale/`;
+        RNFetchBlob.fetch('GET', url, setHeaders(this.props.UserToken))
+            .then((res) => {
+            let json = res.json();
+            this.setState({
+                forSale: json.results,
+                forSaleNext: json.next,
+                loading: false,
+                refresh: false
+            });
+
+        }).catch((errorMessage, statusCode) => {
+            this.setState({loading: false});
+            console.log(errorMessage)
+        });
+    },
+
     _onTabPress(tab) {
         if (tab !== this.state.tab) this.setState({tab: tab});
+        if (tab === 2 && !this.state.forSale.length) {
+            this.getForSale();
+        }
     },
 
     _refresh() {
@@ -168,7 +197,7 @@ const ProgramList = React.createClass({
         return (
             <View style={GlobalStyle.container}>
                 <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                          refreshControl={<RefreshControl refreshing={this.props.Refreshing}
+                          refreshControl={<RefreshControl refreshing={this.state.refresh}
                                                           onRefresh={this._refresh}/>}
                           enableEmptySections={true} dataSource={ProgramsDs} showsVerticalScrollIndicator={false}
                           renderRow={this.renderRow}
@@ -263,7 +292,7 @@ const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
         Schedules: state.Global.Schedules,
-        Refreshing: state.Global.Refreshing,
+        UserToken: state.Global.UserToken
     };
 };
 
