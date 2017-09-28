@@ -5,24 +5,13 @@ target 'SimpleCoach' do
   use_frameworks!
 
   # Pods for SimpleCoach
-  pod 'Stripe', '~> 10.1.0'
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
   pod 'Firebase/Messaging', '4.0.0'
-  pod 'RSKImageCropper'
-  pod 'QBImagePickerController'
+  inherit! :search_paths
 
   target 'SimpleCoachTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end
-
-target 'SimpleCoach-tvOS' do
-
-  target 'SimpleCoach-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

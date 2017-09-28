@@ -10,7 +10,7 @@ import {
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import t from 'tcomb-form-native';
-import stripe from 'tipsi-stripe';
+// import stripe from 'tipsi-stripe';
 
 import {getFontSize, stripeKey} from '../../actions/utils';
 import GlobalStyle from '../../containers/globalStyle';
@@ -24,7 +24,7 @@ const Form = t.form.Form;
 
 const state_list = t.enums(STATES);
 
-stripe.init({publishableKey: stripeKey()});
+// stripe.init({publishableKey: stripeKey()});
 
 function template(locals) {
     // in locals.inputs you find all the rendered fields
@@ -161,36 +161,36 @@ const GroupPaymentInfo = React.createClass({
         }
     },
     async handleBankData(data) {
-        try {
-            // this.asyncActions(true);
-            const token = await stripe.createTokenWithBankAccount({
-                countryCode: 'US',
-                currency: 'usd',
-                accountNumber: data.account_number.toString(),
-                routingNumber: data.routing_number.toString(),
-                accountHolderType: 'individual',
-                accountHolderName: `${data.first_name} ${data.last_name}`
-            });
-            const JSONDATA = {
-                stripeToken: token.tokenId,
-                ...data,
-                account_number: data.account_number.substr(data.account_number.length - 4),
-                routing_number: null
-            };
-            // this.props.actions.updatePaymentInfo(JSONDATA, this.asyncActions);
-        } catch (error) {
-            console.log('Error:', error);
-            Alert.alert(
-                error.message,
-                '',
-                [
-                    {text: 'OK'}
-                ]
-            );
-            this.setState({
-                loading: false,
-            })
-        }
+        // try {
+        //     // this.asyncActions(true);
+        //     const token = await stripe.createTokenWithBankAccount({
+        //         countryCode: 'US',
+        //         currency: 'usd',
+        //         accountNumber: data.account_number.toString(),
+        //         routingNumber: data.routing_number.toString(),
+        //         accountHolderType: 'individual',
+        //         accountHolderName: `${data.first_name} ${data.last_name}`
+        //     });
+        //     const JSONDATA = {
+        //         stripeToken: token.tokenId,
+        //         ...data,
+        //         account_number: data.account_number.substr(data.account_number.length - 4),
+        //         routing_number: null
+        //     };
+        //     // this.props.actions.updatePaymentInfo(JSONDATA, this.asyncActions);
+        // } catch (error) {
+        //     console.log('Error:', error);
+        //     Alert.alert(
+        //         error.message,
+        //         '',
+        //         [
+        //             {text: 'OK'}
+        //         ]
+        //     );
+        //     this.setState({
+        //         loading: false,
+        //     })
+        // }
     },
 
     _onSubmit() {
