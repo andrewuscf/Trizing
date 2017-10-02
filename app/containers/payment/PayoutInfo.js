@@ -30,14 +30,16 @@ function template(locals) {
     // in locals.inputs you find all the rendered fields
     return (
         <View>
-            <Text style={styles.inputLabel}>Account Information</Text>
-            {locals.inputs.routing_number}
-            {locals.inputs.account_number}
+            <Text style={styles.inputLabel}>Debit Card (For Payments)</Text>
+            {locals.inputs.number}
+            {locals.inputs.cvc}
+            {locals.inputs.expMonth}
+            {locals.inputs.expYear}
             <Text style={styles.inputLabel}>Fraud Prevention</Text>
             {locals.inputs.first_name}
             {locals.inputs.last_name}
             {locals.inputs.ssn_last_4}
-            <Text style={styles.inputLabel}>Address</Text>
+            <Text style={styles.inputLabel}>Billing Address</Text>
             {locals.inputs.address_line_1}
             {locals.inputs.address_line_2}
             {locals.inputs.city}
@@ -48,7 +50,7 @@ function template(locals) {
     );
 }
 
-const GroupPaymentInfo = React.createClass({
+const PayoutInfo = React.createClass({
     propTypes: {
         paymentInfo: React.PropTypes.object.isRequired,
         onPaymentInfoUpdate: React.PropTypes.func.isRequired
@@ -221,8 +223,10 @@ const GroupPaymentInfo = React.createClass({
 
     render() {
         let dataStruct = {
-            account_number: t.maybe(t.String),
-            routing_number: t.maybe(t.String),
+            number: t.String,
+            cvc: t.String,
+            expMonth: t.Number,
+            expYear: t.Number,
             address_line_1: t.String,
             address_line_2: t.maybe(t.String),
             city: t.String,
@@ -288,6 +292,6 @@ const dispatchToProps = (dispatch) => {
     return {}
 };
 
-export default connect(stateToProps, dispatchToProps)(GroupPaymentInfo);
+export default connect(stateToProps, dispatchToProps)(PayoutInfo);
 
 

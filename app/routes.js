@@ -60,6 +60,7 @@ import CreateMacroPlan from './containers/trainer/CreateMacroPlan';
 
 // Payments
 import PayoutInfo from './containers/payment/PayoutInfo';
+import Payment from './containers/payment/Payment';
 
 const paramsToProps = (SomeComponent) => {
 // turns this.props.navigation.state.params into this.params.<x>
@@ -175,6 +176,9 @@ const HomeNav = StackNavigator({
     PayoutInfo: {
         screen: paramsToProps(PayoutInfo)
     },
+    Payment: {
+        screen: paramsToProps(Payment)
+    }
 
 
 }, {

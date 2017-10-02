@@ -50,9 +50,9 @@ const Home = React.createClass({
     },
 
     componentDidMount() {
-        if (this.props.RequestUser.type === 1 && !this.props.Clients.length) {
+        if (this.props.RequestUser.type === 1) {
             this.props.actions.getClients(true);
-        } else if (this.props.RequestUser.type === 2 && !this.props.ActiveData.length) {
+        } else if (this.props.RequestUser.type === 2) {
             this.props.actions.getWeightLogs(this.state.weightTimeFrame, true);
             this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), true);
         }

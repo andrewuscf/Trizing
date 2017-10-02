@@ -80,6 +80,7 @@ const MyProfile = React.createClass({
 
     render() {
         const user = this.props.RequestUser;
+        const {navigate} = this.props.navigation;
         if (user) {
             let userImage = user.profile.avatar;
             if (user.profile.thumbnail)
@@ -96,23 +97,10 @@ const MyProfile = React.createClass({
                             </Text>
                         </View>
                     </View>
-                    {/*<View style={[styles.tabbarView, GlobalStyle.simpleBottomBorder]}>*/}
-                        {/*<TouchableOpacity style={[styles.tabView]}*/}
-                                          {/*onPress={()=>console.log('redirect')}>*/}
-                            {/*<CustomIcon name="food" size={getFontSize(30)}*/}
-                                        {/*color='black'/>*/}
-                        {/*</TouchableOpacity>*/}
-                        {/*<TouchableOpacity style={[styles.tabView]}*/}
-                                          {/*onPress={()=>console.log('redirect')}>*/}
-                            {/*<CustomIcon name="weight" size={getFontSize(30)}*/}
-                                        {/*color='black'/>*/}
-                        {/*</TouchableOpacity>*/}
-                        {/*<TouchableOpacity style={[styles.tabView]}*/}
-                                          {/*onPress={()=>console.log('redirect')}>*/}
-                            {/*<CustomIcon name="pie-chart" size={getFontSize(20)}*/}
-                                        {/*color='black'/>*/}
-                        {/*</TouchableOpacity>*/}
-                    {/*</View>*/}
+                    <TouchableOpacity activeOpacity={1} style={styles.link} onPress={()=> navigate('Payment')}>
+                        <Text style={styles.basicText}>Payment</Text>
+                        <MaterialIcon name="keyboard-arrow-right" size={getFontSize(26)} color="#7f7f7f"/>
+                    </TouchableOpacity>
                 </ScrollView>
             )
         }
@@ -140,34 +128,21 @@ const styles = StyleSheet.create({
         fontFamily: 'Heebo-Bold',
         fontSize: getFontSize(22)
     },
-    topRightNav: {
-        right: 0,
-        position: 'absolute',
-        padding: 15,
-        width: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
+    basicText: {
+        // fontSize: 13,
+        // fontFamily: 'Gotham-Medium',
+        color: '#3D3C3A'
     },
-    tabbarView: {
-        height: 50,
-        opacity: 1,
+    link: {
+        height: 38,
+        borderTopWidth: 1,
+        borderColor: '#F5F5F5',
+        paddingLeft: 20,
+        paddingRight: 12,
+        justifyContent: 'space-between',
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white'
-    },
-    tabView: {
-        flex: 1,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    selectedTab: {
-        borderBottomWidth: 2,
-        borderBottomColor: '#1352e2',
-        marginLeft: 5,
-        marginRight: 5,
-    },
+        alignItems: 'center'
+    }
 });
 
 const stateToProps = (state) => {
