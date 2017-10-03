@@ -37,12 +37,14 @@ PODS:
   - GoogleToolboxForMac/NSData+zlib (2.1.1):
     - GoogleToolboxForMac/Defines (= 2.1.1)
   - Protobuf (3.4.0)
+  - Stripe (10.1.0)
 
 DEPENDENCIES:
   - FBSDKCoreKit
   - FBSDKLoginKit
   - FBSDKShareKit
   - Firebase/Messaging (= 4.0.0)
+  - Stripe (~> 10.1.0)
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
@@ -56,7 +58,8 @@ SPEC CHECKSUMS:
   FirebaseMessaging: 227406c05b0dc9290702d2e9f18ab5528f0c2cf2
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   Protobuf: 03eef2ee0b674770735cf79d9c4d3659cf6908e8
+  Stripe: 1c7aa951a075cced500a919d92b687b35d410705
 
-PODFILE CHECKSUM: a4080eeb45a03b2be4aaa713622ba996207ed9cb
+PODFILE CHECKSUM: ee9a7d8c3d309482c9c0ef3ed4727eb88687b5c8
 
 COCOAPODS: 1.3.1

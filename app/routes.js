@@ -177,7 +177,10 @@ const HomeNav = StackNavigator({
         screen: paramsToProps(PayoutInfo)
     },
     Payment: {
-        screen: paramsToProps(Payment)
+        screen: paramsToProps(Payment),
+        navigationOptions: {
+            headerTitle: 'Payment',
+        }
     }
 
 

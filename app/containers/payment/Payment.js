@@ -5,17 +5,22 @@ import {
     StyleSheet,
     Platform,
     ListView,
-    RefreshControl
+    RefreshControl,
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 import {connect} from 'react-redux';
-// import stripe from 'tipsi-stripe';
+import stripe from 'tipsi-stripe';
+import FontIcon from 'react-native-vector-icons/FontAwesome';
 
 import GlobalStyle from '../globalStyle';
-import {fetchData, API_ENDPOINT, checkStatus} from '../../actions/utils';
+import {fetchData, API_ENDPOINT, checkStatus, stripeKey, getFontSize} from '../../actions/utils';
 
 import CustomStatus from '../../components/CustomStatus';
 import SubmitButton from '../../components/SubmitButton';
 
+
+stripe.init({publishableKey: stripeKey()});
 
 const Payment = React.createClass({
     propTypes: {
@@ -39,7 +44,7 @@ const Payment = React.createClass({
             .then(checkStatus)
             .then((responseJson) => {
                 this.setState({cards: responseJson, value: null, loading: false});
-            }).catch((error)=>console.log(error))
+            }).catch((error) => console.log(error))
     },
 
     async handleCardPayPress(data) {
@@ -51,18 +56,21 @@ const Payment = React.createClass({
                 ...data,
                 name: `${this.props.RequestUser.profile.first_name} ${this.props.RequestUser.profile.last_name}`,
             };
-            // const token = await stripe.createTokenWithCard(params);
-            // const API_DATA = JSON.stringify({stripeToken: token.tokenId});
-            // fetch(`${API_ENDPOINT}user/cards/`, fetchData('POST', API_DATA, this.props.UserToken))
-            //     .then(checkStatus)
-            //     .then((responseJson) => {
-            //         if (responseJson.last4) {
-            //             this.setState({cards: [responseJson, ...this.state.cards], value: null, loading: false});
-            //             if (this.props.addCard) {
-            //                 this.props.addCard(responseJson);
-            //             }
-            //         }
-            //     })
+            const token = await stripe.paymentRequestWithCardForm({
+                requiredBillingAddressFields: 'full',
+                smsAutofillDisabled: true
+            });
+            const API_DATA = JSON.stringify({stripeToken: token.tokenId});
+            fetch(`${API_ENDPOINT}user/cards/`, fetchData('POST', API_DATA, this.props.UserToken))
+                .then(checkStatus)
+                .then((responseJson) => {
+                    if (responseJson.last4) {
+                        this.setState({cards: [responseJson, ...this.state.cards], value: null, loading: false});
+                        if (this.props.addCard) {
+                            this.props.addCard(responseJson);
+                        }
+                    }
+                })
         } catch (error) {
             console.log('Error:', error.message);
             this.setState({
@@ -88,22 +96,21 @@ const Payment = React.createClass({
         this.props.navigation.goBack();
     },
 
-    onChange(value) {
-        this.setState({value: value});
-    },
-
-
     renderFooter() {
         return (
-                            <SubmitButton ref="post_button" onPress={this.handleCardPayPress} busy={this.state.loading}
-                                          text="Save"/>
+            <TouchableOpacity style={[styles.cardBox,{borderBottomWidth: 1}]} onPress={this.handleCardPayPress}>
+                <Text style={GlobalStyle.lightBlueText}>ADD CARD</Text>
+            </TouchableOpacity>
         )
     },
 
     renderRow(card) {
+        console.log(card)
         return (
             <View style={styles.cardBox}>
-                <Text style={styles.cardBoxLabel}>{`Card ending in ${card.last4}`}</Text>
+                <FontIcon name={`cc-${card.brand.toLowerCase()}`} size={getFontSize(17)}
+                          style={GlobalStyle.lightBlueText}/>
+                <Text style={styles.cardBoxLabel}>*****{card.last4}</Text>
             </View>
         )
     },
@@ -144,9 +151,10 @@ const styles = StyleSheet.create({
     },
     cardBox: {
         borderColor: '#e1e3df',
-        borderRadius: 5,
-        borderWidth: .5,
-        margin: 10,
+        borderWidth: 1,
+        borderBottomWidth: 0,
+        marginLeft: 10,
+        marginRight: 10,
         backgroundColor: 'white',
         flexDirection: 'row',
         padding: 20,
@@ -154,8 +162,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     cardBoxLabel: {
-        fontFamily: 'Gotham-Medium',
-        fontSize: 13,
         color: '#7f7f7f'
     },
 });
