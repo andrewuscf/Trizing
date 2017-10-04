@@ -14,7 +14,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import * as ProfileActions from '../../actions/profileActions';
 import {getUser} from '../../actions/globalActions';
 
-import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../actions/utils';
+import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize, isATrainer} from '../../actions/utils';
 import GlobalStyle from '../globalStyle';
 
 
@@ -80,6 +80,7 @@ const MyProfile = React.createClass({
 
     render() {
         const user = this.props.RequestUser;
+        const isTrainer = isATrainer(user.type);
         const {navigate} = this.props.navigation;
         if (user) {
             let userImage = user.profile.avatar;
@@ -89,7 +90,7 @@ const MyProfile = React.createClass({
             return (
                 <ScrollView style={GlobalStyle.container} ref="profile_list"
                             showsVerticalScrollIndicator={false}>
-                    <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
+                    <View style={[styles.userDetail]}>
                         <AvatarImage style={styles.avatar} image={userImage}/>
                         <View>
                             <Text style={styles.name}>
@@ -101,6 +102,13 @@ const MyProfile = React.createClass({
                         <Text style={styles.basicText}>Payment</Text>
                         <MaterialIcon name="keyboard-arrow-right" size={getFontSize(26)} color="#7f7f7f"/>
                     </TouchableOpacity>
+                    {isTrainer ?
+                        <TouchableOpacity activeOpacity={1} style={styles.link} onPress={()=> navigate('Earnings')}>
+                            <Text style={styles.basicText}>Earnings</Text>
+                            <MaterialIcon name="keyboard-arrow-right" size={getFontSize(26)} color="#7f7f7f"/>
+                        </TouchableOpacity>
+                        : null
+                    }
                 </ScrollView>
             )
         }

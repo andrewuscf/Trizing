@@ -12,21 +12,17 @@ import {
 import {connect} from 'react-redux';
 import stripe from 'tipsi-stripe';
 import FontIcon from 'react-native-vector-icons/FontAwesome';
+import _ from 'lodash';
 
 import GlobalStyle from '../globalStyle';
 import {fetchData, API_ENDPOINT, checkStatus, stripeKey, getFontSize} from '../../actions/utils';
 
 import CustomStatus from '../../components/CustomStatus';
-import SubmitButton from '../../components/SubmitButton';
 
 
 stripe.init({publishableKey: stripeKey()});
 
 const Payment = React.createClass({
-    propTypes: {
-        addCard: React.PropTypes.func,
-    },
-
     getInitialState() {
         return {
             loading: true,
@@ -39,11 +35,13 @@ const Payment = React.createClass({
         this.getCards();
     },
 
-    getCards() {
+    getCards(refresh = false) {
+        if (refresh) this.setState({refresh: true});
+
         fetch(`${API_ENDPOINT}user/cards/`, fetchData('GET', null, this.props.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
-                this.setState({cards: responseJson, value: null, loading: false});
+                this.setState({cards: responseJson, value: null, loading: false, refresh: false});
             }).catch((error) => console.log(error))
     },
 
@@ -52,10 +50,6 @@ const Payment = React.createClass({
             this.setState({
                 loading: true,
             });
-            const params = {
-                ...data,
-                name: `${this.props.RequestUser.profile.first_name} ${this.props.RequestUser.profile.last_name}`,
-            };
             const token = await stripe.paymentRequestWithCardForm({
                 requiredBillingAddressFields: 'full',
                 smsAutofillDisabled: true
@@ -79,17 +73,30 @@ const Payment = React.createClass({
         }
     },
 
-    deleteCard() {
-        this.setState({loadiPaymentng: true});
-        if (this.state.cards[0]) {
-            fetch(`${API_ENDPOINT}user/card/${this.state.cards[0].stripe_id}/`, fetchData('DELETE', null, this.props.UserToken))
-                .then(checkStatus)
-                .then((responseJson) => {
-                    // if (responseJson.deleted) {
-                    //     this.setState({cards: [], loading: false})
-                    // }
-                })
-        }
+    deleteCard(card) {
+        Alert.alert(
+            `Delete card ending in ${card.last4}`,
+            `Are you sure you want delete this card?`,
+            [
+                {text: 'Cancel', style: 'cancel'},
+                {
+                    text: 'Delete',
+                    onPress: () => {
+                        fetch(`${API_ENDPOINT}user/card/${card.stripe_id}/`, fetchData('DELETE', null, this.props.UserToken))
+                            .then(checkStatus)
+                            .then((responseJson) => {
+                                const index = _.findIndex(this.state.cards, {stripe_id: card.stripe_id});
+                                if (responseJson.deleted) {
+                                    this.setState({
+                                        cards: this.state.cards.slice(0, index).concat(this.state.cards.slice(index + 1)),
+                                        loading: false
+                                    })
+                                }
+                            })
+                    }
+                },
+            ]
+        );
     },
 
     back() {
@@ -98,27 +105,21 @@ const Payment = React.createClass({
 
     renderFooter() {
         return (
-            <TouchableOpacity style={[styles.cardBox,{borderBottomWidth: 1}]} onPress={this.handleCardPayPress}>
+            <TouchableOpacity style={[styles.cardBox, {borderBottomWidth: 1}]} onPress={this.handleCardPayPress}>
                 <Text style={GlobalStyle.lightBlueText}>ADD CARD</Text>
             </TouchableOpacity>
         )
     },
 
     renderRow(card) {
-        console.log(card)
         return (
-            <View style={styles.cardBox}>
+            <TouchableOpacity style={styles.cardBox} onPress={this.deleteCard.bind(null, card)}>
                 <FontIcon name={`cc-${card.brand.toLowerCase()}`} size={getFontSize(17)}
                           style={GlobalStyle.lightBlueText}/>
                 <Text style={styles.cardBoxLabel}>*****{card.last4}</Text>
-            </View>
+            </TouchableOpacity>
         )
     },
-
-    _refresh() {
-
-    },
-
 
     render() {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -128,7 +129,7 @@ const Payment = React.createClass({
                 <CustomStatus/>
                 <ListView removeClippedSubviews={(Platform.OS !== 'ios')}
                           refreshControl={<RefreshControl refreshing={this.state.refresh}
-                                                          onRefresh={this._refresh}/>}
+                                                          onRefresh={() => this.getCards(true)}/>}
                           enableEmptySections={true}
                           dataSource={dataSource}
                           showsVerticalScrollIndicator={false}

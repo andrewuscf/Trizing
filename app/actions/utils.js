@@ -57,15 +57,17 @@ export function setHeaders(token = null, headers = null) {
 }
 
 export function checkStatus(response) {
-    if (response.status === 204) {
+    const status = response.respInfo ? response.respInfo.status : response.status;
+    if (status === 204) {
         return {deleted: true}
-    } else if (response.status >= 200 && response.status < 300) {
+    } else if (status >= 200 && status < 300) {
         return response.json();
     } else {
-        console.log(response)
-        console.log(response.json());
-        let error = new Error(response.statusText ? response.statusText : null);
+        const json = response.json();
+        let error = new Error(json.message ? json.message : null);
         error.response = response;
+        error.status = status;
+        error.message = json.message ? json.message : null;
         throw error;
     }
 }

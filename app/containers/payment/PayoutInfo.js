@@ -58,7 +58,7 @@ const PayoutInfo = React.createClass({
 
     getInitialState() {
         let state = null;
-        if (this.props.paymentInfo.state && _.has(STATES, this.props.paymentInfo.state.toUpperCase())) {
+        if (this.props.paymentInfo && this.props.paymentInfo.state && _.has(STATES, this.props.paymentInfo.state.toUpperCase())) {
             state = this.props.paymentInfo.state.toUpperCase()
         }
         return {
