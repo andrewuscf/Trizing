@@ -228,7 +228,6 @@ const PayoutInfo = React.createClass({
             };
             const token = await stripe.createTokenWithCard(params);
             const API_DATA = JSON.stringify({stripeToken: token.tokenId, ...data});
-            console.log(API_DATA)
             fetch(`${API_ENDPOINT}user/payout/info/`, fetchData('PATCH', API_DATA, this.props.UserToken))
                 .then(checkStatus)
                 .then((responseJson) => {

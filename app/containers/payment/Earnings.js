@@ -102,7 +102,6 @@ const Earnings = React.createClass({
     },
 
     renderHeader() {
-        console.log(this.state.payoutInfo)
         let content = (
             <View style={[styles.subNav]}>
                 <MaterialIcon name="search" size={20} color='#797979'/>
@@ -134,22 +133,23 @@ const Earnings = React.createClass({
         }
         return (
             <View>
-                <View style={[styles.topSection, {
-                    borderTopLeftRadius: 10,
-                    borderTopRightRadius: 10,
-                    marginBottom: 0,
-                    flexWrap: 'wrap'
-                }]}>
-                    <Text style={[styles.totalText, GlobalStyle.lightBlueText]}>$</Text>
-                    {this.state.payoutInfo ?
+                {this.state.payoutInfo ?
+                    <View style={[styles.topSection, {
+                        borderTopLeftRadius: 10,
+                        borderTopRightRadius: 10,
+                        marginBottom: 0,
+                        flexWrap: 'wrap'
+                    }]}>
+                        <Text style={[styles.totalText, GlobalStyle.lightBlueText]}>{this.state.payoutInfo.payout_total ? `$${this.state.payoutInfo.payout_total}` : '$0.00'}</Text>
                         <Text style={[styles.totalReg]} onPress={() => this.props.navigation.navigate('PayoutInfo', {
                             onPaymentInfoUpdate: this.onPaymentInfoUpdate,
-                            payoutInfo: this.state.payoutInfo})}>
+                            payoutInfo: this.state.payoutInfo
+                        })}>
                             Paid out to: {this.state.payoutInfo.first_name} {this.state.payoutInfo.last_name}
                         </Text>
-                        : null
-                    }
-                </View>
+                    </View>
+                    : null
+                }
                 {content}
             </View>
         )
