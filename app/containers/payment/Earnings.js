@@ -117,7 +117,7 @@ const Earnings = React.createClass({
                     placeholder="Search"
                 />
             </View>
-        )
+        );
         if (!this.state.payoutInfo && !this.state.loading) {
             content = (
                 <View style={{flexWrap: 'wrap'}}>
@@ -129,7 +129,7 @@ const Earnings = React.createClass({
                         <Text style={[styles.totalReg, GlobalStyle.lightBlueText]}>Setup payout</Text>
                     </TouchableOpacity>
                 </View>
-            )
+            );
         }
         return (
             <View>

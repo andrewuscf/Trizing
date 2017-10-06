@@ -107,12 +107,8 @@ const EditProfile = React.createClass({
                 }
             })
         }
-        if (this.props.RequestUser && prevProps.RequestUser
-            && prevProps.RequestUser.profile.completed !== this.props.RequestUser.profile.completed) {
+        if (user && prevProps.RequestUser && prevProps.RequestUser.profile.completed !== user.profile.completed) {
             this.props.navigation.dispatch(resetNav('Main'));
-        }
-        if (!this.props.RequestUser && prevProps.RequestUser && (this.props.RequestUser !== prevProps.RequestUser)) {
-            this.props.navigation.dispatch(resetNav('SplashScreen'));
         }
     },
 
@@ -216,6 +212,7 @@ const EditProfile = React.createClass({
                 {text: 'Cancel', style: 'cancel'},
                 {
                     text: 'Yes', onPress: () => {
+                    this.props.navigation.dispatch(resetNav('Login'));
                     if (FCM) FCM.setBadgeNumber(0);
                     FCM.getFCMToken().then(token => {
                         self.props.removeToken(token);

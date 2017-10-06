@@ -65,17 +65,17 @@ export function setDeviceForNotification(token) {
 
 export function removeToken(token) {
     return (dispatch) => {
-        if (token) dispatch(removeDeviceNotification(token));
-        AsyncStorage.removeItem('USER_TOKEN').then(() => {
-            dispatch({type: types.REMOVE_TOKEN}).then(() => {
-                return purgeStoredState({storage: AsyncStorage}).then(() => {
-                    ImageCache.get().clear();
-                    LoginManager.logOut();
-                }).catch(() => {
-                    console.log('purge of someReducer failed')
-                });
-            });
-        });
+        return purgeStoredState({storage: AsyncStorage}).then(() => {
+            dispatch({type: types.REMOVE_TOKEN});
+            AsyncStorage.removeItem('USER_TOKEN');
+            ImageCache.get().clear();
+            LoginManager.logOut();
+            if (token) {
+                dispatch(removeDeviceNotification(token));
+            }
+        }).catch(() => {
+            console.log('purge of someReducer failed')
+        })
     };
 }
 
@@ -119,8 +119,8 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
             if (responseJson.detail)
                 return dispatch(removeToken());
             return dispatch({type: types.LOAD_REQUEST_USER, request_user: responseJson});
-        }).catch((errorMessage, statusCode) => {
-            console.log(statusCode);
+        }).catch((errorMessage) => {
+            console.log(errorMessage);
             return dispatch(removeToken());
         });
     }
