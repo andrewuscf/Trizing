@@ -6,7 +6,8 @@ import {
     Platform,
     RefreshControl,
     Text,
-    TextInput
+    TextInput,
+    TouchableOpacity
 } from 'react-native';
 import {connect} from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -43,8 +44,7 @@ const Earnings = React.createClass({
             .then((responseJson) => {
                 this.setState({payoutInfo: responseJson});
             }).catch((errorMessage) => {
-            console.log(errorMessage.status)
-            this.setState({payoutInfo: {}});
+            this.setState({loading: false});
         });
     },
 
@@ -102,26 +102,55 @@ const Earnings = React.createClass({
     },
 
     renderHeader() {
+        console.log(this.state.payoutInfo)
+        let content = (
+            <View style={[styles.subNav]}>
+                <MaterialIcon name="search" size={20} color='#797979'/>
+                <TextInput
+                    ref="searchinput"
+                    style={[styles.filterInput]}
+                    underlineColorAndroid='transparent'
+                    autoCapitalize='none'
+                    autoCorrect={false}
+                    placeholderTextColor='#a7a59f'
+                    onChangeText={this.onChangeText}
+                    value={this.state.searchText}
+                    placeholder="Search"
+                />
+            </View>
+        )
+        if (!this.state.payoutInfo && !this.state.loading) {
+            content = (
+                <View style={{flexWrap: 'wrap'}}>
+                    <Text style={[styles.totalReg, {textAlign: 'center'}]}>
+                        In order to get paid you must setup your payout method here:
+                    </Text>
+                    <TouchableOpacity style={styles.cardBox}
+                                      onPress={() => this.props.navigation.navigate('PayoutInfo', {onPaymentInfoUpdate: this.onPaymentInfoUpdate})}>
+                        <Text style={[styles.totalReg, GlobalStyle.lightBlueText]}>Setup payout</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
         return (
             <View>
-                <View style={[styles.topSection, {borderTopLeftRadius: 10, borderTopRightRadius: 10, marginBottom: 0}]}>
-                    <Text style={[styles.totalText, styles.greenText]}>1</Text>
-                    <Text style={[styles.totalReg]}>1 Registrations</Text>
+                <View style={[styles.topSection, {
+                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: 10,
+                    marginBottom: 0,
+                    flexWrap: 'wrap'
+                }]}>
+                    <Text style={[styles.totalText, GlobalStyle.lightBlueText]}>$</Text>
+                    {this.state.payoutInfo ?
+                        <Text style={[styles.totalReg]} onPress={() => this.props.navigation.navigate('PayoutInfo', {
+                            onPaymentInfoUpdate: this.onPaymentInfoUpdate,
+                            payoutInfo: this.state.payoutInfo})}>
+                            Paid out to: {this.state.payoutInfo.first_name} {this.state.payoutInfo.last_name}
+                        </Text>
+                        : null
+                    }
                 </View>
-                <View style={[styles.subNav]}>
-                    <MaterialIcon name="search" size={20} color='#797979'/>
-                    <TextInput
-                        ref="searchinput"
-                        style={[styles.filterInput]}
-                        underlineColorAndroid='transparent'
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                        placeholderTextColor='#a7a59f'
-                        onChangeText={this.onChangeText}
-                        value={this.state.searchText}
-                        placeholder="Search"
-                    />
-                </View>
+                {content}
             </View>
         )
     },
@@ -147,7 +176,7 @@ const Earnings = React.createClass({
                     <Text style={[styles.name, {color: 'red'}]}>
                         -{charge.amount_refunded ? `$${parseFloat(charge.amount_refunded).toFixed(2)}` : '$0.00'}
                     </Text> :
-                    <Text style={[styles.name, styles.greenText]}>
+                    <Text style={[styles.name, GlobalStyle.lightBlueText]}>
                         {charge.amount ? `$${parseFloat(charge.amount).toFixed(2)}` : '$0.00'}
                     </Text>
                 }
@@ -244,9 +273,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Heebo-Medium',
         fontSize: getFontSize(20),
     },
-    greenText: {
-        color: '#00BD89',
-    },
     totalText: {
         fontSize: getFontSize(72),
         fontFamily: 'Heebo-Medium',
@@ -255,7 +281,17 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(20),
         fontFamily: 'Heebo-Medium',
         color: 'grey'
-    }
+    },
+    cardBox: {
+        borderColor: '#e1e3df',
+        borderWidth: 1,
+        margin: 10,
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        padding: 20,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
 });
 
 const stateToProps = (state) => {

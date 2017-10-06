@@ -29,12 +29,11 @@
   NSURL *jsCodeLocation;
 
 
-#ifdef DEBUG
-    //jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  #ifdef DEBUG
     jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-#else
+  #else
     jsCodeLocation = [CodePush bundleURL];
-#endif
+  #endif
 
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation

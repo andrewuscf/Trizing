@@ -15,6 +15,10 @@ persistStore(store, {storage: AsyncStorage});
 
 
 const AppWrapper = React.createClass({
+    componentDidMount() {
+        codePush.notifyAppReady();
+    },
+
     render() {
         return (
             <Provider store={store}>
@@ -24,4 +28,8 @@ const AppWrapper = React.createClass({
     }
 });
 
-export default codePush(AppWrapper);
+export default codePush({
+    checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+    installMode: codePush.InstallMode.ON_NEXT_SUSPEND,
+    mandatoryInstallMode: codePush.InstallMode.ON_NEXT_SUSPEND
+})(AppWrapper);

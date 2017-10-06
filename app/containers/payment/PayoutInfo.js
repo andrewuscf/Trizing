@@ -3,16 +3,17 @@ import {
     View,
     Text,
     StyleSheet,
-    ScrollView,
     Platform,
     Alert
 } from 'react-native';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import t from 'tcomb-form-native';
-// import stripe from 'tipsi-stripe';
+import stripe from 'tipsi-stripe';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-import {getFontSize, stripeKey} from '../../actions/utils';
+import {getFontSize, stripeKey, API_ENDPOINT, fetchData, checkStatus} from '../../actions/utils';
 import GlobalStyle from '../../containers/globalStyle';
 import {STATES} from '../../assets/constants';
 
@@ -24,10 +25,9 @@ const Form = t.form.Form;
 
 const state_list = t.enums(STATES);
 
-// stripe.init({publishableKey: stripeKey()});
+stripe.init({publishableKey: stripeKey()});
 
 function template(locals) {
-    // in locals.inputs you find all the rendered fields
     return (
         <View>
             <Text style={styles.inputLabel}>Debit Card (For Payments)</Text>
@@ -35,7 +35,10 @@ function template(locals) {
             {locals.inputs.cvc}
             {locals.inputs.expMonth}
             {locals.inputs.expYear}
-            <Text style={styles.inputLabel}>Fraud Prevention</Text>
+            {locals.inputs.first_name || locals.inputs.ssn_last_4 ?
+                <Text style={styles.inputLabel}>Fraud Prevention</Text>
+                :null
+            }
             {locals.inputs.first_name}
             {locals.inputs.last_name}
             {locals.inputs.ssn_last_4}
@@ -50,32 +53,91 @@ function template(locals) {
     );
 }
 
+function cc_format(value) {
+    if (!value) return value;
+    let v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
+    let matches = v.match(/\d{4,19}/g);
+    let match = matches && matches[0] || ''
+    let parts = []
+
+    for (i = 0, len = match.length; i < len; i += 4) {
+        parts.push(match.substring(i, i + 4))
+    }
+
+    if (parts.length) {
+        return parts.join(' ')
+    } else {
+        return value
+    }
+}
+
 const PayoutInfo = React.createClass({
     propTypes: {
-        paymentInfo: React.PropTypes.object.isRequired,
+        payoutInfo: React.PropTypes.object,
         onPaymentInfoUpdate: React.PropTypes.func.isRequired
     },
 
     getInitialState() {
         let state = null;
-        if (this.props.paymentInfo && this.props.paymentInfo.state && _.has(STATES, this.props.paymentInfo.state.toUpperCase())) {
-            state = this.props.paymentInfo.state.toUpperCase()
+        if (this.props.payoutInfo && this.props.payoutInfo.state && _.has(STATES, this.props.payoutInfo.state.toUpperCase())) {
+            state = this.props.payoutInfo.state.toUpperCase()
         }
         return {
-            value: {
-                first_name: this.props.paymentInfo.first_name,
-                last_name: this.props.paymentInfo.last_name,
-                address_line_1: this.props.paymentInfo.address_line_1,
-                address_line_2: this.props.paymentInfo.address_line_2,
-                city: this.props.paymentInfo.city,
+            value: this.props.payoutInfo ? {
+                first_name: this.props.payoutInfo.first_name,
+                last_name: this.props.payoutInfo.last_name,
+                address_line_1: this.props.payoutInfo.address_line_1,
+                address_line_2: this.props.payoutInfo.address_line_2,
+                city: this.props.payoutInfo.city,
                 state: state,
-                postal_code: this.props.paymentInfo.postal_code,
-                phone_number: this.props.paymentInfo.phone_number,
-            },
+                postal_code: this.props.payoutInfo.postal_code,
+                phone_number: this.props.payoutInfo.phone_number,
+            } : null,
             options: {
                 auto: 'none',
                 template: template,
                 fields: {
+                    number: {
+                        onSubmitEditing: () => this.refs.form.getComponent('cvc').refs.input.focus(),
+                        placeholder: "Card Number",
+                        placeholderTextColor: '#7f7f7f',
+                        keyboardType: "number-pad",
+                        maxLength: 19,
+                        transformer: {
+                            format: (value) => cc_format(value),
+                            parse: (value) => {
+                                if (value) return value.replace(/ /g, '');
+                                return value;
+                            }
+                        }
+                    },
+                    cvc: {
+                        onSubmitEditing: () => this.refs.form.getComponent('expMonth').refs.input.focus(),
+                        maxLength: 4,
+                        placeholder: "CVC",
+                        placeholderTextColor: '#7f7f7f',
+                        keyboardType: "number-pad"
+                    },
+                    expMonth: {
+                        placeholder: "Month",
+                        placeholderTextColor: '#7f7f7f',
+                        onSubmitEditing: () => this.refs.form.getComponent('expYear').refs.input.focus(),
+                    },
+                    expYear: {
+                        onSubmitEditing: () => {
+                            if (this.refs.form.getComponent('first_name')) {
+                                this.refs.form.getComponent('first_name').refs.input.focus();
+                            }
+                            if (this.refs.form.getComponent('ssn_last_4')) {
+                                this.refs.form.getComponent('ssn_last_4').refs.input.focus();
+                            }
+                            if (this.refs.form.getComponent('address_line_1')) {
+                                this.refs.form.getComponent('address_line_1').refs.input.focus();
+                            }
+                        },
+                        placeholder: "Year",
+                        placeholderTextColor: '#7f7f7f'
+                    },
                     first_name: {
                         onSubmitEditing: () => this.refs.form.getComponent('last_name').refs.input.focus(),
                         placeholder: 'First Name',
@@ -84,32 +146,18 @@ const PayoutInfo = React.createClass({
                         keyboardType: "ascii-capable",
                     },
                     last_name: {
-                        onSubmitEditing: () => this.refs.form.getComponent('account_number').refs.input.focus(),
+                        onSubmitEditing: () => this.refs.form.getComponent('ssn_last_4').refs.input.focus(),
                         placeholder: 'Last Name',
                         placeholderTextColor: '#7f7f7f',
                         autoCapitalize: 'sentences',
                         keyboardType: "ascii-capable",
-                    },
-                    account_number: {
-                        onSubmitEditing: () => this.refs.form.getComponent('routing_number').refs.input.focus(),
-                        placeholder: this.props.paymentInfo.bank_account ? `.......${this.props.paymentInfo.bank_account.last4}` : 'Bank Account Number',
-                        placeholderTextColor: '#7f7f7f',
-                        keyboardType: "number-pad"
-                    },
-                    routing_number: {
-                        onSubmitEditing: () => this.refs.form.getComponent('ssn_last_4') ?
-                            this.refs.form.getComponent('ssn_last_4').refs.input.focus() :
-                            this.refs.form.getComponent('address_line_1').refs.input.focus(),
-                        placeholder: this.props.paymentInfo.bank_account ? `${this.props.paymentInfo.bank_account.routing_number}` : 'Bank Routing Number',
-                        placeholderTextColor: '#7f7f7f',
-                        maxLength: 9,
-                        keyboardType: "number-pad"
                     },
                     ssn_last_4: {
                         onSubmitEditing: () => this.refs.form.getComponent('address_line_1').refs.input.focus(),
                         placeholder: 'Last 4 digits of SSN',
                         placeholderTextColor: '#7f7f7f',
                         keyboardType: "number-pad",
+                        maxLength: 4,
                     },
                     address_line_1: {
                         onSubmitEditing: () => this.refs.form.getComponent('address_line_2').refs.input.focus(),
@@ -153,61 +201,60 @@ const PayoutInfo = React.createClass({
 
     asyncActions(start, data) {
         if (start) {
-            this.refs.post_button.setState({busy: true});
+            this.props.navigation.setParams({handleSave: this._onSubmit, disabled: true});
         } else {
-            this.refs.post_button.setState({busy: false});
+            this.props.navigation.setParams({handleSave: this._onSubmit, disabled: false});
             if (data) {
                 this.props.onPaymentInfoUpdate(data);
                 this.back();
             }
         }
     },
-    async handleBankData(data) {
-        // try {
-        //     // this.asyncActions(true);
-        //     const token = await stripe.createTokenWithBankAccount({
-        //         countryCode: 'US',
-        //         currency: 'usd',
-        //         accountNumber: data.account_number.toString(),
-        //         routingNumber: data.routing_number.toString(),
-        //         accountHolderType: 'individual',
-        //         accountHolderName: `${data.first_name} ${data.last_name}`
-        //     });
-        //     const JSONDATA = {
-        //         stripeToken: token.tokenId,
-        //         ...data,
-        //         account_number: data.account_number.substr(data.account_number.length - 4),
-        //         routing_number: null
-        //     };
-        //     // this.props.actions.updatePaymentInfo(JSONDATA, this.asyncActions);
-        // } catch (error) {
-        //     console.log('Error:', error);
-        //     Alert.alert(
-        //         error.message,
-        //         '',
-        //         [
-        //             {text: 'OK'}
-        //         ]
-        //     );
-        //     this.setState({
-        //         loading: false,
-        //     })
-        // }
+
+    async handCardData(data) {
+        try {
+            this.setState({
+                loading: true,
+            });
+            const params = {
+                ...data,
+                name: `${this.props.RequestUser.profile.first_name} ${this.props.RequestUser.profile.last_name}`,
+                addressLine1: data.address_line_1,
+                addressLine2: data.address_line_2,
+                addressCity: data.city,
+                addressState: data.state,
+                addressZip: data.postal_code.toString(),
+                currency: 'usd',
+            };
+            const token = await stripe.createTokenWithCard(params);
+            const API_DATA = JSON.stringify({stripeToken: token.tokenId, ...data});
+            console.log(API_DATA)
+            fetch(`${API_ENDPOINT}user/payout/info/`, fetchData('PATCH', API_DATA, this.props.UserToken))
+                .then(checkStatus)
+                .then((responseJson) => {
+                    this.asyncActions(false, responseJson);
+                }).catch((error) => {
+                    this.asyncActions(false);
+                });
+        } catch (error) {
+            console.log('Error:', error);
+            Alert.alert(
+                error.message,
+                '',
+                [
+                    {text: 'OK'}
+                ]
+            );
+            this.setState({
+                loading: false,
+            })
+        }
     },
 
     _onSubmit() {
         const formValues = this.refs.form.getValue();
         if (formValues) {
-            let values = {
-                ...formValues,
-                group: this.props.paymentInfo.group
-            };
-            if (formValues.account_number && formValues.routing_number) {
-                this.handleBankData(values)
-            } else {
-                // this.props.actions.updatePaymentInfo(values, this.asyncActions);
-            }
-
+            this.handCardData(formValues);
         }
     },
 
@@ -234,35 +281,38 @@ const PayoutInfo = React.createClass({
             postal_code: t.Number,
             phone_number: t.Number,
         };
-        if (!this.props.paymentInfo.verification_status || this.props.paymentInfo.verification_status !== 'verified') {
+        if (!this.props.payoutInfo || !this.props.payoutInfo.verification_status || this.props.payoutInfo.verification_status !== 'verified') {
             dataStruct = {
                 ...dataStruct,
                 first_name: t.String,
                 last_name: t.String,
             };
         }
-        if (!this.props.paymentInfo.ssn_last_4_provided) {
+        if (!this.props.payoutInfo || !this.props.payoutInfo.ssn_last_4_provided) {
             dataStruct = {
                 ...dataStruct,
                 ssn_last_4: t.String,
             };
         }
 
-        let GROUP = t.struct(dataStruct);
+        let PERSON = t.struct(dataStruct);
         return (
             <View style={GlobalStyle.container}>
-                <ScrollView style={GlobalStyle.container} showsHorizontalScrollIndicator={false}
-                            showsVerticalScrollIndicator={false}>
+                <KeyboardAwareScrollView style={GlobalStyle.container} showsHorizontalScrollIndicator={false}
+                            showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 50}}>
                     <View style={styles.content}>
+                        <Text style={[styles.title, GlobalStyle.lightBlueText, {textAlign: 'center'}]} onPress={() => console.log('hit')}>
+                            By creating a payout account, you agree to our terms and service. <MaterialIcon name="link" size={getFontSize(14)}/>
+                        </Text>
                         <Form
                             ref="form"
-                            type={GROUP}
+                            type={PERSON}
                             options={this.state.options}
                             onChange={this.onChange}
                             value={this.state.value}
                         />
                     </View>
-                </ScrollView>
+                </KeyboardAwareScrollView>
                 <InputAccessory/>
             </View>
         );
@@ -275,18 +325,23 @@ const styles = StyleSheet.create({
     },
     content: {},
     inputLabel: {
-        fontFamily: 'Gotham-Medium',
-        fontSize: 13,
-        color: '#999999',
-        marginBottom: 8,
-        marginLeft: 38,
+        fontFamily: 'Heebo-Medium',
+        marginLeft: 15,
         marginTop: 25
+    },
+    title: {
+        fontFamily: 'Heebo-Medium',
+        fontSize: getFontSize(18),
+        padding: 5
     }
 });
 
 
 const stateToProps = (state) => {
-    return {};
+    return {
+        RequestUser: state.Global.RequestUser,
+        UserToken: state.Global.UserToken,
+    };
 };
 const dispatchToProps = (dispatch) => {
     return {}
