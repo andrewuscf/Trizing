@@ -131,10 +131,10 @@ const ProgramList = React.createClass({
     },
 
     goToProgram(program) {
-        if (isATrainer(this.props.RequestUser.type)) {
+        if (isATrainer(this.props.RequestUser.type) || program.trainer.id === this.props.RequestUser.id) {
             this.props.navigation.navigate('EditSchedule', {scheduleId: program.id});
         } else {
-            // this.props.navigation.navigate('ScheduleDetail', {scheduleId: program});
+            this.props.navigation.navigate('ScheduleDetail', {schedule: program});
         }
     },
 
@@ -205,7 +205,7 @@ const ProgramList = React.createClass({
                           onScroll={this._onScroll}
                           renderFooter={this.renderFooter.bind(null, showData.length)}
                 />
-                <EditButton isActionButtonVisible={!!(isTrainer && this.state.isActionButtonVisible)}>
+                <EditButton isActionButtonVisible={this.state.isActionButtonVisible}>
                     <ActionButton.Item buttonColor='#3498db' title="New Workout template"
                                        onPress={() => navigate('CreateSchedule')}>
                         <CustomIcon name="barbell" color="white" size={getFontSize(30)}/>

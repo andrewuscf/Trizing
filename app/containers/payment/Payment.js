@@ -130,6 +130,7 @@ const Payment = React.createClass({
                 <ListView removeClippedSubviews={(Platform.OS !== 'ios')}
                           refreshControl={<RefreshControl refreshing={this.state.refresh}
                                                           onRefresh={() => this.getCards(true)}/>}
+                          contentContainerStyle={{paddingTop: 10}}
                           enableEmptySections={true}
                           dataSource={dataSource}
                           showsVerticalScrollIndicator={false}

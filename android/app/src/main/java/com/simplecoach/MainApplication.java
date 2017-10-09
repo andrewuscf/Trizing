@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.microsoft.codepush.react.CodePush;
+import com.gettipsi.stripe.StripeReactPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
@@ -54,7 +55,8 @@ public class MainApplication extends Application implements ReactApplication {
                     new FIRMessagingPackage(),
                     new RNSvgPackage(),
                     new FBSDKPackage(mCallbackManager),
-                    new VectorIconsPackage()
+                    new VectorIconsPackage(),
+                    new StripeReactPackage()
             );
         }
     };

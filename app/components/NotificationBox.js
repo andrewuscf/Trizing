@@ -76,7 +76,7 @@ const NotificationBox = React.createClass({
             } else if (action.action_object.workouts) {
                 this._navigateTo('ScheduleDetail', {schedule: action.action_object});
             } else if (action.action_object.questions) {
-                if (action.verb.toLowerCase().indexOf('answered') == -1) {
+                if (action.verb.toLowerCase().indexOf('answered') === -1) {
                     this._navigateTo('AnswerQuestionnaire', {questionnaire: action.action_object});
                 } else {
                     this._navigateTo('AnswersDisplay', {

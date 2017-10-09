@@ -163,6 +163,20 @@ stylesheet.pickerTouchable = {
     }
 };
 
+stylesheet.pickerContainer = {
+    ...stylesheet.pickerContainer,
+    normal: {
+        ...stylesheet.pickerContainer.normal,
+        height: 36,
+        marginBottom: 0,
+    },
+    error: {
+        ...stylesheet.pickerContainer.error,
+        height: 36,
+        marginBottom: 0,
+    }
+};
+
 stylesheet.dateValue = {
     ...stylesheet.dateValue,
     normal: {

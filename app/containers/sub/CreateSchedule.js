@@ -12,6 +12,7 @@ import _ from 'lodash';
 import DropdownAlert from 'react-native-dropdownalert';
 
 import * as GlobalActions from '../../actions/globalActions';
+import {isATrainer} from '../../actions/utils';
 
 import InputAccessory from '../../components/InputAccessory';
 import {ModalPicker} from '../../components/ModalPicker';
@@ -67,7 +68,6 @@ const CreateSchedule = React.createClass({
                     training_plan: this.props.training_plan
                 }
             }
-            console.log(values)
             this.props.actions.createSchedule(values, this.asyncActions);
         }
     },
@@ -92,11 +92,16 @@ const CreateSchedule = React.createClass({
         const template_list = t.enums(templates);
         let struct = {
             name: t.String,
-            for_sale: t.Boolean,
-            skill_level: t.maybe(skill_levels),
             description: t.maybe(t.String),
             template: t.maybe(template_list)
         };
+        if (isATrainer(this.props.RequestUser.type)) {
+            struct = {
+                ...struct,
+                for_sale: t.Boolean,
+                skill_level: t.maybe(skill_levels),
+            }
+        }
         if (this.state.value && this.state.value.for_sale) {
             struct = {
                 ...struct,
@@ -138,9 +143,9 @@ const CreateSchedule = React.createClass({
                     }
                 },
                 skill_level: {
-                    label: 'SKILL LEVEL',
+                    label: Platform.OS === 'ios' ? 'SKILL LEVEL' : '',
                     nullOption: {value: '', text: 'Choose a skill level'},
-                    factory: Platform.OS == 'ios' ? ModalPicker : null,
+                    factory: Platform.OS === 'ios' ? ModalPicker : null,
                 },
                 for_sale: {
                     stylesheet: {

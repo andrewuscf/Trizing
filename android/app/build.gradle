@@ -97,6 +97,7 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     signingConfigs {
         release {
@@ -118,7 +119,6 @@ android {
     }
     buildTypes {
         debug {
-//            applicationIdSuffix ".debug"
             buildConfigField "String", "CODEPUSH_KEY", '""'
         }
 
@@ -149,7 +149,10 @@ android {
 }
 
 dependencies {
-    compile project(':tipsi-stripe')
+    compile (project(':tipsi-stripe')) {
+        exclude group: 'com.google.android.gms'
+    }
+    compile 'com.google.android.gms:play-services-wallet:11.+'
     compile project(':react-native-image-crop-picker')
     compile project(':react-native-code-push')
     compile project(':react-native-fbsdk')
@@ -171,6 +174,8 @@ dependencies {
         exclude group: 'com.android.support'
     }
     compile "com.facebook.react:react-native:+"  // From node_modules
+    compile 'com.facebook.fresco:animated-base-support:0.14.1'
+    compile 'com.facebook.fresco:animated-gif:0.14.1'
 }
 
 // Run this once to be able to run the application with BUCK

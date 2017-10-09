@@ -202,6 +202,7 @@ const Earnings = React.createClass({
                       style={[GlobalStyle.container]}
                       refreshControl={<RefreshControl refreshing={this.state.refresh}
                                                       onRefresh={this.refresh}/>}
+                      contentContainerStyle={{paddingTop: 10}}
                       enableEmptySections={true}
                       renderHeader={this.renderHeader}
                       renderSectionHeader={this.renderSectionHeader}

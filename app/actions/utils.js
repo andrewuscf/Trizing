@@ -2,8 +2,8 @@
 import {Platform, PixelRatio} from 'react-native';
 import {NavigationActions} from 'react-navigation';
 
-// export const SITE = 'https://simplecoach-staging.herokuapp.com/';
-export const SITE = 'http://localhost:8000/';
+export const SITE = 'https://simplecoach-staging.herokuapp.com/';
+// export const SITE = 'http://localhost:8000/';
 
 export const API_ENDPOINT = `${SITE}api/v1/`;
 
@@ -68,6 +68,8 @@ export function checkStatus(response) {
         error.response = response;
         error.status = status;
         error.message = json.message ? json.message : null;
+        console.log(status)
+        console.log(json.message)
         throw error;
     }
 }
