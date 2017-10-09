@@ -114,7 +114,7 @@ const EditSchedule = React.createClass({
         return (
             <View style={[GlobalStyle.simpleBottomBorder, styles.headerContainer]}>
                 <Text style={styles.smallBold}>Duration:
-                    <Text style={styles.notBold}> {schedule.duration} {schedule.duration == 1 ? 'week' : 'weeks'}</Text>
+                    <Text style={styles.notBold}> {schedule.duration ? schedule.duration : 0} {schedule.duration == 1 ? 'week' : 'weeks'}</Text>
                 </Text>
                 <Text style={styles.smallBold}>Created: <Text style={styles.notBold}>{created}</Text></Text>
                 <Text style={styles.smallBold}>Description: <Text
@@ -124,8 +124,12 @@ const EditSchedule = React.createClass({
                         style={styles.notBold}>${parseFloat(schedule.cost).toFixed(2)}</Text></Text> :
                     null
                 }
-                <Text style={styles.smallBold}>Skill level: <Text
-                    style={styles.notBold}>{convertSkill(schedule.skill_level)}</Text></Text>
+                {schedule.skill_level ?
+                    <Text style={styles.smallBold}>Skill level: <Text
+                        style={styles.notBold}>{convertSkill(schedule.skill_level)}</Text>
+                    </Text>
+                    : null
+                }
             </View>
         )
     },
