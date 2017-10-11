@@ -36,12 +36,7 @@ export function createChatRoom(data, asyncActions) {
             })
             .catch((error) => {
                 asyncActions(false);
-                return dispatch({
-                    type: types.API_ERROR, error: JSON.stringify({
-                        title: 'Request could not be performed.',
-                        text: 'Please try again later.'
-                    })
-                });
+                return dispatch({type: types.API_ERROR});
             });
     }
 }

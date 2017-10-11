@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import * as constants from '../actions/actionTypes';
 
 
@@ -31,7 +30,7 @@ export default function calendarReducers(state = initialState, action = null) {
                 CalendarIsLoading: false,
             };
 
-        case constants.REMOVE_TOKEN:
+        case constants.CLEAR_STATE:
             return initialState;
 
 

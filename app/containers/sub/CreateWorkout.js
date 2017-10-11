@@ -89,7 +89,8 @@ const CreateWorkout = React.createClass({
                 name: {
                     onSubmitEditing: () => this.refs.form.getComponent('duration').refs.input.focus(),
                     placeholder: `Workout Name: 'Block 1'`,
-                    autoCapitalize: 'sentences'
+                    autoCapitalize: 'sentences',
+                    maxLength: 40,
                 },
                 duration: {
                     onSubmitEditing: () => this._onSubmit(),

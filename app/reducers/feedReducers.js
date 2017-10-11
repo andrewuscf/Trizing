@@ -60,7 +60,7 @@ export default function feedReducers(state = initialState, action = null) {
                 Posts: newFeed
             };
 
-        case constants.REMOVE_TOKEN:
+        case constants.CLEAR_STATE:
             return initialState;
 
 

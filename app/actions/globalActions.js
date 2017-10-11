@@ -1,7 +1,7 @@
 'use strict';
 import * as types from './actionTypes';
 import {fetchData, API_ENDPOINT, refreshPage, SITE, checkStatus, setHeaders} from './utils';
-import {AsyncStorage, Platform} from 'react-native';
+import {AsyncStorage, Platform, Alert} from 'react-native';
 import {LoginManager} from 'react-native-fbsdk';
 import momentTz from 'moment-timezone';
 import _ from 'lodash';
@@ -11,6 +11,18 @@ import {purgeStoredState} from 'redux-persist';
 
 
 import {getClients, getActiveData} from './homeActions';
+
+export function alertMessage() {
+    return (dispatch, getState) => {
+        Alert.alert(
+            getState().Global.Error ? getState().Global.Error.title : 'Request could not be performed.',
+            getState().Global.Error ? getState().Global.Error.text : 'Please try again later.',
+            [
+                {text: 'OK'},
+            ]
+        );
+    }
+}
 
 
 export function initializeApp() {
@@ -65,17 +77,27 @@ export function setDeviceForNotification(token) {
 
 export function removeToken(token) {
     return (dispatch) => {
-        return purgeStoredState({storage: AsyncStorage}).then(() => {
-            dispatch({type: types.REMOVE_TOKEN});
-            AsyncStorage.removeItem('USER_TOKEN');
-            ImageCache.get().clear();
-            LoginManager.logOut();
-            if (token) {
-                dispatch(removeDeviceNotification(token));
-            }
-        }).catch(() => {
-            console.log('purge of someReducer failed')
-        })
+        if (token) {
+            dispatch(removeDeviceNotification(token));
+        }
+        AsyncStorage.removeItem('USER_TOKEN');
+        return dispatch({type: types.REMOVE_TOKEN}).then(() => purgeStoredState({storage: AsyncStorage}).then(() => {
+                LoginManager.logOut();
+            }).catch(() => {
+                console.log('purge of someReducer failed')
+            })
+        );
+    };
+}
+
+export function clearState() {
+    return (dispatch) => {
+        return dispatch({type: types.CLEAR_STATE}).then(() => purgeStoredState({storage: AsyncStorage}).then(() => {
+                ImageCache.get().clear();
+            }).catch(() => {
+                console.log('purge of someReducer failed')
+            })
+        );
     };
 }
 
@@ -92,15 +114,15 @@ export function login(data, asyncActions) {
                 if (responseJson.non_field_errors) {
                     asyncActions(false);
                     return dispatch({
-                        type: types.API_ERROR, error: JSON.stringify({
+                        type: types.API_ERROR, error: {
                             title: 'Incorrect Email or Password',
                             text: 'Please Try Again'
-                        })
+                        }
                     });
                 }
-            })
-            .catch((error) => {
+            }).catch(() => {
                 asyncActions(false);
+                return dispatch({type: types.API_ERROR});
             });
     }
 }
@@ -119,9 +141,8 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
             if (responseJson.detail)
                 return dispatch(removeToken());
             return dispatch({type: types.LOAD_REQUEST_USER, request_user: responseJson});
-        }).catch((errorMessage) => {
-            console.log(errorMessage);
-            return dispatch(removeToken());
+        }).catch(() => {
+            return dispatch({type: types.API_ERROR});
         });
     }
 }
@@ -137,20 +158,14 @@ export function resetPassword(data, asyncActions) {
             .then((response) => {
                 asyncActions(false);
                 return dispatch({
-                    type: types.API_ERROR, error: JSON.stringify({
+                    type: types.API_ERROR, error: {
                         title: 'Reset password sent',
                         text: 'Please check your email for the reset password link'
-                    })
+                    }
                 });
-            }).catch((errorMessage, statusCode) => {
-                console.log(statusCode);
+            }).catch(() => {
                 asyncActions(false);
-                return dispatch({
-                    type: types.API_ERROR, error: JSON.stringify({
-                        title: 'Request could not be performed.',
-                        text: 'Please try again later.'
-                    })
-                });
+                return dispatch({type: types.API_ERROR});
             });
     }
 }
@@ -182,18 +197,11 @@ export function register(data, asyncActions) {
                             text: 'Please use another username or log into your account.'
                         };
                 }
-                return dispatch({type: types.REGISTER_USER, message: JSON.stringify(message)});
-            })
-            .catch((error) => {
-                console.log(error)
+                return dispatch({type: types.REGISTER_USER, message: message});
+            }).catch(() => {
                 asyncActions(false);
-                return dispatch({
-                    type: types.API_ERROR, error: JSON.stringify({
-                        title: 'Request could not be performed.',
-                        text: 'Please try again later.'
-                    })
-                });
-            })
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }
 
@@ -204,15 +212,9 @@ export function socialAuth(access_token) {
             .then((responseJson) => {
                 if (responseJson.token)
                     return dispatch(setTokenInRedux(responseJson.token, true));
-            })
-            .catch((error) => {
-                return dispatch({
-                    type: types.API_ERROR, error: JSON.stringify({
-                        title: 'Request could not be performed.',
-                        text: 'Please try again later.'
-                    })
-                });
-            })
+            }).catch(() => {
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }
 
@@ -239,7 +241,9 @@ export function getNotifications(refresh = false, newNotifications = false) {
                     }
                     return dispatch({type: types.GET_NOTIFICATIONS, response: responseJson, refresh: refresh});
                 }
-            })
+            }).catch(() => {
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }
 
@@ -258,14 +262,11 @@ export function readNotification(id) {
             .then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.READ_NOTIFICATION, noteId: id});
-            })
+            }).catch(() => {
+                return dispatch({type: types.API_ERROR});
+            });
 
     }
-}
-
-
-export function clearAPIError() {
-    return {type: types.CLEAR_API_ERROR}
 }
 
 export function getQuestionnaires(refresh = false) {
@@ -276,7 +277,9 @@ export function getQuestionnaires(refresh = false) {
         return fetch(url, fetchData('GET', null, getState().Global.UserToken)).then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.GET_QUESTIONNAIRES, response: responseJson, refresh: refresh});
-            })
+            }).catch(() => {
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }
 
@@ -289,10 +292,10 @@ export function createQuestionnaire(data, asyncActions) {
             .then((responseJson) => {
                 asyncActions(false);
                 return dispatch({type: types.CREATE_QUESTIONNAIRE, response: responseJson});
-            })
-            .catch((error) => {
+            }).catch(() => {
                 asyncActions(false);
-            })
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }
 
@@ -304,10 +307,10 @@ export function answerQuestionnaire(data, asyncActions) {
             .then((responseJson) => {
                 if (responseJson.id) asyncActions(true);
                 return dispatch({type: types.CREATE_QUESTIONNAIRE, response: responseJson});
-            })
-            .catch((error) => {
+            }).catch(() => {
                 asyncActions(false);
-            })
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }
 
@@ -321,14 +324,8 @@ export function getSchedules(param = '', refresh = false) {
             .then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.LOAD_SCHEDULES, response: responseJson, refresh: refresh});
-            })
-            .catch((error) => {
-                return dispatch({
-                    type: types.API_ERROR, error: JSON.stringify({
-                        title: 'Request could not be performed.',
-                        text: 'Please try again later.'
-                    })
-                });
+            }).catch((error) => {
+                return dispatch({type: types.API_ERROR});
             });
     }
 }
@@ -352,10 +349,10 @@ export function createSchedule(data, asyncActions) {
                     asyncActions(false);
                 }
                 return dispatch({type: types.CREATE_SCHEDULE, response: responseJson});
-            })
-            .catch((error) => {
+            }).catch(() => {
                 asyncActions(false);
-            })
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }
 
@@ -378,9 +375,9 @@ export function deleteSchedule(scheduleId, asyncActions) {
             .then((responseJson) => {
                 asyncActions({deleted: responseJson.deleted});
                 return dispatch(removeSchedule(scheduleId));
-            })
-            .catch((error) => {
-            })
+            }).catch(() => {
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }
 
@@ -395,10 +392,10 @@ export function createWorkout(data, asyncActions) {
                     return asyncActions(true, {routeName: 'EditWorkout', props: {workout: responseJson}});
                 }
                 return asyncActions(false);
-            })
-            .catch((error) => {
+            }).catch(() => {
                 asyncActions(false);
-            })
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }
 
@@ -422,10 +419,10 @@ export function addEditWorkoutDay(data, asyncActions = null) {
                 } else {
                     return asyncActions(false)
                 }
-            })
-            .catch((error) => {
+            }).catch(() => {
                 asyncActions(false);
-            })
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }
 
@@ -445,10 +442,9 @@ export function addEditExercise(data, asyncActions) {
                 } else {
                     asyncActions(false);
                 }
-            })
-            .catch((error) => {
+            }).catch(() => {
                 asyncActions(false);
-                console.log(error)
+                return dispatch({type: types.API_ERROR});
             });
     }
 }
@@ -465,10 +461,9 @@ export function createSetGroup(data, asyncActions) {
                 } else {
                     asyncActions(false);
                 }
-            })
-            .catch((error) => {
+            }).catch(() => {
                 asyncActions(false);
-                console.log(error)
+                return dispatch({type: types.API_ERROR});
             });
     }
 }
@@ -485,7 +480,10 @@ export function deleteSetGroup(id, asyncActions) {
                 } else {
                     asyncActions(false)
                 }
-            })
+            }).catch(() => {
+                asyncActions(false);
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }
 
@@ -499,7 +497,10 @@ export function deleteSet(id, asyncActions) {
                 } else {
                     asyncActions(false)
                 }
-            })
+            }).catch(() => {
+                asyncActions(false);
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }
 
@@ -544,5 +545,23 @@ export function logSets(data, asyncActions) {
                     asyncActions(false)
                 }
             }).catch((e) => asyncActions(false));
+    }
+}
+
+
+export function activateSchedule(programId, asyncActions) {
+    let JSONDATA = JSON.stringify({program: programId});
+    return (dispatch, getState) => {
+        return fetch(`${API_ENDPOINT}training/program/activate/`,
+            fetchData('PATCH', JSONDATA, getState().Global.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+                if (responseJson.id) {
+                    asyncActions(responseJson);
+                    // return dispatch({type: types.CREATE_WORKOUT_LOG, response: responseJson});
+                }
+            }).catch(() => {
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }

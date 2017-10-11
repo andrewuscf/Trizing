@@ -17,13 +17,8 @@ export function getClients(refresh = false) {
             .then((responseJson) => {
                 return dispatch({type: types.LOAD_CLIENTS, response: responseJson, refresh: refresh});
             })
-            .catch((error) => {
-                return dispatch({
-                    type: types.API_ERROR, error: JSON.stringify({
-                        title: 'Request could not be performed.',
-                        text: 'Please try again later.'
-                    })
-                });
+            .catch(() => {
+                return dispatch({type: types.API_ERROR});
             });
     }
 }
@@ -35,7 +30,9 @@ export function removeClient(clientId) {
             .then(checkStatus)
             .then((response) => {
                 return dispatch({type: types.DELETE_CLIENT, clientId: clientId});
-            })
+            }).catch(() => {
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }
 
@@ -46,7 +43,9 @@ export function sendRequest(data) {
             .then(checkStatus)
             .then((response) => {
                 return dispatch({type: types.SEND_REQUEST});
-            })
+            }).catch(() => {
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }
 
@@ -60,7 +59,9 @@ export function getActiveData(date, refresh) {
             .then(checkStatus)
             .then((responseJson) => {
                 return dispatch({type: types.LOAD_ACTIVE_DATA, response: {...responseJson, date: date}});
-            })
+            }).catch(() => {
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }
 
@@ -84,11 +85,10 @@ export function getWeightLogs(timeFrame, refresh) {
             url += `?start_date=${today.subtract(1, 'year').format("YYYY-MM-DD")}`;
         }
 
-        return RNFetchBlob.fetch('GET', url, setHeaders(getState().Global.UserToken)).then((res) => {
-            let responseJson = res.json();
+        return RNFetchBlob.fetch('GET', url, setHeaders(getState().Global.UserToken)).then(checkStatus).then((responseJson) => {
             return dispatch({type: types.LOAD_WEIGHT_LOGS, response: responseJson, timeFrame: timeFrame, refresh: refresh});
-        }).catch((errorMessage, statusCode) => {
-            console.log(errorMessage);
+        }).catch(() => {
+            return dispatch({type: types.API_ERROR});
         });
 
     }

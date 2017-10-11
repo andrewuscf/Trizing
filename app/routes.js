@@ -1,5 +1,4 @@
 import React from 'react'
-import {View} from 'react-native';
 import {TabNavigator, StackNavigator, TabBarBottom, NavigationActions} from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -154,7 +153,7 @@ const HomeNav = StackNavigator({
     EventDetail: {screen: paramsToProps(EventDetail)},
 
 
-    ProgramList: {screen: ProgramList},
+    ProgramList: {screen: paramsToProps(ProgramList)},
     SurveyList: {screen: SurveyList},
 
     CreateMacroPlan: {

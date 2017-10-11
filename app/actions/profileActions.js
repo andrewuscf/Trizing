@@ -28,8 +28,8 @@ export function updateProfile(data, asyncActions) {
             asyncActions(100);
             asyncActions(0);
             dispatch({type: types.UPDATE_PROFILE, profile: JSON.parse(resp.data)});
-        }).catch((err) => {
-            console.log(err);
+        }).catch(() => {
+            return dispatch({type: types.API_ERROR});
         });
     }
 }
@@ -48,15 +48,8 @@ export function updateUser(data, profileData = false, asyncActions) {
                     asyncActions(.25);
                     return dispatch(updateProfile(profileData, asyncActions))
                 }
-            })
-            .catch((error) => {
-                console.log(error)
-                return dispatch({
-                    type: types.API_ERROR, error: JSON.stringify({
-                        title: 'Request could not be performed.',
-                        text: 'Please try again later.'
-                    })
-                });
+            }).catch(() => {
+                return dispatch({type: types.API_ERROR});
             });
     }
 }

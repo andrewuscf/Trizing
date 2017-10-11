@@ -63,11 +63,10 @@ export function checkStatus(response) {
     } else if (status >= 200 && status < 300) {
         return response.json();
     } else {
-        const json = response.json();
-        let error = new Error(json.message ? json.message : null);
+        console.log(response)
+        let error = new Error();
         error.response = response;
         error.status = status;
-        error.message = json.message ? json.message : null;
         console.log(status)
         console.log(json.message)
         throw error;

@@ -7,20 +7,23 @@ import {
     RefreshControl,
     TouchableOpacity,
     Platform,
-    LayoutAnimation
+    LayoutAnimation,
+    Alert
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import FontIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
 import RNFetchBlob from 'react-native-fetch-blob';
 
 import * as GlobalActions from '../../actions/globalActions';
 import GlobalStyle from '../globalStyle';
-import {fetchData, API_ENDPOINT, checkStatus, getFontSize, setHeaders, isATrainer} from '../../actions/utils';
+import {API_ENDPOINT, getFontSize, setHeaders, isATrainer} from '../../actions/utils';
 
 import CustomIcon from '../../components/CustomIcon';
 import EditButton from '../../components/EditButton';
+import Loading from '../../components/Loading';
 
 const ProgramList = React.createClass({
     propTypes: {
@@ -34,7 +37,8 @@ const ProgramList = React.createClass({
             forSale: [],
             forSaleNext: null,
             loading: false,
-            refresh: false
+            refresh: false,
+            isTrainer: isATrainer(this.props.RequestUser.type)
         }
     },
 
@@ -68,6 +72,9 @@ const ProgramList = React.createClass({
         } else {
             this.props.getSchedules('', refresh);
         }
+        if (this.state.tab === 2) {
+            this.getForSale(refresh)
+        }
     },
 
     getForSale(refresh = false) {
@@ -79,15 +86,15 @@ const ProgramList = React.createClass({
         const url = `${API_ENDPOINT}training/program/sale/`;
         RNFetchBlob.fetch('GET', url, setHeaders(this.props.UserToken))
             .then((res) => {
-            let json = res.json();
-            this.setState({
-                forSale: json.results,
-                forSaleNext: json.next,
-                loading: false,
-                refresh: false
-            });
+                let json = res.json();
+                this.setState({
+                    forSale: json.results,
+                    forSaleNext: json.next,
+                    loading: false,
+                    refresh: false
+                });
 
-        }).catch((errorMessage, statusCode) => {
+            }).catch((errorMessage, statusCode) => {
             this.setState({loading: false});
             console.log(errorMessage)
         });
@@ -112,12 +119,14 @@ const ProgramList = React.createClass({
     },
 
     convertToMap: function () {
-        const workoutMap = {'Workout Templates': [], 'Messages': []};
-        this.props.ChatRooms.forEach((chatroom) => {
-            if (chatroom.team || chatroom.activity) {
-                workoutMap['Group Chats'].push(chatroom);
+        // program.trainer.id === this.props.RequestUser.id
+        const data = this.state.tab === 1 ? this.props.Schedules : [];
+        const workoutMap = this.state.tab === 1 ? {'My Programs': [], 'Trainer Programs': []} : {};
+        data.forEach((program) => {
+            if (program.trainer.id === this.props.RequestUser.id) {
+                workoutMap['My Programs'].push(program);
             } else {
-                workoutMap['Messages'].push(chatroom);
+                workoutMap['Trainer Programs'].push(program);
             }
         });
         return workoutMap;
@@ -126,8 +135,11 @@ const ProgramList = React.createClass({
 
     renderSectionHeader: function (sectionData, category) {
         if (!sectionData.length) return null;
-
-        return <Text style={styles.sectionTitle}>{category}</Text>;
+        return (
+            <View style={[GlobalStyle.simpleBottomBorder, {backgroundColor: 'white'}]}>
+                <Text style={styles.sectionTitle}>{category}</Text>
+            </View>
+        );
     },
 
     goToProgram(program) {
@@ -138,12 +150,37 @@ const ProgramList = React.createClass({
         }
     },
 
+    _activate(program) {
+        function test(data) {
+            console.log(data)
+        }
+
+        Alert.alert(
+            'Activate Workout Program?',
+            `This will override any your current program. Programs can be overwritten by trainers.`,
+            [
+                {text: 'Cancel', style: 'cancel'},
+                {text: 'Yes', onPress: () => this.props.activateSchedule(program.id, test)},
+            ]
+        );
+    },
+
 
     renderRow(program) {
         let duration = 0;
         program.workouts.forEach((workout) => duration += workout.duration);
         return (
             <TouchableOpacity style={styles.link} onPress={this.goToProgram.bind(null, program)}>
+                {!this.state.isTrainer ?
+                    this.props.RequestUser.profile.active_program === program.id ?
+                        <FontIcon name="check-circle" size={getFontSize(32)}
+                                  style={[{marginLeft: 10}, GlobalStyle.lightBlueText]}/> :
+                        <TouchableOpacity onPress={this._activate.bind(null, program)} style={{marginLeft: 10}}>
+                            <FontIcon name="circle-thin" size={getFontSize(32)} color='#bfbfbf'/>
+                        </TouchableOpacity>
+                    : null
+                }
+
                 <View style={styles.leftSection}>
                     <Text style={styles.simpleTitle}>{program.name}</Text>
                     <View style={styles.row}>
@@ -153,8 +190,6 @@ const ProgramList = React.createClass({
                         </Text>
                     </View>
                 </View>
-                <MaterialIcon name="keyboard-arrow-right" size={getFontSize(18)}
-                              style={styles.linkArrow}/>
             </TouchableOpacity>
         )
     },
@@ -164,7 +199,7 @@ const ProgramList = React.createClass({
             <View style={[styles.tabbarView, GlobalStyle.simpleBottomBorder]}>
                 <TouchableOpacity style={[styles.tabView, (this.state.tab === 1) ? styles.selectedTab : null]}
                                   onPress={this._onTabPress.bind(null, 1)}>
-                    <Text style={(this.state.tab === 1) ? styles.selectedText : null}>My Programs</Text>
+                    <Text style={(this.state.tab === 1) ? styles.selectedText : null}>Programs</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.tabView, (this.state.tab === 2) ? styles.selectedTab : null]}
                                   onPress={this._onTabPress.bind(null, 2)}>
@@ -174,14 +209,15 @@ const ProgramList = React.createClass({
         )
     },
 
-    renderFooter(length) {
+    renderFooter() {
+        const length = this.state.tab === 1 ? this.props.Schedules.length : 0;
         if (length > 0) return null;
         return (
             <View style={styles.empty}>
                 <CustomIcon name="weight" size={getFontSize(60)} color="#b1aea5"/>
                 <Text style={styles.emptyText}>
                     Oh No! {this.state.tab === 1 ? `You currently have no workout programs.`
-                        : 'There are currently no workout programs for sale.'}
+                    : 'There are currently no workout programs for sale.'}
                 </Text>
             </View>
         )
@@ -189,11 +225,20 @@ const ProgramList = React.createClass({
 
 
     render() {
-        const isTrainer = isATrainer(this.props.RequestUser.type);
+        if ((this.props.SchedulesLoading && this.state.tab === 1) || (this.state.loading && this.state.tab === 2)) {
+            return (
+                <View style={GlobalStyle.container}>
+                    {this.renderHeader()}
+                    <Loading/>
+                </View>
+            )
+        }
         const {navigate} = this.props.navigation;
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        const showData = this.state.tab === 1 ? this.props.Schedules : [];
-        const ProgramsDs = ds.cloneWithRows(showData);
+        const ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) => r1 !== r2,
+            sectionHeaderHasChanged: (s1, s2) => s1 !== s2
+        });
+        const ProgramsDs = ds.cloneWithRowsAndSections(this.convertToMap());
         return (
             <View style={GlobalStyle.container}>
                 <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
@@ -203,7 +248,8 @@ const ProgramList = React.createClass({
                           renderRow={this.renderRow}
                           renderHeader={this.renderHeader}
                           onScroll={this._onScroll}
-                          renderFooter={this.renderFooter.bind(null, showData.length)}
+                          renderFooter={this.renderFooter}
+                          renderSectionHeader={this.renderSectionHeader}
                 />
                 <EditButton isActionButtonVisible={this.state.isActionButtonVisible}>
                     <ActionButton.Item buttonColor='#3498db' title="New Workout template"
@@ -285,6 +331,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingTop: 20,
         fontFamily: 'Heebo-Medium'
+    },
+    sectionTitle: {
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingLeft: 10,
+        fontSize: getFontSize(22),
+        fontFamily: 'Heebo-Bold',
     }
 });
 
@@ -292,13 +345,15 @@ const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
         Schedules: state.Global.Schedules,
-        UserToken: state.Global.UserToken
+        UserToken: state.Global.UserToken,
+        SchedulesLoading: state.Global.SchedulesLoading
     };
 };
 
 const dispatchToProps = (dispatch) => {
     return {
         getSchedules: bindActionCreators(GlobalActions.getSchedules, dispatch),
+        activateSchedule: bindActionCreators(GlobalActions.activateSchedule, dispatch),
     }
 };
 

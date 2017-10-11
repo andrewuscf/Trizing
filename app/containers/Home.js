@@ -351,6 +351,8 @@ const Home = React.createClass({
                                     </Text>
                                 </View>
                                 <Text style={styles.textTitle}>No Workout Today</Text>
+                                <SubmitButton onPress={() => navigate('ProgramList')} text="PROGRAMS"
+                                              buttonStyle={styles.logButton}/>
                             </View>
                         }
                         <View style={[styles.box]}>
@@ -437,7 +439,7 @@ const Home = React.createClass({
                 <EditButton icon={isTrainer ? null : <MaterialIcon name="search" size={getFontSize(20)} color="white"/>}
                             isActionButtonVisible={this.state.isActionButtonVisible}>
                     <ActionButton.Item buttonColor='#FD795B' title="Workouts"
-                                       onPress={() => navigate('ProgramList')}>
+                                       onPress={() => navigate('ProgramList', {tab: 2})}>
                         <CustomIcon name="weight" size={getFontSize(22)} color="white"/>
                     </ActionButton.Item>
                     {isTrainer ?

@@ -33,7 +33,7 @@ const WorkoutProgramBox = React.createClass({
         Keyboard.dismiss();
         if (this.props.schedule) {
             Alert.alert(
-                'Activate Workout Program Active',
+                'Activate Workout Program',
                 `Are you sure you want make '${this.props.schedule.name}' active?`,
                 [
                     {text: 'Cancel', style: 'cancel'},

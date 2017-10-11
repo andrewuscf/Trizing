@@ -62,7 +62,7 @@ export default function chatReducers(state = initialState, action = null) {
             };
 
 
-        case constants.REMOVE_TOKEN:
+        case constants.CLEAR_STATE:
             return initialState;
 
         default:

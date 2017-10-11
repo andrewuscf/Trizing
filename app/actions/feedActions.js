@@ -15,13 +15,8 @@ export function getFeed(refresh = false) {
             .then((responseJson) => {
                 return dispatch({type: types.GET_FEED, response: responseJson, refresh: refresh});
             })
-            .catch((error) => {
-                return dispatch({
-                    type: types.API_ERROR, error: JSON.stringify({
-                        title: 'Request could not be performed.',
-                        text: 'Please try again later.'
-                    })
-                });
+            .catch(() => {
+                return dispatch({type: types.API_ERROR});
             });
     }
 }
@@ -34,13 +29,8 @@ export function createPost(data) {
             .then((responseJson) => {
                 return dispatch({type: types.CREATE_POST, response: responseJson});
             })
-            .catch((error) => {
-                return dispatch({
-                    type: types.API_ERROR, error: JSON.stringify({
-                        title: 'Request could not be performed.',
-                        text: 'Please try again later.'
-                    })
-                });
+            .catch(() => {
+                return dispatch({type: types.API_ERROR});
             });
     }
 }
@@ -65,6 +55,8 @@ export function updateLike(post_id, method) {
                         type: types.LIKE,
                         like: responseJson
                     });
-            })
+            }).catch(() => {
+                return dispatch({type: types.API_ERROR});
+            });
     }
 }

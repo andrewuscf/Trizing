@@ -110,6 +110,9 @@ const EditProfile = React.createClass({
         if (user && prevProps.RequestUser && prevProps.RequestUser.profile.completed !== user.profile.completed) {
             this.props.navigation.dispatch(resetNav('Main'));
         }
+        if (!this.props.UserToken) {
+            this.props.navigation.dispatch(resetNav('SplashScreen'));
+        }
     },
 
     asyncActions(progress) {
@@ -212,7 +215,6 @@ const EditProfile = React.createClass({
                 {text: 'Cancel', style: 'cancel'},
                 {
                     text: 'Yes', onPress: () => {
-                    this.props.navigation.dispatch(resetNav('Login'));
                     if (FCM) FCM.setBadgeNumber(0);
                     FCM.getFCMToken().then(token => {
                         self.props.removeToken(token);
@@ -416,7 +418,8 @@ const ACCOUNT_Type = t.enums({
 
 const stateToProps = (state) => {
     return {
-        RequestUser: state.Global.RequestUser
+        RequestUser: state.Global.RequestUser,
+        UserToken: state.Global.UserToken
     };
 };
 

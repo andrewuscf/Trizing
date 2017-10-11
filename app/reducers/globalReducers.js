@@ -12,6 +12,8 @@ const initialState = {
     QuestionnairesNext: null,
     Schedules: [],
     SchedulesNext: null,
+    SchedulesLoading: true,
+    Error: null
 };
 
 export default function AppReducers(state = initialState, action = null) {
@@ -30,6 +32,12 @@ export default function AppReducers(state = initialState, action = null) {
             };
 
         case constants.REMOVE_TOKEN:
+            return {
+                ...state,
+                UserToken: null
+            };
+
+        case constants.CLEAR_STATE:
             return initialState;
 
         case constants.LOAD_REQUEST_USER:
@@ -88,7 +96,8 @@ export default function AppReducers(state = initialState, action = null) {
             return {
                 ...state,
                 Schedules: (action.refresh) ? action.response.results : state.Schedules.concat(action.response.results),
-                Refreshing: false
+                Refreshing: false,
+                SchedulesLoading: false
             };
 
         case constants.ADD_SCHEDULES:
@@ -152,6 +161,12 @@ export default function AppReducers(state = initialState, action = null) {
                     unread_notifications: true
                 } : null
             });
+
+        case constants.API_ERROR:
+            return {
+                ...state,
+                error: action.error
+            };
 
         default:
             return state

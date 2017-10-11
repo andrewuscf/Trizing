@@ -6,10 +6,10 @@ export const SET_TOKEN = 'SET_TOKEN';
 export const REMOVE_TOKEN = 'REMOVE_TOKEN';
 export const REGISTER_USER = 'REGISTER_USER';
 export const NOT_LOGGED_IN = 'NOT_LOGGED_IN';
+export const CLEAR_STATE = 'CLEAR_STATE';
 
 export const LOAD_REQUEST_USER = 'LOAD_REQUEST_USER';
 
-export const CLEAR_API_ERROR = 'CLEAR_API_ERROR';
 export const API_ERROR = 'API_ERROR';
 
 // Workout Constants

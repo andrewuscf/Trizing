@@ -14,6 +14,7 @@ import _ from 'lodash';
 import Modal from 'react-native-modal';
 
 import {getFontSize} from '../actions/utils';
+import GlobalStyle from '../containers/globalStyle';
 
 import MacroBoxDay from './MacroBoxDay';
 
@@ -75,7 +76,7 @@ const MacroBox = React.createClass({
                               activeOpacity={0.8}
                               onPress={this._onPress}>
                 <View style={styles.center}>
-                    {this.props.selected ? <Icon name="check-circle" size={30} color={greenCircle}/> :
+                    {this.props.selected ? <Icon name="check-circle" size={30} style={GlobalStyle.lightBlueText}/> :
                         <TouchableOpacity onPress={this._activate}>
                             <Icon name="circle-thin" size={30} color='#bfbfbf'/>
                         </TouchableOpacity>}
@@ -105,7 +106,6 @@ const MacroBox = React.createClass({
     }
 });
 
-const greenCircle = '#22c064';
 
 const styles = StyleSheet.create({
     container: {
