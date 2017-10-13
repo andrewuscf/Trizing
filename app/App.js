@@ -12,7 +12,7 @@ import {
     setCustomText,
     setCustomTouchableOpacity,
     setCustomScrollView,
-    setCustomListView
+    setCustomListView,
 } from 'react-native-global-props';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
@@ -29,7 +29,8 @@ setCustomText({
     }
 });
 setCustomTouchableOpacity({
-    hitSlop: {top: 15, right: 15, left: 15, bottom: 15}
+    hitSlop: {top: 15, right: 15, left: 15, bottom: 15},
+    activeOpacity: .9,
 });
 setCustomListView({
     contentContainerStyle:{paddingBottom: 50}

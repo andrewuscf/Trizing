@@ -34,6 +34,7 @@ import AnswerQuestionnaire from './containers/detail/AnswerQuestionnaire';
 import AnswersDisplay from './containers/detail/AnswersDisplay';
 import MacroLogDetail from './containers/detail/MacroLogDetail';
 import WorkoutDayDetail from './containers/detail/WorkoutDayDetail';
+import SetGroupDetail from './containers/detail/SetGroupDetail';
 
 // Create Pages
 import CreateWorkout from './containers/sub/CreateWorkout';
@@ -149,6 +150,7 @@ const HomeNav = StackNavigator({
     WorkoutDetail: {screen: paramsToProps(WorkoutDetail)},
     WorkoutDayDetail: {screen: paramsToProps(WorkoutDayDetail)},
     WorkoutDaySession: {screen: paramsToProps(WorkoutDaySession)},
+    SetGroupDetail: {screen: paramsToProps(SetGroupDetail)},
 
     EventDetail: {screen: paramsToProps(EventDetail)},
 

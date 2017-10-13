@@ -68,7 +68,7 @@ export function checkStatus(response) {
         error.response = response;
         error.status = status;
         console.log(status)
-        console.log(json.message)
+        console.log(response.json())
         throw error;
     }
 }

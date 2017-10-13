@@ -4,13 +4,11 @@ import {
     Text,
     StyleSheet,
     RefreshControl,
-    Platform,
-    ListView,
-    Alert,
+    FlatList,
+    TouchableOpacity
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
@@ -18,8 +16,6 @@ import {trunc, fetchData, API_ENDPOINT, checkStatus, getFontSize} from '../../ac
 import {DAYS_OF_WEEK} from '../../assets/constants';
 import GlobalStyle from '../../containers/globalStyle';
 
-import CustomIcon from '../../components/CustomIcon';
-import DisplayExerciseBox from '../../components/trainer/DisplayExerciseBox';
 import Loading from '../../components/Loading';
 
 const EditWorkoutDay = React.createClass({
@@ -67,6 +63,14 @@ const EditWorkoutDay = React.createClass({
         })
     },
 
+    _toDetail(props) {
+        this.props.navigation.navigate('SetGroupDetail', {
+            ...props,
+            date: this.props.date,
+            workout: this.state.workout_day.workout
+        });
+    },
+
     renderHeader() {
         if (!this.state.workout_day.notes.length) {
             return null;
@@ -85,29 +89,53 @@ const EditWorkoutDay = React.createClass({
         )
     },
 
-    render: function () {
+    _renderItem(object){
+        const set_group = object.item;
+        return (
+            <TouchableOpacity style={[styles.displayWorkoutBox, {flexDirection: 'row', alignItems: 'center'}]}
+                              onPress={this._toDetail.bind(null, {set_group: set_group})}>
+                <View style={{flexDirection: 'column', flex: 1}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <Text style={styles.simpleTitle}>{set_group.exercise.name}</Text>
+                    </View>
+                </View>
+                <View style={[styles.setCircle, {borderColor: '#ff473d'}]}>
+                    <Text style={[{fontSize: getFontSize(12)}, {color: '#ff473d'}]}>
+                        {set_group.sets.length}
+                    </Text>
+                    <Text style={[{fontSize: getFontSize(10)}, {color: '#ff473d'}]}>
+                        {set_group.sets.length === 1 ? 'SET' : 'SETS'}
+                    </Text>
+                </View>
+            </TouchableOpacity>
+        )
+    },
+
+    _renderHeader() {
+        if (!this.state.workout_day.notes || !this.state.workout_day.notes.length) return null;
+        return (
+            <View style={[GlobalStyle.simpleBottomBorder, styles.headerContainer]}>
+                <Text style={styles.smallBold}>Notes:</Text>
+                {this.state.workout_day.notes.map((note, i) =>
+                    <Text key={i} style={[{
+                        paddingLeft: 15,
+                        paddingRight: 15,
+                        paddingBottom: 10
+                    }, styles.notBold]}>{i + 1}. {note.text}</Text>)
+                }
+            </View>
+        )
+    },
+
+    render() {
         if (!this.state.workout_day) return <Loading/>;
 
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        let dataSource = ds.cloneWithRows(this.state.workout_day.exercises);
+        return <FlatList removeClippedSubviews={false} ListHeaderComponent={this._renderHeader}
+                         showsVerticalScrollIndicator={false} data={this.state.workout_day.exercises}
+                         refreshControl={<RefreshControl refreshing={this.state.refreshing}
+                                                         onRefresh={() => this.getWorkoutDay(true)}/>}
+                         renderItem={this._renderItem} extraData={this.state} keyExtractor={(item, index) => index}/>;
 
-        return (
-            <View style={styles.container}>
-                <ListView ref='workout_day_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                          keyboardShouldPersistTaps="handled"
-                          refreshControl={<RefreshControl refreshing={this.state.refreshing}
-                                                          onRefresh={() => this.getWorkoutDay(true)}/>}
-                          enableEmptySections={true}
-                          dataSource={dataSource}
-                          renderHeader={this.renderHeader}
-                          showsVerticalScrollIndicator={false}
-                          contentContainerStyle={{paddingBottom: 20}}
-                          renderRow={(set_group, sectionID, rowID) =>
-                              <DisplayExerciseBox set_group={set_group}/>
-                          }
-                />
-            </View>
-        );
     }
 });
 
@@ -130,7 +158,30 @@ const styles = StyleSheet.create({
     notBold: {
         color: 'grey',
         fontFamily: 'Heebo-Medium',
-    }
+    },
+    displayWorkoutBox: {
+        flex: 1,
+        padding: 10,
+        backgroundColor: 'white',
+        borderColor: '#e1e3df',
+        borderBottomWidth: .5,
+    },
+    setCircle: {
+        borderWidth: 1,
+        borderColor: 'black',
+        borderRadius: 25,
+        width: 50,
+        height: 50,
+        padding: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10
+    },
+    simpleTitle: {
+        fontSize: getFontSize(18),
+        fontFamily: 'Heebo-Bold',
+        marginBottom: 5,
+    },
 });
 
 const stateToProps = (state) => {

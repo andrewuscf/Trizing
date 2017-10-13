@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -23,6 +24,10 @@
 		13E78AF08F614C98A12022BE /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DE33148379349C5AFACDF35 /* Zocial.ttf */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		20271E211F90616400364C8D /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20271E201F90616400364C8D /* RSKImageCropper.framework */; };
+		20271E221F90616400364C8D /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 20271E201F90616400364C8D /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		20271E4A1F90616800364C8D /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20271E491F90616800364C8D /* QBImagePicker.framework */; };
+		20271E4B1F90616800364C8D /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 20271E491F90616800364C8D /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2036A9FA1F7356AA005160B2 /* libRNFIRMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 496174F31E98C07D003B9FDB /* libRNFIRMessaging.a */; };
 		2086D8921E516C6000D9945E /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2086D8901E516C3300D9945E /* libRCTCameraRoll.a */; };
 		20FAE62C1F7D5A9200B0F028 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20FAE60A1F7D5A7A00B0F028 /* libimageCropPicker.a */; };
@@ -329,6 +334,21 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		20271E481F90616400364C8D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				20271E221F90616400364C8D /* RSKImageCropper.framework in Embed Frameworks */,
+				20271E4B1F90616800364C8D /* QBImagePicker.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0063A0931159491085B27A20 /* Heebo-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Heebo-ExtraBold.ttf"; path = "../app/assets/fonts/Heebo-ExtraBold.ttf"; sourceTree = "<group>"; };
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -356,6 +376,8 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		17B9FB4854744543BE53B544 /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
 		19E9A5A6F102418EA3141D0B /* Heebo-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Heebo-Medium.ttf"; path = "../app/assets/fonts/Heebo-Medium.ttf"; sourceTree = "<group>"; };
+		20271E201F90616400364C8D /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		20271E491F90616800364C8D /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2086D88B1E516C3300D9945E /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		208DD5881F7D51F700BAABB2 /* Stripe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Stripe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		20B0F08C1E5D739400EB5550 /* SimpleCoach.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = SimpleCoach.entitlements; path = SimpleCoach/SimpleCoach.entitlements; sourceTree = "<group>"; };
@@ -430,6 +452,7 @@
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				2086D8921E516C6000D9945E /* libRCTCameraRoll.a in Frameworks */,
+				20271E211F90616400364C8D /* RSKImageCropper.framework in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
@@ -442,6 +465,7 @@
 				492365071E5980750058073B /* libRCTFBSDK.a in Frameworks */,
 				3BB04ED95D0E417CA74B9383 /* libRNSVG.a in Frameworks */,
 				2036A9FA1F7356AA005160B2 /* libRNFIRMessaging.a in Frameworks */,
+				20271E4A1F90616800364C8D /* QBImagePicker.framework in Frameworks */,
 				76994335828F4092B855B1AD /* libRNFetchBlob.a in Frameworks */,
 				B22C6691587547769E014336 /* libRCTActionSheet.a in Frameworks */,
 				9941FA6A4FB04F29B3C07B89 /* libCodePush.a in Frameworks */,
@@ -781,6 +805,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				20271E491F90616800364C8D /* QBImagePicker.framework */,
+				20271E201F90616400364C8D /* RSKImageCropper.framework */,
 				13B07FAE1A68108700A75B9A /* SimpleCoach */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* SimpleCoachTests */,
@@ -838,6 +864,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				B1A0BB10DCFD39FC6101196B /* [CP] Embed Pods Frameworks */,
 				0697E30B8FFB70D5A0EE83C4 /* [CP] Copy Pods Resources */,
+				20271E481F90616400364C8D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1534,7 +1561,22 @@
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
 					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
-				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited) ${PODS_ROOT}/Firebase/Core/Sources $(inherited) \"${PODS_ROOT}/Headers/Public\" \"${PODS_ROOT}/Headers/Public/Firebase\" \"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\" \"${PODS_ROOT}/Headers/Public/FirebaseCore\" \"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\" \"${PODS_ROOT}/Headers/Public/FirebaseMessaging\" \"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleUtilities\" \"$(SRCROOT)/../node_modules/react-native-fcm/ios\"";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/Core/Sources",
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseMessaging\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"$(SRCROOT)/../node_modules/react-native-fcm/ios\"",
+				);
 				INFOPLIST_FILE = SimpleCoach/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1564,7 +1606,22 @@
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
 					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
-				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited) ${PODS_ROOT}/Firebase/Core/Sources $(inherited) \"${PODS_ROOT}/Headers/Public\" \"${PODS_ROOT}/Headers/Public/Firebase\" \"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\" \"${PODS_ROOT}/Headers/Public/FirebaseCore\" \"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\" \"${PODS_ROOT}/Headers/Public/FirebaseMessaging\" \"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleUtilities\" \"$(SRCROOT)/../node_modules/react-native-fcm/ios\"";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/Core/Sources",
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseMessaging\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"$(SRCROOT)/../node_modules/react-native-fcm/ios\"",
+				);
 				INFOPLIST_FILE = SimpleCoach/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1640,7 +1697,22 @@
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
 					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
-				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited) ${PODS_ROOT}/Firebase/Core/Sources $(inherited) \"${PODS_ROOT}/Headers/Public\" \"${PODS_ROOT}/Headers/Public/Firebase\" \"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\" \"${PODS_ROOT}/Headers/Public/FirebaseCore\" \"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\" \"${PODS_ROOT}/Headers/Public/FirebaseMessaging\" \"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleUtilities\" \"$(SRCROOT)/../node_modules/react-native-fcm/ios\"";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/Core/Sources",
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseMessaging\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"$(SRCROOT)/../node_modules/react-native-fcm/ios\"",
+				);
 				INFOPLIST_FILE = SimpleCoach/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

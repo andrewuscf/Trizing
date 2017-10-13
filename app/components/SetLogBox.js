@@ -20,7 +20,7 @@ const SetLogBox = React.createClass({
 
     getInitialState() {
         return {
-            value: null,
+            value: this.props.value,
         }
     },
 
@@ -143,7 +143,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderColor: '#e1e3df',
         borderWidth: .5,
-        flex: 1
+        flex: 1,
+        borderTopWidth: 0,
     },
 });
 
