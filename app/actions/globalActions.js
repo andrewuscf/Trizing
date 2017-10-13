@@ -111,7 +111,9 @@ export function login(data, asyncActions) {
                 if (responseJson.token) {
                     return dispatch(setTokenInRedux(responseJson.token, true));
                 }
-                if (responseJson.non_field_errors) {
+            }).catch((error) => {
+                asyncActions(false);
+                if (error.errors && error.errors.non_field_errors) {
                     asyncActions(false);
                     return dispatch({
                         type: types.API_ERROR, error: {
@@ -120,8 +122,6 @@ export function login(data, asyncActions) {
                         }
                     });
                 }
-            }).catch(() => {
-                asyncActions(false);
                 return dispatch({type: types.API_ERROR});
             });
     }
