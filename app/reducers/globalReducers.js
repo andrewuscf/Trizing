@@ -54,12 +54,6 @@ export default function AppReducers(state = initialState, action = null) {
                 Refreshing: true
             };
 
-
-        case constants.REGISTER_USER:
-            return {
-                ...state,
-            };
-
         case constants.UPDATE_USER:
             return {
                 ...state,
@@ -165,7 +159,7 @@ export default function AppReducers(state = initialState, action = null) {
         case constants.API_ERROR:
             return {
                 ...state,
-                error: action.error
+                Error: action.error
             };
 
         default:

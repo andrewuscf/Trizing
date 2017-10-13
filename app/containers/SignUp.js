@@ -66,11 +66,14 @@ const SignUp = React.createClass({
         }
     },
 
-    asyncActions(start) {
+    asyncActions(start, success = false) {
         if (start) {
             this.setState({busy: true});
         } else {
             this.setState({busy: false});
+            if (success) {
+                this.props.navigation.navigate('Login');
+            }
         }
     },
 
@@ -234,7 +237,10 @@ const styles = StyleSheet.create({
 
 
 const stateToProps = (state) => {
-    return state.Global;
+    return {
+        UserToken: state.Global.UserToken,
+        RequestUser: state.Global.RequestUser
+    };
 };
 
 const dispatchToProps = (dispatch) => {

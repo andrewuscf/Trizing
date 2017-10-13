@@ -173,35 +173,84 @@ export function resetPassword(data, asyncActions) {
 export function register(data, asyncActions) {
     asyncActions(true);
     return (dispatch, getState) => {
-        let JSONDATA = JSON.stringify(data);
-        return fetch(`${API_ENDPOINT}auth/register/`, fetchData('POST', JSONDATA))
+        let JSONData = JSON.stringify(data);
+
+
+
+        return RNFetchBlob.fetch('POST', `${API_ENDPOINT}auth/register/`,
+            setHeaders(getState().Global.UserToken), JSONData)
             .then(checkStatus)
             .then((responseJson) => {
                 asyncActions(false);
                 let message;
                 if (responseJson.email) {
+                    asyncActions(false, true);
                     message = {
                         title: 'Email verification required',
                         text: 'Please check your email in order to verify your account'
                     };
-                    if (responseJson.email.constructor === Array)
+                }
+                return dispatch({type: types.API_ERROR, error: message});
+            }).catch((error) => {
+                asyncActions(false);
+                let message;
+                if (error.errors) {
+                    if (error.errors.email && error.errors.email.constructor === Array) {
                         message = {
-                            title: responseJson.email[0],
+                            title: error.errors.email[0],
                             text: 'Please use another email or log into your account.'
                         };
+                    } else if (error.errors.username) {
+                        if (error.errors.username.constructor === Array) {
+                            message = {
+                                title: error.errors.username[0],
+                                text: 'Please use another username or log into your account.'
+                            };
+                        }
+                    } else if (error.errors.password) {
+                        if (error.errors.password.constructor === Array) {
+                            message = {
+                                title: error.errors.password[0],
+                                text: error.errors.password[1]
+                            };
+                        }
+                    }
                 }
-                if (responseJson.username) {
-                    if (responseJson.username.constructor === Array)
-                        message = {
-                            title: responseJson.username[0],
-                            text: 'Please use another username or log into your account.'
-                        };
-                }
-                return dispatch({type: types.REGISTER_USER, message: message});
-            }).catch(() => {
-                asyncActions(false);
-                return dispatch({type: types.API_ERROR});
+                return dispatch({type: types.API_ERROR, error: message});
             });
+
+        // return fetch(`${API_ENDPOINT}auth/register/`, fetchData('POST', JSONDATA))
+        //     .then(checkStatus)
+        //     .then((responseJson) => {
+        //         asyncActions(false);
+        //         let message;
+        //         console.log(responseJson)
+        //         if (responseJson.email) {
+        //
+        //             asyncActions(false, true);
+        //             message = {
+        //                 title: 'Email verification required',
+        //                 text: 'Please check your email in order to verify your account'
+        //             };
+        //             if (responseJson.email.constructor === Array)
+        //                 message = {
+        //                     title: responseJson.email[0],
+        //                     text: 'Please use another email or log into your account.'
+        //                 };
+        //         }
+        //         if (responseJson.username) {
+        //             if (responseJson.username.constructor === Array)
+        //                 message = {
+        //                     title: responseJson.username[0],
+        //                     text: 'Please use another username or log into your account.'
+        //                 };
+        //         }
+        //         return dispatch({type: types.API_ERROR, error: message});
+        //     }).catch((error) => {
+        //         asyncActions(false);
+        //         console.log(error);
+        //         return dispatch({type: types.API_ERROR});
+        //     });
     }
 }
 
@@ -230,7 +279,7 @@ export function getNotifications(refresh = false, newNotifications = false) {
                     if (newNotifications) {
                         _.each(responseJson.results, (notification) => {
                             if (notification.action.verb.toLowerCase().indexOf('joined') != -1
-                                && getState().Global.RequestUser.type == 1) {
+                                && getState().Global.RequestUser.type === 1) {
                                 dispatch(getClients(true));
                                 return false;
                             } else if (notification.action.action_object.macro_plan_days || notification.action.action_object.workouts) {

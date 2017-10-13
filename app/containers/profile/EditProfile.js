@@ -22,6 +22,7 @@ import {
 } from 'react-native-popup-menu';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import moment from 'moment';
+import InputAccessory from '../../components/InputAccessory';
 
 import {getFontSize, resetNav} from '../../actions/utils';
 
@@ -228,7 +229,7 @@ const EditProfile = React.createClass({
     render() {
         const user = this.props.RequestUser;
         let options = {
-            auto: 'none',
+            auto: 'placeholders',
             fields: {
                 type: {
                     nullOption: {value: '', text: 'Choose a Profile Type'},
@@ -357,7 +358,7 @@ const EditProfile = React.createClass({
 
 
                     </KeyboardAwareScrollView>
-
+                    <InputAccessory/>
 
                 </View>
             );

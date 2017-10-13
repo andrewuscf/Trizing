@@ -69,6 +69,7 @@ export function checkStatus(response) {
         error.status = status;
         console.log(status)
         console.log(response.json())
+        error.errors = response.json();
         throw error;
     }
 }
