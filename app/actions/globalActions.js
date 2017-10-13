@@ -105,8 +105,9 @@ export function login(data, asyncActions) {
     asyncActions(true);
     const body = JSON.stringify(data);
     return dispatch => {
-        return fetch(`${API_ENDPOINT}auth/token/`, fetchData('POST', body))
-            .then(checkStatus)
+
+        return RNFetchBlob.fetch('POST', `${API_ENDPOINT}auth/token/`,
+            setHeaders(), body).then(checkStatus)
             .then((responseJson) => {
                 if (responseJson.token) {
                     return dispatch(setTokenInRedux(responseJson.token, true));
@@ -136,8 +137,7 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
         const timeZone = momentTz.tz.guess();
         if (timeZone) url += `?timezone=${timeZone}`;
 
-        return RNFetchBlob.fetch('GET', url, setHeaders(getState().Global.UserToken)).then((res) => {
-            let responseJson = res.json();
+        return RNFetchBlob.fetch('GET', url, setHeaders(getState().Global.UserToken)).then(checkStatus).then((responseJson) => {
             if (responseJson.detail)
                 return dispatch(removeToken());
             return dispatch({type: types.LOAD_REQUEST_USER, request_user: responseJson});
@@ -154,8 +154,8 @@ export function resetPassword(data, asyncActions) {
         const JSONData = JSON.stringify(data);
 
         return RNFetchBlob.fetch('POST', `${API_ENDPOINT}auth/password/reset/`,
-            setHeaders(getState().Global.UserToken), JSONData)
-            .then((response) => {
+            setHeaders(getState().Global.UserToken), JSONData).then(checkStatus)
+            .then(() => {
                 asyncActions(false);
                 return dispatch({
                     type: types.API_ERROR, error: {
@@ -174,7 +174,6 @@ export function register(data, asyncActions) {
     asyncActions(true);
     return (dispatch, getState) => {
         let JSONData = JSON.stringify(data);
-
 
 
         return RNFetchBlob.fetch('POST', `${API_ENDPOINT}auth/register/`,
