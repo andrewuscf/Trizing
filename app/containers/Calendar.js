@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         paddingBottom: 5,
         paddingLeft: 10,
-        fontSize: getFontSize(22),
+        fontSize: getFontSize(20),
         fontFamily: 'Heebo-Bold',
     }
 });

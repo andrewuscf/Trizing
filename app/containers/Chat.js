@@ -13,6 +13,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
+import _ from 'lodash';
 
 import * as ChatActions from '../actions/chatActions';
 
@@ -91,6 +92,13 @@ const Chat = React.createClass({
                               dataSource={dataSource} onEndReached={this.onEndReached}
                               onEndReachedThreshold={Dimensions.get('window').height}
                               renderRow={(room, i) => <ChatRoomBox key={i} room={room}
+                                                                   chatNotifications={_.filter(this.props.Notifications, {
+                                                                       action: {
+                                                                           description: 'Message',
+                                                                           action_object: {room_label: room.label}
+                                                                       },
+                                                                       unread: true
+                                                                   })}
                                                                    RequestUser={this.props.RequestUser}
                                                                    _redirect={this._redirect}/>}
                     />
@@ -167,6 +175,7 @@ const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
         Refreshing: state.Global.Refreshing,
+        Notifications: state.Global.Notifications,
         ...state.Chat
     };
 };

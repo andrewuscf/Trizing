@@ -1,7 +1,5 @@
 import React from 'react';
 import {
-    View,
-    Text,
     StyleSheet,
     ScrollView,
     Dimensions
@@ -9,11 +7,11 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 import * as chatActions from '../../actions/chatActions';
-import {getFontSize, trunc} from '../../actions/utils';
+import {API_ENDPOINT, getFontSize, checkStatus, setHeaders} from '../../actions/utils';
 
-import AvatarImage from '../../components/AvatarImage';
 import PersonBox from '../../components/PersonBox';
 
 
@@ -29,9 +27,33 @@ const CreateChatRoom = React.createClass({
 
     componentDidMount() {
         this.props.navigation.setParams({handleSave: this._onSubmit});
-        if (this.props.RequestUser.type == 2 && this.props.Team.length < 1) {
+        if (this.props.RequestUser.type === 2 && this.props.Team.length < 1) {
             this.props.actions.getTeam(true);
         }
+    },
+
+    checkExistingRoom() {
+        let url = `${API_ENDPOINT}social/room/?users=${this.props.RequestUser.id}`;
+        this.state.selected.forEach((user) => {
+            url += `&users=${user}`
+        });
+
+        RNFetchBlob.fetch('GET', url, setHeaders(this.props.UserToken)).then(checkStatus)
+            .then((responseJson) => {
+                if (responseJson.label) {
+                    this.props.navigation.navigate('ChatRoom', {room_label: responseJson.label});
+                    return true;
+                } else {
+                    const users = [{user: {id: this.props.RequestUser.id}}];
+                    this.state.selected.forEach((user)=> users.push({user: {id: user}}));
+                    this.props.actions.createChatRoom({
+                        joins: users
+                    }, this.asyncActions);
+                }
+            }).catch((error) => {
+            console.log(error)
+            return false;
+        });
     },
 
 
@@ -52,17 +74,13 @@ const CreateChatRoom = React.createClass({
 
     _onSubmit() {
         if (this.state.selected.length > 0) {
-            const users = [
-                ...this.state.selected,
-                this.props.RequestUser.id
-            ];
-            this.props.actions.createChatRoom({users: users}, this.asyncActions)
+            this.checkExistingRoom();
         }
     },
 
     selectUser(userId) {
         const index = _.indexOf(this.state.selected, userId);
-        if (index != -1) {
+        if (index !== -1) {
             this.setState({
                 selected: [...this.state.selected.slice(0, index), ...this.state.selected.slice(index + 1)]
             });
@@ -128,6 +146,7 @@ const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
         Clients: state.Home.Clients,
+        UserToken: state.Global.UserToken,
         ...state.Chat
     };
 };

@@ -62,7 +62,7 @@ const CreateEvent = React.createClass({
     },
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.disabled != this.state.disabled) {
+        if (prevState.disabled !== this.state.disabled) {
             this.props.navigation.setParams({
                 handleSave: this._onSubmit,
                 saveText: null,

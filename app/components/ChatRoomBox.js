@@ -9,7 +9,7 @@ import moment from 'moment';
 import FontIcon from 'react-native-vector-icons/FontAwesome';
 
 import AvatarImage from './AvatarImage';
-import {getFontSize} from "../actions/utils";
+import {getFontSize, trunc} from "../actions/utils";
 import GlobalStyle from "../containers/globalStyle";
 
 moment.updateLocale('en', {
@@ -28,6 +28,7 @@ const ChatRoomBox = React.createClass({
         room: React.PropTypes.object.isRequired,
         _redirect: React.PropTypes.func.isRequired,
         RequestUser: React.PropTypes.object.isRequired,
+        chatNotifications: React.PropTypes.array.isRequired
     },
 
     _toRoom() {
@@ -42,29 +43,44 @@ const ChatRoomBox = React.createClass({
 
     render() {
         const room = this.props.room;
-        let sender = room.users[room.users.length - 1];
-        if (this.props.RequestUser.id == sender.id && room.users.length > 1) {
-            sender = room.users[room.users.length - 2];
+        console.log(room)
+        let avatar = null;
+        let title = '';
+        let lastMessage = '';
+        const hasUnread = this.props.chatNotifications.length > 0;
+        if (room.last_message) {
+            lastMessage = room.last_message.text;
         }
-        let image = sender.profile.thumbnail ? sender.profile.thumbnail : sender.profile.avatar;
+        let sender = room.all_users[room.all_users.length - 1];
+        if (this.props.RequestUser.id === sender.id && room.all_users.length > 1) {
+            sender = room.all_users[room.all_users.length - 2];
+        }
+        if (sender) {
+            avatar = sender.avatar;
+            title = sender.name;
+        }
+        console.log(sender)
+        // let image = sender.profile.thumbnail ? sender.profile.thumbnail : sender.profile.avatar;
         return (
             <TouchableHighlight style={styles.container} onPress={this._toRoom} underlayColor='white'>
                 <View style={styles.inner}>
-                    <AvatarImage image={image} style={styles.avatar}/>
+                    <AvatarImage image={avatar} style={styles.avatar}/>
                     <View style={styles.details}>
-                        <Text style={[styles.name, GlobalStyle.lightBlueText]}>
-                            {sender.profile.first_name} {sender.profile.last_name}
-                            </Text>
-                        {(room.last_message && room.last_message.text) ?
-                            <View style={styles.lastMessageSection}>
-                                <Text style={styles.bold}>{this.trimToLength(room.last_message.text, 25)}</Text>
-
-                            </View> : null
+                        <Text style={styles.actor}>{title}</Text>
+                        {room.team && room.last_message ?
+                            <Text style={styles.sender}>
+                                <Text style={styles.senderName}>{room.last_message.user.name.split(' ')[0]}:</Text>
+                                <Text style={styles.smallText}> {trunc(lastMessage, 40)}</Text>
+                            </Text> :
+                            <Text style={styles.smallText}>{trunc(lastMessage, 40)}</Text>
                         }
                     </View>
                     <View style={styles.rightSec}>
-                        <Text style={[styles.timeAgo]}>{moment(room.last_message.createdAt).fromNow(false)}</Text>
-                        <FontIcon name="circle" style={[GlobalStyle.lightBlueText, {paddingTop: 5}]}/>
+                        {(room.last_message ) ?
+                            <Text style={[styles.timeAgo]}>{moment(room.last_message.createdAt).fromNow(false)}</Text>
+                            : null
+                        }
+                        {hasUnread ? <FontIcon name="circle" style={[GlobalStyle.lightBlueText, {paddingTop: 5}]}/>: null}
                     </View>
                 </View>
             </TouchableHighlight>
@@ -79,7 +95,6 @@ const styles = StyleSheet.create({
         borderColor: '#e1e3df',
         borderBottomWidth: 1,
         backgroundColor: 'white',
-        // margin: 10,
         marginBottom: 5,
         borderRadius: 5,
     },
@@ -99,25 +114,17 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         paddingLeft: 10,
     },
-    small: {
-        fontSize: 11,
-        color: 'gray'
-    },
-    name: {
-        fontSize: getFontSize(16),
-        fontFamily: 'Heebo-Bold',
-        color: 'black'
-    },
-    bold: {
-        color: 'rgba(0,0,0,.70)',
+    smallText: {
         fontFamily: 'Heebo-Medium',
-        // color: 'grey'
-        // fontWeight: 'bold'
+        color: '#7f7f7f'
     },
-    lastMessageSection: {
-        flex: 1,
-        flexDirection: 'row',
-        paddingTop: 5
+    sender: {
+        fontFamily: 'Heebo-Medium',
+        color: '#3D3C3A'
+    },
+    senderName: {
+        fontFamily: 'Heebo-Medium',
+        color: '#3D3C3A'
     },
     timeAgo: {
         paddingLeft: 6,
@@ -126,7 +133,10 @@ const styles = StyleSheet.create({
     rightSec: {
         justifyContent: 'center',
         alignItems: 'flex-end'
-    }
+    },
+    actor: {
+        fontFamily: 'Heebo-Medium',
+    },
 });
 
 export default ChatRoomBox;

@@ -2,10 +2,12 @@ import React from 'react';
 import {
     View,
     StyleSheet,
+    Text
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {GiftedChat} from 'react-native-gifted-chat';
+import {GiftedChat, Bubble} from 'react-native-gifted-chat';
+import _ from 'lodash';
 
 import * as ChatActions from '../../actions/chatActions';
 
@@ -18,8 +20,12 @@ const ChatRoom = React.createClass({
     },
 
     getInitialState() {
+        let reduxChatRoom = null;
+        if (this.props.room_label) {
+            reduxChatRoom = _.find(this.props.Rooms, {label: this.props.room_label})
+        }
         return {
-            messages: [],
+            messages: reduxChatRoom && reduxChatRoom.messages ? reduxChatRoom.messages : [],
             next: null,
             isLoadingEarlier: false
         }
@@ -53,6 +59,9 @@ const ChatRoom = React.createClass({
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState((previousState) => {
+                    if (this.state.label && !this.state.next) {
+                        this.props.actions.sendMessage(GiftedChat.append(previousState.messages, responseJson.results));
+                    }
                     return {
                         messages: (this.state.next) ? GiftedChat.prepend(previousState.messages, responseJson.results)
                             : GiftedChat.append(previousState.messages, responseJson.results),
@@ -80,6 +89,30 @@ const ChatRoom = React.createClass({
     _back() {
         this.props.navigation.goBack()
     },
+    renderName(props) {
+        const {user: self} = props;
+        const {user = {}} = props.currentMessage;
+        const {user: pUser = {}} = props.previousMessage;
+        const isSameUser = pUser._id === user._id;
+        const isSelf = user._id === self._id;
+        const shouldNotRenderName = isSameUser;
+
+        return shouldNotRenderName || isSelf ? (<View/>) :
+            (
+                <Text style={[isSelf ? styles.selfUser : styles.otherUser]}>
+                    {user.name}
+                </Text>
+            )
+    },
+
+    renderBubble(props) {
+        return (
+            <View>
+                {this.renderName(props)}
+                <Bubble {...props} />
+            </View>
+        )
+    },
 
     render() {
         return (
@@ -88,6 +121,7 @@ const ChatRoom = React.createClass({
                     messages={this.state.messages}
                     onSend={this.onSendPress}
                     renderAvatarOnTop={true}
+                    // renderBubble={this.renderBubble}
                     loadEarlier={!!this.state.next}
                     onLoadEarlier={this.getMessages}
                     isLoadingEarlier={this.state.isLoadingEarlier}
@@ -108,7 +142,8 @@ const styles = StyleSheet.create({
 const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
-        UserToken: state.Global.UserToken
+        UserToken: state.Global.UserToken,
+        Rooms: state.Chat.Rooms
     };
 };
 

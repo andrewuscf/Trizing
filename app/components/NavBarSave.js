@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     text: {
         color: '#00AFA3',
         fontFamily: 'Heebo-Medium',
+        fontSize: getFontSize(16)
     }
 });
 

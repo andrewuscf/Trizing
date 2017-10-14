@@ -1,11 +1,12 @@
 'use strict';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 import * as types from './actionTypes';
-import {fetchData, API_ENDPOINT, refreshPage, checkStatus} from './utils';
+import {fetchData, API_ENDPOINT, refreshPage, checkStatus, setHeaders} from './utils';
 
 
 export function getChatRooms(refresh = false) {
-    let url = `${API_ENDPOINT}social/chats/`;
+    let url = `${API_ENDPOINT}social/rooms/`;
     return (dispatch, getState) => {
         if (refresh) dispatch(refreshPage());
         if (!refresh && getState().Chat.RoomsNext)
@@ -20,24 +21,30 @@ export function getChatRooms(refresh = false) {
     }
 }
 
-export function sendMessage(data) {
-    return {type: types.SEND_MESSAGE, message: data};
+export function sendMessage(data, pushNotification= false) {
+    return {type: types.SEND_MESSAGE, message: data, pushNotification};
 }
 
 export function createChatRoom(data, asyncActions) {
     asyncActions(true);
     return (dispatch, getState) => {
-        return fetch(`${API_ENDPOINT}social/chats/`,
-            fetchData('POST', JSON.stringify(data), getState().Global.UserToken))
-            .then((response) => response.json())
+
+        return RNFetchBlob.fetch('POST', `${API_ENDPOINT}social/rooms/`,
+            setHeaders(getState().Global.UserToken), JSON.stringify(data))
+            .then(checkStatus)
             .then((responseJson) => {
-                asyncActions(false, responseJson.label);
-                return dispatch({type: types.CREATE_CHAT_ROOM, response: responseJson});
-            })
-            .catch((error) => {
+                if (responseJson.label) {
+                    asyncActions(false, responseJson.label);
+                    return dispatch({type: types.CREATE_CHAT_ROOM, response: responseJson});
+                } else {
+                    asyncActions(false);
+                }
+            }).catch((error) => {
                 asyncActions(false);
+                console.log(error.errors)
                 return dispatch({type: types.API_ERROR});
             });
+
     }
 }
 

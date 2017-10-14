@@ -50,7 +50,7 @@ const EventBox = React.createClass({
                               style={[GlobalStyle.simpleBottomBorder, styles.container]}>
                 <View style={styles.eventDate}>
                     <Text>{start_time.format('h:mma')}</Text>
-                    <Text style={styles.invitedUser}>{end_time.format('h:mma')}</Text>
+                    <Text style={styles.endTime}>{end_time.format('h:mma')}</Text>
                 </View>
                 <View style={{flex: .1, justifyContent: 'center',}}>
                     <View style={{borderColor: color, borderTopWidth: 2, transform: [{rotate: '90deg'}]}}/>
@@ -77,10 +77,11 @@ const styles = StyleSheet.create({
         flex: 1,
         borderColor: '#e1e3df',
         borderWidth: 1,
+        borderTopWidth: 0,
         padding: 10,
         paddingBottom: 15,
         backgroundColor: 'white',
-        margin: 10,
+        // margin: 10,
         marginBottom: 5,
         borderRadius: 5,
     },
@@ -96,7 +97,8 @@ const styles = StyleSheet.create({
     },
     firstName: {
         fontFamily: 'Heebo-Medium',
-        color: '#393839'
+        color: '#393839',
+        fontSize: getFontSize(16),
     },
     noteText: {
         flexWrap: 'wrap',
@@ -109,7 +111,12 @@ const styles = StyleSheet.create({
     invitedUser: {
         fontFamily: 'Heebo-Light',
         color: '#4d4d4e',
-        fontSize: getFontSize(16),
+        fontSize: getFontSize(12),
+    },
+    endTime: {
+        fontFamily: 'Heebo-Light',
+        color: '#4d4d4e',
+        fontSize: getFontSize(14),
     },
     userIcon: {
         color: 'black',
