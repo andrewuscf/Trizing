@@ -1,22 +1,23 @@
-import React, {Component} from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     View,
     Text,
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {getFontSize} from '../actions/utils';
 import {DAYS_OF_WEEK} from '../assets/constants';
 
 
-const DaysOfWeek = React.createClass({
+const DaysOfWeek = CreateClass({
     propTypes: {
-        daySelectedState: React.PropTypes.func,
-        days: React.PropTypes.array.isRequired,
-        selectedDays: React.PropTypes.array,
+        daySelectedState: PropTypes.func,
+        days: PropTypes.array.isRequired,
+        selectedDays: PropTypes.array,
     },
 
     getInitialState() {

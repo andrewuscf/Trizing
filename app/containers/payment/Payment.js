@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     View,
     Text,
@@ -22,7 +23,7 @@ import CustomStatus from '../../components/CustomStatus';
 
 stripe.init({publishableKey: stripeKey()});
 
-const Payment = React.createClass({
+const Payment = CreateClass({
     getInitialState() {
         return {
             loading: true,

@@ -1,4 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -14,13 +16,13 @@ import moment from 'moment';
 import {getFontSize} from '../actions/utils';
 
 
-const WorkoutProgramBox = React.createClass({
+const WorkoutProgramBox = CreateClass({
     propTypes: {
-        schedule: React.PropTypes.object.isRequired,
-        _redirect: React.PropTypes.func.isRequired,
-        select: React.PropTypes.func,
-        selected: React.PropTypes.bool,
-        deleteSchedule: React.PropTypes.func.isRequired
+        schedule: PropTypes.object.isRequired,
+        _redirect: PropTypes.func.isRequired,
+        select: PropTypes.func,
+        selected: PropTypes.bool,
+        deleteSchedule: PropTypes.func.isRequired
     },
 
     getInitialState() {
@@ -111,20 +113,19 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         paddingLeft: 18,
         flexWrap: 'wrap',
-        flex:1
+        flex: 1
     },
-    date: {
-    },
+    date: {},
     mainText: {
         fontSize: getFontSize(18),
         backgroundColor: 'transparent',
         color: '#4d4d4e',
         fontFamily: 'Heebo-Medium',
         marginBottom: 5,
-        flex:.9
+        flex: .9
     },
     edit: {
-        flex:.06,
+        flex: .06,
     },
 });
 

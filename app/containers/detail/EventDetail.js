@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
-    View,
     Text,
     StyleSheet,
-    RefreshControl,
     ScrollView,
 } from 'react-native';
 import _ from 'lodash';
@@ -16,10 +16,10 @@ import * as CalendarActions from '../../actions/calendarActions';
 
 import PeopleBar from '../../components/PeopleBar';
 
-const EventDetail = React.createClass({
+const EventDetail = CreateClass({
     propTypes: {
-        eventId: React.PropTypes.number.isRequired,
-        occurrenceId: React.PropTypes.number
+        eventId: PropTypes.number.isRequired,
+        occurrenceId: PropTypes.number
     },
 
     getInitialState() {
@@ -50,7 +50,8 @@ const EventDetail = React.createClass({
             end_time = moment.utc(occurrence.end_time).local();
         }
         return (
-            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle} showsVerticalScrollIndicator={false}>
+            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}
+                        showsVerticalScrollIndicator={false}>
                 {start_time ?
                     <Text style={styles.eventDate}>
                         {start_time.format('ddd MMM DD, h:mm A ')} - {end_time.format('h:mm A')}

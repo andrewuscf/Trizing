@@ -1,14 +1,16 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {StyleSheet, Text, TouchableOpacity, Platform, ActivityIndicator, Keyboard} from 'react-native';
 import {getFontSize} from '../actions/utils';
 
 import CustomIcon from './CustomIcon';
 
 
-const Save = React.createClass({
+const Save = CreateClass({
     propTypes: {
-        save: React.PropTypes.func.isRequired,
-        disabled: React.PropTypes.bool.isRequired,
+        save: PropTypes.func.isRequired,
+        disabled: PropTypes.bool.isRequired,
     },
 
     _onPress() {
@@ -19,7 +21,7 @@ const Save = React.createClass({
     render() {
         let content = null;
         if (this.props.disabled) {
-           content = <ActivityIndicator animating={true} size='small'/>;
+            content = <ActivityIndicator animating={true} size='small'/>;
         } else if (typeof this.props.text === "string") {
             content = <Text style={styles.text}>{this.props.text}</Text>;
         } else if (this.props.text) {

@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     View,
     Text,
@@ -25,7 +26,7 @@ import SubmitButton from '../components/SubmitButton';
 
 const Form = t.form.Form;
 
-const Login = React.createClass({
+const Login = CreateClass({
     getInitialState() {
         return {
             value: null,

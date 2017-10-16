@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     StyleSheet,
     Text,
@@ -21,9 +22,9 @@ import {getFontSize} from '../../actions/utils';
 
 import CustomIcon from '../../components/CustomIcon';
 
-const SurveyList = React.createClass({
+const SurveyList = CreateClass({
     propTypes: {
-        // Refreshing: React.PropTypes.bool.isRequired,
+        // Refreshing: PropTypes.bool.isRequired,
     },
 
 
@@ -57,7 +58,8 @@ const SurveyList = React.createClass({
         const QuestionnaireDS = ds.cloneWithRows(this.props.Questionnaires);
         return (
             <View style={{flex: 1}}>
-                <ListView ref='survey_list' removeClippedSubviews={(Platform.OS !== 'ios')} showsVerticalScrollIndicator={false}
+                <ListView ref='survey_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                          showsVerticalScrollIndicator={false}
                           style={styles.container} enableEmptySections={true} dataSource={QuestionnaireDS}
                           renderRow={(questionnaire) =>
                               <TouchableOpacity style={styles.link}
@@ -85,7 +87,6 @@ const SurveyList = React.createClass({
 SurveyList.navigationOptions = {
     title: 'Surveys',
 };
-
 
 
 const styles = StyleSheet.create({

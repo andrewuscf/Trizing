@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     ScrollView,
     View,
@@ -15,9 +17,9 @@ import DisplayWorkoutDay from '../../components/DisplayWorkoutDay';
 import Loading from '../../components/Loading';
 
 
-const WorkoutDetail = React.createClass({
+const WorkoutDetail = CreateClass({
     propTypes: {
-        workoutId: React.PropTypes.number.isRequired,
+        workoutId: PropTypes.number.isRequired,
     },
 
     getInitialState() {
@@ -64,7 +66,8 @@ const WorkoutDetail = React.createClass({
         if (!this.state.workout) return <Loading/>;
         const todayDay = moment().isoWeekday();
         let workout_days = this.state.workout.workout_days.map((workout_day, index) => {
-            return <DisplayWorkoutDay key={index} _toWorkoutDay={this._toWorkoutDay.bind(null, workout_day.id)} workout_day={workout_day}
+            return <DisplayWorkoutDay key={index} _toWorkoutDay={this._toWorkoutDay.bind(null, workout_day.id)}
+                                      workout_day={workout_day}
                                       dayIndex={index} active={_.includes(workout_day.days, todayDay)}/>
         });
         return (

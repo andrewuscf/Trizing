@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+const CreateClass = require('create-react-class');
 import {TabNavigator, StackNavigator, TabBarBottom, NavigationActions} from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -111,7 +112,7 @@ const HomeNav = StackNavigator({
         screen: paramsToProps(CreateMacroLog)
     },
     CreateWeightLog: {
-      screen: paramsToProps(CreateWeightLog),
+        screen: paramsToProps(CreateWeightLog),
         navigationOptions: {
             headerTitle: 'Log Weight',
         }

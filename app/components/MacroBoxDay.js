@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     View,
     Text,
@@ -6,6 +7,7 @@ import {
     TouchableOpacity,
     TextInput,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import {getFontSize} from '../actions/utils';
@@ -13,13 +15,13 @@ import {DAYS_OF_WEEK} from '../assets/constants';
 
 import GlobalStyle from '../containers/globalStyle';
 
-const MacroBoxDay = React.createClass({
+const MacroBoxDay = CreateClass({
     propTypes: {
-        selectedDays: React.PropTypes.array.isRequired,
-        planDayIndex: React.PropTypes.number,
-        day_plan: React.PropTypes.object,
-        getDayState: React.PropTypes.func,
-        active: React.PropTypes.bool
+        selectedDays: PropTypes.array.isRequired,
+        planDayIndex: PropTypes.number,
+        day_plan: PropTypes.object,
+        getDayState: PropTypes.func,
+        active: PropTypes.bool
     },
 
     getInitialState() {

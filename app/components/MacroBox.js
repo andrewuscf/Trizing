@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -19,11 +21,11 @@ import GlobalStyle from '../containers/globalStyle';
 import MacroBoxDay from './MacroBoxDay';
 
 
-const MacroBox = React.createClass({
+const MacroBox = CreateClass({
     propTypes: {
-        plan: React.PropTypes.object.isRequired,
-        select: React.PropTypes.func,
-        selected: React.PropTypes.bool
+        plan: PropTypes.object.isRequired,
+        select: PropTypes.func,
+        selected: PropTypes.bool
     },
 
     getInitialState() {

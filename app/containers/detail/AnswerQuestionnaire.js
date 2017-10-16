@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     StyleSheet,
@@ -16,9 +18,9 @@ import {getFontSize} from '../../actions/utils';
 
 import AnswerQuestionBox from '../../components/AnswerQuestionBox';
 
-const AnswerQuestionnaire = React.createClass({
+const AnswerQuestionnaire = CreateClass({
     propTypes: {
-        questionnaire: React.PropTypes.object.isRequired,
+        questionnaire: PropTypes.object.isRequired,
     },
 
     getInitialState() {

@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     StyleSheet,
@@ -22,13 +24,13 @@ const Note = t.struct({
 
 const {height: deviceHeight} = Dimensions.get('window');
 
-const CreateNote = React.createClass({
+const CreateNote = CreateClass({
     propTypes: {
-        type: React.PropTypes.string.isRequired,
-        object_id: React.PropTypes.number.isRequired,
-        title: React.PropTypes.string.isRequired,
-        noteAdded: React.PropTypes.func.isRequired,
-        exerciseId: React.PropTypes.number
+        type: PropTypes.string.isRequired,
+        object_id: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+        noteAdded: PropTypes.func.isRequired,
+        exerciseId: PropTypes.number
     },
 
     getInitialState() {
@@ -76,7 +78,7 @@ const CreateNote = React.createClass({
                 fetchData('POST', JSON.stringify(values), this.props.UserToken))
                 .then(checkStatus)
                 .then((responseJson) => {
-                console.log(responseJson)
+                    console.log(responseJson)
                     if (responseJson.id) {
                         this.props.noteAdded(responseJson);
                         this.asyncActions(true);

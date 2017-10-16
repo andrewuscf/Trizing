@@ -1,6 +1,7 @@
 import * as constants from '../actions/actionTypes';
 import _ from 'lodash';
 import React from 'react';
+const CreateClass = require('create-react-class');
 
 
 const initialState = {

@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -22,11 +24,11 @@ import MacroLogBox from '../../components/MacroLogBox';
 
 const {width: deviceWidth} = Dimensions.get('window');
 
-let MacroLogList = React.createClass({
+let MacroLogList = CreateClass({
     propTypes: {
-        logs: React.PropTypes.array.isRequired,
-        macro_plan_day: React.PropTypes.object.isRequired,
-        logged_data: React.PropTypes.object.isRequired,
+        logs: PropTypes.array.isRequired,
+        macro_plan_day: PropTypes.object.isRequired,
+        logged_data: PropTypes.object.isRequired,
     },
 
     renderHeader() {
@@ -103,9 +105,9 @@ let MacroLogList = React.createClass({
 const unfilledColor = 'rgba(0, 0, 0, 0.1)';
 
 
-const MacroLogDetail = React.createClass({
+const MacroLogDetail = CreateClass({
     propTypes: {
-        macro_log: React.PropTypes.object.isRequired,
+        macro_log: PropTypes.object.isRequired,
     },
 
     getInitialState() {
@@ -194,12 +196,14 @@ const MacroLogDetail = React.createClass({
                 <View style={[styles.tabbarView, GlobalStyle.simpleBottomBorder]}>
                     <TouchableOpacity style={[styles.tabView, (this.state.tab === 1) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 1)}>
-                        <FontIcon name="list" style={(this.state.tab === 1) ? styles.selectedText : null} size={getFontSize(14)}/>
+                        <FontIcon name="list" style={(this.state.tab === 1) ? styles.selectedText : null}
+                                  size={getFontSize(14)}/>
                         <Text style={(this.state.tab === 1) ? styles.selectedText : null}>Logs</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.tabView, (this.state.tab === 2) ? styles.selectedTab : null]}
                                       onPress={this._onTabPress.bind(null, 2)}>
-                        <FontIcon name="bar-chart" style={(this.state.tab === 2) ? styles.selectedText : null} size={getFontSize(14)}/>
+                        <FontIcon name="bar-chart" style={(this.state.tab === 2) ? styles.selectedText : null}
+                                  size={getFontSize(14)}/>
                         <Text style={(this.state.tab === 2) ? styles.selectedText : null}>Graph</Text>
                     </TouchableOpacity>
                 </View>

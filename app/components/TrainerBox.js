@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import FontIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -8,11 +10,11 @@ import GlobalStyle from '../containers/globalStyle';
 
 import AvatarImage from './AvatarImage';
 
-const TrainerBox = React.createClass({
+const TrainerBox = CreateClass({
     propTypes: {
-        trainer: React.PropTypes.object.isRequired,
+        trainer: PropTypes.object.isRequired,
 
-        navigate: React.PropTypes.func.isRequired,
+        navigate: PropTypes.func.isRequired,
     },
 
     goToProfile() {
@@ -28,7 +30,7 @@ const TrainerBox = React.createClass({
         const person = this.props.trainer;
         return (
             <TouchableOpacity style={styles.container} onPress={this.goToProfile}>
-                <AvatarImage style={styles.avatar} image={person.profile.thumbnail} />
+                <AvatarImage style={styles.avatar} image={person.profile.thumbnail}/>
                 <View style={styles.mainContent}>
                     <Text style={styles.userName}>{person.profile.first_name} {person.profile.last_name}</Text>
                     <Text style={{fontFamily: 'Heebo-Medium', color: '#4d4d4e',}}>CERTIFICATES</Text>
@@ -45,7 +47,7 @@ const TrainerBox = React.createClass({
                         </Text>
                     </View>
                 </View>
-                <View style={{flex:.3}}>
+                <View style={{flex: .3}}>
                     <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
                         <MaterialIcon name="star" style={GlobalStyle.redText}/>
                         <MaterialIcon name="star" style={GlobalStyle.redText}/>

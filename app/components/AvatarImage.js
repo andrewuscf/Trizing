@@ -1,12 +1,14 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {CachedImage} from "react-native-img-cache";
 
-const AvatarImage = React.createClass({
+const AvatarImage = CreateClass({
     propTypes: {
-        image: React.PropTypes.string,
-        redirect: React.PropTypes.func,
-        cache: React.PropTypes.bool,
+        image: PropTypes.string,
+        redirect: PropTypes.func,
+        cache: PropTypes.bool,
     },
 
     onPress(userId) {

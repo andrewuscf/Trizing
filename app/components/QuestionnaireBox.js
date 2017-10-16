@@ -1,23 +1,23 @@
-import React, {Component} from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     View,
     Text,
     StyleSheet,
-    Image,
     TouchableOpacity,
-    Alert
 } from 'react-native';
+import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
 import {getFontSize} from '../actions/utils';
 
-const QuestionnaireBox = React.createClass({
+const QuestionnaireBox = CreateClass({
     propTypes: {
-        questionnaire: React.PropTypes.object,
-        selectQuestionnaire: React.PropTypes.func.isRequired,
-        _redirect: React.PropTypes.func.isRequired,
-        selected: React.PropTypes.bool
+        questionnaire: PropTypes.object,
+        selectQuestionnaire: PropTypes.func.isRequired,
+        _redirect: PropTypes.func.isRequired,
+        selected: PropTypes.bool
     },
 
     _onPress() {
@@ -56,7 +56,7 @@ const QuestionnaireBox = React.createClass({
                 {!questionnaire ?
 
                     <View style={styles.center}>
-                        <Icon name="plus" size={30} color='#1352e2' />
+                        <Icon name="plus" size={30} color='#1352e2'/>
                         <View style={styles.details}>
                             <Text style={styles.mainText}>Create New</Text>
                         </View>
@@ -74,7 +74,7 @@ const QuestionnaireBox = React.createClass({
                         </View>
                     </View>
                 }
-                {questionnaire? <TouchableOpacity style={styles.edit} onPress={this._onDelete}>
+                {questionnaire ? <TouchableOpacity style={styles.edit} onPress={this._onDelete}>
                     <Icon name="trash-o" size={20} color='#4d4d4e'/>
                 </TouchableOpacity>
                     : null

@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     StyleSheet,
     View,
@@ -34,9 +36,9 @@ moment.updateLocale('en', {
 });
 
 
-const MyProfile = React.createClass({
+const MyProfile = CreateClass({
     propTypes: {
-        navigation: React.PropTypes.object.isRequired,
+        navigation: PropTypes.object.isRequired,
     },
 
     getInitialState() {
@@ -98,12 +100,12 @@ const MyProfile = React.createClass({
                             </Text>
                         </View>
                     </View>
-                    <TouchableOpacity activeOpacity={1} style={styles.link} onPress={()=> navigate('Payment')}>
+                    <TouchableOpacity activeOpacity={1} style={styles.link} onPress={() => navigate('Payment')}>
                         <Text style={styles.basicText}>Payment</Text>
                         <MaterialIcon name="keyboard-arrow-right" size={getFontSize(26)} color="#7f7f7f"/>
                     </TouchableOpacity>
                     {isTrainer ?
-                        <TouchableOpacity activeOpacity={1} style={styles.link} onPress={()=> navigate('Earnings')}>
+                        <TouchableOpacity activeOpacity={1} style={styles.link} onPress={() => navigate('Earnings')}>
                             <Text style={styles.basicText}>Earnings</Text>
                             <MaterialIcon name="keyboard-arrow-right" size={getFontSize(26)} color="#7f7f7f"/>
                         </TouchableOpacity>

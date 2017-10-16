@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     View,
     StyleSheet,
@@ -19,7 +20,7 @@ import GlobalStyle from '../../containers/globalStyle';
 import {API_ENDPOINT, checkStatus, getFontSize, setHeaders} from '../../actions/utils';
 
 
-const Earnings = React.createClass({
+const Earnings = CreateClass({
 
     getInitialState() {
         return {
@@ -140,7 +141,8 @@ const Earnings = React.createClass({
                         marginBottom: 0,
                         flexWrap: 'wrap'
                     }]}>
-                        <Text style={[styles.totalText, GlobalStyle.lightBlueText]}>{this.state.payoutInfo.payout_total ? `$${this.state.payoutInfo.payout_total}` : '$0.00'}</Text>
+                        <Text
+                            style={[styles.totalText, GlobalStyle.lightBlueText]}>{this.state.payoutInfo.payout_total ? `$${this.state.payoutInfo.payout_total}` : '$0.00'}</Text>
                         <Text style={[styles.totalReg]} onPress={() => this.props.navigation.navigate('PayoutInfo', {
                             onPaymentInfoUpdate: this.onPaymentInfoUpdate,
                             payoutInfo: this.state.payoutInfo

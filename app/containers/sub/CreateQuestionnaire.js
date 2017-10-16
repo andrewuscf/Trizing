@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     ScrollView,
     View,
@@ -20,7 +21,7 @@ import CreateQuestionBox from '../../components/CreateQuestionBox';
 
 const Form = t.form.Form;
 
-const CreateQuestionnaire = React.createClass({
+const CreateQuestionnaire = CreateClass({
     getInitialState() {
         return {
             Error: null,

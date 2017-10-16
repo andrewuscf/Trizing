@@ -1,16 +1,18 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     StyleSheet,
     View,
     StatusBar,
     Platform,
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 
-export default React.createClass({
+export default CreateClass({
     propTypes: {
-        backgroundColor: React.PropTypes.string,
-        barStyle: React.PropTypes.string,
+        backgroundColor: PropTypes.string,
+        barStyle: PropTypes.string,
     },
 
     render() {

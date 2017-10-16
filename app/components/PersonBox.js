@@ -1,4 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {View, Text, StyleSheet, Image, TouchableOpacity, Alert} from 'react-native';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -8,15 +10,15 @@ import GlobalStyle from '../containers/globalStyle';
 
 import AvatarImage from './AvatarImage';
 
-const PersonBox = React.createClass({
+const PersonBox = CreateClass({
     propTypes: {
-        person: React.PropTypes.object.isRequired,
-        RequestUser: React.PropTypes.object,
-        removeClient: React.PropTypes.func,
-        sendRequest: React.PropTypes.func,
-        selectUser: React.PropTypes.func,
-        selected: React.PropTypes.bool,
-        navigate: React.PropTypes.func.isRequired,
+        person: PropTypes.object.isRequired,
+        RequestUser: PropTypes.object,
+        removeClient: PropTypes.func,
+        sendRequest: PropTypes.func,
+        selectUser: PropTypes.func,
+        selected: PropTypes.bool,
+        navigate: PropTypes.func.isRequired,
     },
 
     getInitialState() {

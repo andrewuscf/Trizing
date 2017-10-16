@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     StyleSheet,
@@ -37,9 +39,9 @@ function template(locals) {
 const window = Dimensions.get('window');
 
 
-const CreateEvent = React.createClass({
+const CreateEvent = CreateClass({
     propTypes: {
-        event_type: React.PropTypes.string.isRequired,
+        event_type: PropTypes.string.isRequired,
     },
 
     getInitialState() {

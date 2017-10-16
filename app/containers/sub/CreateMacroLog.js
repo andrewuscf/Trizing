@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -11,9 +13,7 @@ import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import moment from 'moment';
 import DropdownAlert from 'react-native-dropdownalert';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Bar, Circle} from 'react-native-progress';
-import _ from 'lodash';
+import {Circle} from 'react-native-progress';
 
 import {addMacroLog} from '../../actions/homeActions';
 import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../actions/utils';
@@ -33,10 +33,10 @@ let MacroLog = t.struct({
 });
 
 
-const CreateMacroLog = React.createClass({
+const CreateMacroLog = CreateClass({
     propTypes: {
-        macro_plan_day: React.PropTypes.object.isRequired,
-        date: React.PropTypes.object.isRequired,
+        macro_plan_day: PropTypes.object.isRequired,
+        date: PropTypes.object.isRequired,
     },
 
     getInitialState() {

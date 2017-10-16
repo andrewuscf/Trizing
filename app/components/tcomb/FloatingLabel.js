@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     StyleSheet,
     Text,
@@ -12,7 +13,7 @@ import t from 'tcomb-form-native'
 const Textbox = t.form.Textbox
 
 class FloatingLabel extends Textbox {
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.state = {
             fieldFocused: (props.value) ? true : false,
@@ -22,7 +23,7 @@ class FloatingLabel extends Textbox {
         };
     }
 
-    getTemplate () {
+    getTemplate() {
         let self = this
         return function (locals) {
             const stylesheet = locals.stylesheet;
@@ -53,7 +54,8 @@ class FloatingLabel extends Textbox {
                             inputRange: [0, 1],
                             outputRange: [10, 0]
                         }),
-                    }]}, self.state.fieldFocused && !self.props.value ? {flex:1}: { height: 0}]}>
+                    }]
+                }, self.state.fieldFocused && !self.props.value ? {flex: 1} : {height: 0}]}>
                     {locals.label}
                 </Animated.Text>
 
@@ -110,11 +112,11 @@ class FloatingLabel extends Textbox {
         }
     }
 
-    _onChangeText (text, locals) {
+    _onChangeText(text, locals) {
         this.setState({value: text});
     }
 
-    _onFocus (locals) {
+    _onFocus(locals) {
         Animated.spring(
             this.state.fadeAnim,
             {toValue: 1, friction: 5},
@@ -128,7 +130,7 @@ class FloatingLabel extends Textbox {
         }
     }
 
-    _onBlur (locals) {
+    _onBlur(locals) {
         if (!this.state.value) {
             Animated.timing(
                 this.state.fadeAnim,
@@ -144,7 +146,7 @@ class FloatingLabel extends Textbox {
         }
     }
 
-    getLocals () {
+    getLocals() {
         let locals = super.getLocals();
         [
             'errorPlaceholderTextColor'
@@ -152,7 +154,7 @@ class FloatingLabel extends Textbox {
         return locals;
     }
 
-    shouldComponentUpdate (nextProps, nextState) {
+    shouldComponentUpdate(nextProps, nextState) {
         return true;
     }
 }

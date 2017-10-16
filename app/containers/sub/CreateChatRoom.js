@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     StyleSheet,
     ScrollView,
@@ -18,7 +19,7 @@ import PersonBox from '../../components/PersonBox';
 const window = Dimensions.get('window');
 
 
-const CreateChatRoom = React.createClass({
+const CreateChatRoom = CreateClass({
     getInitialState() {
         return {
             selected: [],

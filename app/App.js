@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     Platform,
 } from 'react-native';
@@ -33,13 +34,13 @@ setCustomTouchableOpacity({
     activeOpacity: .9,
 });
 setCustomListView({
-    contentContainerStyle:{paddingBottom: 50}
+    contentContainerStyle: {paddingBottom: 50}
 });
 setCustomScrollView({
-    contentContainerStyle:{paddingBottom: 50}
+    contentContainerStyle: {paddingBottom: 50}
 });
 
-const App = React.createClass({
+const App = CreateClass({
 
     componentDidUpdate(prevProps, prevState) {
 

@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {View, ActivityIndicator, StyleSheet, Text, Image, Dimensions, AsyncStorage} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -14,7 +15,7 @@ import SubmitButton from '../components/SubmitButton';
 
 const {width: deviceWidth} = Dimensions.get('window');
 
-const SplashScreen = React.createClass({
+const SplashScreen = CreateClass({
 
     getInitialState() {
         return {
@@ -68,30 +69,31 @@ const SplashScreen = React.createClass({
             <View style={styles.container}>
                 <CustomStatus/>
                 {/*<Image style={[{flex: 1, position: 'absolute', width: deviceWidth}]}*/}
-                       {/*source={require('../assets/images/background.jpg')}/>*/}
+                {/*source={require('../assets/images/background.jpg')}/>*/}
                 <View style={styles.top}>
                     <Image style={styles.logo} source={require('../assets/images/new-logo.png')}/>
                     <Text style={[styles.titleStyle, GlobalStyle.redText]}>{letterSpacing('SimpleCoach', 3)}</Text>
                 </View>
                 <View style={styles.center} onLayout={this.setSize}>
                     {/*<View style={{flex: 1}}>*/}
-                        {/*<Image style={[styles.splashImage, {height: this.state.height - 100}]}*/}
-                               {/*source={require('../assets/images/stronger.jpg')}/>*/}
-                        {/*<Text style={styles.splashText}>Workouts made simple</Text>*/}
+                    {/*<Image style={[styles.splashImage, {height: this.state.height - 100}]}*/}
+                    {/*source={require('../assets/images/stronger.jpg')}/>*/}
+                    {/*<Text style={styles.splashText}>Workouts made simple</Text>*/}
                     {/*</View>*/}
                 </View>
                 <View style={styles.bottom}>
-                    <SubmitButton onPress={() => navigate('Login')} text="LOG IN" buttonStyle={[styles.button, {marginBottom: 20}]}/>
+                    <SubmitButton onPress={() => navigate('Login')} text="LOG IN"
+                                  buttonStyle={[styles.button, {marginBottom: 20}]}/>
                     <SubmitButton onPress={() => navigate('SignUp')} text="GET STARTED" buttonStyle={styles.button}/>
                     {/*<TouchableOpacity style={styles.login} onPress={() => navigate('Login')}>*/}
-                        {/*<Text style={styles.loginText}>Already have an account?*/}
-                            {/*<Text style={GlobalStyle.redText}> Log In</Text>*/}
-                        {/*</Text>*/}
+                    {/*<Text style={styles.loginText}>Already have an account?*/}
+                    {/*<Text style={GlobalStyle.redText}> Log In</Text>*/}
+                    {/*</Text>*/}
                     {/*</TouchableOpacity>*/}
                     {/*<TouchableOpacity style={styles.signUpButton} onPress={() => navigate('SignUp')}>*/}
-                        {/*<Text style={styles.signUpText}>*/}
-                            {/*GET STARTED*/}
-                        {/*</Text>*/}
+                    {/*<Text style={styles.signUpText}>*/}
+                    {/*GET STARTED*/}
+                    {/*</Text>*/}
                     {/*</TouchableOpacity>*/}
                 </View>
             </View>

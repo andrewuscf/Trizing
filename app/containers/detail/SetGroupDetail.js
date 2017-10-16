@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -21,12 +23,12 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const {width} = Dimensions.get('window');
 
-const SetGroupDetail = React.createClass({
+const SetGroupDetail = CreateClass({
     propTypes: {
-        set_group: React.PropTypes.object.isRequired,
-        saveLogs: React.PropTypes.func,
-        date: React.PropTypes.string,
-        workout: React.PropTypes.number.isRequired
+        set_group: PropTypes.object.isRequired,
+        saveLogs: PropTypes.func,
+        date: PropTypes.string,
+        workout: PropTypes.number.isRequired
     },
 
     getInitialState() {

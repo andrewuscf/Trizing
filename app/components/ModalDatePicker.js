@@ -1,10 +1,11 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     StyleSheet,
     Text,
     TouchableOpacity,
-    Platform,
     DatePickerIOS
 } from 'react-native';
 import t from 'tcomb-form-native';
@@ -48,13 +49,13 @@ class CollapsibleDatePickerIOS extends React.Component {
 }
 
 CollapsibleDatePickerIOS.propTypes = {
-    locals: React.PropTypes.object.isRequired
+    locals: PropTypes.object.isRequired
 };
 
 
 class StandaloneModal extends React.Component {
     static propTypes = {
-        children: React.PropTypes.node
+        children: PropTypes.node
     };
 
     state = {

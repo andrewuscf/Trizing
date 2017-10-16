@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -30,9 +32,9 @@ import GlobalStyle from '../../containers/globalStyle';
 import CustomIcon from '../../components/CustomIcon';
 
 
-const EditSchedule = React.createClass({
+const EditSchedule = CreateClass({
     propTypes: {
-        scheduleId: React.PropTypes.number.isRequired,
+        scheduleId: PropTypes.number.isRequired,
     },
 
     getInitialState() {

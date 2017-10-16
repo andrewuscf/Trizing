@@ -9,7 +9,7 @@ target 'SimpleCoach' do
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
-  pod 'Firebase/Messaging', '4.0.0'
+  pod 'Firebase/Messaging'
   inherit! :search_paths
 
   target 'SimpleCoachTests' do

@@ -1,7 +1,8 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {View, ActivityIndicator, StyleSheet} from 'react-native';
 
-const Loading = React.createClass({
+const Loading = CreateClass({
     render() {
         return (
             <View style={[styles.page, this.props.style]}>

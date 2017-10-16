@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     View,
     StyleSheet,
@@ -19,7 +20,7 @@ import SubmitButton from '../components/SubmitButton';
 
 const Form = t.form.Form;
 
-const ResetPassword = React.createClass({
+const ResetPassword = CreateClass({
     getInitialState() {
         return {
             value: null,

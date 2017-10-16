@@ -1,10 +1,12 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     View,
     Text,
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import FontIcon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
@@ -23,14 +25,14 @@ import GlobalStyle from '../containers/globalStyle';
 import CustomIcon from '../components/CustomIcon';
 
 
-const DisplayWorkoutDay = React.createClass({
+const DisplayWorkoutDay = CreateClass({
     propTypes: {
-        workout_day: React.PropTypes.object.isRequired,
-        dayIndex: React.PropTypes.number.isRequired,
-        _toWorkoutDay: React.PropTypes.func.isRequired,
-        _onDayDelete: React.PropTypes.func,
-        _onDuplicate: React.PropTypes.func,
-        active: React.PropTypes.bool,
+        workout_day: PropTypes.object.isRequired,
+        dayIndex: PropTypes.number.isRequired,
+        _toWorkoutDay: PropTypes.func.isRequired,
+        _onDayDelete: PropTypes.func,
+        _onDuplicate: PropTypes.func,
+        active: PropTypes.bool,
     },
 
 

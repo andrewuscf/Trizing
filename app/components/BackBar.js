@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {StyleSheet, Text, View, TouchableOpacity, Platform} from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -7,10 +9,10 @@ const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : 0;
 
 
-const BackBar = React.createClass({
+const BackBar = CreateClass({
     propTypes: {
-        back: React.PropTypes.func,
-        backText: React.PropTypes.string,
+        back: PropTypes.func,
+        backText: PropTypes.string,
     },
 
     render() {

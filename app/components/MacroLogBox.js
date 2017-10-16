@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -9,9 +11,9 @@ import FontIcon from 'react-native-vector-icons/FontAwesome';
 import {getFontSize} from '../actions/utils';
 
 
-export default React.createClass({
+export default CreateClass({
     propTypes: {
-        log: React.PropTypes.object.isRequired,
+        log: PropTypes.object.isRequired,
     },
 
     render() {

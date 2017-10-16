@@ -1,10 +1,12 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import ActionButton from 'react-native-action-button';
 
 
-export default React.createClass({
+export default CreateClass({
     propTypes: {
-        isActionButtonVisible: React.PropTypes.bool.isRequired,
+        isActionButtonVisible: PropTypes.bool.isRequired,
     },
 
     render() {

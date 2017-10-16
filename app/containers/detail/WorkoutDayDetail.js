@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -18,9 +20,9 @@ import GlobalStyle from '../../containers/globalStyle';
 
 import Loading from '../../components/Loading';
 
-const EditWorkoutDay = React.createClass({
+const EditWorkoutDay = CreateClass({
     propTypes: {
-        workout_day_id: React.PropTypes.number,
+        workout_day_id: PropTypes.number,
     },
 
     getInitialState() {

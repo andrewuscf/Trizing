@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -12,10 +14,10 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 const window = Dimensions.get('window');
 
-const SetLogBox = React.createClass({
+const SetLogBox = CreateClass({
     propTypes: {
-        set: React.PropTypes.object.isRequired,
-        getStatus: React.PropTypes.func.isRequired,
+        set: PropTypes.object.isRequired,
+        getStatus: PropTypes.func.isRequired,
     },
 
     getInitialState() {
@@ -85,7 +87,7 @@ const SetLogBox = React.createClass({
             this.setState({
                 value: {
                     weight: set.weight ? set.weight : null,
-                    reps: set.reps ? set.reps: null,
+                    reps: set.reps ? set.reps : null,
                 }
             })
         }

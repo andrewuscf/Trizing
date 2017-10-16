@@ -1,23 +1,22 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
-    Text,
     StyleSheet,
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
-import _ from 'lodash';
 import DropdownAlert from 'react-native-dropdownalert';
 
 import * as GlobalActions from '../../actions/globalActions';
 
-import SelectInput from '../../components/SelectInput';
 
-const CreateWorkout = React.createClass({
+const CreateWorkout = CreateClass({
     propTypes: {
-        scheduleId: React.PropTypes.number.isRequired,
-        template_workout: React.PropTypes.object
+        scheduleId: PropTypes.number.isRequired,
+        template_workout: PropTypes.object
     },
 
     getInitialState() {

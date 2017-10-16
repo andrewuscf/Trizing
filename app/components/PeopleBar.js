@@ -1,4 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -7,12 +9,12 @@ import {trunc, getFontSize} from '../actions/utils';
 
 import AvatarImage from './AvatarImage';
 
-const PeopleBar = React.createClass({
+const PeopleBar = CreateClass({
     propTypes: {
-        people: React.PropTypes.array.isRequired,
-        navigate: React.PropTypes.func.isRequired,
-        action: React.PropTypes.func,
-        selected: React.PropTypes.array
+        people: PropTypes.array.isRequired,
+        navigate: PropTypes.func.isRequired,
+        action: PropTypes.func,
+        selected: PropTypes.array
     },
 
     goToProfile(userId) {

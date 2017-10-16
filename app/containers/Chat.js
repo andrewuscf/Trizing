@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     StyleSheet,
     Text,
@@ -26,7 +27,7 @@ import EditButton from '../components/EditButton';
 import ChatRoomBox from '../components/ChatRoomBox';
 import Loading from '../components/Loading';
 
-const Chat = React.createClass({
+const Chat = CreateClass({
     getInitialState() {
         return {
             isActionButtonVisible: true

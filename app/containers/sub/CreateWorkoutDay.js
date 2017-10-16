@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -31,12 +33,12 @@ let options = {
     }
 };
 
-const CreateWorkoutDay = React.createClass({
+const CreateWorkoutDay = CreateClass({
     propTypes: {
-        workoutId: React.PropTypes.number.isRequired,
-        newDay: React.PropTypes.func.isRequired,
-        navigation: React.PropTypes.object.isRequired,
-        template_day: React.PropTypes.object
+        workoutId: PropTypes.number.isRequired,
+        newDay: PropTypes.func.isRequired,
+        navigation: PropTypes.object.isRequired,
+        template_day: PropTypes.object
     },
 
     getInitialState() {

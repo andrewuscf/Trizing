@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -37,7 +39,7 @@ function template(locals) {
             {locals.inputs.expYear}
             {locals.inputs.first_name || locals.inputs.ssn_last_4 ?
                 <Text style={styles.inputLabel}>Fraud Prevention</Text>
-                :null
+                : null
             }
             {locals.inputs.first_name}
             {locals.inputs.last_name}
@@ -71,10 +73,10 @@ function cc_format(value) {
     }
 }
 
-const PayoutInfo = React.createClass({
+const PayoutInfo = CreateClass({
     propTypes: {
-        payoutInfo: React.PropTypes.object,
-        onPaymentInfoUpdate: React.PropTypes.func.isRequired
+        payoutInfo: PropTypes.object,
+        onPaymentInfoUpdate: PropTypes.func.isRequired
     },
 
     getInitialState() {
@@ -233,8 +235,8 @@ const PayoutInfo = React.createClass({
                 .then((responseJson) => {
                     this.asyncActions(false, responseJson);
                 }).catch((error) => {
-                    this.asyncActions(false);
-                });
+                this.asyncActions(false);
+            });
         } catch (error) {
             console.log('Error:', error);
             Alert.alert(
@@ -298,10 +300,13 @@ const PayoutInfo = React.createClass({
         return (
             <View style={GlobalStyle.container}>
                 <KeyboardAwareScrollView style={GlobalStyle.container} showsHorizontalScrollIndicator={false}
-                            showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 50}}>
+                                         showsVerticalScrollIndicator={false}
+                                         contentContainerStyle={{paddingBottom: 50}}>
                     <View style={styles.content}>
-                        <Text style={[styles.title, GlobalStyle.lightBlueText, {textAlign: 'center'}]} onPress={() => console.log('hit')}>
-                            By creating a payout account, you agree to our terms and service. <MaterialIcon name="link" size={getFontSize(14)}/>
+                        <Text style={[styles.title, GlobalStyle.lightBlueText, {textAlign: 'center'}]}
+                              onPress={() => console.log('hit')}>
+                            By creating a payout account, you agree to our terms and service. <MaterialIcon name="link"
+                                                                                                            size={getFontSize(14)}/>
                         </Text>
                         <Form
                             ref="form"

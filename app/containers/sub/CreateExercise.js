@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -25,11 +27,11 @@ const Exercise = t.struct({
     name: t.String,
 });
 
-const CreateExercise = React.createClass({
+const CreateExercise = CreateClass({
     propTypes: {
-        workout_day: React.PropTypes.object.isRequired,
-        set_group: React.PropTypes.object,
-        newDay: React.PropTypes.func
+        workout_day: PropTypes.object.isRequired,
+        set_group: PropTypes.object,
+        newDay: PropTypes.func
     },
 
     getInitialState() {

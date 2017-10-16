@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     StyleSheet,
     Text,
@@ -21,7 +22,7 @@ import * as GlobalActions from '../../actions/globalActions';
 import NotificationBox from '../../components/NotificationBox';
 
 
-const Notifications = React.createClass({
+const Notifications = CreateClass({
 
     componentDidMount() {
         if (!this.props.Notifications.length) {
@@ -43,14 +44,16 @@ const Notifications = React.createClass({
             const dataSource = ds.cloneWithRows(this.props.Notifications);
             return (
                 <ListView showsVerticalScrollIndicator={false}
-                    refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
-                    style={styles.container} enableEmptySections={true}
-                    initialListSize={5}
-                    removeClippedSubviews={false}
-                    dataSource={dataSource} onEndReached={this.onEndReached}
-                    onEndReachedThreshold={Dimensions.get('window').height}
-                    renderRow={(noti, i) => <NotificationBox navigate={this.props.navigation.navigate} notification={noti}
-                                                             readNotification={this.props.actions.readNotification}/>}
+                          refreshControl={<RefreshControl refreshing={this.props.Refreshing}
+                                                          onRefresh={this._refresh}/>}
+                          style={styles.container} enableEmptySections={true}
+                          initialListSize={5}
+                          removeClippedSubviews={false}
+                          dataSource={dataSource} onEndReached={this.onEndReached}
+                          onEndReachedThreshold={Dimensions.get('window').height}
+                          renderRow={(noti, i) => <NotificationBox navigate={this.props.navigation.navigate}
+                                                                   notification={noti}
+                                                                   readNotification={this.props.actions.readNotification}/>}
                 />
             );
         }

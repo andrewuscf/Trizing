@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     View,
     Text,
@@ -7,18 +8,19 @@ import {
     Keyboard,
     Alert
 } from 'react-native';
+import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
 
 import {getFontSize} from '../../actions/utils';
 
-const CreateSetBox = React.createClass({
+const CreateSetBox = CreateClass({
     propTypes: {
-        value: React.PropTypes.object.isRequired,
-        setIndex: React.PropTypes.number.isRequired,
-        setSetState: React.PropTypes.func.isRequired,
-        _deleteSet: React.PropTypes.func
+        value: PropTypes.object.isRequired,
+        setIndex: PropTypes.number.isRequired,
+        setSetState: PropTypes.func.isRequired,
+        _deleteSet: PropTypes.func
     },
 
 
@@ -105,7 +107,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#e1e3df',
         borderRadius: 10,
-        padding:10,
+        padding: 10,
     },
     edit: {
         position: 'absolute',

@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     View,
     Text,
@@ -27,7 +28,7 @@ let WeightLog = t.struct({
 });
 
 
-const CreateWeightLog = React.createClass({
+const CreateWeightLog = CreateClass({
 
     getInitialState() {
         return {

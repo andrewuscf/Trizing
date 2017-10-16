@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -12,11 +14,11 @@ import _ from 'lodash';
 import {getFontSize, API_ENDPOINT, checkStatus, fetchData} from '../../actions/utils';
 
 
-const AnswersDisplay = React.createClass({
+const AnswersDisplay = CreateClass({
     propTypes: {
-        questionnaire: React.PropTypes.object.isRequired,
-        UserToken: React.PropTypes.string.isRequired,
-        client: React.PropTypes.object,
+        questionnaire: PropTypes.object.isRequired,
+        UserToken: PropTypes.string.isRequired,
+        client: PropTypes.object,
     },
 
     getInitialState() {

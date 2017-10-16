@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     StyleSheet,
     Text,
@@ -35,10 +37,10 @@ import PeopleBar from '../components/PeopleBar';
 import SubmitButton from '../components/SubmitButton';
 
 
-const Home = React.createClass({
+const Home = CreateClass({
     propTypes: {
-        Refreshing: React.PropTypes.bool.isRequired,
-        HomeIsLoading: React.PropTypes.bool.isRequired,
+        Refreshing: PropTypes.bool.isRequired,
+        HomeIsLoading: PropTypes.bool.isRequired,
     },
 
     getInitialState() {

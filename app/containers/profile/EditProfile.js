@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     StyleSheet,
     Text,
@@ -50,7 +51,7 @@ const myFormatFunction = (format, date) => {
 };
 
 
-const EditProfile = React.createClass({
+const EditProfile = CreateClass({
     getInitialState() {
         let initData = {
             value: null,

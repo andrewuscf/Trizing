@@ -1,29 +1,30 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {Dimensions, StyleSheet} from 'react-native';
 import {StockLine} from 'react-native-pathjs-charts';
 import moment from 'moment';
 
 const {width: deviceWidth} = Dimensions.get('window');
 
-const WeightGraph = React.createClass({
+const WeightGraph = CreateClass({
     propTypes: {
-        data: React.PropTypes.array.isRequired,
-        // tickValues: React.PropTypes.array.isRequired,
+        data: PropTypes.array.isRequired,
+        // tickValues: PropTypes.array.isRequired,
     },
-
 
 
     render() {
         console.log(this.props.data)
         const tickValues = []
-        const test = this.props.data.map((log, index)=> {
+        const test = this.props.data.map((log, index) => {
             tickValues.push({value: moment(log.created_at).format('ddd, MMM DD')});
-            return {"x":index, "y": log.weight}
+            return {"x": index, "y": log.weight}
         });
         console.log([test])
         let data = [test];
         let options = {
-            width: deviceWidth-100,
+            width: deviceWidth - 100,
             height: 100,
             color: '#2980B9',
             margin: {
@@ -66,7 +67,7 @@ const WeightGraph = React.createClass({
         }
 
         return (
-                <StockLine data={data} options={options} xKey='x' yKey='y' />
+            <StockLine data={data} options={options} xKey='x' yKey='y'/>
         )
     }
 });

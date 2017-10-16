@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     StyleSheet,
     Text,
@@ -11,8 +13,6 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import GlobalStyle from '../globalStyle';
 
@@ -27,13 +27,13 @@ import SelectInput from '../../components/SelectInput';
 import WorkoutProgramBox from '../../components/WorkoutProgramBox';
 
 
-const TrainingPlan = React.createClass({
+const TrainingPlan = CreateClass({
     propTypes: {
-        client: React.PropTypes.object.isRequired,
-        training_plan: React.PropTypes.object.isRequired,
-        _redirect: React.PropTypes.func.isRequired,
-        openModal: React.PropTypes.func.isRequired,
-        tab: React.PropTypes.number
+        client: PropTypes.object.isRequired,
+        training_plan: PropTypes.object.isRequired,
+        _redirect: PropTypes.func.isRequired,
+        openModal: PropTypes.func.isRequired,
+        tab: PropTypes.number
     },
 
     getInitialState() {
@@ -206,7 +206,7 @@ const TrainingPlan = React.createClass({
                                               training_plan: this.props.training_plan.id,
                                               addMacroPlan: this.addMacroPlan
                                           })}>
-                                    <Text style={styles.mainText}>Create New</Text>
+                            <Text style={styles.mainText}>Create New</Text>
                         </TouchableOpacity>
                         :
                         <TouchableOpacity style={styles.emptyContainer}
@@ -286,7 +286,8 @@ const TrainingPlan = React.createClass({
                       showsVerticalScrollIndicator={false}
                       renderHeader={this.renderCreateBar.bind(null, dataSource.getRowCount())}
                       keyboardShouldPersistTaps="handled"
-                      style={[GlobalStyle.container, {backgroundColor: '#f1f1f3'}]} enableEmptySections={true} dataSource={dataSource}
+                      style={[GlobalStyle.container, {backgroundColor: '#f1f1f3'}]} enableEmptySections={true}
+                      dataSource={dataSource}
                       contentContainerStyle={{paddingBottom: 50}}
                       onEndReached={this._onEndReached}
                       onEndReachedThreshold={Dimensions.get('window').height}

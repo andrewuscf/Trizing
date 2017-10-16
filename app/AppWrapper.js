@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {AsyncStorage} from 'react-native';
 import {Provider} from 'react-redux';
 import {persistStore} from 'redux-persist';
@@ -14,7 +15,7 @@ const store = configureStore();
 persistStore(store, {storage: AsyncStorage});
 
 
-const AppWrapper = React.createClass({
+const AppWrapper = CreateClass({
     componentDidMount() {
         codePush.notifyAppReady();
     },

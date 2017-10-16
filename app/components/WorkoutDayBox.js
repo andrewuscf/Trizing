@@ -1,4 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -13,12 +15,12 @@ import {DAYS_OF_WEEK} from '../assets/constants';
 
 import GlobalStyle from '../containers/globalStyle';
 
-const MacroBoxDay = React.createClass({
+const MacroBoxDay = CreateClass({
     propTypes: {
-        getDayState: React.PropTypes.func.isRequired,
-        selectedDays: React.PropTypes.array.isRequired,
-        planDayIndex: React.PropTypes.number,
-        day_plan: React.PropTypes.object
+        getDayState: PropTypes.func.isRequired,
+        selectedDays: PropTypes.array.isRequired,
+        planDayIndex: PropTypes.number,
+        day_plan: PropTypes.object
     },
 
     getInitialState() {

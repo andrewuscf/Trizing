@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
     StyleSheet,
-    TouchableOpacity,
     ListView,
     Alert,
     Keyboard,
@@ -19,9 +20,9 @@ import {getFontSize} from '../../actions/utils';
 import MacroBoxDay from '../../components/MacroBoxDay';
 
 
-const MacroPlanDetail = React.createClass({
+const MacroPlanDetail = CreateClass({
     propTypes: {
-        macro_plan: React.PropTypes.object.isRequired,
+        macro_plan: PropTypes.object.isRequired,
     },
 
     getInitialState(){

@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     StyleSheet,
@@ -14,9 +16,9 @@ import * as ChatActions from '../../actions/chatActions';
 import {fetchData, API_ENDPOINT, checkStatus} from '../../actions/utils';
 
 
-const ChatRoom = React.createClass({
+const ChatRoom = CreateClass({
     propTypes: {
-        room_label: React.PropTypes.string.isRequired
+        room_label: PropTypes.string.isRequired
     },
 
     getInitialState() {
@@ -83,7 +85,9 @@ const ChatRoom = React.createClass({
         });
         fetch(url, fetchData('POST', JSON.stringify(data), this.props.UserToken))
             .then(checkStatus)
-            .then((responseJson) => {this.props.actions.sendMessage(responseJson)});
+            .then((responseJson) => {
+                this.props.actions.sendMessage(responseJson)
+            });
     },
 
     _back() {

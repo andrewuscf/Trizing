@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {View, Text, TouchableOpacity, InteractionManager} from 'react-native';
 import t from 'tcomb-form-native';
 import Autocomplete from 'react-native-autocomplete-input';

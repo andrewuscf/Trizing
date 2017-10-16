@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -8,10 +10,10 @@ import {getFontSize} from '../actions/utils';
 import GlobalStyle from '../containers/globalStyle';
 
 
-const EventBox = React.createClass({
+const EventBox = CreateClass({
     propTypes: {
-        occurrence: React.PropTypes.object.isRequired,
-        navigate: React.PropTypes.func.isRequired,
+        occurrence: PropTypes.object.isRequired,
+        navigate: PropTypes.func.isRequired,
     },
 
     shouldComponentUpdate(nextProps, nextState) {

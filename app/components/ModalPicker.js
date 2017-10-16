@@ -1,10 +1,11 @@
-import React, {PropTypes}  from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     StyleSheet,
     Text,
     TouchableOpacity,
-    Platform,
     Picker
 } from 'react-native';
 import t from 'tcomb-form-native';
@@ -55,7 +56,7 @@ CollapsiblePickerIOS.propTypes = {
 
 class StandaloneModal extends React.Component {
     static propTypes = {
-        children: React.PropTypes.node
+        children: PropTypes.node
     };
 
     state = {
@@ -96,7 +97,6 @@ export class ModalPicker extends t.form.Select {
                 pickerValue = stylesheet.pickerValue.error;
                 formGroupStyle = stylesheet.formGroup.error;
             }
-
 
 
             // const label = locals.label ? <Text style={controlLabelStyle} onPress={() => {

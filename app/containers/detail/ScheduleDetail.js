@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     ScrollView,
     View,
     Text,
     StyleSheet,
     TouchableOpacity,
-    Keyboard
 } from 'react-native';
 import _ from 'lodash';
 import moment from 'moment';
@@ -14,9 +15,9 @@ import {getFontSize} from '../../actions/utils';
 import GlobalStyle from '../../containers/globalStyle';
 
 
-const ScheduleDetail = React.createClass({
+const ScheduleDetail = CreateClass({
     propTypes: {
-        schedule: React.PropTypes.object.isRequired,
+        schedule: PropTypes.object.isRequired,
     },
 
     _toWorkoutDay(workout) {
@@ -32,7 +33,7 @@ const ScheduleDetail = React.createClass({
             return <TouchableOpacity key={index} onPress={this._toWorkoutDay.bind(null, workout)}
                                      style={[GlobalStyle.simpleBottomBorder,
                                          styles.workoutBox, (index == 0) ? {marginTop: 5} : null,
-                                         is_active ? {borderColor: 'green', borderTopWidth: 1}: null]}>
+                                         is_active ? {borderColor: 'green', borderTopWidth: 1} : null]}>
 
                 {this.props.schedule.training_plan ?
                     <View style={styles.eventDate}>

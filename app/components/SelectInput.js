@@ -1,10 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
 import {Modal, ScrollView, View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import _ from 'lodash';
 
 import {getFontSize} from '../actions/utils';
 
-const SelectInput = React.createClass({
+const SelectInput = CreateClass({
 
     getInitialState: function () {
         let index = -1;

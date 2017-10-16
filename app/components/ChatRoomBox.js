@@ -1,10 +1,12 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     View,
     Text,
     StyleSheet,
     TouchableHighlight,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import FontIcon from 'react-native-vector-icons/FontAwesome';
 
@@ -23,12 +25,12 @@ moment.updateLocale('en', {
     }
 });
 
-const ChatRoomBox = React.createClass({
+const ChatRoomBox = CreateClass({
     propTypes: {
-        room: React.PropTypes.object.isRequired,
-        _redirect: React.PropTypes.func.isRequired,
-        RequestUser: React.PropTypes.object.isRequired,
-        chatNotifications: React.PropTypes.array.isRequired
+        room: PropTypes.object.isRequired,
+        _redirect: PropTypes.func.isRequired,
+        RequestUser: PropTypes.object.isRequired,
+        chatNotifications: PropTypes.array.isRequired
     },
 
     _toRoom() {
@@ -85,7 +87,8 @@ const ChatRoomBox = React.createClass({
                             </Text>
                             : null
                         }
-                        {!hasUnread ? <FontIcon name="circle" style={[GlobalStyle.lightBlueText, {paddingTop: 5}]}/>: null}
+                        {!hasUnread ?
+                            <FontIcon name="circle" style={[GlobalStyle.lightBlueText, {paddingTop: 5}]}/> : null}
                     </View>
                 </View>
             </TouchableHighlight>

@@ -1,7 +1,8 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
-    Text,
     StyleSheet,
     Platform
 } from 'react-native';
@@ -19,9 +20,9 @@ import {ModalPicker} from '../../components/ModalPicker';
 
 const Form = t.form.Form;
 
-const CreateSchedule = React.createClass({
+const CreateSchedule = CreateClass({
     propTypes: {
-        training_plan: React.PropTypes.number,
+        training_plan: PropTypes.number,
     },
 
     getInitialState() {

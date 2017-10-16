@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -17,12 +19,12 @@ import {getFontSize, trunc} from '../../actions/utils';
 import GlobalStyle from "../../containers/globalStyle";
 
 
-const DisplayExerciseBox = React.createClass({
+const DisplayExerciseBox = CreateClass({
     propTypes: {
-        set_group: React.PropTypes.object.isRequired,
-        deleteSetGroup: React.PropTypes.func.isRequired,
-        _editExercise: React.PropTypes.func.isRequired,
-        addNote: React.PropTypes.func.isRequired
+        set_group: PropTypes.object.isRequired,
+        deleteSetGroup: PropTypes.func.isRequired,
+        _editExercise: PropTypes.func.isRequired,
+        addNote: PropTypes.func.isRequired
     },
 
     _redirect: function () {

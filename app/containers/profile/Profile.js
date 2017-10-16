@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     StyleSheet,
     Text,
@@ -44,9 +46,9 @@ moment.updateLocale('en', {
 });
 
 
-const Profile = React.createClass({
+const Profile = CreateClass({
     propTypes: {
-        id: React.PropTypes.number.isRequired,
+        id: PropTypes.number.isRequired,
     },
 
     getInitialState() {
@@ -128,7 +130,7 @@ const Profile = React.createClass({
                 <ScrollView style={GlobalStyle.noHeaderContainer} ref="profile_list"
                             refreshControl={<RefreshControl refreshing={this.state.refreshing}
                                                             onRefresh={this._refresh}/>}
-                            showsVerticalScrollIndicator={false} contentContainerStyle={{flex:1}}>
+                            showsVerticalScrollIndicator={false} contentContainerStyle={{flex: 1}}>
                     <View style={[styles.userDetail, GlobalStyle.simpleBottomBorder]}>
                         <AvatarImage style={styles.avatar} image={userImage}/>
                         <View>
@@ -164,13 +166,13 @@ const Profile = React.createClass({
                             </MenuOptions>
                         </Menu>
                     </View>
-                        {this.props.RequestUser.id === user.profile.trainer ?
-                            <TrainingPlan client={user} UserToken={this.props.UserToken}
-                                          openModal={this.createQuestionnaire}
-                                          training_plan={user.training_plan}
-                                          _redirect={this._redirect}/>
-                            : null
-                        }
+                    {this.props.RequestUser.id === user.profile.trainer ?
+                        <TrainingPlan client={user} UserToken={this.props.UserToken}
+                                      openModal={this.createQuestionnaire}
+                                      training_plan={user.training_plan}
+                                      _redirect={this._redirect}/>
+                        : null
+                    }
                 </ScrollView>
             )
         }

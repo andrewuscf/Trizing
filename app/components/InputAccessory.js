@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     View,
     Dimensions,
@@ -10,7 +11,7 @@ import {
 } from 'react-native';
 const INPUT_ACCESSORY_HEIGHT = 40;
 
-const InputAccessory = React.createClass({
+const InputAccessory = CreateClass({
     getInitialState: function () {
         return {
             visibleHeight: Dimensions.get('window').height,

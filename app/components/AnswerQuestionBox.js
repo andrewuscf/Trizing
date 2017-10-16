@@ -1,20 +1,20 @@
-import React, {Component} from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     View,
     Text,
     StyleSheet,
-    TouchableOpacity,
     Keyboard
 } from 'react-native';
+import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
-import _ from 'lodash';
 
 import {getFontSize} from '../actions/utils';
 
-const AnswerQuestionBox = React.createClass({
+const AnswerQuestionBox = CreateClass({
     propTypes: {
-        question: React.PropTypes.object.isRequired,
-        number: React.PropTypes.number.isRequired,
+        question: PropTypes.object.isRequired,
+        number: PropTypes.number.isRequired,
     },
 
     getInitialState() {

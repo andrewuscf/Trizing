@@ -1,4 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 
@@ -20,11 +22,11 @@ moment.updateLocale('en', {
     }
 });
 
-const NotificationBox = React.createClass({
+const NotificationBox = CreateClass({
     propTypes: {
-        notification: React.PropTypes.object.isRequired,
-        navigate: React.PropTypes.func.isRequired,
-        readNotification: React.PropTypes.func.isRequired
+        notification: PropTypes.object.isRequired,
+        navigate: PropTypes.func.isRequired,
+        readNotification: PropTypes.func.isRequired
     },
 
     shouldComponentUpdate(nextProps, nextState) {

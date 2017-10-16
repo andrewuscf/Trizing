@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     StyleSheet,
     Text,
@@ -26,7 +27,7 @@ import EventBox from '../components/EventBox';
 import Loading from '../components/Loading';
 
 
-const Calendar = React.createClass({
+const Calendar = CreateClass({
     getInitialState() {
         return {
             isActionButtonVisible: true

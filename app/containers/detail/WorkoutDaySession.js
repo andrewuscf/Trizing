@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Dimensions,
@@ -18,10 +20,10 @@ import GlobalStyle from '../../containers/globalStyle';
 
 const window = Dimensions.get('window');
 
-const WorkoutDaySession = React.createClass({
+const WorkoutDaySession = CreateClass({
     propTypes: {
-        workout_day: React.PropTypes.object.isRequired,
-        date: React.PropTypes.string
+        workout_day: PropTypes.object.isRequired,
+        date: PropTypes.string
     },
 
     getInitialState() {

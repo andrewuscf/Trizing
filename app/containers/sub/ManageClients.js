@@ -1,4 +1,5 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
 import {
     StyleSheet,
     View,
@@ -23,7 +24,7 @@ import PersonBox from '../../components/PersonBox';
 import TrainerBox from '../../components/TrainerBox';
 
 
-const ManageClients = React.createClass({
+const ManageClients = CreateClass({
 
     getInitialState() {
         return {
@@ -64,7 +65,7 @@ const ManageClients = React.createClass({
         let url = `${API_ENDPOINT}user/list/`;
         if (text) url += `?search=${text}`;
         if (this.currentGET) {
-            this.currentGET.cancel((err)=>console.log(err));
+            this.currentGET.cancel((err) => console.log(err));
             this.currentGET = null;
         }
 

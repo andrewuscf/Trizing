@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -6,7 +8,6 @@ import {
     RefreshControl,
     Platform,
     ListView,
-    Alert,
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -23,10 +24,10 @@ import CustomIcon from '../../components/CustomIcon';
 import DisplayExerciseBox from '../../components/trainer/DisplayExerciseBox';
 import Loading from '../../components/Loading';
 
-const EditWorkoutDay = React.createClass({
+const EditWorkoutDay = CreateClass({
     propTypes: {
-        workout_day_id: React.PropTypes.number,
-        workout_day: React.PropTypes.object
+        workout_day_id: PropTypes.number,
+        workout_day: PropTypes.object
     },
 
     getInitialState() {

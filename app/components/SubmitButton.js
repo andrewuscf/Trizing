@@ -1,9 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {TouchableOpacity, View, Image, Text, StyleSheet, ActivityIndicator} from 'react-native';
 
-const SubmitButton = React.createClass({
+const SubmitButton = CreateClass({
     propTypes: {
-        onPress: React.PropTypes.func.isRequired,
+        onPress: PropTypes.func.isRequired,
     },
 
     getInitialState() {
@@ -40,12 +42,12 @@ const SubmitButton = React.createClass({
         // render
         return (
             <TouchableOpacity style={[styles.button, this.props.buttonStyle, actionstyle]} onPress={this.onPress}
-                                activeOpacity={.8}>
+                              activeOpacity={.8}>
                 <View style={styles.wrapper}>
-                    <View style={[styles.iconWrapper, {opacity:(!this.state.busy)?0:1}]}>
+                    <View style={[styles.iconWrapper, {opacity: (!this.state.busy) ? 0 : 1}]}>
                         <ActivityIndicator animating={this.state.busy} size='small'/>
                     </View>
-                    <Text style={[styles.buttonText, {opacity:(this.state.busy)?0:1}, this.props.textStyle]}>
+                    <Text style={[styles.buttonText, {opacity: (this.state.busy) ? 0 : 1}, this.props.textStyle]}>
                         {content}
                     </Text>
                 </View>

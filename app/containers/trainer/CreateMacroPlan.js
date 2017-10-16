@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     ScrollView,
     Text,
@@ -24,10 +26,10 @@ let MacroPlan = t.struct({
     name: t.String,
 });
 
-const CreateMacroPlan = React.createClass({
+const CreateMacroPlan = CreateClass({
     propTypes: {
-        training_plan: React.PropTypes.number.isRequired,
-        addMacroPlan: React.PropTypes.func.isRequired
+        training_plan: PropTypes.number.isRequired,
+        addMacroPlan: PropTypes.func.isRequired
     },
 
     getInitialState() {

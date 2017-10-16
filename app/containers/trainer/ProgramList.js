@@ -1,4 +1,6 @@
 import React from 'react';
+const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     StyleSheet,
     Text,
@@ -25,9 +27,9 @@ import CustomIcon from '../../components/CustomIcon';
 import EditButton from '../../components/EditButton';
 import Loading from '../../components/Loading';
 
-const ProgramList = React.createClass({
+const ProgramList = CreateClass({
     propTypes: {
-        tab: React.PropTypes.number
+        tab: PropTypes.number
     },
 
     getInitialState() {
