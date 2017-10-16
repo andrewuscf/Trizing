@@ -59,7 +59,7 @@ const ChatRoomBox = React.createClass({
             avatar = sender.avatar;
             title = sender.name;
         }
-        console.log(sender)
+        console.log(room.last_message)
         // let image = sender.profile.thumbnail ? sender.profile.thumbnail : sender.profile.avatar;
         return (
             <TouchableHighlight style={styles.container} onPress={this._toRoom} underlayColor='white'>
@@ -67,20 +67,25 @@ const ChatRoomBox = React.createClass({
                     <AvatarImage image={avatar} style={styles.avatar}/>
                     <View style={styles.details}>
                         <Text style={styles.actor}>{title}</Text>
-                        {room.team && room.last_message ?
+                        {room.last_message ?
                             <Text style={styles.sender}>
-                                <Text style={styles.senderName}>{room.last_message.user.name.split(' ')[0]}:</Text>
+                                {room.last_message.user.id !== this.props.RequestUser.id ?
+                                    <Text style={styles.senderName}>{room.last_message.user.name.split(' ')[0]}:</Text>
+                                    : null
+                                }
                                 <Text style={styles.smallText}> {trunc(lastMessage, 40)}</Text>
                             </Text> :
-                            <Text style={styles.smallText}>{trunc(lastMessage, 40)}</Text>
+                            null
                         }
                     </View>
                     <View style={styles.rightSec}>
                         {(room.last_message ) ?
-                            <Text style={[styles.timeAgo]}>{moment(room.last_message.createdAt).fromNow(false)}</Text>
+                            <Text style={[styles.timeAgo]}>
+                                {moment(room.last_message.createdAt).fromNow(false)}
+                            </Text>
                             : null
                         }
-                        {hasUnread ? <FontIcon name="circle" style={[GlobalStyle.lightBlueText, {paddingTop: 5}]}/>: null}
+                        {!hasUnread ? <FontIcon name="circle" style={[GlobalStyle.lightBlueText, {paddingTop: 5}]}/>: null}
                     </View>
                 </View>
             </TouchableHighlight>
@@ -124,18 +129,21 @@ const styles = StyleSheet.create({
     },
     senderName: {
         fontFamily: 'Heebo-Medium',
-        color: '#3D3C3A'
+        color: '#3D3C3A',
+        fontSize: getFontSize(12)
     },
     timeAgo: {
         paddingLeft: 6,
         color: 'rgba(0,0,0,.45)',
     },
     rightSec: {
-        justifyContent: 'center',
+        // justifyContent: 'center',
         alignItems: 'flex-end'
     },
     actor: {
         fontFamily: 'Heebo-Medium',
+        color: '#00AFA3',
+        fontSize: getFontSize(16)
     },
 });
 

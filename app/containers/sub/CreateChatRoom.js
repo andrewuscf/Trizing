@@ -43,15 +43,14 @@ const CreateChatRoom = React.createClass({
                 if (responseJson.label) {
                     this.props.navigation.navigate('ChatRoom', {room_label: responseJson.label});
                     return true;
-                } else {
-                    const users = [{user: {id: this.props.RequestUser.id}}];
-                    this.state.selected.forEach((user)=> users.push({user: {id: user}}));
-                    this.props.actions.createChatRoom({
-                        joins: users
-                    }, this.asyncActions);
                 }
             }).catch((error) => {
-            console.log(error)
+            console.log('hit')
+            const users = [{user: {id: this.props.RequestUser.id}}];
+            this.state.selected.forEach((user) => users.push({user: {id: user}}));
+            this.props.actions.createChatRoom({
+                joins: users
+            }, this.asyncActions);
             return false;
         });
     },

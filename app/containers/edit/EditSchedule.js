@@ -111,10 +111,12 @@ const EditSchedule = React.createClass({
     renderHeader() {
         const schedule = this.state.schedule;
         const created = moment.utc(schedule.created_at).local().format('MMMM DD YYYY');
+        let duration = 0;
+        schedule.workouts.forEach((workout) => duration += workout.duration);
         return (
             <View style={[GlobalStyle.simpleBottomBorder, styles.headerContainer]}>
                 <Text style={styles.smallBold}>Duration:
-                    <Text style={styles.notBold}> {schedule.duration ? schedule.duration : 0} {schedule.duration == 1 ? 'week' : 'weeks'}</Text>
+                    <Text style={styles.notBold}> {duration} {schedule.duration == 1 ? 'week' : 'weeks'}</Text>
                 </Text>
                 <Text style={styles.smallBold}>Created: <Text style={styles.notBold}>{created}</Text></Text>
                 <Text style={styles.smallBold}>Description: <Text

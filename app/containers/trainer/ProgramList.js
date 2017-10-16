@@ -252,7 +252,7 @@ const ProgramList = React.createClass({
                           renderSectionHeader={this.renderSectionHeader}
                 />
                 <EditButton isActionButtonVisible={this.state.isActionButtonVisible}>
-                    <ActionButton.Item buttonColor='#3498db' title="New Workout template"
+                    <ActionButton.Item buttonColor='#3498db' title="New Workout"
                                        onPress={() => navigate('CreateSchedule')}>
                         <CustomIcon name="barbell" color="white" size={getFontSize(30)}/>
                     </ActionButton.Item>

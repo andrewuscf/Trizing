@@ -201,6 +201,7 @@ const Home = React.createClass({
                 currentCarbs = data.macro_plan_day.current_logs.carbs;
                 currentProtein = data.macro_plan_day.current_logs.protein;
                 currentCal = calCalories(currentFats, currentCarbs, currentProtein);
+                console.log(data.training_day)
             }
 
             let weightLogs = this.props.WeightLogs.month.results;
