@@ -9,7 +9,7 @@ import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.evollu.react.fcm.FIRMessagingPackage;
-import com.horcrux.svg.RNSvgPackage;
+import com.horcrux.svg.SvgPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -53,19 +53,19 @@ public class MainApplication extends Application implements ReactApplication {
                     new RNFetchBlobPackage(),
                     new PickerPackage(),
                     new FIRMessagingPackage(),
-                    new RNSvgPackage(),
+                    new SvgPackage(),
                     new FBSDKPackage(mCallbackManager),
                     new VectorIconsPackage(),
                     new StripeReactPackage()
             );
         }
+
+        @Override
+        protected String getJSMainModuleName() {
+            return "index";
+        }
     };
 
-
-    @Override
-    protected String getJSMainModuleName() {
-        return "index";
-    }
 
     @Override
     public ReactNativeHost getReactNativeHost() {

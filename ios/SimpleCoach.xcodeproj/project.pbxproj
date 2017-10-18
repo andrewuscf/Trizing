@@ -1744,7 +1744,22 @@
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
 					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
-				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited) ${PODS_ROOT}/Firebase/Core/Sources $(inherited) \"${PODS_ROOT}/Headers/Public\" \"${PODS_ROOT}/Headers/Public/Firebase\" \"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\" \"${PODS_ROOT}/Headers/Public/FirebaseCore\" \"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\" \"${PODS_ROOT}/Headers/Public/FirebaseMessaging\" \"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleUtilities\" \"$(SRCROOT)/../node_modules/react-native-fcm/ios\"";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/Core/Sources",
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseMessaging\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"$(SRCROOT)/../node_modules/react-native-fcm/ios\"",
+				);
 				INFOPLIST_FILE = SimpleCoach/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1774,7 +1789,22 @@
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
 					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
-				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited) ${PODS_ROOT}/Firebase/Core/Sources $(inherited) \"${PODS_ROOT}/Headers/Public\" \"${PODS_ROOT}/Headers/Public/Firebase\" \"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\" \"${PODS_ROOT}/Headers/Public/FirebaseCore\" \"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\" \"${PODS_ROOT}/Headers/Public/FirebaseMessaging\" \"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleUtilities\" \"$(SRCROOT)/../node_modules/react-native-fcm/ios\"";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/Core/Sources",
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseMessaging\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"$(SRCROOT)/../node_modules/react-native-fcm/ios\"",
+				);
 				INFOPLIST_FILE = SimpleCoach/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1850,7 +1880,22 @@
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
 					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
-				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited) ${PODS_ROOT}/Firebase/Core/Sources $(inherited) \"${PODS_ROOT}/Headers/Public\" \"${PODS_ROOT}/Headers/Public/Firebase\" \"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\" \"${PODS_ROOT}/Headers/Public/FirebaseCore\" \"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\" \"${PODS_ROOT}/Headers/Public/FirebaseMessaging\" \"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\" \"${PODS_ROOT}/Headers/Public/GoogleUtilities\" \"$(SRCROOT)/../node_modules/react-native-fcm/ios\"";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/Core/Sources",
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseAnalytics\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseCore\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseInstanceID\"",
+					"\"${PODS_ROOT}/Headers/Public/FirebaseMessaging\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleIPhoneUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleInterchangeUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleSymbolUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
+					"\"$(SRCROOT)/../node_modules/react-native-fcm/ios\"",
+				);
 				INFOPLIST_FILE = SimpleCoach/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
