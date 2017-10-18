@@ -55,26 +55,6 @@ export function removeDeviceNotification(token) {
     }
 }
 
-export function setDeviceForNotification(token) {
-    return (dispatch, getState) => {
-        const RequestUser = getState().Global.RequestUser;
-        let JSONData = {
-            name: `${RequestUser.profile.first_name}-${RequestUser.profile.last_name}-${Platform.OS}`,
-            registration_id: token,
-            is_active: true,
-            type: Platform.OS
-        };
-        const sendData = JSON.stringify(JSONData);
-        return RNFetchBlob.fetch('POST', `${API_ENDPOINT}devices/`,
-            setHeaders(getState().Global.UserToken), sendData)
-            .then((response) => {
-                const jsonReponse = response.json();
-            }).catch((errorMessage, statusCode) => {
-                console.log(errorMessage);
-            });
-    }
-}
-
 export function removeToken(token) {
     return (dispatch) => {
         if (token) {

@@ -11,6 +11,9 @@ import {
     Platform,
     LayoutAnimation
 } from 'react-native';
+import FCM, {
+    FCMEvent,
+} from 'react-native-fcm';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
@@ -52,12 +55,53 @@ const Home = CreateClass({
     },
 
     componentDidMount() {
+        this.setUpNotifications();
         if (this.props.RequestUser.type === 1) {
             this.props.actions.getClients(true);
         } else if (this.props.RequestUser.type === 2) {
             this.props.actions.getWeightLogs(this.state.weightTimeFrame, true);
             this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), true);
         }
+    },
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.Notifications && this.props.Notifications.length && Platform.OS === 'ios') {
+            let unreadcount = 0;
+            this.props.Notifications.forEach((notification) => {
+                if (notification.unread) {
+                    unreadcount = unreadcount + 1;
+                }
+            });
+            if (FCM) FCM.setBadgeNumber(unreadcount);
+        }
+    },
+
+    setUpNotifications() {
+        const self = this;
+        FCM.requestPermissions();
+        FCM.getFCMToken().then(token => {
+            if (token) self.props.actions.setDeviceForNotification(token);
+        });
+        this.notificationListener = FCM.on(FCMEvent.Notification, async (notif) => {
+            // there are two parts of notif. notif.notification contains the notification payload, notif.data contains data payload
+            self.props.actions.getNewNotifications();
+            // console.log(notif);
+            if (notif.local_notification) {
+                //this is a local notification
+            }
+            if (notif.opened_from_tray) {
+                //app is open/resumed because user clicked banner
+            }
+
+        });
+        this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {
+            if (token) self.props.actions.setDeviceForNotification(token);
+        });
+    },
+
+    componentWillUnmount() {
+        this.notificationListener.remove();
+        this.refreshTokenListener.remove();
     },
 
     _refresh() {

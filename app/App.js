@@ -1,13 +1,5 @@
 import React from 'react';
 const CreateClass = require('create-react-class');
-import {
-    Platform,
-} from 'react-native';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import FCM, {
-    FCMEvent,
-} from 'react-native-fcm';
 import {MenuContext} from 'react-native-popup-menu';
 import {
     setCustomText,
@@ -18,7 +10,6 @@ import {
 import t from 'tcomb-form-native';
 import _ from 'lodash';
 
-import * as GlobalActions from './actions/globalActions';
 import {AppNavigator} from './routes';
 import {getFontSize} from './actions/utils';
 
@@ -41,55 +32,8 @@ setCustomScrollView({
 });
 
 const App = CreateClass({
-
-    componentDidUpdate(prevProps, prevState) {
-
-        if (!prevProps.RequestUser && this.props.RequestUser && this.props.RequestUser != prevProps.RequestUser) {
-            this.setUpNotifications();
-        }
-
-        if (this.props.Notifications && this.props.Notifications.length && Platform.OS === 'ios') {
-            let unreadcount = 0;
-            this.props.Notifications.forEach((notification) => {
-                if (notification.unread) {
-                    unreadcount = unreadcount + 1;
-                }
-            });
-            if (FCM) FCM.setBadgeNumber(unreadcount);
-        }
-    },
-
-    setUpNotifications() {
-        const self = this;
-        FCM.requestPermissions(); // for iOS
-        FCM.getFCMToken().then(token => {
-            if (token) self.props.actions.setDeviceForNotification(token);
-        });
-        this.notificationListener = FCM.on(FCMEvent.Notification, async (notif) => {
-            // there are two parts of notif. notif.notification contains the notification payload, notif.data contains data payload
-            self.props.actions.getNewNotifications();
-            // console.log(notif);
-            if (notif.local_notification) {
-                //this is a local notification
-            }
-            if (notif.opened_from_tray) {
-                //app is open/resumed because user clicked banner
-            }
-
-        });
-        this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {
-            if (token) self.props.actions.setDeviceForNotification(token);
-        });
-    },
-
-    componentWillUnmount() {
-        this.notificationListener.remove();
-        this.refreshTokenListener.remove();
-    },
-
     render() {
         return <MenuContext lazyRender={200}><AppNavigator/></MenuContext>;
-
     }
 });
 
@@ -201,17 +145,4 @@ stylesheet.dateValue = {
 t.form.Form.defaultProps.stylesheet = stylesheet;
 
 
-const stateToProps = (state) => {
-    return {
-        ...state.Global,
-        Notifications: state.Home.Notifications
-    };
-};
-
-const dispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators(GlobalActions, dispatch)
-    }
-};
-
-export default connect(stateToProps, dispatchToProps)(App);
+export default App;
