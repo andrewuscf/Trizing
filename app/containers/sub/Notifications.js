@@ -4,7 +4,6 @@ import {
     StyleSheet,
     Text,
     View,
-    Platform,
     RefreshControl,
     ListView,
     ScrollView,
@@ -51,8 +50,8 @@ const Notifications = CreateClass({
                           removeClippedSubviews={false}
                           dataSource={dataSource} onEndReached={this.onEndReached}
                           onEndReachedThreshold={Dimensions.get('window').height}
-                          renderRow={(noti, i) => <NotificationBox navigate={this.props.navigation.navigate}
-                                                                   notification={noti}
+                          renderRow={(notification, i) => <NotificationBox navigate={this.props.navigation.navigate}
+                                                                   notification={notification}
                                                                    readNotification={this.props.actions.readNotification}/>}
                 />
             );

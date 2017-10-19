@@ -1,7 +1,7 @@
 import React from 'react';
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 
 import {getFontSize} from '../actions/utils';

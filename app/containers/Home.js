@@ -82,16 +82,66 @@ const Home = CreateClass({
         FCM.getFCMToken().then(token => {
             if (token) self.props.actions.setDeviceForNotification(token);
         });
-        this.notificationListener = FCM.on(FCMEvent.Notification, async (notif) => {
-            // there are two parts of notif. notif.notification contains the notification payload, notif.data contains data payload
-            self.props.actions.getNewNotifications();
-            // console.log(notif);
-            if (notif.local_notification) {
-                //this is a local notification
+        this.notificationListener = FCM.on(FCMEvent.Notification, async (notification) => {
+            const action = notif.action ? JSON.parse(notification.action) : null;
+
+            if (action && notification.user && notification.id) {
+                const newNotification = {
+                    ...notification,
+                    action: action,
+                    user: JSON.parse(notification.user),
+                    id: parseInt(action.id),
+                    unread: notification.unread === "true"
+                };
+                this.props.actions.addNewNotification(newNotification);
             }
-            if (notif.opened_from_tray) {
-                //app is open/resumed because user clicked banner
+
+            if (notification.opened_from_tray && action) {
+
+                if (action.action_object.profile)
+                    this.props.navigation.navigate('Profile', {id: action.action_object.id});
+                else if (action.action_object.room)
+                    this.props.navigation.navigate('ChatRoom', {roomId: action.action_object.room});
+                else if (action.action_object.macro_plan || action.action_object.questionnaire || action.action_object.workout) {
+                    this.props.navigation.navigate('Profile', {id: action.action_object.client});
+                } else if (action.action_object.liked_by) {
+                    // console.log('this is a post')
+                } else if (action.action_object.from_user) {
+                    this.props.navigation.navigate('Profile', {
+                        id: action.action_object.from_user.id,
+                        request: action.action_object
+                    });
+                } else if (action.action_object.event_type) {
+                    this.props.navigation.navigate('EventDetail', {eventId: action.action_object.id});
+                } else if (action.action_object.macro_plan_days) {
+                    this.props.navigation.navigate('MacroPlanDetail', {macro_plan: action.action_object});
+                } else if (action.action_object.macro_plan_day) {
+
+                    this.props.navigation.navigate('MacroLogDetail', {macro_log: action.action_object});
+
+                } else if (action.action_object.workouts) {
+                    this.props.navigation.navigate('ScheduleDetail', {schedule: action.action_object});
+                } else if (action.action_object.questions) {
+                    if (action.verb.toLowerCase().indexOf('answered') === -1) {
+                        this.props.navigation.navigate('AnswerQuestionnaire', {questionnaire: action.action_object});
+                    } else {
+                        this.props.navigation.navigate('AnswersDisplay', {
+                            questionnaire: action.action_object,
+                            client: action.actor
+                        })
+                    }
+                }
+
+
+                FCM.removeAllDeliveredNotifications();
+            } else if (!notification.opened_from_tray && action) {
+                console.log(action)
+                // if (action.object_type === 'message') {
+                //     this.props.addMessageToChatRoom(action.action_object, true);
+                //     FCM.removeAllDeliveredNotifications();
+                // }
             }
+
 
         });
         this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {
@@ -247,7 +297,6 @@ const Home = CreateClass({
                 currentCarbs = data.macro_plan_day.current_logs.carbs;
                 currentProtein = data.macro_plan_day.current_logs.protein;
                 currentCal = calCalories(currentFats, currentCarbs, currentProtein);
-                console.log(data.training_day)
             }
 
             let weightLogs = this.props.WeightLogs.month.results;
