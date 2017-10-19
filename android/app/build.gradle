@@ -109,7 +109,6 @@ android {
         }
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
-        manifestPlaceholders = [facebookId: "1822005241396103"]
     }
     signingConfigs {
         release {
@@ -131,10 +130,7 @@ android {
     }
     buildTypes {
         debug {
-            applicationIdSuffix ".debug"
-            versionNameSuffix '-DEBUG'
             buildConfigField "String", "CODEPUSH_KEY", '""'
-            manifestPlaceholders = [facebookId: "170429833536869"]
         }
 
         releaseStaging {
@@ -146,7 +142,6 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
             buildConfigField "String", "CODEPUSH_KEY", '"QmFA0p2KK-yeiTz6XA_BXiD5zmb38ef6a3d8-c1cd-41fd-8fee-9d44f7f208d0"'
-            manifestPlaceholders = [facebookId: "1822005241396103"]
         }
     }
     // applicationVariants are e.g. debug, release

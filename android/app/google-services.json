@@ -36,37 +36,6 @@
           "status": 2
         }
       }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:927499674975:android:2d25492aeed46d3c",
-        "android_client_info": {
-          "package_name": "com.trizing.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "927499674975-kpuj9c91mj3quvl0armrm8m9bjd965ra.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCaqm8MHV-ZHtbqTQdEXkECOWh7GWZrSAU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
     }
   ],
   "configuration_version": "1"

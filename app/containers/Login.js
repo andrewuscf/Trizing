@@ -101,6 +101,7 @@ const Login = CreateClass({
                 }
             },
             function (error) {
+                console.log(error)
                 // console.log('Login fail with error: ' + error);
             }
         );
