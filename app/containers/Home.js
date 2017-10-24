@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -35,6 +36,7 @@ import GlobalStyle from './globalStyle';
 import CustomIcon from '../components/CustomIcon';
 import EditButton from '../components/EditButton';
 import Loading from '../components/Loading';
+import NotificationBox from '../components/NotificationBox';
 import WeightGraph from '../components/WeightGraph';
 import PeopleBar from '../components/PeopleBar';
 import SubmitButton from '../components/SubmitButton';
@@ -261,20 +263,44 @@ const Home = CreateClass({
         const {navigate} = this.props.navigation;
         const today = moment();
         const data = _.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")});
+        const updates = _.filter(this.props.Notifications, (notification) => {
+            return moment(notification.action.timestamp).isSame(this.state.dataDate, 'day')
+        })
+        console.log(updates);
         if (isTrainer) {
             content = (
                 <View>
-                    {this.props.Clients.length ?
-                        <View>
-                            <Text style={{paddingLeft: 12, paddingBottom: 5, paddingTop: 5, fontFamily: 'Heebo-Bold'}}>
+                    <View style={[styles.box]}>
+                        <View style={styles.boxHeader}>
+                            <FontIcon name="users" size={getFontSize(22)}/>
+                            <Text style={styles.formCalories}>
                                 Clients
                             </Text>
-                            <PeopleBar navigate={navigate} people={this.props.Clients}/>
                         </View>
-                        : !this.props.HomeIsLoading ? <View style={styles.emptyClients}>
-                            <Text style={styles.emptyClientsText}>Get started by adding new clients.</Text>
-                        </View> : null
-                    }
+                        {this.props.Clients.length ?
+                            <PeopleBar navigate={navigate} people={this.props.Clients}/> :
+                            <View>
+                                <Text style={styles.textTitle}>Get started by adding new clients.</Text>
+                                <SubmitButton onPress={() => navigate('ManageClients')} text="ADD CLIENTS"
+                                              buttonStyle={styles.logButton}/>
+                            </View>
+                        }
+                    </View>
+                    <View style={[styles.box]}>
+                        <View style={styles.boxHeader}>
+                            <MaterialIcon name="update" size={getFontSize(22)}/>
+                            <Text style={styles.formCalories}>
+                                Updates
+                            </Text>
+                        </View>
+                        {!updates.length ?
+                            <Text style={styles.textTitle}>No updates today</Text> :
+                            updates.map((notification, i) => <NotificationBox key={i}
+                                                                              navigate={this.props.navigation.navigate}
+                                                                              notification={notification}
+                                                                              readNotification={this.props.readNotification}/>)
+                        }
+                    </View>
                 </View>
             )
         } else {

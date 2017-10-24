@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import {
     StyleSheet,
@@ -12,6 +13,7 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import _ from 'lodash';
 
 import {getFontSize} from '../../actions/utils';
 
@@ -40,7 +42,7 @@ const Notifications = CreateClass({
     render() {
         if (this.props.Notifications.length) {
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-            const dataSource = ds.cloneWithRows(this.props.Notifications);
+            const dataSource = ds.cloneWithRows(_.filter(this.props.Notifications, (notification) => notification.action.description !== 'Message'));
             return (
                 <ListView showsVerticalScrollIndicator={false}
                           refreshControl={<RefreshControl refreshing={this.props.Refreshing}
@@ -51,8 +53,8 @@ const Notifications = CreateClass({
                           dataSource={dataSource} onEndReached={this.onEndReached}
                           onEndReachedThreshold={Dimensions.get('window').height}
                           renderRow={(notification, i) => <NotificationBox navigate={this.props.navigation.navigate}
-                                                                   notification={notification}
-                                                                   readNotification={this.props.actions.readNotification}/>}
+                                                                           notification={notification}
+                                                                           readNotification={this.props.actions.readNotification}/>}
                 />
             );
         }
