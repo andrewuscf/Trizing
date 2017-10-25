@@ -263,11 +263,10 @@ const Home = CreateClass({
         const {navigate} = this.props.navigation;
         const today = moment();
         const data = _.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")});
-        const updates = _.filter(this.props.Notifications, (notification) => {
-            return moment(notification.action.timestamp).isSame(this.state.dataDate, 'day')
-        })
-        console.log(updates);
         if (isTrainer) {
+            const updates = _.filter(this.props.Notifications, (notification) => {
+                return moment(notification.action.timestamp).isSame(this.state.dataDate, 'day')
+            });
             content = (
                 <View>
                     <View style={[styles.box]}>
@@ -287,10 +286,15 @@ const Home = CreateClass({
                         }
                     </View>
                     <View style={[styles.box]}>
-                        <View style={styles.boxHeader}>
-                            <MaterialIcon name="update" size={getFontSize(22)}/>
-                            <Text style={styles.formCalories}>
-                                Updates
+                        <View style={[styles.boxHeader, {justifyContent: 'space-between'}]}>
+                            <View style={[{flexDirection: 'row', alignItems: 'center'}]}>
+                                <MaterialIcon name="update" size={getFontSize(22)}/>
+                                <Text style={styles.formCalories}>
+                                    Updates
+                                </Text>
+                            </View>
+                            <Text style={[{paddingRight: 10, textDecorationLine: 'underline'}]} onPress={()=> navigate('Notifications')}>
+                                View All
                             </Text>
                         </View>
                         {!updates.length ?
@@ -448,7 +452,7 @@ const Home = CreateClass({
                                         fontSize: getFontSize(18),
                                         fontFamily: 'Heebo-Medium'
                                     }}>{data.training_day.name}</Text>
-                                    <View style={[styles.boxHeader, {paddingLeft: 10}]}>
+                                    <View style={[styles.boxHeader, {paddingLeft: 10, borderBottomWidth: 0}]}>
                                         <FontIcon name="circle" size={getFontSize(8)} color="grey"/>
                                         <Text style={styles.h2Title}>
                                             {data.training_day.exercises.length} {data.training_day.exercises.length === 1 ? 'Exercise' : 'Exercises'}
