@@ -17,7 +17,7 @@ import _ from 'lodash';
 import GlobalStyle from '../globalStyle';
 
 
-import {getNotifications, addSchedules, removeSchedule, getQuestionnaires} from '../../actions/globalActions';
+import {addSchedules, removeSchedule, getQuestionnaires} from '../../actions/globalActions';
 import {API_ENDPOINT, fetchData, getFontSize, checkStatus} from '../../actions/utils';
 
 import CustomIcon from '../../components/CustomIcon';
@@ -386,7 +386,6 @@ const stateToProps = (state) => {
 const dispatchToProps = (dispatch) => {
     return {
         getQuestionnaires: bindActionCreators(getQuestionnaires, dispatch),
-        getNotifications: bindActionCreators(getNotifications, dispatch),
         addSchedules: bindActionCreators(addSchedules, dispatch),
         removeSchedule: bindActionCreators(removeSchedule, dispatch)
     }

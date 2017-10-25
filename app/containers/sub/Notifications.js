@@ -26,9 +26,7 @@ import NotificationBox from '../../components/NotificationBox';
 const Notifications = CreateClass({
 
     componentDidMount() {
-        if (!this.props.Notifications.length) {
-            this.props.actions.getNotifications();
-        }
+        this.props.actions.getNotifications(true);
     },
     _refresh() {
         this.props.actions.getNotifications(true);

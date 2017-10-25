@@ -6,7 +6,7 @@ import {getUser, getNotifications, clearState, alertMessage} from './actions/glo
 
 
 export default fromPairs([
-    [SET_TOKEN, sequence([getUser, getNotifications])],
+    [SET_TOKEN, sequence([getUser])],
     [REMOVE_TOKEN, sequence([clearState])],
     [API_ERROR, sequence([alertMessage])]
 ]);

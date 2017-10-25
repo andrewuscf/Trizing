@@ -20,7 +20,6 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import FontIcon from 'react-native-vector-icons/FontAwesome';
-import IconBadge from 'react-native-icon-badge';
 import ActionButton from 'react-native-action-button';
 import moment from 'moment';
 import {Circle} from 'react-native-progress';
@@ -62,8 +61,8 @@ const Home = CreateClass({
             this.props.actions.getClients(true);
         } else if (this.props.RequestUser.type === 2) {
             this.props.actions.getWeightLogs(this.state.weightTimeFrame, true);
-            this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), true);
         }
+        this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), true);
     },
 
     componentDidUpdate(prevProps, prevState) {
@@ -161,9 +160,8 @@ const Home = CreateClass({
             this.props.actions.getClients(true);
         } else {
             this.props.actions.getWeightLogs(this.state.weightTimeFrame, true);
-            this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), true);
         }
-        this.props.getNotifications(true);
+        this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), true);
     },
 
     _redirect(routeName, props = null) {
@@ -198,40 +196,13 @@ const Home = CreateClass({
         this._listViewOffset = currentOffset;
     },
 
-    renderNotifications() {
-        const unread_count = _.filter(this.props.Notifications, function (o) {
-            return o.unread;
-        }).length;
-        return (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Notifications')}
-                              style={[{paddingLeft: 10}]}>
-                {unread_count ?
-                    <IconBadge
-                        MainElement={
-                            <MaterialIcon name="notifications" size={getFontSize(30)}/>
-                        }
-                        BadgeElement={
-                            <Text style={{color: '#FFFFFF', fontSize: getFontSize(12)}}>{unread_count}</Text>
-                        }
-
-                        IconBadgeStyle={
-                            {top: 0}
-                        }
-
-                    /> :
-                    <MaterialIcon name="notifications" size={getFontSize(30)}/>
-                }
-            </TouchableOpacity>
-        )
-    },
-
     addDay() {
         const isTrainer = this.props.RequestUser.type === 1;
         const newDate = this.state.dataDate.add(1, 'day');
         this.setState({
             dataDate: newDate
         });
-        if (!_.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")}) && !isTrainer) {
+        if (!_.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")})) {
             this.props.actions.getActiveData(newDate.format("YYYY-MM-DD"), false)
         }
     },
@@ -242,7 +213,7 @@ const Home = CreateClass({
         this.setState({
             dataDate: newDate
         });
-        if (!_.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")}) && !isTrainer) {
+        if (!_.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")})) {
             this.props.actions.getActiveData(newDate.format("YYYY-MM-DD"), false)
         }
     },
@@ -263,10 +234,10 @@ const Home = CreateClass({
         const {navigate} = this.props.navigation;
         const today = moment();
         const data = _.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")});
+        const updates = _.filter(data.Notifications, (notification) => {
+            return moment(notification.action.timestamp).isSame(this.state.dataDate, 'day')
+        });
         if (isTrainer) {
-            const updates = _.filter(this.props.Notifications, (notification) => {
-                return moment(notification.action.timestamp).isSame(this.state.dataDate, 'day')
-            });
             content = (
                 <View>
                     <View style={[styles.box]}>
@@ -283,26 +254,6 @@ const Home = CreateClass({
                                 <SubmitButton onPress={() => navigate('ManageClients')} text="ADD CLIENTS"
                                               buttonStyle={styles.logButton}/>
                             </View>
-                        }
-                    </View>
-                    <View style={[styles.box]}>
-                        <View style={[styles.boxHeader, {justifyContent: 'space-between'}]}>
-                            <View style={[{flexDirection: 'row', alignItems: 'center'}]}>
-                                <MaterialIcon name="update" size={getFontSize(22)}/>
-                                <Text style={styles.formCalories}>
-                                    Updates
-                                </Text>
-                            </View>
-                            <Text style={[{paddingRight: 10, textDecorationLine: 'underline'}]} onPress={()=> navigate('Notifications')}>
-                                View All
-                            </Text>
-                        </View>
-                        {!updates.length ?
-                            <Text style={styles.textTitle}>No updates today</Text> :
-                            updates.map((notification, i) => <NotificationBox key={i}
-                                                                              navigate={this.props.navigation.navigate}
-                                                                              notification={notification}
-                                                                              readNotification={this.props.readNotification}/>)
                         }
                     </View>
                 </View>
@@ -348,7 +299,7 @@ const Home = CreateClass({
                     <View>
                         {data && data.macro_plan_day ?
                             <View style={[styles.box, {marginBottom: 5}]}>
-                                <View style={styles.boxHeader}>
+                                <View style={[styles.boxHeader, {borderBottomWidth: 0}]}>
                                     <MaterialIcon name="donut-small" size={getFontSize(22)}/>
                                     <Text style={styles.formCalories}>
                                         Nutrition Plan
@@ -527,9 +478,7 @@ const Home = CreateClass({
         return (
             <View style={GlobalStyle.noHeaderContainer}>
                 <View style={styles.topBar}>
-                    <View style={[styles.topItem, {alignItems: 'flex-start'}]}>
-                        {this.renderNotifications()}
-                    </View>
+                    <View style={[styles.topItem]} />
                     <View style={[styles.topItem]}/>
                     <View style={styles.topItem}>
                         <TouchableOpacity onPress={() => navigate('MyProfile')} style={[{paddingRight: 10}]}>
@@ -559,6 +508,27 @@ const Home = CreateClass({
                         </TouchableOpacity>
                     </View>
                     {content}
+                    <View style={[styles.box]}>
+                        <View style={[styles.boxHeader, {justifyContent: 'space-between'}]}>
+                            <View style={[{flexDirection: 'row', alignItems: 'center'}]}>
+                                <MaterialIcon name="update" size={getFontSize(22)}/>
+                                <Text style={styles.formCalories}>
+                                    Updates
+                                </Text>
+                            </View>
+                            <Text style={[{paddingRight: 10, textDecorationLine: 'underline',  fontFamily: 'Heebo-Bold',
+                                color: 'black'}]} onPress={()=> navigate('Notifications')}>
+                                View All
+                            </Text>
+                        </View>
+                        {!updates.length ?
+                            <Text style={styles.textTitle}>No updates today</Text> :
+                            updates.map((notification, i) => <NotificationBox key={i}
+                                                                              navigate={this.props.navigation.navigate}
+                                                                              notification={notification}
+                                                                              readNotification={this.props.readNotification}/>)
+                        }
+                    </View>
                 </ScrollView>
 
 
@@ -623,7 +593,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
     },
     calorieBox: {
-        flex: .4,
+        flex: .45,
         padding: 10,
         borderTopWidth: 1,
         borderBottomWidth: 1,
@@ -724,7 +694,6 @@ const stateToProps = (state) => {
 const dispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(HomeActions, dispatch),
-        getNotifications: bindActionCreators(GlobalActions.getNotifications, dispatch),
         readNotification: bindActionCreators(GlobalActions.readNotification, dispatch),
     }
 };
