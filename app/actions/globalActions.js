@@ -49,12 +49,6 @@ export function setTokenInRedux(token, FromAPI = false) {
     return {type: types.SET_TOKEN, token: token}
 }
 
-export function removeDeviceNotification(token) {
-    return (dispatch, getState) => {
-        return fetch(`${API_ENDPOINT}devices/${token}/`, fetchData('DELETE', null, getState().Global.UserToken)).then(checkStatus).catch(err => console.log(err));
-    }
-}
-
 export function removeToken(token) {
     return (dispatch) => {
         if (token) {

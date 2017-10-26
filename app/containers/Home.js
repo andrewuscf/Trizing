@@ -57,12 +57,12 @@ const Home = CreateClass({
 
     componentDidMount() {
         this.setUpNotifications();
+        this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), true);
         if (this.props.RequestUser.type === 1) {
             this.props.actions.getClients(true);
         } else if (this.props.RequestUser.type === 2) {
             this.props.actions.getWeightLogs(this.state.weightTimeFrame, true);
         }
-        this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), true);
     },
 
     componentDidUpdate(prevProps, prevState) {
@@ -234,7 +234,8 @@ const Home = CreateClass({
         const {navigate} = this.props.navigation;
         const today = moment();
         const data = _.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")});
-        const updates = _.filter(data.Notifications, (notification) => {
+        console.log(data)
+        const updates = _.filter(data && data.Notifications ? data.Notifications: [], (notification) => {
             return moment(notification.action.timestamp).isSame(this.state.dataDate, 'day')
         });
         if (isTrainer) {

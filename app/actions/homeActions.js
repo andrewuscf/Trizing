@@ -105,10 +105,7 @@ export function setDeviceForNotification(token) {
         };
         const sendData = JSON.stringify(JSONData);
         return RNFetchBlob.fetch('POST', `${API_ENDPOINT}devices/`,
-            setHeaders(getState().Global.UserToken), sendData).then(checkStatus)
-            .then((jsonResponse) => {
-                console.log(jsonResponse)
-            }).catch((errorMessage, statusCode) => {
+            setHeaders(getState().Global.UserToken), sendData).then(checkStatus).catch((errorMessage, statusCode) => {
                 console.log(errorMessage);
             });
     }
