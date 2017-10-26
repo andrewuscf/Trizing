@@ -49,7 +49,7 @@ const Notifications = CreateClass({
                           initialListSize={5}
                           removeClippedSubviews={false}
                           dataSource={dataSource} onEndReached={this.onEndReached}
-                          onEndReachedThreshold={Dimensions.get('window').height}
+                          onEndReachedThreshold={400}
                           renderRow={(notification, i) => <NotificationBox navigate={this.props.navigation.navigate}
                                                                            notification={notification}
                                                                            readNotification={this.props.actions.readNotification}/>}
