@@ -49,11 +49,8 @@ export function setTokenInRedux(token, FromAPI = false) {
     return {type: types.SET_TOKEN, token: token}
 }
 
-export function removeToken(token) {
+export function removeToken() {
     return (dispatch) => {
-        if (token) {
-            dispatch(removeDeviceNotification(token));
-        }
         AsyncStorage.removeItem('USER_TOKEN');
         return dispatch({type: types.REMOVE_TOKEN}).then(() => purgeStoredState({storage: AsyncStorage}).then(() => {
                 LoginManager.logOut();

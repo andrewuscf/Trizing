@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import {
     StyleSheet,
@@ -218,9 +219,7 @@ const EditProfile = CreateClass({
                 {
                     text: 'Yes', onPress: () => {
                     if (FCM) FCM.setBadgeNumber(0);
-                    FCM.getFCMToken().then(token => {
-                        self.props.removeToken(token);
-                    });
+                    this.props.removeToken();
                 }
                 },
             ]

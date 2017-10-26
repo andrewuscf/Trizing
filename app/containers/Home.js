@@ -234,10 +234,6 @@ const Home = CreateClass({
         const {navigate} = this.props.navigation;
         const today = moment();
         const data = _.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")});
-        console.log(data)
-        const updates = _.filter(data && data.Notifications ? data.Notifications: [], (notification) => {
-            return moment(notification.action.timestamp).isSame(this.state.dataDate, 'day')
-        });
         if (isTrainer) {
             content = (
                 <View>
@@ -522,9 +518,9 @@ const Home = CreateClass({
                                 View All
                             </Text>
                         </View>
-                        {!updates.length ?
+                        {!data ?
                             <Text style={styles.textTitle}>No updates today</Text> :
-                            updates.map((notification, i) => <NotificationBox key={i}
+                            data.notifications.map((notification, i) => <NotificationBox key={i}
                                                                               navigate={this.props.navigation.navigate}
                                                                               notification={notification}
                                                                               readNotification={this.props.readNotification}/>)
