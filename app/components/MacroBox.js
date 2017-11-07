@@ -8,7 +8,8 @@ import {
     TouchableOpacity,
     Alert,
     Keyboard,
-    ScrollView
+    ScrollView,
+    Switch
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
@@ -54,16 +55,18 @@ const MacroBox = CreateClass({
         );
     },
 
-    _activate() {
+    _activate(value) {
         Keyboard.dismiss();
-        Alert.alert(
-            'Activate Macro Plan',
-            `Are you sure you want make '${this.props.plan.name}' active?`,
-            [
-                {text: 'Cancel', style: 'cancel'},
-                {text: 'Yes', onPress: () => this.props.select(this.props.plan.id)},
-            ]
-        );
+        if (value) {
+            Alert.alert(
+                'Activate Macro Plan',
+                `Are you sure you want make '${this.props.plan.name}' active?`,
+                [
+                    {text: 'Cancel', style: 'cancel'},
+                    {text: 'Yes', onPress: () => this.props.select(this.props.plan.id)},
+                ]
+            );
+        }
     },
 
 
@@ -78,10 +81,6 @@ const MacroBox = CreateClass({
                               activeOpacity={0.8}
                               onPress={this._onPress}>
                 <View style={styles.center}>
-                    {this.props.selected ? <Icon name="check-circle" size={30} style={GlobalStyle.lightBlueText}/> :
-                        <TouchableOpacity onPress={this._activate}>
-                            <Icon name="circle-thin" size={30} color='#bfbfbf'/>
-                        </TouchableOpacity>}
                     <View style={styles.details}>
                         <Text style={styles.mainText}>{plan.name}</Text>
                         <Text style={styles.date}>
@@ -89,9 +88,11 @@ const MacroBox = CreateClass({
                             /> {created_at.format('MMM DD, YY')} at {created_at.format('h:mma')}
                         </Text>
                     </View>
-                    <TouchableOpacity style={styles.edit} onPress={this._onDelete}>
-                        <Icon name="times" size={20} color="red"/>
-                    </TouchableOpacity>
+                    <Switch value={this.props.selected}
+                            onValueChange={this._activate} onTintColor='#00AFA3'/>
+                    {/*<TouchableOpacity style={styles.edit} onPress={this._onDelete}>*/}
+                        {/*<Icon name="times" size={20} color="red"/>*/}
+                    {/*</TouchableOpacity>*/}
                 </View>
                 <Modal isVisible={this.state.showDetails} style={{justifyContent: 'center'}}>
                     <ScrollView style={styles.innerModal} showsVerticalScrollIndicator={false}>
@@ -126,8 +127,7 @@ const styles = StyleSheet.create({
     },
     details: {
         flexDirection: 'column',
-        paddingLeft: 18,
-        flexWrap: 'wrap',
+        paddingLeft: 10,
         flex: 1
     },
     date: {
@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
     },
     mainText: {
         fontSize: getFontSize(18),
-        // lineHeight: getFontSize(26),
         backgroundColor: 'transparent',
         color: '#4d4d4e',
         fontFamily: 'Heebo-Medium',
@@ -145,7 +144,6 @@ const styles = StyleSheet.create({
     },
     edit: {
         flex: .06,
-        // paddingLeft: 10,
         paddingRight: 0
     },
     innerModal: {

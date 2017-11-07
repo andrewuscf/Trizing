@@ -7,10 +7,10 @@ import {
     StyleSheet,
     TouchableOpacity,
     Alert,
-    Keyboard
+    Keyboard,
+    Switch
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import _ from 'lodash';
 import moment from 'moment';
 
 import {getFontSize} from '../actions/utils';
@@ -70,12 +70,6 @@ const WorkoutProgramBox = CreateClass({
             <TouchableOpacity style={[styles.container]} activeOpacity={0.8} onPress={this._onPress}>
 
                 <View style={styles.center}>
-                    {this.props.selected ?
-                        <Icon name="check-circle" size={30} color={greenCircle}/> :
-                        <TouchableOpacity onPress={this._activate}>
-                            <Icon name="circle-thin" size={30} color='#bfbfbf'/>
-                        </TouchableOpacity>
-                    }
                     <View style={styles.details}>
                         <Text style={styles.mainText}>{schedule.name}</Text>
                         <Text style={styles.date}>
@@ -83,16 +77,16 @@ const WorkoutProgramBox = CreateClass({
                             /> {created_at.format('MMM DD, YY')} at {created_at.format('h:mma')}
                         </Text>
                     </View>
-                    <TouchableOpacity style={styles.edit} onPress={this._onDelete}>
-                        <Icon name="times" size={20} color="red"/>
-                    </TouchableOpacity>
+                    <Switch value={this.props.selected}
+                            onValueChange={this._activate} onTintColor='#00AFA3'/>
+                    {/*<TouchableOpacity style={styles.edit} onPress={this._onDelete}>*/}
+                        {/*<Icon name="times" size={20} color="red"/>*/}
+                    {/*</TouchableOpacity>*/}
                 </View>
             </TouchableOpacity>
         );
     }
 });
-
-const greenCircle = '#22c064';
 
 const styles = StyleSheet.create({
     container: {
@@ -112,7 +106,6 @@ const styles = StyleSheet.create({
     details: {
         flexDirection: 'column',
         paddingLeft: 18,
-        flexWrap: 'wrap',
         flex: 1
     },
     date: {},

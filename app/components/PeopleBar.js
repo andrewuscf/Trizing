@@ -42,7 +42,7 @@ const PeopleBar = CreateClass({
         });
 
         return (
-            <View style={styles.container}>
+            <View style={[styles.container, this.props.style]}>
                 <ScrollView style={styles.peopleList} contentContainerStyle={styles.checkContentContainer}
                             showsHorizontalScrollIndicator={false} horizontal={true}>
 
@@ -56,8 +56,8 @@ const PeopleBar = CreateClass({
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        borderColor: '#e1e3df',
-        borderBottomWidth: .5,
+        // borderColor: '#e1e3df',
+        // borderBottomWidth: .5,
         flexDirection: 'row',
         alignItems: 'center',
     },

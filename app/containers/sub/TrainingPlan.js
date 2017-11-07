@@ -286,7 +286,7 @@ const TrainingPlan = CreateClass({
                       showsVerticalScrollIndicator={false}
                       renderHeader={this.renderCreateBar.bind(null, dataSource.getRowCount())}
                       keyboardShouldPersistTaps="handled"
-                      style={[GlobalStyle.container, {backgroundColor: '#f1f1f3'}]} enableEmptySections={true}
+                      style={[GlobalStyle.container, {backgroundColor: '#f2f3f8'}]} enableEmptySections={true}
                       dataSource={dataSource}
                       contentContainerStyle={{paddingBottom: 50}}
                       onEndReached={this._onEndReached}

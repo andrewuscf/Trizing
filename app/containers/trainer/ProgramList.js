@@ -10,7 +10,8 @@ import {
     TouchableOpacity,
     Platform,
     LayoutAnimation,
-    Alert
+    Alert,
+    Switch
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -167,21 +168,18 @@ const ProgramList = CreateClass({
         );
     },
 
+    onSwitchChange(value, program) {
+        if (value) {
+            this._activate(program)
+        }
+    },
+
 
     renderRow(program) {
         let duration = 0;
         program.workouts.forEach((workout) => duration += workout.duration);
         return (
             <TouchableOpacity style={styles.link} onPress={this.goToProgram.bind(null, program)}>
-                {!this.state.isTrainer ?
-                    this.props.RequestUser.profile.active_program === program.id ?
-                        <FontIcon name="check-circle" size={getFontSize(32)}
-                                  style={[{marginLeft: 10}, GlobalStyle.lightBlueText]}/> :
-                        <TouchableOpacity onPress={this._activate.bind(null, program)} style={{marginLeft: 10}}>
-                            <FontIcon name="circle-thin" size={getFontSize(32)} color='#bfbfbf'/>
-                        </TouchableOpacity>
-                    : null
-                }
 
                 <View style={styles.leftSection}>
                     <Text style={styles.simpleTitle}>{program.name}</Text>
@@ -192,6 +190,11 @@ const ProgramList = CreateClass({
                         </Text>
                     </View>
                 </View>
+                {!this.state.isTrainer ?
+                    <Switch value={this.props.RequestUser.profile.active_program === program.id}
+                            onValueChange={(value) => this.onSwitchChange(value, program)} onTintColor='#00AFA3'/>
+                    : null
+                }
             </TouchableOpacity>
         )
     },

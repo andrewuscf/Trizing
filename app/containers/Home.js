@@ -245,7 +245,8 @@ const Home = CreateClass({
                             </Text>
                         </View>
                         {this.props.Clients.length ?
-                            <PeopleBar navigate={navigate} people={this.props.Clients}/> :
+                            <PeopleBar navigate={navigate} people={this.props.Clients}
+                                       style={{borderBottomLeftRadius: 5, borderBottomRightRadius: 5}}/> :
                             <View>
                                 <Text style={styles.textTitle}>Get started by adding new clients.</Text>
                                 <SubmitButton onPress={() => navigate('ManageClients')} text="ADD CLIENTS"
@@ -475,7 +476,7 @@ const Home = CreateClass({
         return (
             <View style={GlobalStyle.noHeaderContainer}>
                 <View style={styles.topBar}>
-                    <View style={[styles.topItem]} />
+                    <View style={[styles.topItem]}/>
                     <View style={[styles.topItem]}/>
                     <View style={styles.topItem}>
                         <TouchableOpacity onPress={() => navigate('MyProfile')} style={[{paddingRight: 10}]}>
@@ -513,17 +514,19 @@ const Home = CreateClass({
                                     Updates
                                 </Text>
                             </View>
-                            <Text style={[{paddingRight: 10, textDecorationLine: 'underline',  fontFamily: 'Heebo-Bold',
-                                color: 'black'}]} onPress={()=> navigate('Notifications')}>
+                            <Text style={[{
+                                paddingRight: 10, textDecorationLine: 'underline', fontFamily: 'Heebo-Bold',
+                                color: 'black'
+                            }]} onPress={() => navigate('Notifications')}>
                                 View All
                             </Text>
                         </View>
                         {!data ?
                             <Text style={styles.textTitle}>No updates today</Text> :
                             data.notifications.map((notification, i) => <NotificationBox key={i}
-                                                                              navigate={this.props.navigation.navigate}
-                                                                              notification={notification}
-                                                                              readNotification={this.props.readNotification}/>)
+                                                                                         navigate={this.props.navigation.navigate}
+                                                                                         notification={notification}
+                                                                                         readNotification={this.props.readNotification}/>)
                         }
                     </View>
                 </ScrollView>
@@ -532,7 +535,7 @@ const Home = CreateClass({
                 <EditButton icon={isTrainer ? null : <MaterialIcon name="search" size={getFontSize(20)} color="white"/>}
                             isActionButtonVisible={this.state.isActionButtonVisible}>
                     <ActionButton.Item buttonColor='#FD795B' title="Workouts"
-                                       onPress={() => navigate('ProgramList', {tab: 2})}>
+                                       onPress={() => navigate('ProgramList', {tab: 1})}>
                         <CustomIcon name="weight" size={getFontSize(22)} color="white"/>
                     </ActionButton.Item>
                     {isTrainer ?
@@ -560,6 +563,7 @@ const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
         flexDirection: 'column',
+        backgroundColor: '#f2f3f8'
     },
     row: {
         flexDirection: 'row',
@@ -580,8 +584,8 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomWidth: 1,
-        borderColor: unfilledColor
+        borderBottomWidth: .5,
+        borderColor: '#e1e3df'
     },
     formCalories: {
         fontFamily: 'Heebo-Bold',
@@ -609,11 +613,8 @@ const styles = StyleSheet.create({
     box: {
         justifyContent: 'center',
         margin: 10,
-        borderWidth: .5,
-        borderColor: '#e1e3df',
         borderRadius: 5,
         backgroundColor: 'white',
-        marginBottom: 5,
     },
     textTitle: {
         fontSize: getFontSize(22),
@@ -650,8 +651,8 @@ const styles = StyleSheet.create({
         height: 50,
         alignItems: 'center',
         justifyContent: 'center',
-        borderColor: '#e1e3df',
-        borderBottomWidth: 1
+        // borderColor: '#e1e3df',
+        // borderBottomWidth: 1
     },
     emptyClientsText: {
         fontSize: getFontSize(20),
@@ -659,9 +660,9 @@ const styles = StyleSheet.create({
         color: 'rgba(0, 175, 163, 1)'
     },
     arrowStyle: {
-        borderColor: '#00AFA3',
+        // borderColor: '#00AFA3',
         backgroundColor: 'white',
-        borderWidth: .5,
+        // borderWidth: .5,
         width: 40,
         height: 40,
         borderRadius: 20,
