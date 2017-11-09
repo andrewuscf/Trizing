@@ -1,5 +1,6 @@
 import React from 'react';
 const CreateClass = require('create-react-class');
+import {Platform} from 'react-native';
 import {MenuContext} from 'react-native-popup-menu';
 import {
     setCustomText,
@@ -21,19 +22,20 @@ setCustomText({
     }
 });
 setCustomTouchableOpacity({
-    hitSlop: {top: 15, right: 15, left: 15, bottom: 15},
+    hitSlop: {top: 5, right: 5, left: 5, bottom: 5},
     activeOpacity: .9,
 });
 setCustomListView({
-    contentContainerStyle: {paddingBottom: 50}
+    contentContainerStyle: {paddingBottom: 30}
 });
 setCustomScrollView({
-    contentContainerStyle: {paddingBottom: 50}
+    contentContainerStyle: {paddingBottom: 30}
 });
 
 const App = CreateClass({
     render() {
-        return <MenuContext lazyRender={200}><AppNavigator/></MenuContext>;
+        const prefix = Platform.OS === 'android' ? 'simplecoach://simplecoach/' : 'simplecoach://';
+        return <MenuContext lazyRender={200}><AppNavigator uriPrefix={prefix} /></MenuContext>;
     }
 });
 

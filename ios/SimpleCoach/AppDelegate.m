@@ -13,6 +13,8 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <React/RCTLinkingManager.h>
+
 
 #import "RNFIRMessaging.h"
 
@@ -55,10 +57,15 @@
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-  return [[FBSDKApplicationDelegate sharedInstance] application:application
+  BOOL handledFB = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                          openURL:url
                                                sourceApplication:sourceApplication
                                                       annotation:annotation];
+
+  BOOL handledRCT = [RCTLinkingManager application:application openURL:url
+                                          sourceApplication:sourceApplication annotation:annotation];
+
+  return handledFB || handledRCT;
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler

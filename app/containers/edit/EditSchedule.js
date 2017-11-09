@@ -13,16 +13,10 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import FontIcon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
 import moment from 'moment';
 import ActionButton from 'react-native-action-button';
-import {
-    Menu,
-    MenuOptions,
-    MenuOption,
-    MenuTrigger,
-} from 'react-native-popup-menu';
+import Modal from 'react-native-modal';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {fetchData, API_ENDPOINT, getFontSize, checkStatus, convertSkill} from '../../actions/utils';
@@ -40,13 +34,14 @@ const EditSchedule = CreateClass({
     getInitialState() {
         const schedule = _.find(this.props.Schedules, {id: this.props.scheduleId});
         return {
-            schedule: schedule
+            schedule: schedule,
+            showMenu: false,
+            selectedWorkout: null,
         }
     },
 
     componentDidMount() {
         const schedule = _.find(this.props.Schedules, {id: this.props.scheduleId});
-        console.log(schedule)
         if (schedule) {
             this.props.navigation.setParams({headerTitle: schedule.name});
             this.setState({schedule: schedule});
@@ -82,7 +77,8 @@ const EditSchedule = CreateClass({
     //     );
     // },
 
-    _onWorkoutDelete(workoutId) {
+    _onWorkoutDelete() {
+        // this.setState({showMenu: false});
         Alert.alert(
             `Delete ${this.state.workout ? this.state.workout.name : 'workout'}`,
             `Are you sure you want delete this workout?`,
@@ -92,12 +88,12 @@ const EditSchedule = CreateClass({
                     text: 'Delete',
                     onPress: () => {
 
-                        fetch(`${API_ENDPOINT}training/workout/${workoutId}/`,
+                        fetch(`${API_ENDPOINT}training/workout/${this.props.selectedWorkout.id}/`,
                             fetchData('DELETE', null, this.props.UserToken))
                             .then(checkStatus)
                             .then((responseJson) => {
                                 if (responseJson.deleted) {
-                                    this.props.actions.deleteWorkout(this.state.schedule.id, workoutId);
+                                    this.props.actions.deleteWorkout(this.state.schedule.id, this.props.selectedWorkout.id);
                                 } else {
                                     console.log(responseJson)
                                 }
@@ -138,6 +134,10 @@ const EditSchedule = CreateClass({
         )
     },
 
+    onLongPress(workout) {
+        this.setState({showMenu: true, selectedWorkout: workout});
+    },
+
     renderRow(workout, index) {
         const parseIndex = parseInt(index);
         let start_date = moment.utc(workout.dates.start_date).local();
@@ -145,24 +145,11 @@ const EditSchedule = CreateClass({
         return (
             <TouchableOpacity key={parseIndex} onPress={() => navigate('EditWorkout', {
                 workoutId: workout.id,
-            })}
+            })} onLongPress={this.onLongPress.bind(null, workout)}
                               style={[styles.workoutBox]}>
 
                 <View style={styles.titleView}>
                     <Text style={styles.simpleTitle}>{workout.name}</Text>
-                    <Menu>
-                        <MenuTrigger>
-                            <FontIcon name="ellipsis-h" size={getFontSize(35)}/>
-                        </MenuTrigger>
-                        <MenuOptions customStyles={optionsStyles}>
-                            <MenuOption onSelect={() => this._onWorkoutDelete(workout.id)} text='Delete'/>
-                            <MenuOption onSelect={() => navigate('CreateWorkout', {
-                                scheduleId: this.props.scheduleId,
-                                template_workout: workout,
-                            })}
-                                        text='Duplicate'/>
-                        </MenuOptions>
-                    </Menu>
                 </View>
 
                 <View style={styles.dateSection}>
@@ -192,6 +179,14 @@ const EditSchedule = CreateClass({
         )
     },
 
+    duplicate() {
+        this.setState({showMenu: false});
+        this.props.navigation.navigate('CreateWorkout', {
+            scheduleId: this.props.scheduleId,
+            template_workout: this.props.selectedWorkout,
+        })
+    },
+
 
     render: function () {
         if (!this.state.schedule) return null;
@@ -210,6 +205,23 @@ const EditSchedule = CreateClass({
                           renderRow={this.renderRow}
                           renderFooter={this.renderFooter.bind(null, dataSource.getRowCount())}
                 />
+                <Modal isVisible={this.state.showMenu} style={{justifyContent: 'center'}}>
+                    <TouchableOpacity onPress={this.duplicate}>
+                        <View style={styles.closeButton}>
+                            <Text style={{color: 'grey'}}>Duplicate</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this._onWorkoutDelete}>
+                        <View style={styles.closeButton}>
+                            <Text style={{color: 'grey'}}>Delete</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.setState({showMenu: false})}>
+                        <View style={styles.closeButton}>
+                            <Text style={{color: 'grey'}}>Close</Text>
+                        </View>
+                    </TouchableOpacity>
+                </Modal>
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" onPress={this._toCreateWorkout}/>
             </View>
         )
@@ -298,6 +310,15 @@ const styles = StyleSheet.create({
         fontFamily: 'Heebo-Bold',
         paddingLeft: 10,
         paddingBottom: 5
+    },
+    closeButton: {
+        backgroundColor: 'white',
+        padding: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 4,
+        borderTopWidth: .5,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
     },
 });
 

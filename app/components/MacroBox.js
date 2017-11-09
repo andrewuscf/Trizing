@@ -79,7 +79,7 @@ const MacroBox = CreateClass({
         return (
             <TouchableOpacity style={[styles.container]}
                               activeOpacity={0.8}
-                              onPress={this._onPress}>
+                              onPress={this._onPress} onLongPress={this._onDelete}>
                 <View style={styles.center}>
                     <View style={styles.details}>
                         <Text style={styles.mainText}>{plan.name}</Text>
@@ -90,9 +90,6 @@ const MacroBox = CreateClass({
                     </View>
                     <Switch value={this.props.selected}
                             onValueChange={this._activate} onTintColor='#00AFA3'/>
-                    {/*<TouchableOpacity style={styles.edit} onPress={this._onDelete}>*/}
-                        {/*<Icon name="times" size={20} color="red"/>*/}
-                    {/*</TouchableOpacity>*/}
                 </View>
                 <Modal isVisible={this.state.showDetails} style={{justifyContent: 'center'}}>
                     <ScrollView style={styles.innerModal} showsVerticalScrollIndicator={false}>
@@ -141,10 +138,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Heebo-Medium',
         marginBottom: 5,
         flex: .9
-    },
-    edit: {
-        flex: .06,
-        paddingRight: 0
     },
     innerModal: {
         backgroundColor: 'white',

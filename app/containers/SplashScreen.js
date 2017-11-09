@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {purgeStoredState} from 'redux-persist';
 
-import * as GlobalActions from '../actions/globalActions';
+import {removeToken, initializeApp} from '../actions/globalActions';
 import {resetNav, letterSpacing, getFontSize} from '../actions/utils';
 import GlobalStyle from './globalStyle';
 
@@ -179,9 +179,8 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
     return {
-        removeToken: bindActionCreators(GlobalActions.removeToken, dispatch),
-        setTokenInRedux: bindActionCreators(GlobalActions.setTokenInRedux, dispatch),
-        initializeApp: bindActionCreators(GlobalActions.initializeApp, dispatch)
+        removeToken: bindActionCreators(removeToken, dispatch),
+        initializeApp: bindActionCreators(initializeApp, dispatch)
     }
 };
 

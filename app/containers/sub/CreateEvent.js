@@ -177,7 +177,6 @@ const CreateEvent = CreateClass({
         let options = {
             auto: 'none',
             template: template,
-            // stylesheet: topStyle,
             fields: {
                 title: {
                     placeholder: 'Event Name',
@@ -196,7 +195,7 @@ const CreateEvent = CreateClass({
                         },
                     },
                     hasError: this.state.dateError,
-                    factory: Platform.OS == 'ios' ? ModalDatePicker : null,
+                    factory: Platform.OS === 'ios' ? ModalDatePicker : null,
                 },
                 start_time: {
                     mode: 'time',
@@ -211,7 +210,7 @@ const CreateEvent = CreateClass({
                         },
                     },
                     hasError: this.state.startError,
-                    factory: Platform.OS == 'ios' ? ModalDatePicker : null,
+                    factory: Platform.OS === 'ios' ? ModalDatePicker : null,
                 },
                 end_time: {
                     mode: 'time',
@@ -226,7 +225,7 @@ const CreateEvent = CreateClass({
                         minuteInterval: 10,
                     },
                     hasError: this.state.endError,
-                    factory: Platform.OS == 'ios' ? ModalDatePicker : null,
+                    factory: Platform.OS === 'ios' ? ModalDatePicker : null,
                 }
             }
         };
@@ -276,8 +275,6 @@ const styles = StyleSheet.create({
 });
 
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
-const topStyle = _.cloneDeep(t.form.Form.stylesheet);
-
 
 stylesheet.formGroup = {
     ...stylesheet.formGroup,
@@ -309,74 +306,6 @@ stylesheet.formGroup = {
     }
 };
 
-
-topStyle.formGroup = {
-    ...topStyle.formGroup,
-    normal: {
-        ...topStyle.formGroup.normal,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-        borderColor: '#e1e3df',
-        borderBottomWidth: 1,
-        marginBottom: 0,
-        backgroundColor: 'white'
-    },
-    error: {
-        ...topStyle.formGroup.error,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-        borderColor: 'red',
-        borderBottomWidth: 1,
-        marginBottom: 0,
-        backgroundColor: 'white'
-    }
-};
-
-
-topStyle.textbox = {
-    ...topStyle.textbox,
-    normal: {
-        ...topStyle.textbox.normal,
-        borderWidth: 0,
-        marginTop: 5,
-        marginBottom: 0,
-        fontSize: 24,
-        minHeight: 60,
-    },
-    error: {
-        ...topStyle.textbox.error,
-        borderWidth: 0,
-        marginTop: 5,
-        marginBottom: 0,
-        fontSize: 24,
-        minHeight: 60,
-    }
-};
-
-topStyle.textboxView = {
-    ...topStyle.textboxView,
-    normal: {
-        ...topStyle.textboxView.normal,
-        borderWidth: 0,
-        borderRadius: 0,
-        borderBottomWidth: 0,
-        flex: 1,
-        backgroundColor: 'transparent',
-        minHeight: 60,
-    },
-    error: {
-        ...topStyle.textboxView.error,
-        borderWidth: 0,
-        borderRadius: 0,
-        borderBottomWidth: 0,
-        flex: 1,
-        backgroundColor: 'transparent',
-        minHeight: 60,
-    }
-};
 
 
 let myFormatFunction = (format, date) => {

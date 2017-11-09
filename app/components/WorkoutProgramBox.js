@@ -67,7 +67,7 @@ const WorkoutProgramBox = CreateClass({
         const schedule = this.props.schedule;
         const created_at = moment.utc(schedule.created_at).local();
         return (
-            <TouchableOpacity style={[styles.container]} activeOpacity={0.8} onPress={this._onPress}>
+            <TouchableOpacity style={[styles.container]} activeOpacity={0.8} onPress={this._onPress} onLongPress={this._onDelete}>
 
                 <View style={styles.center}>
                     <View style={styles.details}>
@@ -79,9 +79,6 @@ const WorkoutProgramBox = CreateClass({
                     </View>
                     <Switch value={this.props.selected}
                             onValueChange={this._activate} onTintColor='#00AFA3'/>
-                    {/*<TouchableOpacity style={styles.edit} onPress={this._onDelete}>*/}
-                        {/*<Icon name="times" size={20} color="red"/>*/}
-                    {/*</TouchableOpacity>*/}
                 </View>
             </TouchableOpacity>
         );
@@ -116,9 +113,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Heebo-Medium',
         marginBottom: 5,
         flex: .9
-    },
-    edit: {
-        flex: .06,
     },
 });
 
