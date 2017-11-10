@@ -197,7 +197,6 @@ const Home = CreateClass({
     },
 
     addDay() {
-        const isTrainer = this.props.RequestUser.type === 1;
         const newDate = this.state.dataDate.add(1, 'day');
         this.setState({
             dataDate: newDate
@@ -208,7 +207,6 @@ const Home = CreateClass({
     },
 
     subtractDay() {
-        const isTrainer = this.props.RequestUser.type === 1;
         const newDate = this.state.dataDate.subtract(1, 'day');
         this.setState({
             dataDate: newDate
@@ -506,7 +504,7 @@ const Home = CreateClass({
                         </TouchableOpacity>
                     </View>
                     {content}
-                    <View style={[styles.box]}>
+                    {this.state.dataDate.isSameOrBefore(today, 'd') ?<View style={[styles.box]}>
                         <View style={[styles.boxHeader, {justifyContent: 'space-between'}]}>
                             <View style={[{flexDirection: 'row', alignItems: 'center'}]}>
                                 <MaterialIcon name="update" size={getFontSize(22)}/>
@@ -514,21 +512,20 @@ const Home = CreateClass({
                                     Updates
                                 </Text>
                             </View>
-                            <Text style={[{
-                                paddingRight: 10, textDecorationLine: 'underline', fontFamily: 'Heebo-Bold',
-                                color: 'black'
-                            }]} onPress={() => navigate('Notifications')}>
+                            <Text style={[{paddingRight: 10, textDecorationLine: 'underline',  fontFamily: 'Heebo-Bold',
+                                color: 'black'}]} onPress={()=> navigate('Notifications')}>
                                 View All
                             </Text>
                         </View>
-                        {!data ?
+                        {!data || !data.notifications.length?
                             <Text style={styles.textTitle}>No updates today</Text> :
                             data.notifications.map((notification, i) => <NotificationBox key={i}
-                                                                                         navigate={this.props.navigation.navigate}
-                                                                                         notification={notification}
-                                                                                         readNotification={this.props.readNotification}/>)
+                                                                              navigate={this.props.navigation.navigate}
+                                                                              notification={notification}
+                                                                              readNotification={this.props.readNotification}/>)
                         }
-                    </View>
+                    </View>: null
+                    }
                 </ScrollView>
 
 

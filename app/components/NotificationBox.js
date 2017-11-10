@@ -110,7 +110,7 @@ const NotificationBox = CreateClass({
                             }
                         </Text>
                         <View style={styles.timeStamp}>
-                            <Text style={styles.timeStampText}>{moment(action.timestamp).fromNow(false)}</Text>
+                            <Text style={styles.timeStampText}>{moment.utc(action.timestamp).local().fromNow(false)}</Text>
                             {notification.unread ? <View style={styles.redDot}/> : null}
                         </View>
                     </View>
