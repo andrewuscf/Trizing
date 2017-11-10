@@ -5,16 +5,11 @@ import {
     View,
     Text,
     StyleSheet,
+    TouchableOpacity,
+    Alert
 } from 'react-native';
-import {
-    Menu,
-    MenuOptions,
-    MenuOption,
-    MenuTrigger,
-} from 'react-native-popup-menu';
 
 import {getFontSize, trunc} from '../../actions/utils';
-
 
 import GlobalStyle from "../../containers/globalStyle";
 
@@ -39,55 +34,47 @@ const DisplayExerciseBox = CreateClass({
         this.props.addNote(this.props.set_group)
     },
 
+    onLongPress() {
+        Alert.alert(
+            `What would you like to do?`,
+            ``,
+            [
+                {
+                    text: 'Add Note',
+                    onPress: this.toAddNote
+                },
+                {
+                    text: 'Delete',
+                    onPress: this._onDelete,
+                    style: 'destructive'
+                },
+                {text: 'Cancel', style: 'cancel'},
+            ]
+        );
+    },
+
 
     render: function () {
         return (
-            <View style={[styles.displayWorkoutBox]}>
-                <Menu>
-                    <MenuTrigger style={[{flexDirection: 'row', alignItems: 'center'}]}>
-                        <View style={{flexDirection: 'column', flex: 1}}>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                                <Text style={styles.simpleTitle}>{this.props.set_group.exercise.name}</Text>
-                            </View>
-                        </View>
-                        <View style={[styles.setCircle, {borderColor: 'green'}]}>
-                            <Text style={[{fontSize: getFontSize(12)}, {color: 'green'}]}>
-                                {this.props.set_group.sets.length}
-                            </Text>
-                            <Text style={[{fontSize: getFontSize(10)}, {color: 'green'}]}>
-                                {this.props.set_group.sets.length === 1 ? 'SET' : 'SETS'}
-                            </Text>
-                        </View>
-                    </MenuTrigger>
-                    <MenuOptions customStyles={optionsStyles}>
-                        <MenuOption onSelect={this._redirect} text='Edit'/>
-                        {/*<MenuOption onSelect={this.toAddNote} text='Add note'/>*/}
-                        <MenuOption onSelect={this._onDelete} text='Delete'/>
-                    </MenuOptions>
-                </Menu>
-            </View>
+            <TouchableOpacity style={[styles.displayWorkoutBox]} onPress={this._redirect} onLongPress={this.onLongPress}>
+                <View style={{flexDirection: 'column', flex: 1}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <Text style={styles.simpleTitle}>{this.props.set_group.exercise.name}</Text>
+                    </View>
+                </View>
+                <View style={[styles.setCircle, {borderColor: 'green'}]}>
+                    <Text style={[{fontSize: getFontSize(12)}, {color: 'green'}]}>
+                        {this.props.set_group.sets.length}
+                    </Text>
+                    <Text style={[{fontSize: getFontSize(10)}, {color: 'green'}]}>
+                        {this.props.set_group.sets.length === 1 ? 'SET' : 'SETS'}
+                    </Text>
+                </View>
+            </TouchableOpacity>
         )
     }
 });
 
-
-const optionsStyles = {
-    optionsContainer: {
-        paddingTop: 5,
-        // position: 'as'
-    },
-    optionsWrapper: {
-        // alignSelf: 'flex-end'
-    },
-    optionWrapper: {
-        margin: 5,
-        // alignSelf: 'flex-end'
-    },
-    optionTouchable: {
-        activeOpacity: 70,
-    },
-    optionText: {},
-};
 
 
 const styles = StyleSheet.create({
@@ -97,6 +84,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderColor: '#e1e3df',
         borderBottomWidth: .5,
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     setCircle: {
         borderWidth: 1,

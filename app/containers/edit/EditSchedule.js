@@ -16,7 +16,6 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
 import moment from 'moment';
 import ActionButton from 'react-native-action-button';
-import Modal from 'react-native-modal';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {fetchData, API_ENDPOINT, getFontSize, checkStatus, convertSkill} from '../../actions/utils';
@@ -35,8 +34,6 @@ const EditSchedule = CreateClass({
         const schedule = _.find(this.props.Schedules, {id: this.props.scheduleId});
         return {
             schedule: schedule,
-            showMenu: false,
-            selectedWorkout: null,
         }
     },
 
@@ -77,33 +74,19 @@ const EditSchedule = CreateClass({
     //     );
     // },
 
-    _onWorkoutDelete() {
-        // this.setState({showMenu: false});
-        Alert.alert(
-            `Delete ${this.state.workout ? this.state.workout.name : 'workout'}`,
-            `Are you sure you want delete this workout?`,
-            [
-                {text: 'Cancel', style: 'cancel'},
-                {
-                    text: 'Delete',
-                    onPress: () => {
-
-                        fetch(`${API_ENDPOINT}training/workout/${this.props.selectedWorkout.id}/`,
-                            fetchData('DELETE', null, this.props.UserToken))
-                            .then(checkStatus)
-                            .then((responseJson) => {
-                                if (responseJson.deleted) {
-                                    this.props.actions.deleteWorkout(this.state.schedule.id, this.props.selectedWorkout.id);
-                                } else {
-                                    console.log(responseJson)
-                                }
-                            }).catch((error) => {
-                            console.log(error)
-                        });
-                    }
-                },
-            ]
-        );
+    _onWorkoutDelete(workout) {
+        fetch(`${API_ENDPOINT}training/workout/${workout.id}/`,
+            fetchData('DELETE', null, this.props.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+                if (responseJson.deleted) {
+                    this.props.actions.deleteWorkout(this.state.schedule.id, workout.id);
+                } else {
+                    console.log(responseJson)
+                }
+            }).catch((error) => {
+            console.log(error)
+        });
     },
 
     renderHeader() {
@@ -114,7 +97,7 @@ const EditSchedule = CreateClass({
         return (
             <View style={[GlobalStyle.simpleBottomBorder, styles.headerContainer]}>
                 <Text style={styles.smallBold}>Duration:
-                    <Text style={styles.notBold}> {duration} {schedule.duration == 1 ? 'week' : 'weeks'}</Text>
+                    <Text style={styles.notBold}> {duration} {schedule.duration === 1 ? 'week' : 'weeks'}</Text>
                 </Text>
                 <Text style={styles.smallBold}>Created: <Text style={styles.notBold}>{created}</Text></Text>
                 <Text style={styles.smallBold}>Description: <Text
@@ -135,7 +118,22 @@ const EditSchedule = CreateClass({
     },
 
     onLongPress(workout) {
-        this.setState({showMenu: true, selectedWorkout: workout});
+        Alert.alert(
+            `What would you like to do?`,
+            ``,
+            [
+                {
+                    text: 'Duplicate',
+                    onPress: () => this.duplicate(workout)
+                },
+                {
+                    text: 'Delete',
+                    onPress: () => this._onWorkoutDelete(workout),
+                    style: 'destructive'
+                },
+                {text: 'Cancel', style: 'cancel'},
+            ]
+        );
     },
 
     renderRow(workout, index) {
@@ -146,7 +144,7 @@ const EditSchedule = CreateClass({
             <TouchableOpacity key={parseIndex} onPress={() => navigate('EditWorkout', {
                 workoutId: workout.id,
             })} onLongPress={this.onLongPress.bind(null, workout)}
-                              style={[styles.workoutBox]}>
+                              style={[styles.workoutBox, GlobalStyle.simpleBottomBorder]}>
 
                 <View style={styles.titleView}>
                     <Text style={styles.simpleTitle}>{workout.name}</Text>
@@ -179,11 +177,10 @@ const EditSchedule = CreateClass({
         )
     },
 
-    duplicate() {
-        this.setState({showMenu: false});
+    duplicate(workout) {
         this.props.navigation.navigate('CreateWorkout', {
             scheduleId: this.props.scheduleId,
-            template_workout: this.props.selectedWorkout,
+            template_workout: workout,
         })
     },
 
@@ -205,23 +202,6 @@ const EditSchedule = CreateClass({
                           renderRow={this.renderRow}
                           renderFooter={this.renderFooter.bind(null, dataSource.getRowCount())}
                 />
-                <Modal isVisible={this.state.showMenu} style={{justifyContent: 'center'}}>
-                    <TouchableOpacity onPress={this.duplicate}>
-                        <View style={styles.closeButton}>
-                            <Text style={{color: 'grey'}}>Duplicate</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this._onWorkoutDelete}>
-                        <View style={styles.closeButton}>
-                            <Text style={{color: 'grey'}}>Delete</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setState({showMenu: false})}>
-                        <View style={styles.closeButton}>
-                            <Text style={{color: 'grey'}}>Close</Text>
-                        </View>
-                    </TouchableOpacity>
-                </Modal>
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" onPress={this._toCreateWorkout}/>
             </View>
         )
@@ -235,19 +215,6 @@ const EditSchedule = CreateClass({
     },
 });
 
-const optionsStyles = {
-    optionsContainer: {
-        paddingTop: 5,
-    },
-    optionsWrapper: {},
-    optionWrapper: {
-        margin: 5,
-    },
-    optionTouchable: {
-        activeOpacity: 70,
-    },
-    optionText: {},
-};
 
 const styles = StyleSheet.create({
     flexCenter: {
@@ -263,13 +230,8 @@ const styles = StyleSheet.create({
     },
     workoutBox: {
         flex: 1,
-        borderColor: '#e1e3df',
-        borderWidth: 1,
         padding: 10,
         backgroundColor: 'white',
-        margin: 10,
-        marginBottom: 5,
-        borderRadius: 5,
     },
     notBold: {
         color: 'grey',
@@ -316,7 +278,7 @@ const styles = StyleSheet.create({
         padding: 12,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 4,
+        // borderRadius: 4,
         borderTopWidth: .5,
         borderColor: 'rgba(0, 0, 0, 0.1)',
     },

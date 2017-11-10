@@ -10,20 +10,20 @@ const GlobalStyle = StyleSheet.create({
         paddingTop: (Platform.OS === 'ios') ? 20 : 0,
     },
     simpleBottomBorder: {
-        borderColor: '#e1e3df',
+        borderColor: 'rgba(0, 0, 0, 0.1)',
         borderBottomWidth: 1
     },
     topBottomBorder: {
-        borderColor: '#e1e3df',
+        borderColor: 'rgba(0, 0, 0, 0.1)',
         borderBottomWidth: 1,
         borderTopWidth: 1
     },
     simpleTopBorder: {
-        borderColor: '#e1e3df',
+        borderColor: 'rgba(0, 0, 0, 0.1)',
         borderTopWidth: 1
     },
     simpleTopBorderMedium: {
-        borderColor: '#e1e3df',
+        borderColor: 'rgba(0, 0, 0, 0.1)',
         borderBottomWidth: 1,
         marginRight: 20,
         marginLeft: 20,

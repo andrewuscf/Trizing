@@ -106,40 +106,47 @@ const EditWorkout = CreateClass({
         });
     },
 
-    _onDayDelete(day) {
+    onLongPress(day) {
         Alert.alert(
-            `Delete ${day.name}`,
-            `Are you sure you want delete this workout day?`,
+            `What would you like to do?`,
+            ``,
             [
-                {text: 'Cancel', style: 'cancel'},
+                {
+                    text: 'Duplicate',
+                    onPress: () => this._onDuplicate(day)
+                },
                 {
                     text: 'Delete',
-                    onPress: () => {
-                        fetch(`${API_ENDPOINT}training/workout/day/${day.id}/`,
-                            fetchData('DELETE', null, this.props.UserToken))
-                            .then(checkStatus)
-                            .then((responseJson) => {
-                                if (responseJson.deleted) {
-                                    const workoutIndex = _.findIndex(this.state.workout.workout_days, {id: day.id});
-                                    if (workoutIndex !== -1) {
-                                        this.setState({
-                                            workout: {
-                                                ...this.state.workout,
-                                                workout_days: this.state.workout.workout_days.slice(0, workoutIndex)
-                                                    .concat(this.state.workout.workout_days.slice(workoutIndex + 1))
-                                            }
-                                        })
-                                    }
-                                } else {
-                                    console.log(responseJson)
-                                }
-                            }).catch((error) => {
-                            console.log(error)
-                        });
-                    }
+                    onPress: () => this._onDayDelete(day),
+                    style: 'destructive'
                 },
+                {text: 'Cancel', style: 'cancel'},
             ]
         );
+    },
+
+    _onDayDelete(day) {
+        fetch(`${API_ENDPOINT}training/workout/day/${day.id}/`,
+            fetchData('DELETE', null, this.props.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+                if (responseJson.deleted) {
+                    const workoutIndex = _.findIndex(this.state.workout.workout_days, {id: day.id});
+                    if (workoutIndex !== -1) {
+                        this.setState({
+                            workout: {
+                                ...this.state.workout,
+                                workout_days: this.state.workout.workout_days.slice(0, workoutIndex)
+                                    .concat(this.state.workout.workout_days.slice(workoutIndex + 1))
+                            }
+                        })
+                    }
+                } else {
+                    console.log(responseJson)
+                }
+            }).catch((error) => {
+            console.log(error)
+        });
     },
 
 
@@ -159,7 +166,7 @@ const EditWorkout = CreateClass({
     renderRow(workout_day, index) {
         const intIndex = parseInt(index);
         return <DisplayWorkoutDay key={intIndex} _toWorkoutDay={this._toWorkoutDay} workout_day={workout_day}
-                                  _onDuplicate={this._onDuplicate} _onDayDelete={this._onDayDelete}
+                                  onLongPress={this.onLongPress}
                                   dayIndex={intIndex}/>
     },
 
