@@ -1,12 +1,15 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
     View,
-    Text,
     StyleSheet,
-    TouchableOpacity,
     Keyboard,
+    TouchableOpacity,
+    Text,
+    KeyboardAvoidingView,
+    FlatList
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -14,12 +17,14 @@ import t from 'tcomb-form-native';
 import _ from 'lodash';
 import DropdownAlert from 'react-native-dropdownalert';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 import * as GlobalActions from '../../actions/globalActions';
+import {API_ENDPOINT, setHeaders, checkStatus} from '../../actions/utils';
 
 import CreateSetBox from '../../components/trainer/CreateSetBox';
 import InputAccessory from '../../components/InputAccessory';
-
+import SubmitButton from '../../components/SubmitButton';
 
 const BlankSet = {reps: null, weight: null};
 const Form = t.form.Form;
@@ -44,6 +49,8 @@ const CreateExercise = CreateClass({
             sets: sets,
             value: this.props.set_group ? {name: this.props.set_group.name} : null,
             disabled: false,
+            loading: false,
+            resultsOpen: false,
         }
     },
 
@@ -71,7 +78,8 @@ const CreateExercise = CreateClass({
             sets: [
                 ...this.state.sets,
                 addSet
-            ]
+            ],
+            resultsOpen: false,
         });
     },
 
@@ -103,9 +111,37 @@ const CreateExercise = CreateClass({
         this.setState({sets: sets});
     },
 
-    onChange(value) {
-        this.setState({value});
+    getExercises(text) {
+        this.setState({loading: true});
+
+        let url = `${API_ENDPOINT}training/exercises/`;
+        if (text) url += `?search=${text}`;
+        if (this.currentGET) {
+            this.currentGET.cancel((err) => console.log(err));
+            this.currentGET = null;
+        }
+
+        this.currentGET = RNFetchBlob.fetch('GET', url, setHeaders(this.props.UserToken));
+        this.currentGET.then(checkStatus).then((json) => {
+            this.setState({
+                fetchedExercises: json.results,
+                loading: false,
+            });
+
+        }).catch(() => {
+            this.setState({loading: false});
+        });
     },
+
+    onChange(value) {
+        this.setState({value, resultsOpen: true});
+        this.getExercises(value.name);
+    },
+
+    closeResults() {
+        this.setState({resultsOpen: false});
+    },
+
 
     asyncActions(success, data) {
         this.setState({disabled: false});
@@ -125,9 +161,9 @@ const CreateExercise = CreateClass({
 
     _save() {
         this.setState({disabled: true});
-        if (this.refs.form) {
+        if (this.form) {
             // Created an exercise.
-            let values = this.refs.form.getValue();
+            let values = this.form.getValue();
             if (!values) {
                 this.setState({disabled: false});
                 return
@@ -184,8 +220,32 @@ const CreateExercise = CreateClass({
         }
     },
 
+    _renderItem(object) {
+        const index = object.index;
+        if (!this.state.resultsOpen) {
+            const set = object.item;
+            if (this.state.sets.length > 1)
+                return <CreateSetBox key={index} setIndex={index} setSetState={this.setSetState}
+                                     _deleteSet={this._deleteSet} value={{reps: set.reps, weight: set.weight}}/>
+            else
+                return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}
+                                     value={{reps: set.reps, weight: set.weight}}/>
+        } else {
+            const result = object.item;
+            return (
+                <TouchableOpacity style={styles.searchResult}
+                    onPress={() => {
+                                      this.setState({value: {name: result.name}});
+                                      this.closeResults();
+                                  }}
+                >
+                    <Text style={styles.itemText}>{result.name}</Text>
+                </TouchableOpacity>
+            );
+        }
+    },
 
-    render: function () {
+    renderHeader() {
         let options = {
             auto: 'placeholders',
             i18n: {
@@ -195,47 +255,39 @@ const CreateExercise = CreateClass({
             fields: {
                 name: {
                     placeholder: `Exercise Name`,
-                    // onSubmitEditing: () => this.refs.form.getComponent('duration').refs.input.focus(),
+                    // onBlur: this.closeResults,
+                    onSubmitEditing: this.closeResults,
                     autoCapitalize: 'words',
-                    // factory: AutoInput,
-                    // config: {
-                    //     elements: this.props.objectsForAutocomplete,
-                    //     propForQuery: 'name',
-                    // },
                 }
             }
         };
+        if (!this.props.set_group)
+            return <Form ref={(form)=> this.form = form} type={Exercise} options={options}
+                         onChange={this.onChange}
+                         value={this.state.value}/>;
+        return null;
+    },
 
-        let sets = this.state.sets.map((set, index) => {
-            if (this.state.sets.length > 1)
-                return <CreateSetBox key={index} setIndex={index} setSetState={this.setSetState}
-                                     _deleteSet={this._deleteSet} value={{reps: set.reps, weight: set.weight}}/>;
-            else
-                return <CreateSetBox key={index} set={set} setIndex={index} setSetState={this.setSetState}
-                                     value={{reps: set.reps, weight: set.weight}}/>
-        });
+    renderFooter() {
+        return <SubmitButton onPress={this._addSet} text="ADD SET" buttonStyle={styles.logButton}/>;
+    },
+
+
+    render() {
         return (
             <View style={{flex: 1}}>
-                <KeyboardAwareScrollView extraHeight={130} showsVerticalScrollIndicator={false}
-                                         keyboardDismissMode='interactive'
-                                         keyboardShouldPersistTaps='handled'
-                                         contentContainerStyle={{padding: 10}}>
-                    {!this.props.set_group ?
-                        <Form
-                            ref="form"
-                            type={Exercise}
-                            options={options}
-                            onChange={this.onChange}
-                            value={this.state.value}
-                        /> : null}
-                    {sets}
-                    <View style={styles.box}>
-                        <TouchableOpacity style={styles.buttonBottom} onPress={this._addSet}>
-                            <Text>Add Set</Text>
-                        </TouchableOpacity>
-                    </View>
-                </KeyboardAwareScrollView>
-                <InputAccessory/>
+                <KeyboardAvoidingView behavior="padding">
+                    <FlatList removeClippedSubviews={false}
+                              keyboardDismissMode='interactive'
+                              keyboardShouldPersistTaps='always'
+                              showsVerticalScrollIndicator={false}
+                              ListHeaderComponent={this.renderHeader}
+                              ListFooterComponent={this.renderFooter}
+                              data={this.state.resultsOpen && this.state.fetchedExercises.length ? this.state.fetchedExercises : this.state.sets}
+                              renderItem={this._renderItem} extraData={this.state}
+                              keyExtractor={(item, index) => index}/>
+                </KeyboardAvoidingView>
+                <InputAccessory onClose={this.closeResults}/>
                 <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
         )
@@ -266,35 +318,12 @@ const styles = StyleSheet.create({
     titleSection: {
         textAlign: 'center',
     },
-    box: {
-        margin: 10,
-        borderWidth: 1,
-        borderColor: '#e1e3df',
-        borderRadius: 10,
-        flexDirection: 'row',
-    },
-    save: {
-        position: 'absolute',
-        top: 6,
-        right: 10
-    },
-    buttonBottom: {
-        flex: 1 / 3,
-        borderTopWidth: .5,
-        borderRightWidth: .5,
-        borderColor: '#e1e3df',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 10
-    },
-    footer: {
-        borderTopWidth: 1,
-        borderColor: '#e1e3df',
-        alignItems: 'center',
-        minHeight: 40,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        flex: .1
+    searchResult: {
+        padding: 10,
+        borderWidth: .5,
+        borderColor: 'grey',
+        marginLeft: 10,
+        marginRight: 10,
     }
 });
 

@@ -496,15 +496,12 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8400CDCD07704420B7B55EA8 /* Heebo-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Heebo-Black.ttf"; path = "../app/assets/fonts/Heebo-Black.ttf"; sourceTree = "<group>"; };
 		865EB8DC073049C091752B0B /* libTPSStripe.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libTPSStripe.a; sourceTree = "<group>"; };
-		88EFD593787E6CBF7801DC1E /* Pods-SimpleCoach-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleCoach-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleCoach-tvOS/Pods-SimpleCoach-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		8922F3E8EB4D416EB646539C /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		8D99116B3D5E4E92905351DC /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
 		90DE0954FDB64659BA0BE25F /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		9373D043B42E10AADDD0B447 /* Pods-SimpleCoach-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleCoach-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleCoach-tvOSTests/Pods-SimpleCoach-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		964565CEF5A8BC66A7AC2152 /* Pods-SimpleCoachTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleCoachTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleCoachTests/Pods-SimpleCoachTests.release.xcconfig"; sourceTree = "<group>"; };
 		9665C27EB8794E7CAAD518DF /* ReactNativeGlobalProps.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeGlobalProps.xcodeproj; path = "../node_modules/react-native-global-props/ios/ReactNativeGlobalProps.xcodeproj"; sourceTree = "<group>"; };
 		979ED9A76BF8049D87E14508 /* Pods_SimpleCoach.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SimpleCoach.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		97A9193E47C012E7C27B7032 /* Pods-SimpleCoach-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleCoach-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleCoach-tvOS/Pods-SimpleCoach-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		98CF5B7A4CD54DF292D19C74 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		995E3393F9844DDC9EE44EAE /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		99EFCA2327074196B81CCAFC /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
@@ -514,13 +511,10 @@
 		AAC96E42526948DF88C67413 /* Heebo-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Heebo-Bold.ttf"; path = "../app/assets/fonts/Heebo-Bold.ttf"; sourceTree = "<group>"; };
 		AD921850405B4BF6AD810168 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
-		B79C9CFCF6A50C9C8CD4BEAD /* Pods-SimpleCoach-tvOS.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleCoach-tvOS.staging.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleCoach-tvOS/Pods-SimpleCoach-tvOS.staging.xcconfig"; sourceTree = "<group>"; };
 		B967516DA7964272BAEA0EE5 /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		BB82CC1B24A5484E9B8F29C1 /* TPSStripe.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = TPSStripe.xcodeproj; path = "../node_modules/tipsi-stripe/ios/TPSStripe.xcodeproj"; sourceTree = "<group>"; };
-		BF433F16B63F21240FA4BB03 /* Pods-SimpleCoach-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleCoach-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleCoach-tvOSTests/Pods-SimpleCoach-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C8AC1A1DCD40DEDD96E800C4 /* Pods-SimpleCoach.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleCoach.release.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleCoach/Pods-SimpleCoach.release.xcconfig"; sourceTree = "<group>"; };
 		D520597FA6DC4CE0A427EDD5 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
-		D781503293496414420D425A /* Pods-SimpleCoach-tvOSTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleCoach-tvOSTests.staging.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleCoach-tvOSTests/Pods-SimpleCoach-tvOSTests.staging.xcconfig"; sourceTree = "<group>"; };
 		ECB86EA444CF332D5A1439B7 /* Pods-SimpleCoachTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleCoachTests.staging.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleCoachTests/Pods-SimpleCoachTests.staging.xcconfig"; sourceTree = "<group>"; };
 		FA6FBCA42C2E184906EAE148 /* libPods-SimpleCoach-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SimpleCoach-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -837,15 +831,9 @@
 			children = (
 				4D040E6939A3394128C13CEE /* Pods-SimpleCoach.debug.xcconfig */,
 				C8AC1A1DCD40DEDD96E800C4 /* Pods-SimpleCoach.release.xcconfig */,
-				97A9193E47C012E7C27B7032 /* Pods-SimpleCoach-tvOS.debug.xcconfig */,
-				88EFD593787E6CBF7801DC1E /* Pods-SimpleCoach-tvOS.release.xcconfig */,
-				BF433F16B63F21240FA4BB03 /* Pods-SimpleCoach-tvOSTests.debug.xcconfig */,
-				9373D043B42E10AADDD0B447 /* Pods-SimpleCoach-tvOSTests.release.xcconfig */,
 				41598DCACC98D3BD3F00368B /* Pods-SimpleCoachTests.debug.xcconfig */,
 				964565CEF5A8BC66A7AC2152 /* Pods-SimpleCoachTests.release.xcconfig */,
 				9D1C53441605683190A95F3C /* Pods-SimpleCoach.staging.xcconfig */,
-				B79C9CFCF6A50C9C8CD4BEAD /* Pods-SimpleCoach-tvOS.staging.xcconfig */,
-				D781503293496414420D425A /* Pods-SimpleCoach-tvOSTests.staging.xcconfig */,
 				ECB86EA444CF332D5A1439B7 /* Pods-SimpleCoachTests.staging.xcconfig */,
 			);
 			name = Pods;

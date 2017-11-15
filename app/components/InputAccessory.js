@@ -1,5 +1,6 @@
 import React from 'react';
 const CreateClass = require('create-react-class');
+import PropTypes from 'prop-types';
 import {
     View,
     Dimensions,
@@ -12,6 +13,10 @@ import {
 const INPUT_ACCESSORY_HEIGHT = 40;
 
 const InputAccessory = CreateClass({
+    propTypes: {
+        onClose: PropTypes.func,
+    },
+
     getInitialState: function () {
         return {
             visibleHeight: Dimensions.get('window').height,
@@ -69,6 +74,9 @@ const InputAccessory = CreateClass({
     },
 
     dismissKeyboardHandler: function () {
+        if (this.props.onClose) {
+            this.props.onClose();
+        }
         LayoutAnimation.configureNext({
             duration: 100,
             create: {
