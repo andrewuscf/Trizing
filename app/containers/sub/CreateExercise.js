@@ -79,7 +79,6 @@ const CreateExercise = CreateClass({
                 ...this.state.sets,
                 addSet
             ],
-            resultsOpen: false,
         });
     },
 
@@ -234,7 +233,7 @@ const CreateExercise = CreateClass({
             const result = object.item;
             return (
                 <TouchableOpacity style={styles.searchResult}
-                    onPress={() => {
+                                  onPress={() => {
                                       this.setState({value: {name: result.name}});
                                       this.closeResults();
                                   }}
@@ -255,21 +254,22 @@ const CreateExercise = CreateClass({
             fields: {
                 name: {
                     placeholder: `Exercise Name`,
-                    // onBlur: this.closeResults,
+                    autoCorrect: false,
                     onSubmitEditing: this.closeResults,
-                    autoCapitalize: 'words',
+                    autoCapitalize: 'none',
                 }
             }
         };
         if (!this.props.set_group)
-            return <Form ref={(form)=> this.form = form} type={Exercise} options={options}
+            return <Form ref={(form) => this.form = form} type={Exercise} options={options}
                          onChange={this.onChange}
                          value={this.state.value}/>;
         return null;
     },
 
     renderFooter() {
-        return <SubmitButton onPress={this._addSet} text="ADD SET" buttonStyle={styles.logButton}/>;
+        return <SubmitButton onPress={this.state.resultsOpen ? this.closeResults : this._addSet}
+                             text={this.state.resultsOpen ? "CLOSE" : "ADD SET"} buttonStyle={styles.logButton}/>;
     },
 
 
