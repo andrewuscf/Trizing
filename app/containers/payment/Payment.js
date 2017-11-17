@@ -14,9 +14,10 @@ import {connect} from 'react-redux';
 import stripe from 'tipsi-stripe';
 import FontIcon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 import GlobalStyle from '../globalStyle';
-import {fetchData, API_ENDPOINT, checkStatus, stripeKey, getFontSize} from '../../actions/utils';
+import {API_ENDPOINT, checkStatus, stripeKey, getFontSize, setHeaders} from '../../actions/utils';
 
 import CustomStatus from '../../components/CustomStatus';
 
@@ -39,14 +40,13 @@ const Payment = CreateClass({
     getCards(refresh = false) {
         if (refresh) this.setState({refresh: true});
 
-        fetch(`${API_ENDPOINT}user/cards/`, fetchData('GET', null, this.props.UserToken))
-            .then(checkStatus)
-            .then((responseJson) => {
-                this.setState({cards: responseJson, value: null, loading: false, refresh: false});
-            }).catch((error) => console.log(error))
+        RNFetchBlob.fetch('GET', `${API_ENDPOINT}user/cards/`,
+            setHeaders(this.props.UserToken)).then(checkStatus).then((responseJson) => {
+            this.setState({cards: responseJson, value: null, loading: false, refresh: false});
+        }).catch(() => {});
     },
 
-    async handleCardPayPress(data) {
+    async handleCardPayPress() {
         try {
             this.setState({
                 loading: true,
@@ -56,16 +56,16 @@ const Payment = CreateClass({
                 smsAutofillDisabled: true
             });
             const API_DATA = JSON.stringify({stripeToken: token.tokenId});
-            fetch(`${API_ENDPOINT}user/cards/`, fetchData('POST', API_DATA, this.props.UserToken))
-                .then(checkStatus)
-                .then((responseJson) => {
-                    if (responseJson.last4) {
-                        this.setState({cards: [responseJson, ...this.state.cards], value: null, loading: false});
-                        if (this.props.addCard) {
-                            this.props.addCard(responseJson);
-                        }
+
+            RNFetchBlob.fetch('POST', `${API_ENDPOINT}user/cards/`,
+                setHeaders(this.props.UserToken), API_DATA).then(checkStatus).then((responseJson) => {
+                if (responseJson.last4) {
+                    this.setState({cards: [responseJson, ...this.state.cards], value: null, loading: false});
+                    if (this.props.addCard) {
+                        this.props.addCard(responseJson);
                     }
-                })
+                }
+            })
         } catch (error) {
             console.log('Error:', error.message);
             this.setState({
@@ -83,8 +83,8 @@ const Payment = CreateClass({
                 {
                     text: 'Delete',
                     onPress: () => {
-                        fetch(`${API_ENDPOINT}user/card/${card.stripe_id}/`, fetchData('DELETE', null, this.props.UserToken))
-                            .then(checkStatus)
+                        RNFetchBlob.fetch('DELETE', `${API_ENDPOINT}user/card/${card.stripe_id}/`,
+                            setHeaders(this.props.UserToken)).then(checkStatus)
                             .then((responseJson) => {
                                 const index = _.findIndex(this.state.cards, {stripe_id: card.stripe_id});
                                 if (responseJson.deleted) {
@@ -93,7 +93,7 @@ const Payment = CreateClass({
                                         loading: false
                                     })
                                 }
-                            })
+                            });
                     }
                 },
             ]

@@ -495,7 +495,7 @@ const Home = CreateClass({
                         </TouchableOpacity>
                         <View style={styles.todayTitle}>
                             <MaterialIcon size={24} color='black' name="date-range"/>
-                            <Text style={styles.textTitle}>
+                            <Text style={[styles.textTitle, {color: 'white', fontFamily: 'Heebo-Bold'}]}>
                                 {this.state.dataDate.isSame(today, 'd') ? 'TODAY' : this.state.dataDate.format('ddd, MMM DD').toUpperCase()}
                             </Text>
                         </View>
@@ -614,8 +614,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     textTitle: {
-        fontSize: getFontSize(22),
-        fontFamily: 'Heebo-Bold',
+        fontSize: getFontSize(16),
+        // fontFamily: 'Heebo-Bold',
+        color: '#7f7f7f',
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 10,
