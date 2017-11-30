@@ -31,6 +31,5 @@ const AppWrapper = CreateClass({
 
 export default codePush({
     checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
-    installMode: codePush.InstallMode.ON_NEXT_SUSPEND,
-    mandatoryInstallMode: codePush.InstallMode.ON_NEXT_SUSPEND
+    installMode: codePush.InstallMode.ON_NEXT_SUSPEND
 })(AppWrapper);

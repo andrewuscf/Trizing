@@ -495,7 +495,7 @@ const Home = CreateClass({
                         </TouchableOpacity>
                         <View style={styles.todayTitle}>
                             <MaterialIcon size={24} color='black' name="date-range"/>
-                            <Text style={[styles.textTitle, {color: 'white', fontFamily: 'Heebo-Bold'}]}>
+                            <Text style={[styles.textTitle, {fontFamily: 'Heebo-Bold'}]}>
                                 {this.state.dataDate.isSame(today, 'd') ? 'TODAY' : this.state.dataDate.format('ddd, MMM DD').toUpperCase()}
                             </Text>
                         </View>

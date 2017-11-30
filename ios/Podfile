@@ -5,7 +5,6 @@ target 'SimpleCoach' do
   pod 'Stripe', '~> 10.1.0'
   use_frameworks!
 
-  # Pods for SimpleCoach
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
@@ -14,7 +13,6 @@ target 'SimpleCoach' do
 
   target 'SimpleCoachTests' do
     inherit! :search_paths
-    # Pods for testing
   end
 
 end
