@@ -160,11 +160,11 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-image-crop-picker')
     compile (project(':tipsi-stripe')) {
         exclude group: 'com.google.android.gms'
     }
     compile 'com.google.android.gms:play-services-wallet:11.+'
-    compile project(':react-native-image-crop-picker')
     compile project(':react-native-code-push')
     compile project(':react-native-fbsdk')
     compile project(':react-native-fetch-blob')

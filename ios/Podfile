@@ -9,6 +9,8 @@ target 'SimpleCoach' do
   pod 'FBSDKLoginKit'
   pod 'FBSDKShareKit'
   pod 'Firebase/Messaging'
+  pod 'RSKImageCropper'
+  pod 'QBImagePickerController'
   inherit! :search_paths
 
   target 'SimpleCoachTests' do
