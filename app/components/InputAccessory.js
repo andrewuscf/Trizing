@@ -1,11 +1,9 @@
 import React from 'react';
 const CreateClass = require('create-react-class');
-import PropTypes from 'prop-types';
 import {
     View,
     Dimensions,
     TouchableOpacity,
-    LayoutAnimation,
     StyleSheet,
     Text,
     Keyboard
@@ -13,10 +11,6 @@ import {
 const INPUT_ACCESSORY_HEIGHT = 40;
 
 const InputAccessory = CreateClass({
-    propTypes: {
-        onClose: PropTypes.func,
-    },
-
     getInitialState: function () {
         return {
             visibleHeight: Dimensions.get('window').height,
@@ -41,19 +35,7 @@ const InputAccessory = CreateClass({
     },
 
     keyboardWillShow (e) {
-        let newSize = e.endCoordinates.screenY - (INPUT_ACCESSORY_HEIGHT + 62); //-1 so 1px is showing so it doesn't unmount
-        LayoutAnimation.configureNext({
-            duration: 500,
-            create: {
-                type: LayoutAnimation.Types.linear,
-                property: LayoutAnimation.Properties.scaleXY
-            },
-            update: {
-                type: LayoutAnimation.Types.linear,
-                property: LayoutAnimation.Properties.scaleXY
-            },
-        });
-
+        let newSize = e.endCoordinates.screenY - (INPUT_ACCESSORY_HEIGHT - 1); //-1 so 1px is showing so it doesn't unmount
         this.setState({
             visibleHeight: newSize,
             hideKA: false,
@@ -74,19 +56,6 @@ const InputAccessory = CreateClass({
     },
 
     dismissKeyboardHandler: function () {
-        if (this.props.onClose) {
-            this.props.onClose();
-        }
-        LayoutAnimation.configureNext({
-            duration: 100,
-            create: {
-                type: LayoutAnimation.Types.linear,
-            },
-            update: {
-                type: LayoutAnimation.Types.linear,
-            },
-        });
-
         let newSize = Dimensions.get('window').height;
         this.setState({
             visibleHeight: newSize,
@@ -123,7 +92,7 @@ const s = StyleSheet.create({
     InputAccessoryButtonText: {
         fontSize: 17,
         letterSpacing: 0.5,
-        color: '#00AFA3',
+        color: '#316b6f',
         backgroundColor: 'transparent',
         paddingHorizontal: 9,
         paddingVertical: 9,

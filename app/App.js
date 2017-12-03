@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import {Platform} from 'react-native';
 import {MenuContext} from 'react-native-popup-menu';
@@ -33,9 +34,14 @@ setCustomScrollView({
 });
 
 const App = CreateClass({
+
     render() {
         const prefix = Platform.OS === 'android' ? 'simplecoach://simplecoach/' : 'simplecoach://';
-        return <MenuContext lazyRender={200}><AppNavigator uriPrefix={prefix} /></MenuContext>;
+        return (
+            <MenuContext lazyRender={200}>
+                <AppNavigator uriPrefix={prefix}/>
+            </MenuContext>
+        );
     }
 });
 

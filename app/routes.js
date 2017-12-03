@@ -404,6 +404,7 @@ export const AppNavigator = StackNavigator({
         };
     },
     cardStyle: {
+        flex: 1,
         backgroundColor: 'white'
     }
 });

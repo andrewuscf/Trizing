@@ -2,7 +2,7 @@ import React from 'react';
 const CreateClass = require('create-react-class');
 import {AsyncStorage} from 'react-native';
 import {Provider} from 'react-redux';
-import {persistStore} from 'redux-persist';
+import {persistStore, purgeStoredState} from 'redux-persist';
 import codePush from "react-native-code-push";
 
 import configureStore from './stores/configureStore';
@@ -18,6 +18,14 @@ persistStore(store, {storage: AsyncStorage});
 const AppWrapper = CreateClass({
     componentDidMount() {
         codePush.notifyAppReady();
+    },
+
+    codePushStatusDidChange(status) {
+        switch(status) {
+            case codePush.SyncStatus.INSTALLING_UPDATE:
+                purgeStoredState({storage: AsyncStorage});
+                break;
+        }
     },
 
     render() {
