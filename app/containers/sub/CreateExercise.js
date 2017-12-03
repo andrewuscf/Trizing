@@ -320,8 +320,10 @@ const styles = StyleSheet.create({
     },
     searchResult: {
         padding: 10,
+        borderColor: '#e1e3df',
         borderWidth: .5,
-        borderColor: 'grey',
+        borderTopWidth: 0,
+        borderBottomWidth: .5,
         marginLeft: 10,
         marginRight: 10,
     }

@@ -186,8 +186,8 @@ const CreateSchedule = CreateClass({
                     placeholder: '$ Cost'
                 },
                 template: {
-                    nullOption: {value: '', text: 'Use Template'},
-                    factory: Platform.OS == 'ios' ? ModalPicker : null,
+                    nullOption: {value: '', text: 'Copy a Program'},
+                    factory: Platform.OS === 'ios' ? ModalPicker : null,
                 }
             }
         };

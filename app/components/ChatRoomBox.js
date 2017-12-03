@@ -87,7 +87,7 @@ const ChatRoomBox = CreateClass({
                             </Text>
                             : null
                         }
-                        {!hasUnread ?
+                        {hasUnread ?
                             <FontIcon name="circle" style={[GlobalStyle.lightBlueText, {paddingTop: 5}]}/> : null}
                     </View>
                 </View>
