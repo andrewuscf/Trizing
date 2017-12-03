@@ -36,7 +36,7 @@ setCustomScrollView({
 const App = CreateClass({
 
     render() {
-        const prefix = Platform.OS === 'android' ? 'simplecoach://simplecoach/' : 'simplecoach://';
+        const prefix = Platform.OS === 'android' ? 'trainerbase://trainerbase/' : 'trainerbase://';
         return (
             <MenuContext lazyRender={200}>
                 <AppNavigator uriPrefix={prefix}/>

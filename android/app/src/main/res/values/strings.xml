@@ -1,6 +1,6 @@
 <resources>
     <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">dTcP4mTdd6e2sym7BBSCondOj9fU8ef6a3d8-c1cd-41fd-8fee-9d44f7f208d0</string>
 
-    <string name="app_name">SimpleCoach</string>
+    <string name="app_name">TrainerBase</string>
     <string name="facebook_app_id">1822005241396103</string>
 </resources>

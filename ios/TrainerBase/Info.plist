@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>SimpleCoach</string>
+	<string>TrainerBase</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -26,10 +26,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>simplecoach</string>
+			<string>trainerbase</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>simplecoach</string>
+				<string>trainerbase</string>
 			</array>
 		</dict>
 		<dict>
@@ -48,7 +48,7 @@
 	<key>FacebookAppID</key>
 	<string>1822005241396103</string>
 	<key>FacebookDisplayName</key>
-	<string>SimpleCoach</string>
+	<string>TrainerBase</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "SimpleCoach-tvOS.app"
-               BlueprintName = "SimpleCoach-tvOS"
-               ReferencedContainer = "container:SimpleCoach.xcodeproj">
+               BuildableName = "TrainerBase-tvOS.app"
+               BlueprintName = "TrainerBase-tvOS"
+               ReferencedContainer = "container:TrainerBase.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "SimpleCoach-tvOSTests.xctest"
-               BlueprintName = "SimpleCoach-tvOSTests"
-               ReferencedContainer = "container:SimpleCoach.xcodeproj">
+               BuildableName = "TrainerBase-tvOSTests.xctest"
+               BlueprintName = "TrainerBase-tvOSTests"
+               ReferencedContainer = "container:TrainerBase.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -62,9 +62,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "SimpleCoach-tvOSTests.xctest"
-               BlueprintName = "SimpleCoach-tvOSTests"
-               ReferencedContainer = "container:SimpleCoach.xcodeproj">
+               BuildableName = "TrainerBase-tvOSTests.xctest"
+               BlueprintName = "TrainerBase-tvOSTests"
+               ReferencedContainer = "container:TrainerBase.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "SimpleCoach-tvOS.app"
-            BlueprintName = "SimpleCoach-tvOS"
-            ReferencedContainer = "container:SimpleCoach.xcodeproj">
+            BuildableName = "TrainerBase-tvOS.app"
+            BlueprintName = "TrainerBase-tvOS"
+            ReferencedContainer = "container:TrainerBase.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -96,9 +96,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "SimpleCoach-tvOS.app"
-            BlueprintName = "SimpleCoach-tvOS"
-            ReferencedContainer = "container:SimpleCoach.xcodeproj">
+            BuildableName = "TrainerBase-tvOS.app"
+            BlueprintName = "TrainerBase-tvOS"
+            ReferencedContainer = "container:TrainerBase.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -115,9 +115,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "SimpleCoach-tvOS.app"
-            BlueprintName = "SimpleCoach-tvOS"
-            ReferencedContainer = "container:SimpleCoach.xcodeproj">
+            BuildableName = "TrainerBase-tvOS.app"
+            BlueprintName = "TrainerBase-tvOS"
+            ReferencedContainer = "container:TrainerBase.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

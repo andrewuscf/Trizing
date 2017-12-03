@@ -12,7 +12,7 @@
 		00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
-		00E356F31AD99517003FC87E /* SimpleCoachTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SimpleCoachTests.m */; };
+		00E356F31AD99517003FC87E /* TrainerBaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* TrainerBaseTests.m */; };
 		0D7A4877B1AF4EBF82A59D15 /* Heebo-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12630B6328A547C2B6B6CC5B /* Heebo-Light.ttf */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
@@ -49,7 +49,7 @@
 		A17A340B868B48EF810E9407 /* Heebo-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 19E9A5A6F102418EA3141D0B /* Heebo-Medium.ttf */; };
 		A1E240D2528C4386A199E1CE /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81BAFB8DB9B841A9BB6356FB /* Foundation.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
-		AF0B6DE3E834CA9C09DC4120 /* Pods_SimpleCoach.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979ED9A76BF8049D87E14508 /* Pods_SimpleCoach.framework */; };
+		AF0B6DE3E834CA9C09DC4120 /* Pods_TrainerBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979ED9A76BF8049D87E14508 /* Pods_TrainerBase.framework */; };
 		B22C6691587547769E014336 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69D6D2EE1E2541C1AFC7F8B9 /* libRCTActionSheet.a */; };
 		B923CDB85BA24FCF9308498B /* Heebo-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0063A0931159491085B27A20 /* Heebo-ExtraBold.ttf */; };
 		BB2228D642B34EAFBA7160C5 /* libTPSStripe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 865EB8DC073049C091752B0B /* libTPSStripe.a */; };
@@ -57,7 +57,7 @@
 		C9331A105430440BB49E2823 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 105CA0C2B2A44A9FB77CC12A /* libRNVectorIcons.a */; };
 		CB4DD15CC00E41CCA3FDA64B /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 995E3393F9844DDC9EE44EAE /* FontAwesome.ttf */; };
 		CCF8B5D28B224CFD868B9C6D /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98CF5B7A4CD54DF292D19C74 /* Feather.ttf */; };
-		D355BBDFFA16029374E32C06 /* Pods_SimpleCoachTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A30EC62818662681E5D1792A /* Pods_SimpleCoachTests.framework */; };
+		D355BBDFFA16029374E32C06 /* Pods_TrainerBaseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A30EC62818662681E5D1792A /* Pods_TrainerBaseTests.framework */; };
 		EBF51243CA3B49838B0BD234 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52AB5318445E4044AADDED4C /* libimageCropPicker.a */; };
 		EEFA4CDFCC754E788D9A0E7A /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99EFCA2327074196B81CCAFC /* Ionicons.ttf */; };
 /* End PBXBuildFile section */
@@ -103,7 +103,7 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = SimpleCoach;
+			remoteInfo = TrainerBase;
 		};
 		139105C01AF99BAD00B5F7CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -430,37 +430,37 @@
 		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
 		00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTNetwork.xcodeproj; path = "../node_modules/react-native/Libraries/Network/RCTNetwork.xcodeproj"; sourceTree = "<group>"; };
 		00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVibration.xcodeproj; path = "../node_modules/react-native/Libraries/Vibration/RCTVibration.xcodeproj"; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* SimpleCoachTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleCoachTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* TrainerBaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrainerBaseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* SimpleCoachTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimpleCoachTests.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* TrainerBaseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrainerBaseTests.m; sourceTree = "<group>"; };
 		042706F2338545A4934FAAC3 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
-		0942CDC3D2283FCE032076F5 /* libPods-SimpleCoach-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SimpleCoach-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0942CDC3D2283FCE032076F5 /* libPods-TrainerBase-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TrainerBase-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		105CA0C2B2A44A9FB77CC12A /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		12630B6328A547C2B6B6CC5B /* Heebo-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Heebo-Light.ttf"; path = "../app/assets/fonts/Heebo-Light.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* SimpleCoach.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleCoach.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = SimpleCoach/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = SimpleCoach/AppDelegate.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* TrainerBase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainerBase.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = TrainerBase/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = TrainerBase/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SimpleCoach/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SimpleCoach/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SimpleCoach/main.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TrainerBase/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = TrainerBase/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TrainerBase/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		19E9A5A6F102418EA3141D0B /* Heebo-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Heebo-Medium.ttf"; path = "../app/assets/fonts/Heebo-Medium.ttf"; sourceTree = "<group>"; };
 		2086D88B1E516C3300D9945E /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		208DD5881F7D51F700BAABB2 /* Stripe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Stripe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		20B0F08C1E5D739400EB5550 /* SimpleCoach.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = SimpleCoach.entitlements; path = SimpleCoach/SimpleCoach.entitlements; sourceTree = "<group>"; };
+		20B0F08C1E5D739400EB5550 /* TrainerBase.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TrainerBase.entitlements; path = TrainerBase/TrainerBase.entitlements; sourceTree = "<group>"; };
 		348DEFF9B9A143C193ECD377 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		3805A7BCE2E5418E88F5E9AB /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
-		41598DCACC98D3BD3F00368B /* Pods-SimpleCoachTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleCoachTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleCoachTests/Pods-SimpleCoachTests.debug.xcconfig"; sourceTree = "<group>"; };
+		41598DCACC98D3BD3F00368B /* Pods-TrainerBaseTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrainerBaseTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrainerBaseTests/Pods-TrainerBaseTests.debug.xcconfig"; sourceTree = "<group>"; };
 		49359926A7D6491C94B813C8 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		496174F61E98C098003B9FDB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "SimpleCoach/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		496174F61E98C098003B9FDB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "TrainerBase/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		497A66AD8D264DC485DD7A6A /* Heebo-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Heebo-Regular.ttf"; path = "../app/assets/fonts/Heebo-Regular.ttf"; sourceTree = "<group>"; };
 		499961797F904AF1A5353A46 /* RNFIRMessaging.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFIRMessaging.xcodeproj; path = "../node_modules/react-native-fcm/ios/RNFIRMessaging.xcodeproj"; sourceTree = "<group>"; };
 		49AD96851F50884100017A06 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		49CD9FBE1E8E21510032A949 /* icomoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = icomoon.ttf; path = ../app/assets/fonts/icomoon.ttf; sourceTree = "<group>"; };
-		4D040E6939A3394128C13CEE /* Pods-SimpleCoach.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleCoach.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleCoach/Pods-SimpleCoach.debug.xcconfig"; sourceTree = "<group>"; };
+		4D040E6939A3394128C13CEE /* Pods-TrainerBase.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrainerBase.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrainerBase/Pods-TrainerBase.debug.xcconfig"; sourceTree = "<group>"; };
 		4DE33148379349C5AFACDF35 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		51E5D96F5A4F4EBF92A3F589 /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		52AB5318445E4044AADDED4C /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
@@ -477,25 +477,25 @@
 		865EB8DC073049C091752B0B /* libTPSStripe.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libTPSStripe.a; sourceTree = "<group>"; };
 		8922F3E8EB4D416EB646539C /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		90DE0954FDB64659BA0BE25F /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		964565CEF5A8BC66A7AC2152 /* Pods-SimpleCoachTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleCoachTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleCoachTests/Pods-SimpleCoachTests.release.xcconfig"; sourceTree = "<group>"; };
+		964565CEF5A8BC66A7AC2152 /* Pods-TrainerBaseTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrainerBaseTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrainerBaseTests/Pods-TrainerBaseTests.release.xcconfig"; sourceTree = "<group>"; };
 		9665C27EB8794E7CAAD518DF /* ReactNativeGlobalProps.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeGlobalProps.xcodeproj; path = "../node_modules/react-native-global-props/ios/ReactNativeGlobalProps.xcodeproj"; sourceTree = "<group>"; };
-		979ED9A76BF8049D87E14508 /* Pods_SimpleCoach.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SimpleCoach.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		979ED9A76BF8049D87E14508 /* Pods_TrainerBase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrainerBase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98CF5B7A4CD54DF292D19C74 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		995E3393F9844DDC9EE44EAE /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		99EFCA2327074196B81CCAFC /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		9D1C53441605683190A95F3C /* Pods-SimpleCoach.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleCoach.staging.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleCoach/Pods-SimpleCoach.staging.xcconfig"; sourceTree = "<group>"; };
-		A30EC62818662681E5D1792A /* Pods_SimpleCoachTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SimpleCoachTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D1C53441605683190A95F3C /* Pods-TrainerBase.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrainerBase.staging.xcconfig"; path = "Pods/Target Support Files/Pods-TrainerBase/Pods-TrainerBase.staging.xcconfig"; sourceTree = "<group>"; };
+		A30EC62818662681E5D1792A /* Pods_TrainerBaseTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrainerBaseTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA93046519634EE083C2E02A /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		AAC96E42526948DF88C67413 /* Heebo-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Heebo-Bold.ttf"; path = "../app/assets/fonts/Heebo-Bold.ttf"; sourceTree = "<group>"; };
 		AD921850405B4BF6AD810168 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B967516DA7964272BAEA0EE5 /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		BB82CC1B24A5484E9B8F29C1 /* TPSStripe.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = TPSStripe.xcodeproj; path = "../node_modules/tipsi-stripe/ios/TPSStripe.xcodeproj"; sourceTree = "<group>"; };
-		C8AC1A1DCD40DEDD96E800C4 /* Pods-SimpleCoach.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleCoach.release.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleCoach/Pods-SimpleCoach.release.xcconfig"; sourceTree = "<group>"; };
+		C8AC1A1DCD40DEDD96E800C4 /* Pods-TrainerBase.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrainerBase.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrainerBase/Pods-TrainerBase.release.xcconfig"; sourceTree = "<group>"; };
 		D520597FA6DC4CE0A427EDD5 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		D87241F7AD474264AEF7B419 /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
-		ECB86EA444CF332D5A1439B7 /* Pods-SimpleCoachTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleCoachTests.staging.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleCoachTests/Pods-SimpleCoachTests.staging.xcconfig"; sourceTree = "<group>"; };
-		FA6FBCA42C2E184906EAE148 /* libPods-SimpleCoach-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SimpleCoach-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECB86EA444CF332D5A1439B7 /* Pods-TrainerBaseTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrainerBaseTests.staging.xcconfig"; path = "Pods/Target Support Files/Pods-TrainerBaseTests/Pods-TrainerBaseTests.staging.xcconfig"; sourceTree = "<group>"; };
+		FA6FBCA42C2E184906EAE148 /* libPods-TrainerBase-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TrainerBase-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -504,7 +504,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
-				D355BBDFFA16029374E32C06 /* Pods_SimpleCoachTests.framework in Frameworks */,
+				D355BBDFFA16029374E32C06 /* Pods_TrainerBaseTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,7 +534,7 @@
 				B22C6691587547769E014336 /* libRCTActionSheet.a in Frameworks */,
 				9941FA6A4FB04F29B3C07B89 /* libCodePush.a in Frameworks */,
 				55C67238205F484781CAED9D /* libz.tbd in Frameworks */,
-				AF0B6DE3E834CA9C09DC4120 /* Pods_SimpleCoach.framework in Frameworks */,
+				AF0B6DE3E834CA9C09DC4120 /* Pods_TrainerBase.framework in Frameworks */,
 				BB2228D642B34EAFBA7160C5 /* libTPSStripe.a in Frameworks */,
 				EBF51243CA3B49838B0BD234 /* libimageCropPicker.a in Frameworks */,
 			);
@@ -585,13 +585,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		00E356EF1AD99517003FC87E /* SimpleCoachTests */ = {
+		00E356EF1AD99517003FC87E /* TrainerBaseTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* SimpleCoachTests.m */,
+				00E356F21AD99517003FC87E /* TrainerBaseTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = SimpleCoachTests;
+			path = TrainerBaseTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -647,10 +647,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* SimpleCoach */ = {
+		13B07FAE1A68108700A75B9A /* TrainerBase */ = {
 			isa = PBXGroup;
 			children = (
-				20B0F08C1E5D739400EB5550 /* SimpleCoach.entitlements */,
+				20B0F08C1E5D739400EB5550 /* TrainerBase.entitlements */,
 				496174F61E98C098003B9FDB /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -660,7 +660,7 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = SimpleCoach;
+			name = TrainerBase;
 			sourceTree = "<group>";
 		};
 		146834001AC3E56700842450 /* Products */ = {
@@ -735,10 +735,10 @@
 			isa = PBXGroup;
 			children = (
 				208DD5881F7D51F700BAABB2 /* Stripe.framework */,
-				0942CDC3D2283FCE032076F5 /* libPods-SimpleCoach-tvOS.a */,
-				FA6FBCA42C2E184906EAE148 /* libPods-SimpleCoach-tvOSTests.a */,
-				979ED9A76BF8049D87E14508 /* Pods_SimpleCoach.framework */,
-				A30EC62818662681E5D1792A /* Pods_SimpleCoachTests.framework */,
+				0942CDC3D2283FCE032076F5 /* libPods-TrainerBase-tvOS.a */,
+				FA6FBCA42C2E184906EAE148 /* libPods-TrainerBase-tvOSTests.a */,
+				979ED9A76BF8049D87E14508 /* Pods_TrainerBase.framework */,
+				A30EC62818662681E5D1792A /* Pods_TrainerBaseTests.framework */,
 				51E5D96F5A4F4EBF92A3F589 /* libz.tbd */,
 			);
 			name = Frameworks;
@@ -806,12 +806,12 @@
 		4F25D0BF5CDF86949706FF08 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				4D040E6939A3394128C13CEE /* Pods-SimpleCoach.debug.xcconfig */,
-				C8AC1A1DCD40DEDD96E800C4 /* Pods-SimpleCoach.release.xcconfig */,
-				41598DCACC98D3BD3F00368B /* Pods-SimpleCoachTests.debug.xcconfig */,
-				964565CEF5A8BC66A7AC2152 /* Pods-SimpleCoachTests.release.xcconfig */,
-				9D1C53441605683190A95F3C /* Pods-SimpleCoach.staging.xcconfig */,
-				ECB86EA444CF332D5A1439B7 /* Pods-SimpleCoachTests.staging.xcconfig */,
+				4D040E6939A3394128C13CEE /* Pods-TrainerBase.debug.xcconfig */,
+				C8AC1A1DCD40DEDD96E800C4 /* Pods-TrainerBase.release.xcconfig */,
+				41598DCACC98D3BD3F00368B /* Pods-TrainerBaseTests.debug.xcconfig */,
+				964565CEF5A8BC66A7AC2152 /* Pods-TrainerBaseTests.release.xcconfig */,
+				9D1C53441605683190A95F3C /* Pods-TrainerBase.staging.xcconfig */,
+				ECB86EA444CF332D5A1439B7 /* Pods-TrainerBaseTests.staging.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -876,9 +876,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* SimpleCoach */,
+				13B07FAE1A68108700A75B9A /* TrainerBase */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* SimpleCoachTests */,
+				00E356EF1AD99517003FC87E /* TrainerBaseTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				12DDA82037BA492C837D184A /* Resources */,
 				4F25D0BF5CDF86949706FF08 /* Pods */,
@@ -893,8 +893,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* SimpleCoach.app */,
-				00E356EE1AD99517003FC87E /* SimpleCoachTests.xctest */,
+				13B07F961A680F5B00A75B9A /* TrainerBase.app */,
+				00E356EE1AD99517003FC87E /* TrainerBaseTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -911,9 +911,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* SimpleCoachTests */ = {
+		00E356ED1AD99517003FC87E /* TrainerBaseTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "SimpleCoachTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TrainerBaseTests" */;
 			buildPhases = (
 				1AA034BE653F6E01A7B4AAFC /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -927,14 +927,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = SimpleCoachTests;
-			productName = SimpleCoachTests;
-			productReference = 00E356EE1AD99517003FC87E /* SimpleCoachTests.xctest */;
+			name = TrainerBaseTests;
+			productName = TrainerBaseTests;
+			productReference = 00E356EE1AD99517003FC87E /* TrainerBaseTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* SimpleCoach */ = {
+		13B07F861A680F5B00A75B9A /* TrainerBase */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SimpleCoach" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TrainerBase" */;
 			buildPhases = (
 				60EF086C1B33FD2EBC278CA9 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
@@ -948,9 +948,9 @@
 			);
 			dependencies = (
 			);
-			name = SimpleCoach;
+			name = TrainerBase;
 			productName = "Hello World";
-			productReference = 13B07F961A680F5B00A75B9A /* SimpleCoach.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* TrainerBase.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -960,7 +960,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 900;
-				ORGANIZATIONNAME = SimpleCoach;
+				ORGANIZATIONNAME = TrainerBase;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -982,7 +982,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "SimpleCoach" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TrainerBase" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1089,8 +1089,8 @@
 			);
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* SimpleCoach */,
-				00E356ED1AD99517003FC87E /* SimpleCoachTests */,
+				13B07F861A680F5B00A75B9A /* TrainerBase */,
+				00E356ED1AD99517003FC87E /* TrainerBaseTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1515,7 +1515,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleCoach/Pods-SimpleCoach-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TrainerBase/Pods-TrainerBase-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		1AA034BE653F6E01A7B4AAFC /* [CP] Check Pods Manifest.lock */ = {
@@ -1529,7 +1529,7 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SimpleCoachTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TrainerBaseTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1548,7 +1548,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleCoachTests/Pods-SimpleCoachTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TrainerBaseTests/Pods-TrainerBaseTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		60EF086C1B33FD2EBC278CA9 /* [CP] Check Pods Manifest.lock */ = {
@@ -1562,7 +1562,7 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SimpleCoach-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TrainerBase-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1575,7 +1575,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-SimpleCoach/Pods-SimpleCoach-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-TrainerBase/Pods-TrainerBase-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
@@ -1602,7 +1602,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleCoach/Pods-SimpleCoach-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TrainerBase/Pods-TrainerBase-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C6474F50FCC79F3E3B41A0C4 /* [CP] Embed Pods Frameworks */ = {
@@ -1617,7 +1617,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleCoachTests/Pods-SimpleCoachTests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TrainerBaseTests/Pods-TrainerBaseTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1627,7 +1627,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* SimpleCoachTests.m in Sources */,
+				00E356F31AD99517003FC87E /* TrainerBaseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1645,7 +1645,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* SimpleCoach */;
+			target = 13B07F861A680F5B00A75B9A /* TrainerBase */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1657,7 +1657,7 @@
 				13B07FB21A68108700A75B9A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = SimpleCoach;
+			path = TrainerBase;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1665,7 +1665,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 41598DCACC98D3BD3F00368B /* Pods-SimpleCoachTests.debug.xcconfig */;
+			baseConfigurationReference = 41598DCACC98D3BD3F00368B /* Pods-TrainerBaseTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1677,7 +1677,7 @@
 					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
 				);
-				INFOPLIST_FILE = SimpleCoachTests/Info.plist;
+				INFOPLIST_FILE = TrainerBaseTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -1690,13 +1690,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SimpleCoach.app/SimpleCoach";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrainerBase.app/TrainerBase";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 964565CEF5A8BC66A7AC2152 /* Pods-SimpleCoachTests.release.xcconfig */;
+			baseConfigurationReference = 964565CEF5A8BC66A7AC2152 /* Pods-TrainerBaseTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -1705,7 +1705,7 @@
 					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
 				);
-				INFOPLIST_FILE = SimpleCoachTests/Info.plist;
+				INFOPLIST_FILE = TrainerBaseTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -1718,16 +1718,16 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SimpleCoach.app/SimpleCoach";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrainerBase.app/TrainerBase";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4D040E6939A3394128C13CEE /* Pods-SimpleCoach.debug.xcconfig */;
+			baseConfigurationReference = 4D040E6939A3394128C13CEE /* Pods-TrainerBase.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = SimpleCoach/SimpleCoach.entitlements;
+				CODE_SIGN_ENTITLEMENTS = TrainerBase/TrainerBase.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = ZU3D3L7W4E;
@@ -1752,7 +1752,7 @@
 					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
 					"\"$(SRCROOT)/../node_modules/react-native-fcm/ios\"",
 				);
-				INFOPLIST_FILE = SimpleCoach/Info.plist;
+				INFOPLIST_FILE = TrainerBase/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -1761,17 +1761,17 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.trizing;
-				PRODUCT_NAME = SimpleCoach;
+				PRODUCT_NAME = TrainerBase;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C8AC1A1DCD40DEDD96E800C4 /* Pods-SimpleCoach.release.xcconfig */;
+			baseConfigurationReference = C8AC1A1DCD40DEDD96E800C4 /* Pods-TrainerBase.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = SimpleCoach/SimpleCoach.entitlements;
+				CODE_SIGN_ENTITLEMENTS = TrainerBase/TrainerBase.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZU3D3L7W4E;
 				HEADER_SEARCH_PATHS = (
@@ -1795,7 +1795,7 @@
 					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
 					"\"$(SRCROOT)/../node_modules/react-native-fcm/ios\"",
 				);
-				INFOPLIST_FILE = SimpleCoach/Info.plist;
+				INFOPLIST_FILE = TrainerBase/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -1804,7 +1804,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.trizing;
-				PRODUCT_NAME = SimpleCoach;
+				PRODUCT_NAME = TrainerBase;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1857,10 +1857,10 @@
 		};
 		499D8DC11F473EEF002C5009 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9D1C53441605683190A95F3C /* Pods-SimpleCoach.staging.xcconfig */;
+			baseConfigurationReference = 9D1C53441605683190A95F3C /* Pods-TrainerBase.staging.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = SimpleCoach/SimpleCoach.entitlements;
+				CODE_SIGN_ENTITLEMENTS = TrainerBase/TrainerBase.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZU3D3L7W4E;
 				HEADER_SEARCH_PATHS = (
@@ -1884,7 +1884,7 @@
 					"\"${PODS_ROOT}/Headers/Public/GoogleUtilities\"",
 					"\"$(SRCROOT)/../node_modules/react-native-fcm/ios\"",
 				);
-				INFOPLIST_FILE = SimpleCoach/Info.plist;
+				INFOPLIST_FILE = TrainerBase/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -1893,14 +1893,14 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.trizing;
-				PRODUCT_NAME = SimpleCoach;
+				PRODUCT_NAME = TrainerBase;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Staging;
 		};
 		499D8DC21F473EEF002C5009 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ECB86EA444CF332D5A1439B7 /* Pods-SimpleCoachTests.staging.xcconfig */;
+			baseConfigurationReference = ECB86EA444CF332D5A1439B7 /* Pods-TrainerBaseTests.staging.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -1909,7 +1909,7 @@
 					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
 				);
-				INFOPLIST_FILE = SimpleCoachTests/Info.plist;
+				INFOPLIST_FILE = TrainerBaseTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -1922,7 +1922,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SimpleCoach.app/SimpleCoach";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrainerBase.app/TrainerBase";
 			};
 			name = Staging;
 		};
@@ -2026,7 +2026,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "SimpleCoachTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TrainerBaseTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -2036,7 +2036,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SimpleCoach" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TrainerBase" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -2046,7 +2046,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "SimpleCoach" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TrainerBase" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
