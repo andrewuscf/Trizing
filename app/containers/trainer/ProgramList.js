@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -11,18 +12,16 @@ import {
     Platform,
     LayoutAnimation,
     Alert,
-    Switch
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import FontIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
 import RNFetchBlob from 'react-native-fetch-blob';
 
 import * as GlobalActions from '../../actions/globalActions';
 import GlobalStyle from '../globalStyle';
-import {API_ENDPOINT, getFontSize, setHeaders, isATrainer} from '../../actions/utils';
+import {API_ENDPOINT, getFontSize, setHeaders, isATrainer, convertSkill, trunc} from '../../actions/utils';
 
 import CustomIcon from '../../components/CustomIcon';
 import EditButton from '../../components/EditButton';
@@ -168,33 +167,42 @@ const ProgramList = CreateClass({
         );
     },
 
-    onSwitchChange(value, program) {
-        if (value) {
-            this._activate(program)
-        }
+    onSwitchChange(program) {
+        this._activate(program)
     },
 
 
     renderRow(program) {
         let duration = 0;
         program.workouts.forEach((workout) => duration += workout.duration);
+        const active = this.props.RequestUser.profile.active_program === program.id;
         return (
             <TouchableOpacity style={styles.link} onPress={this.goToProgram.bind(null, program)}>
+                <View style={styles.duration}>
+                    <MaterialIcon name="timer" size={24} style={styles.timerIcon}/>
+                    <Text style={styles.smallText}>
+                        {duration} {duration === 1 ? 'week' : 'weeks'}
+                    </Text>
+                </View>
 
                 <View style={styles.leftSection}>
                     <Text style={styles.simpleTitle}>{program.name}</Text>
-                    <View style={styles.row}>
-                        <MaterialIcon name="timer" size={getFontSize(18)} style={styles.timerIcon}/>
+                    {program.description ?
+                        <Text style={styles.smallText}>{trunc(program.description, 38)}</Text>
+                        : null
+                    }
+                    {program.skill_level ?
                         <Text style={styles.smallText}>
-                            {duration} {duration === 1 ? 'week' : 'weeks'}
+                            Difficulty: {convertSkill(program.skill_level)}
                         </Text>
-                    </View>
+                        : null
+                    }
+                    <TouchableOpacity
+                        style={[styles.activeButton, active ? {backgroundColor: '#00AFA3'} : {backgroundColor: '#b1aeb9'}]}
+                        onPress={() => this.onSwitchChange(program)}>
+                        <Text style={styles.activeText}>{active ? 'Active' : 'Activate'}</Text>
+                    </TouchableOpacity>
                 </View>
-                {!this.state.isTrainer ?
-                    <Switch value={this.props.RequestUser.profile.active_program === program.id}
-                            onValueChange={(value) => this.onSwitchChange(value, program)} onTintColor='#00AFA3'/>
-                    : null
-                }
             </TouchableOpacity>
         )
     },
@@ -255,6 +263,7 @@ const ProgramList = CreateClass({
                           onScroll={this._onScroll}
                           renderFooter={this.renderFooter}
                           renderSectionHeader={this.renderSectionHeader}
+                          contentContainerStyle={{paddingBottom: 150}}
                 />
                 <EditButton isActionButtonVisible={this.state.isActionButtonVisible}>
                     <ActionButton.Item buttonColor='#3498db' title="New Workout"
@@ -283,7 +292,8 @@ const styles = StyleSheet.create({
     },
     simpleTitle: {
         fontSize: getFontSize(18),
-        fontFamily: 'Heebo-Medium',
+        fontFamily: 'Heebo-Bold',
+        marginTop: 15
     },
     smallText: {
         fontSize: getFontSize(12),
@@ -291,17 +301,13 @@ const styles = StyleSheet.create({
         fontFamily: 'Heebo-Medium',
     },
     leftSection: {
-        flex: .9,
-        margin: 10,
+        flex: .8,
     },
     link: {
+        flexWrap: 'wrap',
         flexDirection: 'row',
-        alignItems: 'center',
         borderBottomWidth: 0.5,
         borderColor: '#e1e3df',
-    },
-    linkArrow: {
-        flex: .1
     },
     tabbarView: {
         height: 50,
@@ -343,6 +349,25 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         fontSize: getFontSize(22),
         fontFamily: 'Heebo-Bold',
+    },
+    duration: {
+        flex: .2,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    activeButton: {
+        alignSelf: 'flex-end',
+        marginTop: 10,
+        padding: 5,
+        minWidth: '25%',
+        borderBottomLeftRadius: 10,
+        borderTopLeftRadius: 20,
+    },
+    activeText: {
+        fontSize: getFontSize(16),
+        color: 'white',
+        fontFamily: 'Heebo-Medium',
+        textAlign: 'center'
     }
 });
 

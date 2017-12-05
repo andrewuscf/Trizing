@@ -389,7 +389,12 @@ export const AppNavigator = StackNavigator({
     },
     EditProfile: {screen: EditProfile},
 
-    Main: {screen: MainTabNav},
+    Main: {
+        screen: HomeNav,
+        navigationOptions: {
+            header: null,
+        },
+    },
 }, {
     headerMode: 'screen',
     initialRouteName: 'SplashScreen',

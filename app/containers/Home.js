@@ -61,7 +61,7 @@ const Home = CreateClass({
         if (this.props.RequestUser.type === 1) {
             this.props.actions.getClients(true);
         } else if (this.props.RequestUser.type === 2) {
-            this.props.actions.getWeightLogs(this.state.weightTimeFrame, true);
+            // this.props.actions.getWeightLogs(this.state.weightTimeFrame, true);
         }
     },
 
@@ -159,7 +159,7 @@ const Home = CreateClass({
         if (this.props.RequestUser.type === 1) {
             this.props.actions.getClients(true);
         } else {
-            this.props.actions.getWeightLogs(this.state.weightTimeFrame, true);
+            // this.props.actions.getWeightLogs(this.state.weightTimeFrame, true);
         }
         this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), true);
     },
@@ -219,7 +219,7 @@ const Home = CreateClass({
     changeTimeFrame(timeFrame) {
         if (this.state.weightTimeFrame !== timeFrame) {
             this.setState({weightTimeFrame: timeFrame});
-            this.props.actions.getWeightLogs(timeFrame)
+            // this.props.actions.getWeightLogs(timeFrame)
         }
     },
 
@@ -275,13 +275,13 @@ const Home = CreateClass({
                 currentProtein = data.macro_plan_day.current_logs.protein;
                 currentCal = calCalories(currentFats, currentCarbs, currentProtein);
             }
-
-            let weightLogs = this.props.WeightLogs.month.results;
-            if (this.state.weightTimeFrame === 'three_months') {
-                weightLogs = this.props.WeightLogs.three_months.results;
-            } else if (this.state.weightTimeFrame === 'year') {
-                weightLogs = this.props.WeightLogs.year.results;
-            }
+            //
+            // let weightLogs = this.props.WeightLogs.month.results;
+            // if (this.state.weightTimeFrame === 'three_months') {
+            //     weightLogs = this.props.WeightLogs.three_months.results;
+            // } else if (this.state.weightTimeFrame === 'year') {
+            //     weightLogs = this.props.WeightLogs.year.results;
+            // }
 
             content = (
                 <View>
@@ -428,42 +428,40 @@ const Home = CreateClass({
                                               buttonStyle={styles.logButton}/>
                             </View>
                         }
-                        <View style={[styles.box]}>
-                            <View
-                                style={[styles.boxHeader]}>
-                                <FontIcon name="balance-scale" size={getFontSize(20)}/>
-                                <Text style={styles.formCalories}>
-                                    Weight Progress
-                                </Text>
-                            </View>
-                            {weightLogs.length && weightLogs.length.length > 0 ?
-                                <View style={{flexDirection: 'row'}}>
-                                    <TouchableOpacity style={styles.weightChangeButton}
-                                                      onPress={() => this.changeTimeFrame('month')}>
-                                        <Text>Month</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={styles.weightChangeButton}
-                                                      onPress={() => this.changeTimeFrame('three_months')}>
-                                        <Text>Three Months</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={styles.weightChangeButton}
-                                                      onPress={() => this.changeTimeFrame('year')}>
-                                        <Text>Year</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                : null
-                            }
-                            <View style={[{paddingTop: 20, paddingBottom: 20}]}>
-                                {weightLogs.length && weightLogs.length.length > 0 ? <WeightGraph data={weightLogs}/>
-                                    : null
-                                }
+                        {/*<View style={[styles.box]}>*/}
+                            {/*<View*/}
+                                {/*style={[styles.boxHeader]}>*/}
+                                {/*<FontIcon name="balance-scale" size={getFontSize(20)}/>*/}
+                                {/*<Text style={styles.formCalories}>*/}
+                                    {/*Weight Progress*/}
+                                {/*</Text>*/}
+                            {/*</View>*/}
+                            {/*{weightLogs.length && weightLogs.length.length > 0 ?*/}
+                                {/*<View style={{flexDirection: 'row'}}>*/}
+                                    {/*<TouchableOpacity style={styles.weightChangeButton}*/}
+                                                      {/*onPress={() => this.changeTimeFrame('month')}>*/}
+                                        {/*<Text>Month</Text>*/}
+                                    {/*</TouchableOpacity>*/}
+                                    {/*<TouchableOpacity style={styles.weightChangeButton}*/}
+                                                      {/*onPress={() => this.changeTimeFrame('three_months')}>*/}
+                                        {/*<Text>Three Months</Text>*/}
+                                    {/*</TouchableOpacity>*/}
+                                    {/*<TouchableOpacity style={styles.weightChangeButton}*/}
+                                                      {/*onPress={() => this.changeTimeFrame('year')}>*/}
+                                        {/*<Text>Year</Text>*/}
+                                    {/*</TouchableOpacity>*/}
+                                {/*</View>*/}
+                                {/*: null*/}
+                            {/*}*/}
+                            {/*<View style={[{paddingTop: 20, paddingBottom: 20}]}>*/}
+                                {/*{weightLogs.length && weightLogs.length.length > 0 ? <WeightGraph data={weightLogs}/>*/}
+                                    {/*: null*/}
+                                {/*}*/}
 
-                                <SubmitButton onPress={() => navigate('CreateWeightLog')} text="LOG WEIGHT"
-                                              buttonStyle={styles.logButton}/>
-
-                            </View>
-
-                        </View>
+                                {/*<SubmitButton onPress={() => navigate('CreateWeightLog')} text="LOG WEIGHT"*/}
+                                              {/*buttonStyle={styles.logButton}/>*/}
+                            {/*</View>*/}
+                        {/*</View>*/}
                     </View>
 
                 </View>

@@ -30,7 +30,6 @@ export default CreateClass({
 
 const isIphoneX = () => {
     let d = Dimensions.get('window');
-    console.log(d);
     const {height, width} = d;
 
     return (
