@@ -302,8 +302,8 @@ const Home = CreateClass({
                                     </Text>
                                 </View>
                                 <View style={[styles.row, {alignItems: 'center'}]}>
-                                    <View style={[styles.calorieBox, {justifyContent: 'flex-end'}]}>
-                                        <View style={{paddingRight: 20}}>
+                                    <View style={[styles.calorieBox]}>
+                                        <View style={{paddingRight: 10}}>
                                             <Text
                                                 style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>CAL</Text>
                                             <Text style={{
@@ -314,7 +314,7 @@ const Home = CreateClass({
                                         <Text style={{
                                             fontFamily: 'Heebo-Bold',
                                             color: 'black',
-                                            fontSize: getFontSize(24),
+                                            fontSize: 20,
                                         }}>{currentCal}</Text>
                                     </View>
                                     <View style={{flex: .1}}/>
@@ -322,12 +322,12 @@ const Home = CreateClass({
                                         <Text style={{
                                             fontFamily: 'Heebo-Bold',
                                             color: 'black',
-                                            fontSize: getFontSize(24)
+                                            fontSize: 20
                                         }}>{calories - currentCal}</Text>
-                                        <View style={{paddingLeft: 20}}>
+                                        <View style={{paddingLeft: 10}}>
                                             <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>CAL</Text>
                                             <Text
-                                                style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>LEFT</Text>
+                                                style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>LEFT</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -485,6 +485,7 @@ const Home = CreateClass({
                                                             onRefresh={this._refresh}/>}
                             onScroll={this._onScroll}
                             scrollEventThrottle={15}
+                            contentContainerStyle={{paddingBottom: 80}}
                             style={styles.scrollView}>
 
                     <View style={[styles.todayTitle, {justifyContent: 'space-between'}]}>

@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -6,16 +7,20 @@ import {
     Text,
     StyleSheet,
     Image,
-    Dimensions
+    Dimensions,
+    TouchableOpacity,
 } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
 import Swiper from 'react-native-swiper';
 import InputAccessory from '../../components/InputAccessory';
+import {CachedImage} from "react-native-img-cache";
+import Gallery from 'react-native-image-gallery';
 
 import {getFontSize, trunc} from '../../actions/utils';
 
 
+import CustomIcon from '../../components/CustomIcon';
 import SetLogBox from '../../components/SetLogBox';
 import GlobalStyle from "../../containers/globalStyle";
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -35,6 +40,7 @@ const SetGroupDetail = CreateClass({
         return {
             rows: [],
             isComplete: false,
+            showDescription: false,
         }
     },
 
@@ -64,65 +70,99 @@ const SetGroupDetail = CreateClass({
     },
 
 
-    renderSwiper() {
+    renderAssets() {
         const set_group = this.props.set_group;
         if (!set_group.exercise.image && !set_group.exercise.second_image && !set_group.exercise.video) return null;
-        const swiperViews = [];
-        if (set_group.exercise.image) {
-            swiperViews.push(
-                <View style={styles.slide} key={1}>
-                    <Image resizeMode={Image.resizeMode.cover} style={styles.image}
-                           source={{uri: set_group.exercise.image}}/>
-                </View>
-            )
-        }
-        if (set_group.exercise.second_image) {
-            swiperViews.push(
-                <View style={styles.slide} key={2}>
-                    <Image resizeMode={Image.resizeMode.cover} style={styles.image}
-                           source={{uri: set_group.exercise.second_image}}/>
-                </View>
-            )
-        }
-        if (set_group.exercise.video) {
-            swiperViews.push(
-                <View style={styles.slide} key={3}>
-                    <Image resizeMode={Image.resizeMode.cover} style={styles.video} source={set_group.exercise.video}/>
-                </View>
-            )
-        }
         return (
-            <Swiper style={styles.wrapper} height={240} removeClippedSubviews={false}
-                    dot={<View style={{
-                        backgroundColor: 'rgba(0,0,0,.2)',
-                        width: 5,
-                        height: 5,
-                        borderRadius: 4,
-                        marginLeft: 3,
-                        marginRight: 3,
-                        marginTop: 3,
-                        marginBottom: 3
-                    }}/>}
-                    activeDot={<View style={{
-                        backgroundColor: '#000',
-                        width: 8,
-                        height: 8,
-                        borderRadius: 4,
-                        marginLeft: 3,
-                        marginRight: 3,
-                        marginTop: 3,
-                        marginBottom: 3
-                    }}/>}
-                    paginationStyle={{
-                        bottom: -23, left: null, right: 10
-                    }} loop>
-                {swiperViews}
-            </Swiper>
+            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                {set_group.exercise.image ?
+                    <TouchableOpacity style={[{overflow: 'hidden'}]} activeOpacity={1}
+                                      onPress={this.showGallery.bind(null, 0)}>
+                        <CachedImage resizeMode={Image.resizeMode.contain}
+                                     style={{
+                                         height: 100,
+                                         resizeMode: 'contain',
+                                         width: (width / 2) - 10,
+                                     }}
+                                     source={{uri: set_group.exercise.image}}/>
+                    </TouchableOpacity>
+                    : null
+                }
+                {set_group.exercise.second_image ?
+                    <TouchableOpacity style={[{overflow: 'hidden'}]} activeOpacity={1}
+                                      onPress={this.showGallery.bind(null, set_group.exercise.second_image ? 1 : 0)}>
+                        <CachedImage resizeMode={Image.resizeMode.contain}
+                                     style={{
+                                         height: 100,
+                                         resizeMode: 'contain',
+                                         width: (width / 2) - 10,
+                                     }}
+                                     source={{uri: set_group.exercise.second_image}}/>
+                    </TouchableOpacity>
+                    : null
+                }
+                {/*{set_group.exercise.second_image ?*/}
+                {/*<TouchableOpacity style={[{overflow: 'hidden'}]} activeOpacity={1}*/}
+                {/*onPress={this.showGallery.bind(null, set_group.exercise.second_image ? 1 : 0)}>*/}
+                {/*<CachedImage resizeMode={Image.resizeMode.cover}*/}
+                {/*style={{*/}
+                {/*height: 100,*/}
+                {/*resizeMode: 'cover',*/}
+                {/*width: (width / 2) - 10,*/}
+                {/*}}*/}
+                {/*source={{uri: set_group.exercise.second_image}}/>*/}
+                {/*</TouchableOpacity>*/}
+                {/*: null*/}
+                {/*}*/}
+            </View>
         )
     },
 
+    showGallery(index) {
+        this.setState({
+            galleryShown: true,
+            curIndex: index
+        });
+    },
+
+    closeGallery() {
+        this.setState({
+            galleryShown: false,
+            curIndex: 0
+        });
+    },
+
+
     render() {
         const set_group = this.props.set_group;
+        if (this.state.galleryShown) {
+            const images = [];
+            if (set_group.exercise.image) {
+                images.push(
+                    {source: {uri: set_group.exercise.image}}
+                )
+            }
+            if (set_group.exercise.second_image) {
+                images.push(
+                    {source: {uri: set_group.exercise.second_image}}
+                )
+            }
+            return (
+                <View style={GlobalStyle.container}>
+                    <Gallery
+                        style={{flex: 1, backgroundColor: 'white'}}
+                        initialPage={this.state.curIndex}
+                        images={images}
+                        imageComponent={(props, dimensions) => <CachedImage {...props} />}
+                    />
+                    <TouchableOpacity activeOpacity={1} onPress={this.closeGallery} style={styles.closeGallery}>
+                        <CustomIcon name="close" size={40}
+                                    style={{color: 'black', paddingRight: '5%', alignSelf: 'flex-end'}}/>
+                    </TouchableOpacity>
+                </View>
+            );
+        }
+
         let sets = [];
         let notes = set_group.notes ? set_group.notes.map((note, i) =>
             <Text key={i} style={[{
@@ -167,11 +207,20 @@ const SetGroupDetail = CreateClass({
                                          keyboardDismissMode='interactive'
                                          showsHorizontalScrollIndicator={false}
                                          keyboardShouldPersistTaps='handled'>
-                    {this.renderSwiper()}
+                    <Text style={styles.simpleTitle}>{trunc(set_group.exercise.name, 30)}</Text>
+                    {this.renderAssets()}
+                    <Text>
+                        {!this.state.showDescription && set_group.exercise.description
+                            ? trunc(set_group.exercise.description, 30)
+                            : set_group.exercise.description
+                        }
+                        {!this.state.showDescription && set_group.exercise.description ?
+                            <Text onPress={() => this.setState({showDescription: true})}
+                              style={GlobalStyle.lightBlueText}>More</Text>
+                            : null
+                        }
+                    </Text>
                     <View style={{flexDirection: 'column', flex: 1}}>
-                        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                            <Text style={styles.simpleTitle}>{trunc(set_group.exercise.name, 30)}</Text>
-                        </View>
                         <View style={[{flex: 1}]}>
                             <View style={styles.rowSection}>
                                 <View style={styles.topSection}>
@@ -281,7 +330,15 @@ const styles = StyleSheet.create({
     notBold: {
         color: 'grey',
         fontFamily: 'Heebo-Medium',
-    }
+    },
+    closeGallery: {
+        top: 0,
+        height: 65,
+        backgroundColor: 'transparent',
+        width: '100%',
+        position: 'absolute',
+        justifyContent: 'center'
+    },
 });
 
 
