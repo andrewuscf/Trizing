@@ -216,7 +216,7 @@ const ProgramList = CreateClass({
             <View style={styles.empty}>
                 <CustomIcon name="weight" size={getFontSize(60)} color="#b1aea5"/>
                 <Text style={styles.emptyText}>
-                    Oh No! {this.state.tab === 1 ? `You currently have no workout programs.`
+                    {this.state.tab === 1 ? `You currently have no workout programs.`
                     : 'There are currently no workout programs for sale.'}
                 </Text>
             </View>
