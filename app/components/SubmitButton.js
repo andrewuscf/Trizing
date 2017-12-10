@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {TouchableOpacity, View, Image, Text, StyleSheet, ActivityIndicator} from 'react-native';
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
         // paddingBottom: 10,
         // paddingLeft: 15,
         // paddingRight: 15,
-        // borderRadius: 30,
+        borderRadius: 7,
         height: 55,
         margin: 20,
         marginRight: 40,

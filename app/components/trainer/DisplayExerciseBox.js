@@ -39,10 +39,10 @@ const DisplayExerciseBox = CreateClass({
             `What would you like to do?`,
             ``,
             [
-                {
-                    text: 'Add Note',
-                    onPress: this.toAddNote
-                },
+                // {
+                //     text: 'Add Note',
+                //     onPress: this.toAddNote
+                // },
                 {
                     text: 'Delete',
                     onPress: this._onDelete,
@@ -81,9 +81,10 @@ const styles = StyleSheet.create({
     displayWorkoutBox: {
         flex: 1,
         padding: 10,
+        margin: 10,
+        marginBottom: 0,
+        borderRadius: 7,
         backgroundColor: 'white',
-        borderColor: '#e1e3df',
-        borderBottomWidth: .5,
         flexDirection: 'row',
         alignItems: 'center'
     },

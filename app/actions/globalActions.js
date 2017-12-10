@@ -568,7 +568,7 @@ export function logSets(data, asyncActions) {
 }
 
 
-export function activateSchedule(programId, asyncActions) {
+export function activateSchedule(programId) {
     let JSONDATA = JSON.stringify({program: programId});
     return (dispatch, getState) => {
         return fetch(`${API_ENDPOINT}training/program/activate/`,
@@ -576,8 +576,7 @@ export function activateSchedule(programId, asyncActions) {
             .then(checkStatus)
             .then((responseJson) => {
                 if (responseJson.id) {
-                    asyncActions(responseJson);
-                    // return dispatch({type: types.CREATE_WORKOUT_LOG, response: responseJson});
+                    return dispatch({type: types.LOAD_REQUEST_USER, request_user: responseJson});
                 }
             }).catch(() => {
                 return dispatch({type: types.API_ERROR});

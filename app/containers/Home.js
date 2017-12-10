@@ -385,49 +385,6 @@ const Home = CreateClass({
                                 <Text style={styles.textTitle}>No Nutrition Plan Today</Text>
                             </View>
                         }
-                        {data && data.training_day ?
-                            <View style={[styles.box]}>
-                                <View
-                                    style={[styles.boxHeader]}>
-                                    <MaterialIcon name="directions-run" size={getFontSize(22)}/>
-                                    <Text style={styles.formCalories}>
-                                        Workout
-                                    </Text>
-                                </View>
-                                <View style={[{marginLeft: 40, paddingTop: 5}]}>
-                                    <Text style={{
-                                        fontSize: getFontSize(18),
-                                        fontFamily: 'Heebo-Medium'
-                                    }}>{data.training_day.name}</Text>
-                                    <View style={[styles.boxHeader, {paddingLeft: 10, borderBottomWidth: 0}]}>
-                                        <FontIcon name="circle" size={getFontSize(8)} color="grey"/>
-                                        <Text style={styles.h2Title}>
-                                            {data.training_day.exercises.length} {data.training_day.exercises.length === 1 ? 'Exercise' : 'Exercises'}
-                                        </Text>
-                                    </View>
-                                </View>
-
-                                {!data.training_day.logged_today ?
-                                    <SubmitButton onPress={this._toLogWorkout.bind(null, data)} text="START WORKOUT"
-                                                  buttonStyle={styles.logButton}/>
-                                    : null
-                                }
-
-                            </View>
-                            :
-                            <View style={[styles.box]}>
-                                <View
-                                    style={[styles.boxHeader]}>
-                                    <MaterialIcon name="directions-run" size={getFontSize(22)}/>
-                                    <Text style={styles.formCalories}>
-                                        Workout
-                                    </Text>
-                                </View>
-                                <Text style={styles.textTitle}>No Workout Today</Text>
-                                <SubmitButton onPress={() => navigate('ProgramList')} text="PROGRAMS"
-                                              buttonStyle={styles.logButton}/>
-                            </View>
-                        }
                         {/*<View style={[styles.box]}>*/}
                             {/*<View*/}
                                 {/*style={[styles.boxHeader]}>*/}
@@ -503,6 +460,49 @@ const Home = CreateClass({
                         </TouchableOpacity>
                     </View>
                     {content}
+                    {data && data.training_day ?
+                        <View style={[styles.box]}>
+                            <View
+                                style={[styles.boxHeader]}>
+                                <MaterialIcon name="directions-run" size={getFontSize(22)}/>
+                                <Text style={styles.formCalories}>
+                                    Workout
+                                </Text>
+                            </View>
+                            <View style={[{marginLeft: 40, paddingTop: 5}]}>
+                                <Text style={{
+                                    fontSize: getFontSize(18),
+                                    fontFamily: 'Heebo-Medium'
+                                }}>{data.training_day.name}</Text>
+                                <View style={[styles.boxHeader, {paddingLeft: 10, borderBottomWidth: 0}]}>
+                                    <FontIcon name="circle" size={getFontSize(8)} color="grey"/>
+                                    <Text style={styles.h2Title}>
+                                        {data.training_day.exercises.length} {data.training_day.exercises.length === 1 ? 'Exercise' : 'Exercises'}
+                                    </Text>
+                                </View>
+                            </View>
+
+                            {!data.training_day.logged_today ?
+                                <SubmitButton onPress={this._toLogWorkout.bind(null, data)} text="START WORKOUT"
+                                              buttonStyle={styles.logButton}/>
+                                : null
+                            }
+
+                        </View>
+                        :
+                        <View style={[styles.box]}>
+                            <View
+                                style={[styles.boxHeader]}>
+                                <MaterialIcon name="directions-run" size={getFontSize(22)}/>
+                                <Text style={styles.formCalories}>
+                                    Workout
+                                </Text>
+                            </View>
+                            <Text style={styles.textTitle}>No Workout Today</Text>
+                            <SubmitButton onPress={() => navigate('ProgramList')} text="PROGRAMS"
+                                          buttonStyle={styles.logButton}/>
+                        </View>
+                    }
                     {this.state.dataDate.isSameOrBefore(today, 'd') ?<View style={[styles.box]}>
                         <View style={[styles.boxHeader, {justifyContent: 'space-between'}]}>
                             <View style={[{flexDirection: 'row', alignItems: 'center'}]}>

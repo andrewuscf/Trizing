@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -207,7 +208,8 @@ const EditWorkout = CreateClass({
                           refreshControl={<RefreshControl refreshing={this.state.refreshing}
                                                           onRefresh={() => this.getWorkout(true)}/>}
                 />
-                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" onPress={this._createWorkoutDay}/>
+                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" offsetX={10} offsetY={20}
+                              onPress={this._createWorkoutDay}/>
             </View>
         )
     }
@@ -218,7 +220,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     contentContainerStyle: {
-        paddingBottom: 50
+        paddingBottom: 100
     },
     title: {
         fontSize: 24,

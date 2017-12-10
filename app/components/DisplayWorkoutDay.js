@@ -67,6 +67,9 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         backgroundColor: 'white',
+        margin: 10,
+        marginBottom: 0,
+        borderRadius: 7,
     },
     dateSection: {
         marginLeft: 5,

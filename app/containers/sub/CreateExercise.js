@@ -9,15 +9,15 @@ import {
     TouchableOpacity,
     Text,
     KeyboardAvoidingView,
-    FlatList
+    FlatList,
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
 import DropdownAlert from 'react-native-dropdownalert';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import RNFetchBlob from 'react-native-fetch-blob';
+import {CachedImage} from "react-native-img-cache";
 
 import * as GlobalActions from '../../actions/globalActions';
 import {API_ENDPOINT, setHeaders, checkStatus} from '../../actions/utils';
@@ -231,6 +231,7 @@ const CreateExercise = CreateClass({
                                      value={{reps: set.reps, weight: set.weight}}/>
         } else {
             const result = object.item;
+            console.log(result)
             return (
                 <TouchableOpacity style={styles.searchResult}
                                   onPress={() => {
@@ -238,6 +239,16 @@ const CreateExercise = CreateClass({
                                       this.closeResults();
                                   }}
                 >
+                    {result.image ?
+                        <CachedImage source={{uri: result.image}}
+                                     style={{
+                                         height: 50,
+                                         resizeMode: 'contain',
+                                         width: 50,
+                                         paddingRight: 5
+                                     }}/>
+                        : null
+                    }
                     <Text style={styles.itemText}>{result.name}</Text>
                 </TouchableOpacity>
             );
@@ -326,6 +337,8 @@ const styles = StyleSheet.create({
         borderBottomWidth: .5,
         marginLeft: 10,
         marginRight: 10,
+        flexDirection: 'row',
+        alignItems: 'center'
     }
 });
 

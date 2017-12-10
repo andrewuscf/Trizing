@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -6,8 +7,7 @@ import {
     Text,
     StyleSheet,
     RefreshControl,
-    Platform,
-    ListView,
+    FlatList,
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -87,7 +87,7 @@ const EditWorkoutDay = CreateClass({
     },
 
 
-    renderHeader() {
+    _renderHeader() {
         if (!this.state.workout_day.notes.length) {
             return null;
         }
@@ -117,11 +117,10 @@ const EditWorkoutDay = CreateClass({
 
     _onNoteAdded(newNote) {
         this.setState({
-            ...this.state.workout_day,
-            notes: this.state.workout_day.notes ? [
-                ...this.state.workout_day.notes,
-                newNote
-            ] : [newNote]
+            workout_day: {
+                ...this.state.workout_day,
+                notes: this.state.workout_day.notes ? [...this.state.workout_day.notes, newNote] : [newNote]
+            }
         });
     },
 
@@ -144,12 +143,20 @@ const EditWorkoutDay = CreateClass({
         }
     },
 
+    _renderItem(object) {
+        const set_group = object.item;
+        return <DisplayExerciseBox set_group={set_group}
+                                   addNote={this.addNote}
+                                   _editExercise={this._editExercise}
+                                   deleteSetGroup={this.deleteSetGroup}/>
+    },
+
 
     render: function () {
         if (!this.state.workout_day) return <Loading/>;
 
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        let dataSource = ds.cloneWithRows(this.state.workout_day.exercises);
+        // const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        // let dataSource = ds.cloneWithRows(this.state.workout_day.exercises);
 
         return (
             <View style={styles.container}>
@@ -159,22 +166,14 @@ const EditWorkoutDay = CreateClass({
                         <Text>Create Exercises!</Text>
                     </View> :
 
-                    <ListView ref='workout_day_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                    <FlatList removeClippedSubviews={false} ListHeaderComponent={this._renderHeader}
+                              showsVerticalScrollIndicator={false} data={this.state.workout_day.exercises}
                               keyboardShouldPersistTaps="handled"
+                              contentContainerStyle={{paddingBottom: 100}}
                               refreshControl={<RefreshControl refreshing={this.state.refreshing}
                                                               onRefresh={() => this.getWorkoutDay(true)}/>}
-                              enableEmptySections={true}
-                              dataSource={dataSource}
-                              renderHeader={this.renderHeader}
-                              showsVerticalScrollIndicator={false}
-                              contentContainerStyle={{paddingBottom: 20}}
-                              renderRow={(set_group, sectionID, rowID) =>
-                                  <DisplayExerciseBox set_group={set_group}
-                                                      addNote={this.addNote}
-                                                      _editExercise={this._editExercise}
-                                                      deleteSetGroup={this.deleteSetGroup}/>
-                              }
-                    />
+                              renderItem={this._renderItem} extraData={this.state}
+                              keyExtractor={(item, index) => index}/>
                 }
 
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" offsetX={10} offsetY={20}>

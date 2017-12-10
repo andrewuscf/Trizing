@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -100,8 +101,11 @@ const EditSchedule = CreateClass({
                     <Text style={styles.notBold}> {duration} {schedule.duration === 1 ? 'week' : 'weeks'}</Text>
                 </Text>
                 <Text style={styles.smallBold}>Created: <Text style={styles.notBold}>{created}</Text></Text>
-                <Text style={styles.smallBold}>Description: <Text
-                    style={styles.notBold}>{schedule.description}</Text></Text>
+                {schedule.description ?
+                    <Text style={styles.smallBold}>Description: <Text
+                        style={styles.notBold}>{schedule.description}</Text></Text>
+                    : null
+                }
                 {schedule.cost ?
                     <Text style={styles.smallBold}>Cost: <Text
                         style={styles.notBold}>${parseFloat(schedule.cost).toFixed(2)}</Text></Text> :
@@ -195,14 +199,15 @@ const EditSchedule = CreateClass({
                           keyboardShouldPersistTaps="handled"
                           showsVerticalScrollIndicator={false}
                           style={[styles.flexCenter]}
-                          contentContainerStyle={{paddingBottom: 20}}
+                          contentContainerStyle={{paddingBottom: 100}}
                           enableEmptySections={true}
                           dataSource={dataSource}
                           renderHeader={this.renderHeader}
                           renderRow={this.renderRow}
                           renderFooter={this.renderFooter.bind(null, dataSource.getRowCount())}
                 />
-                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" onPress={this._toCreateWorkout}/>
+                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" offsetX={10} offsetY={20}
+                              onPress={this._toCreateWorkout}/>
             </View>
         )
     },
@@ -232,6 +237,9 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         backgroundColor: 'white',
+        margin: 10,
+        marginBottom: 0,
+        borderRadius: 7,
     },
     notBold: {
         color: 'grey',
