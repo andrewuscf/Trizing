@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -27,7 +26,6 @@
 		2036A9FA1F7356AA005160B2 /* libRNFIRMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 496174F31E98C07D003B9FDB /* libRNFIRMessaging.a */; };
 		2086D8921E516C6000D9945E /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2086D8901E516C3300D9945E /* libRCTCameraRoll.a */; };
 		20C2F1F71F947B8F00D6758E /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		20C2F2CE1F94828A00D6758E /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49800F521E597312008F9359 /* libRCTFBSDK.a */; };
 		3BB04ED95D0E417CA74B9383 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3805A7BCE2E5418E88F5E9AB /* libRNSVG.a */; };
 		3E4B6C1DC6B94CE2905130D7 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA93046519634EE083C2E02A /* Entypo.ttf */; };
 		496174F71E98C098003B9FDB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 496174F61E98C098003B9FDB /* GoogleService-Info.plist */; };
@@ -357,13 +355,6 @@
 			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
 			remoteInfo = RNSVG;
 		};
-		49800F511E597312008F9359 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FF837605A194A8AB6E98775 /* RCTFBSDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9350E0F11CE3B0920041D815;
-			remoteInfo = RCTFBSDK;
-		};
 		499D8D791F473552002C5009 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B967516DA7964272BAEA0EE5 /* CodePush.xcodeproj */;
@@ -467,7 +458,6 @@
 		59039F2031ED4705B9501232 /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
 		5B81740734C94F918964E3E7 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
-		5FF837605A194A8AB6E98775 /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
 		69D6D2EE1E2541C1AFC7F8B9 /* libRCTActionSheet.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTActionSheet.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7B87053A2BB34784AB011E20 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
@@ -512,7 +502,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20C2F2CE1F94828A00D6758E /* libRCTFBSDK.a in Frameworks */,
 				49AD96AE1F50885200017A06 /* libART.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				20C2F1F71F947B8F00D6758E /* libRCTAnimation.a in Frameworks */,
@@ -769,14 +758,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		49800F4A1E597311008F9359 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				49800F521E597312008F9359 /* libRCTFBSDK.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		499D8D751F473552002C5009 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -852,7 +833,6 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				7B87053A2BB34784AB011E20 /* RNVectorIcons.xcodeproj */,
-				5FF837605A194A8AB6E98775 /* RCTFBSDK.xcodeproj */,
 				5B81740734C94F918964E3E7 /* RNSVG.xcodeproj */,
 				499961797F904AF1A5353A46 /* RNFIRMessaging.xcodeproj */,
 				348DEFF9B9A143C193ECD377 /* RNFetchBlob.xcodeproj */,
@@ -1021,10 +1001,6 @@
 				{
 					ProductGroup = 2086D88C1E516C3300D9945E /* Products */;
 					ProjectRef = 2086D88B1E516C3300D9945E /* RCTCameraRoll.xcodeproj */;
-				},
-				{
-					ProductGroup = 49800F4A1E597311008F9359 /* Products */;
-					ProjectRef = 5FF837605A194A8AB6E98775 /* RCTFBSDK.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
@@ -1383,13 +1359,6 @@
 			remoteRef = 497A844A1E64120D0081F605 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		49800F521E597312008F9359 /* libRCTFBSDK.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRCTFBSDK.a;
-			remoteRef = 49800F511E597312008F9359 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		499D8D7A1F473552002C5009 /* libCodePush.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1682,7 +1651,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1710,7 +1678,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1914,7 +1881,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
