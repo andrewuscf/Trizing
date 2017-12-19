@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -14,6 +15,7 @@ import t from 'tcomb-form-native';
 import moment from 'moment';
 import DropdownAlert from 'react-native-dropdownalert';
 import {Circle} from 'react-native-progress';
+import _ from 'lodash';
 
 import {addMacroLog} from '../../actions/homeActions';
 import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../actions/utils';
@@ -46,6 +48,7 @@ const CreateMacroLog = CreateClass({
                 results: [],
                 next: null
             },
+            recent_logs: [],
             refreshing: false,
             loading: false,
             disabled: false,
@@ -57,7 +60,23 @@ const CreateMacroLog = CreateClass({
 
     componentDidMount() {
         this.props.navigation.setParams({handleSave: this._onSubmit});
-        this.getMacroLogs()
+        this.getMacroLogs();
+        this.getRecentLogs();
+    },
+
+    getRecentLogs() {
+        const url = `${API_ENDPOINT}training/macros/logs/?end_date=${this.props.date.format("YYYY-MM-DD")}`;
+        fetch(url, fetchData('GET', null, this.props.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+                if (responseJson) {
+                    this.setState({
+                        recent_logs: responseJson.results
+                    });
+                }
+            }).catch(() => {
+            console.log('error')
+        });
     },
 
     getMacroLogs(url = `${API_ENDPOINT}training/macros/logs/?date=${this.props.date.format("YYYY-MM-DD")}`) {
@@ -107,7 +126,6 @@ const CreateMacroLog = CreateClass({
                 .then((responseJson) => {
                     if (responseJson.id) {
                         this.props.actions.addMacroLog(responseJson);
-                        console.log(responseJson.protein)
                         this.setState({
                             macro_response: {
                                 ...this.state.macro_response,
@@ -216,8 +234,45 @@ const CreateMacroLog = CreateClass({
         )
     },
 
+    quickAdd(log) {
+        this.setState({
+            value: {
+                name: log.name,
+                fats: log.fats,
+                carbs: log.carbs,
+                protein: log.protein
+            }
+        });
+        setTimeout(() => {
+            this._onSubmit();
+        }, 50);
+    },
+
+    deleteLog(log) {
+        const logId = log.id;
+        const oldState = _.cloneDeep(this.state);
+        const index = _.findIndex(this.state.macro_response.results, {id: logId});
+        this.setState({
+            macro_response: {
+                ...this.state.macro_response,
+                results: this.state.macro_response.results.slice(0, index).concat(this.state.macro_response.results.slice(index + 1))
+            },
+            currentFats: this.state.currentFats - log.fats,
+            currentCarbs: this.state.currentCarbs - log.carbs,
+            currentProtein: this.state.currentProtein - log.protein
+        });
+        fetch(`${API_ENDPOINT}training/macro/log/${logId}/`, fetchData('DELETE', null, this.props.UserToken))
+            .then(checkStatus)
+            .catch(() => {
+            this.dropdown.alertWithType('error', 'Error', "Couldn't delete log nutrition.");
+            this.setState({
+                ...oldState
+            })
+        });
+    },
+
     renderRow(log, set, key) {
-        return <MacroLogBox log={log}/>
+        return <MacroLogBox log={log} quickAdd={this.quickAdd} deleteLog={this.deleteLog}/>
     },
 
     _onEndReached() {
