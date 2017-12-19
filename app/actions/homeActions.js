@@ -74,7 +74,6 @@ export function addMacroLog(response) {
 }
 
 export function deleteMacroLog(log) {
-    console.log(log)
     return {type: types.DELETE_MACRO_LOG, log}
 }
 

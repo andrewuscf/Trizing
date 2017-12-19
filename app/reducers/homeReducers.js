@@ -125,7 +125,6 @@ export default function homeReducers(state = initialState, action = null) {
             };
 
         case constants.DELETE_MACRO_LOG:
-            console.log(action.log)
             return {
                 ...state,
                 ActiveData: state.ActiveData.map(active_data => {
