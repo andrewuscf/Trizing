@@ -17,7 +17,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 import {Circle} from 'react-native-progress';
 import _ from 'lodash';
 
-import {addMacroLog} from '../../actions/homeActions';
+import {addMacroLog, deleteMacroLog} from '../../actions/homeActions';
 import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../actions/utils';
 
 import GlobalStyle from '../globalStyle';
@@ -262,7 +262,7 @@ const CreateMacroLog = CreateClass({
             currentProtein: this.state.currentProtein - log.protein
         });
         fetch(`${API_ENDPOINT}training/macro/log/${logId}/`, fetchData('DELETE', null, this.props.UserToken))
-            .then(checkStatus)
+            .then(checkStatus).then(()=>{this.props.actions.deleteMacroLog(log)})
             .catch(() => {
                 this.dropdown.alertWithType('error', 'Error', "Couldn't delete log nutrition.");
                 this.setState({
@@ -367,7 +367,10 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
     return {
-        actions: {addMacroLog: bindActionCreators(addMacroLog, dispatch)}
+        actions: {
+            addMacroLog: bindActionCreators(addMacroLog, dispatch),
+            deleteMacroLog: bindActionCreators(deleteMacroLog, dispatch)
+        }
     }
 };
 

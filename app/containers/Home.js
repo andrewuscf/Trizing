@@ -232,6 +232,28 @@ const Home = CreateClass({
         const {navigate} = this.props.navigation;
         const today = moment();
         const data = _.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")});
+
+        let calories = 0;
+        let fats = 0;
+        let protein = 0;
+        let carbs = 0;
+
+        let currentCarbs;
+        let currentProtein;
+        let currentCal;
+        let currentFats = currentCarbs = currentProtein = currentCal = 0;
+        if (data && data.macro_plan_day) {
+            fats = (data.macro_plan_day.fats) ? data.macro_plan_day.fats : 0;
+            protein = (data.macro_plan_day.protein) ? data.macro_plan_day.protein : 0;
+            carbs = (data.macro_plan_day.carbs) ? data.macro_plan_day.carbs : 0;
+            calories = calCalories(fats, carbs, protein);
+
+            currentFats = data.macro_plan_day.current_logs.fats;
+            currentCarbs = data.macro_plan_day.current_logs.carbs;
+            currentProtein = data.macro_plan_day.current_logs.protein;
+            currentCal = calCalories(currentFats, currentCarbs, currentProtein);
+        }
+
         if (isTrainer) {
             content = (
                 <View>
@@ -255,26 +277,6 @@ const Home = CreateClass({
                 </View>
             )
         } else {
-            let calories = 0;
-            let fats = 0;
-            let protein = 0;
-            let carbs = 0;
-
-            let currentCarbs;
-            let currentProtein;
-            let currentCal;
-            let currentFats = currentCarbs = currentProtein = currentCal = 0;
-            if (data && data.macro_plan_day) {
-                fats = (data.macro_plan_day.fats) ? data.macro_plan_day.fats : 0;
-                protein = (data.macro_plan_day.protein) ? data.macro_plan_day.protein : 0;
-                carbs = (data.macro_plan_day.carbs) ? data.macro_plan_day.carbs : 0;
-                calories = calCalories(fats, carbs, protein);
-
-                currentFats = data.macro_plan_day.current_logs.fats;
-                currentCarbs = data.macro_plan_day.current_logs.carbs;
-                currentProtein = data.macro_plan_day.current_logs.protein;
-                currentCal = calCalories(currentFats, currentCarbs, currentProtein);
-            }
             //
             // let weightLogs = this.props.WeightLogs.month.results;
             // if (this.state.weightTimeFrame === 'three_months') {
@@ -293,98 +295,98 @@ const Home = CreateClass({
                         : null
                     }
                     <View>
-                        {data && data.macro_plan_day ?
-                            <View style={[styles.box, {marginBottom: 5}]}>
-                                <View style={[styles.boxHeader, {borderBottomWidth: 0}]}>
-                                    <MaterialIcon name="donut-small" size={getFontSize(22)}/>
-                                    <Text style={styles.formCalories}>
-                                        Nutrition Plan
-                                    </Text>
-                                </View>
-                                <View style={[styles.row, {alignItems: 'center'}]}>
-                                    <View style={[styles.calorieBox]}>
-                                        <View style={{paddingRight: 10}}>
-                                            <Text
-                                                style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>CAL</Text>
-                                            <Text style={{
-                                                fontFamily: 'Heebo-Medium',
-                                                textAlign: 'right'
-                                            }}>EATEN</Text>
-                                        </View>
-                                        <Text style={{
-                                            fontFamily: 'Heebo-Bold',
-                                            color: 'black',
-                                            fontSize: 20,
-                                        }}>{currentCal}</Text>
-                                    </View>
-                                    <View style={{flex: .1}}/>
-                                    <View style={[styles.calorieBox]}>
-                                        <Text style={{
-                                            fontFamily: 'Heebo-Bold',
-                                            color: 'black',
-                                            fontSize: 20
-                                        }}>{calories - currentCal}</Text>
-                                        <View style={{paddingLeft: 10}}>
-                                            <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>CAL</Text>
-                                            <Text
-                                                style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>LEFT</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                                <View style={[styles.row, {
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                    paddingTop: 10,
-                                    paddingBottom: 10
-                                }]}>
-                                    <View style={styles.details}>
-                                        <Circle size={getFontSize(60)}
-                                                progress={currentFats !== 0 ? (currentFats / fats) : currentFats}
-                                                unfilledColor={unfilledColor} borderWidth={0} color="#1fc16c"
-                                                thickness={5} formatText={() => "Fats"} showsText={true}/>
-                                        <Text
-                                            style={[styles.smallText, (fats - currentFats < 0) ? GlobalStyle.redText : null]}>
-                                            {`${fats - currentFats}g ${(fats - currentFats < 0) ? 'over' : 'left'}`}
-                                        </Text>
-                                    </View>
-                                    <View style={styles.details}>
-                                        <Circle size={getFontSize(60)}
-                                                progress={currentCarbs !== 0 ? (currentCarbs / carbs) : currentCarbs}
-                                                unfilledColor={unfilledColor} borderWidth={0} color="#a56dd1"
-                                                thickness={5} formatText={() => "Carbs"} showsText={true}/>
-                                        <Text
-                                            style={[styles.smallText, (carbs - currentCarbs < 0) ? GlobalStyle.redText : null]}>
-                                            {`${carbs - currentCarbs}g ${(carbs - currentCarbs < 0) ? 'over' : 'left'}`}
-                                        </Text>
-                                    </View>
-                                    <View style={styles.details}>
-                                        <Circle size={getFontSize(60)}
-                                                progress={currentProtein !== 0 ? (currentProtein / protein) : currentProtein}
-                                                unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"
-                                                thickness={5} formatText={() => "Protein"} showsText={true}/>
-                                        <Text
-                                            style={[styles.smallText, (protein - currentProtein < 0) ? GlobalStyle.redText : null]}>
-                                            {`${protein - currentProtein}g ${(protein - currentProtein < 0) ? 'over' : 'left'}`}
-                                        </Text>
-                                    </View>
-                                </View>
-                                <SubmitButton onPress={this._redirect.bind(null, 'CreateMacroLog', {
-                                    macro_plan_day: data.macro_plan_day,
-                                    date: this.state.dataDate
-                                })} text="LOG NUTRITION" buttonStyle={styles.logButton}/>
+                        {/*{data && data.macro_plan_day ?*/}
+                            {/*<View style={[styles.box, {marginBottom: 5}]}>*/}
+                                {/*<View style={[styles.boxHeader, {borderBottomWidth: 0}]}>*/}
+                                    {/*<MaterialIcon name="donut-small" size={getFontSize(22)}/>*/}
+                                    {/*<Text style={styles.formCalories}>*/}
+                                        {/*Nutrition Plan*/}
+                                    {/*</Text>*/}
+                                {/*</View>*/}
+                                {/*<View style={[styles.row, {alignItems: 'center'}]}>*/}
+                                    {/*<View style={[styles.calorieBox]}>*/}
+                                        {/*<View style={{paddingRight: 10}}>*/}
+                                            {/*<Text*/}
+                                                {/*style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>CAL</Text>*/}
+                                            {/*<Text style={{*/}
+                                                {/*fontFamily: 'Heebo-Medium',*/}
+                                                {/*textAlign: 'right'*/}
+                                            {/*}}>EATEN</Text>*/}
+                                        {/*</View>*/}
+                                        {/*<Text style={{*/}
+                                            {/*fontFamily: 'Heebo-Bold',*/}
+                                            {/*color: 'black',*/}
+                                            {/*fontSize: 20,*/}
+                                        {/*}}>{currentCal}</Text>*/}
+                                    {/*</View>*/}
+                                    {/*<View style={{flex: .1}}/>*/}
+                                    {/*<View style={[styles.calorieBox]}>*/}
+                                        {/*<Text style={{*/}
+                                            {/*fontFamily: 'Heebo-Bold',*/}
+                                            {/*color: 'black',*/}
+                                            {/*fontSize: 20*/}
+                                        {/*}}>{calories - currentCal}</Text>*/}
+                                        {/*<View style={{paddingLeft: 10}}>*/}
+                                            {/*<Text style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>CAL</Text>*/}
+                                            {/*<Text*/}
+                                                {/*style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>LEFT</Text>*/}
+                                        {/*</View>*/}
+                                    {/*</View>*/}
+                                {/*</View>*/}
+                                {/*<View style={[styles.row, {*/}
+                                    {/*justifyContent: 'space-between',*/}
+                                    {/*alignItems: 'center',*/}
+                                    {/*paddingTop: 10,*/}
+                                    {/*paddingBottom: 10*/}
+                                {/*}]}>*/}
+                                    {/*<View style={styles.details}>*/}
+                                        {/*<Circle size={getFontSize(60)}*/}
+                                                {/*progress={currentFats !== 0 ? (currentFats / fats) : currentFats}*/}
+                                                {/*unfilledColor={unfilledColor} borderWidth={0} color="#1fc16c"*/}
+                                                {/*thickness={5} formatText={() => "Fats"} showsText={true}/>*/}
+                                        {/*<Text*/}
+                                            {/*style={[styles.smallText, (fats - currentFats < 0) ? GlobalStyle.redText : null]}>*/}
+                                            {/*{`${fats - currentFats}g ${(fats - currentFats < 0) ? 'over' : 'left'}`}*/}
+                                        {/*</Text>*/}
+                                    {/*</View>*/}
+                                    {/*<View style={styles.details}>*/}
+                                        {/*<Circle size={getFontSize(60)}*/}
+                                                {/*progress={currentCarbs !== 0 ? (currentCarbs / carbs) : currentCarbs}*/}
+                                                {/*unfilledColor={unfilledColor} borderWidth={0} color="#a56dd1"*/}
+                                                {/*thickness={5} formatText={() => "Carbs"} showsText={true}/>*/}
+                                        {/*<Text*/}
+                                            {/*style={[styles.smallText, (carbs - currentCarbs < 0) ? GlobalStyle.redText : null]}>*/}
+                                            {/*{`${carbs - currentCarbs}g ${(carbs - currentCarbs < 0) ? 'over' : 'left'}`}*/}
+                                        {/*</Text>*/}
+                                    {/*</View>*/}
+                                    {/*<View style={styles.details}>*/}
+                                        {/*<Circle size={getFontSize(60)}*/}
+                                                {/*progress={currentProtein !== 0 ? (currentProtein / protein) : currentProtein}*/}
+                                                {/*unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"*/}
+                                                {/*thickness={5} formatText={() => "Protein"} showsText={true}/>*/}
+                                        {/*<Text*/}
+                                            {/*style={[styles.smallText, (protein - currentProtein < 0) ? GlobalStyle.redText : null]}>*/}
+                                            {/*{`${protein - currentProtein}g ${(protein - currentProtein < 0) ? 'over' : 'left'}`}*/}
+                                        {/*</Text>*/}
+                                    {/*</View>*/}
+                                {/*</View>*/}
+                                {/*<SubmitButton onPress={this._redirect.bind(null, 'CreateMacroLog', {*/}
+                                    {/*macro_plan_day: data.macro_plan_day,*/}
+                                    {/*date: this.state.dataDate*/}
+                                {/*})} text="LOG NUTRITION" buttonStyle={styles.logButton}/>*/}
 
-                            </View>
-                            :
-                            <View style={[styles.box]}>
-                                <View style={styles.boxHeader}>
-                                    <MaterialIcon name="donut-small" size={getFontSize(22)}/>
-                                    <Text style={styles.formCalories}>
-                                        Nutrition Plan
-                                    </Text>
-                                </View>
-                                <Text style={styles.textTitle}>No Nutrition Plan Today</Text>
-                            </View>
-                        }
+                            {/*</View>*/}
+                            {/*:*/}
+                            {/*<View style={[styles.box]}>*/}
+                                {/*<View style={styles.boxHeader}>*/}
+                                    {/*<MaterialIcon name="donut-small" size={getFontSize(22)}/>*/}
+                                    {/*<Text style={styles.formCalories}>*/}
+                                        {/*Nutrition Plan*/}
+                                    {/*</Text>*/}
+                                {/*</View>*/}
+                                {/*<Text style={styles.textTitle}>No Nutrition Plan Today</Text>*/}
+                            {/*</View>*/}
+                        {/*}*/}
                         {/*<View style={[styles.box]}>*/}
                             {/*<View*/}
                                 {/*style={[styles.boxHeader]}>*/}
@@ -460,6 +462,98 @@ const Home = CreateClass({
                         </TouchableOpacity>
                     </View>
                     {content}
+                    {data && data.macro_plan_day ?
+                        <View style={[styles.box, {marginBottom: 5}]}>
+                            <View style={[styles.boxHeader, {borderBottomWidth: 0}]}>
+                                <MaterialIcon name="donut-small" size={getFontSize(22)}/>
+                                <Text style={styles.formCalories}>
+                                    Nutrition Plan
+                                </Text>
+                            </View>
+                            <View style={[styles.row, {alignItems: 'center'}]}>
+                                <View style={[styles.calorieBox]}>
+                                    <View style={{paddingRight: 10}}>
+                                        <Text
+                                            style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>CAL</Text>
+                                        <Text style={{
+                                            fontFamily: 'Heebo-Medium',
+                                            textAlign: 'right'
+                                        }}>EATEN</Text>
+                                    </View>
+                                    <Text style={{
+                                        fontFamily: 'Heebo-Bold',
+                                        color: 'black',
+                                        fontSize: 20,
+                                    }}>{currentCal}</Text>
+                                </View>
+                                <View style={{flex: .1}}/>
+                                <View style={[styles.calorieBox]}>
+                                    <Text style={{
+                                        fontFamily: 'Heebo-Bold',
+                                        color: 'black',
+                                        fontSize: 20
+                                    }}>{calories - currentCal}</Text>
+                                    <View style={{paddingLeft: 10}}>
+                                        <Text style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>CAL</Text>
+                                        <Text
+                                            style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>LEFT</Text>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={[styles.row, {
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                paddingTop: 10,
+                                paddingBottom: 10
+                            }]}>
+                                <View style={styles.details}>
+                                    <Circle size={getFontSize(60)}
+                                            progress={currentFats !== 0 ? (currentFats / fats) : currentFats}
+                                            unfilledColor={unfilledColor} borderWidth={0} color="#1fc16c"
+                                            thickness={5} formatText={() => "Fats"} showsText={true}/>
+                                    <Text
+                                        style={[styles.smallText, (fats - currentFats < 0) ? GlobalStyle.redText : null]}>
+                                        {`${fats - currentFats}g ${(fats - currentFats < 0) ? 'over' : 'left'}`}
+                                    </Text>
+                                </View>
+                                <View style={styles.details}>
+                                    <Circle size={getFontSize(60)}
+                                            progress={currentCarbs !== 0 ? (currentCarbs / carbs) : currentCarbs}
+                                            unfilledColor={unfilledColor} borderWidth={0} color="#a56dd1"
+                                            thickness={5} formatText={() => "Carbs"} showsText={true}/>
+                                    <Text
+                                        style={[styles.smallText, (carbs - currentCarbs < 0) ? GlobalStyle.redText : null]}>
+                                        {`${carbs - currentCarbs}g ${(carbs - currentCarbs < 0) ? 'over' : 'left'}`}
+                                    </Text>
+                                </View>
+                                <View style={styles.details}>
+                                    <Circle size={getFontSize(60)}
+                                            progress={currentProtein !== 0 ? (currentProtein / protein) : currentProtein}
+                                            unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"
+                                            thickness={5} formatText={() => "Protein"} showsText={true}/>
+                                    <Text
+                                        style={[styles.smallText, (protein - currentProtein < 0) ? GlobalStyle.redText : null]}>
+                                        {`${protein - currentProtein}g ${(protein - currentProtein < 0) ? 'over' : 'left'}`}
+                                    </Text>
+                                </View>
+                            </View>
+                            <SubmitButton onPress={this._redirect.bind(null, 'CreateMacroLog', {
+                                macro_plan_day: data.macro_plan_day,
+                                date: this.state.dataDate
+                            })} text="LOG NUTRITION" buttonStyle={styles.logButton}/>
+
+                        </View>
+                        :
+                        <View style={[styles.box]}>
+                            <View style={styles.boxHeader}>
+                                <MaterialIcon name="donut-small" size={getFontSize(22)}/>
+                                <Text style={styles.formCalories}>
+                                    Nutrition Plan
+                                </Text>
+                            </View>
+                            <Text style={styles.textTitle}>No Nutrition Plan Today</Text>
+                        </View>
+                    }
                     {data && data.training_day ?
                         <View style={[styles.box]}>
                             <View

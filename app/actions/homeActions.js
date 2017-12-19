@@ -73,6 +73,11 @@ export function addMacroLog(response) {
     return {type: types.ADD_MACRO_LOG, response}
 }
 
+export function deleteMacroLog(log) {
+    console.log(log)
+    return {type: types.DELETE_MACRO_LOG, log}
+}
+
 export function getWeightLogs(timeFrame, refresh) {
     return (dispatch, getState) => {
         let url = `${API_ENDPOINT}training/weight/logs/`;

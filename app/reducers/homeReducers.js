@@ -124,6 +124,29 @@ export default function homeReducers(state = initialState, action = null) {
                 ),
             };
 
+        case constants.DELETE_MACRO_LOG:
+            console.log(action.log)
+            return {
+                ...state,
+                ActiveData: state.ActiveData.map(active_data => {
+                        if (active_data.date === moment(action.log.date).format("YYYY-MM-DD")) {
+                            return {
+                                ...active_data,
+                                macro_plan_day: {
+                                    ...active_data.macro_plan_day,
+                                    current_logs: {
+                                        fats: active_data.macro_plan_day.current_logs.fats - action.log.fats,
+                                        carbs: active_data.macro_plan_day.current_logs.carbs - action.log.carbs,
+                                        protein: active_data.macro_plan_day.current_logs.protein - action.log.protein,
+                                    }
+                                }
+                            }
+                        }
+                        return active_data
+                    }
+                ),
+            };
+
         case constants.LOAD_WEIGHT_LOGS:
             const WeightLogs = state.WeightLogs;
             if (action.timeFrame === "month") {
