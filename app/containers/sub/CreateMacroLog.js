@@ -229,7 +229,6 @@ const CreateMacroLog = CreateClass({
                         value={this.state.value}
                     />
                 </View>
-                <Text style={styles.title}>Nutrition Logs</Text>
             </View>
         )
     },
@@ -245,6 +244,7 @@ const CreateMacroLog = CreateClass({
         });
         setTimeout(() => {
             this._onSubmit();
+            this.refs.main_list.scrollTo({y: 0});
         }, 50);
     },
 
@@ -264,16 +264,26 @@ const CreateMacroLog = CreateClass({
         fetch(`${API_ENDPOINT}training/macro/log/${logId}/`, fetchData('DELETE', null, this.props.UserToken))
             .then(checkStatus)
             .catch(() => {
-            this.dropdown.alertWithType('error', 'Error', "Couldn't delete log nutrition.");
-            this.setState({
-                ...oldState
-            })
-        });
+                this.dropdown.alertWithType('error', 'Error', "Couldn't delete log nutrition.");
+                this.setState({
+                    ...oldState
+                })
+            });
     },
 
     renderRow(log, set, key) {
         return <MacroLogBox log={log} quickAdd={this.quickAdd} deleteLog={this.deleteLog}/>
     },
+
+    renderSectionHeader(sectionData, category) {
+        if (!sectionData.length) return null;
+        return (
+            <View>
+                <Text style={styles.title}>{category}</Text>
+            </View>
+        );
+    },
+
 
     _onEndReached() {
         if (this.state.macro_response.next && !this.state.loading) this.getMacroLogs(this.state.macro_response.next);
@@ -282,15 +292,22 @@ const CreateMacroLog = CreateClass({
 
     render() {
 
-        const ListData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows(this.state.macro_response.results);
+        const ListData = new ListView.DataSource({
+            rowHasChanged: (r1, r2) => r1 !== r2,
+            sectionHeaderHasChanged: (s1, s2) => s1 !== s2
+        }).cloneWithRowsAndSections({
+            "Today's Logs": this.state.macro_response.results,
+            "Previous Logs": this.state.recent_logs
+        });
         return (
             <View style={{flex: 1}}>
-                <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                <ListView ref='main_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                           keyboardDismissMode='interactive'
                           keyboardShouldPersistTaps='handled'
                           style={{flex: 1}}
                           enableEmptySections={true} dataSource={ListData} showsVerticalScrollIndicator={false}
                           renderHeader={this.renderHeader}
+                          renderSectionHeader={this.renderSectionHeader}
                           renderRow={this.renderRow}
                           onEndReached={this._onEndReached}
                           onEndReachedThreshold={400}
