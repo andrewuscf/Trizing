@@ -106,7 +106,7 @@ const MacroBoxDay = CreateClass({
                     <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
                         <View style={styles.details}>
                             <Text style={styles.sectionTitle}>Fats (g)</Text>
-                            <Text style={styles.smallText}>{day_plan.protein}</Text>
+                            <Text style={styles.smallText}>{day_plan.fats}</Text>
                         </View>
                         <View style={styles.details}>
                             <Text style={styles.sectionTitle}>Carbs (g)</Text>
