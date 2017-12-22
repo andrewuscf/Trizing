@@ -130,7 +130,7 @@ export function resetNav(routeName, params = '') {
 }
 
 export function calCalories(fats = 0, carbs = 0, protein = 0) {
-    return (9 * fats) + (4 * protein) + (4 * carbs);
+    return ((9 * fats) + (4 * protein) + (4 * carbs)).toFixed(0);
 }
 
 export function letterSpacing(string, count = 1) {

@@ -294,135 +294,6 @@ const Home = CreateClass({
                         </View>
                         : null
                     }
-                    <View>
-                        {/*{data && data.macro_plan_day ?*/}
-                            {/*<View style={[styles.box, {marginBottom: 5}]}>*/}
-                                {/*<View style={[styles.boxHeader, {borderBottomWidth: 0}]}>*/}
-                                    {/*<MaterialIcon name="donut-small" size={getFontSize(22)}/>*/}
-                                    {/*<Text style={styles.formCalories}>*/}
-                                        {/*Nutrition Plan*/}
-                                    {/*</Text>*/}
-                                {/*</View>*/}
-                                {/*<View style={[styles.row, {alignItems: 'center'}]}>*/}
-                                    {/*<View style={[styles.calorieBox]}>*/}
-                                        {/*<View style={{paddingRight: 10}}>*/}
-                                            {/*<Text*/}
-                                                {/*style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>CAL</Text>*/}
-                                            {/*<Text style={{*/}
-                                                {/*fontFamily: 'Heebo-Medium',*/}
-                                                {/*textAlign: 'right'*/}
-                                            {/*}}>EATEN</Text>*/}
-                                        {/*</View>*/}
-                                        {/*<Text style={{*/}
-                                            {/*fontFamily: 'Heebo-Bold',*/}
-                                            {/*color: 'black',*/}
-                                            {/*fontSize: 20,*/}
-                                        {/*}}>{currentCal}</Text>*/}
-                                    {/*</View>*/}
-                                    {/*<View style={{flex: .1}}/>*/}
-                                    {/*<View style={[styles.calorieBox]}>*/}
-                                        {/*<Text style={{*/}
-                                            {/*fontFamily: 'Heebo-Bold',*/}
-                                            {/*color: 'black',*/}
-                                            {/*fontSize: 20*/}
-                                        {/*}}>{calories - currentCal}</Text>*/}
-                                        {/*<View style={{paddingLeft: 10}}>*/}
-                                            {/*<Text style={{fontFamily: 'Heebo-Medium', textAlign: 'left'}}>CAL</Text>*/}
-                                            {/*<Text*/}
-                                                {/*style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>LEFT</Text>*/}
-                                        {/*</View>*/}
-                                    {/*</View>*/}
-                                {/*</View>*/}
-                                {/*<View style={[styles.row, {*/}
-                                    {/*justifyContent: 'space-between',*/}
-                                    {/*alignItems: 'center',*/}
-                                    {/*paddingTop: 10,*/}
-                                    {/*paddingBottom: 10*/}
-                                {/*}]}>*/}
-                                    {/*<View style={styles.details}>*/}
-                                        {/*<Circle size={getFontSize(60)}*/}
-                                                {/*progress={currentFats !== 0 ? (currentFats / fats) : currentFats}*/}
-                                                {/*unfilledColor={unfilledColor} borderWidth={0} color="#1fc16c"*/}
-                                                {/*thickness={5} formatText={() => "Fats"} showsText={true}/>*/}
-                                        {/*<Text*/}
-                                            {/*style={[styles.smallText, (fats - currentFats < 0) ? GlobalStyle.redText : null]}>*/}
-                                            {/*{`${fats - currentFats}g ${(fats - currentFats < 0) ? 'over' : 'left'}`}*/}
-                                        {/*</Text>*/}
-                                    {/*</View>*/}
-                                    {/*<View style={styles.details}>*/}
-                                        {/*<Circle size={getFontSize(60)}*/}
-                                                {/*progress={currentCarbs !== 0 ? (currentCarbs / carbs) : currentCarbs}*/}
-                                                {/*unfilledColor={unfilledColor} borderWidth={0} color="#a56dd1"*/}
-                                                {/*thickness={5} formatText={() => "Carbs"} showsText={true}/>*/}
-                                        {/*<Text*/}
-                                            {/*style={[styles.smallText, (carbs - currentCarbs < 0) ? GlobalStyle.redText : null]}>*/}
-                                            {/*{`${carbs - currentCarbs}g ${(carbs - currentCarbs < 0) ? 'over' : 'left'}`}*/}
-                                        {/*</Text>*/}
-                                    {/*</View>*/}
-                                    {/*<View style={styles.details}>*/}
-                                        {/*<Circle size={getFontSize(60)}*/}
-                                                {/*progress={currentProtein !== 0 ? (currentProtein / protein) : currentProtein}*/}
-                                                {/*unfilledColor={unfilledColor} borderWidth={0} color="#07a8e2"*/}
-                                                {/*thickness={5} formatText={() => "Protein"} showsText={true}/>*/}
-                                        {/*<Text*/}
-                                            {/*style={[styles.smallText, (protein - currentProtein < 0) ? GlobalStyle.redText : null]}>*/}
-                                            {/*{`${protein - currentProtein}g ${(protein - currentProtein < 0) ? 'over' : 'left'}`}*/}
-                                        {/*</Text>*/}
-                                    {/*</View>*/}
-                                {/*</View>*/}
-                                {/*<SubmitButton onPress={this._redirect.bind(null, 'CreateMacroLog', {*/}
-                                    {/*macro_plan_day: data.macro_plan_day,*/}
-                                    {/*date: this.state.dataDate*/}
-                                {/*})} text="LOG NUTRITION" buttonStyle={styles.logButton}/>*/}
-
-                            {/*</View>*/}
-                            {/*:*/}
-                            {/*<View style={[styles.box]}>*/}
-                                {/*<View style={styles.boxHeader}>*/}
-                                    {/*<MaterialIcon name="donut-small" size={getFontSize(22)}/>*/}
-                                    {/*<Text style={styles.formCalories}>*/}
-                                        {/*Nutrition Plan*/}
-                                    {/*</Text>*/}
-                                {/*</View>*/}
-                                {/*<Text style={styles.textTitle}>No Nutrition Plan Today</Text>*/}
-                            {/*</View>*/}
-                        {/*}*/}
-                        {/*<View style={[styles.box]}>*/}
-                            {/*<View*/}
-                                {/*style={[styles.boxHeader]}>*/}
-                                {/*<FontIcon name="balance-scale" size={getFontSize(20)}/>*/}
-                                {/*<Text style={styles.formCalories}>*/}
-                                    {/*Weight Progress*/}
-                                {/*</Text>*/}
-                            {/*</View>*/}
-                            {/*{weightLogs.length && weightLogs.length.length > 0 ?*/}
-                                {/*<View style={{flexDirection: 'row'}}>*/}
-                                    {/*<TouchableOpacity style={styles.weightChangeButton}*/}
-                                                      {/*onPress={() => this.changeTimeFrame('month')}>*/}
-                                        {/*<Text>Month</Text>*/}
-                                    {/*</TouchableOpacity>*/}
-                                    {/*<TouchableOpacity style={styles.weightChangeButton}*/}
-                                                      {/*onPress={() => this.changeTimeFrame('three_months')}>*/}
-                                        {/*<Text>Three Months</Text>*/}
-                                    {/*</TouchableOpacity>*/}
-                                    {/*<TouchableOpacity style={styles.weightChangeButton}*/}
-                                                      {/*onPress={() => this.changeTimeFrame('year')}>*/}
-                                        {/*<Text>Year</Text>*/}
-                                    {/*</TouchableOpacity>*/}
-                                {/*</View>*/}
-                                {/*: null*/}
-                            {/*}*/}
-                            {/*<View style={[{paddingTop: 20, paddingBottom: 20}]}>*/}
-                                {/*{weightLogs.length && weightLogs.length.length > 0 ? <WeightGraph data={weightLogs}/>*/}
-                                    {/*: null*/}
-                                {/*}*/}
-
-                                {/*<SubmitButton onPress={() => navigate('CreateWeightLog')} text="LOG WEIGHT"*/}
-                                              {/*buttonStyle={styles.logButton}/>*/}
-                            {/*</View>*/}
-                        {/*</View>*/}
-                    </View>
-
                 </View>
             );
 
@@ -471,7 +342,7 @@ const Home = CreateClass({
                                 </Text>
                             </View>
                             <View style={[styles.row, {alignItems: 'center'}]}>
-                                <View style={[styles.calorieBox]}>
+                                <View style={[styles.calorieBox, {justifyContent: 'flex-end'}]}>
                                     <View style={{paddingRight: 10}}>
                                         <Text
                                             style={{fontFamily: 'Heebo-Medium', textAlign: 'right'}}>CAL</Text>
@@ -513,7 +384,7 @@ const Home = CreateClass({
                                             thickness={5} formatText={() => "Fats"} showsText={true}/>
                                     <Text
                                         style={[styles.smallText, (fats - currentFats < 0) ? GlobalStyle.redText : null]}>
-                                        {`${fats - currentFats}g ${(fats - currentFats < 0) ? 'over' : 'left'}`}
+                                        {`${(fats - currentFats).toFixed(0)}g ${(fats - currentFats < 0) ? 'over' : 'left'}`}
                                     </Text>
                                 </View>
                                 <View style={styles.details}>
@@ -523,7 +394,7 @@ const Home = CreateClass({
                                             thickness={5} formatText={() => "Carbs"} showsText={true}/>
                                     <Text
                                         style={[styles.smallText, (carbs - currentCarbs < 0) ? GlobalStyle.redText : null]}>
-                                        {`${carbs - currentCarbs}g ${(carbs - currentCarbs < 0) ? 'over' : 'left'}`}
+                                        {`${(carbs - currentCarbs).toFixed(0)}g ${(carbs - currentCarbs < 0) ? 'over' : 'left'}`}
                                     </Text>
                                 </View>
                                 <View style={styles.details}>
@@ -533,7 +404,7 @@ const Home = CreateClass({
                                             thickness={5} formatText={() => "Protein"} showsText={true}/>
                                     <Text
                                         style={[styles.smallText, (protein - currentProtein < 0) ? GlobalStyle.redText : null]}>
-                                        {`${protein - currentProtein}g ${(protein - currentProtein < 0) ? 'over' : 'left'}`}
+                                        {`${(protein - currentProtein).toFixed(0)}g ${(protein - currentProtein < 0) ? 'over' : 'left'}`}
                                     </Text>
                                 </View>
                             </View>

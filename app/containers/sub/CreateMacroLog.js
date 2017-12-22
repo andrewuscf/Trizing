@@ -196,7 +196,7 @@ const CreateMacroLog = CreateClass({
                                 thickness={5} formatText={() => "Fats"} showsText={true}/>
                         <Text
                             style={[styles.smallText, (fats - this.state.currentFats < 0) ? GlobalStyle.redText : null]}>
-                            {`${fats - this.state.currentFats}g ${(fats - this.state.currentFats < 0) ? 'over' : 'left'}`}
+                            {`${(fats - this.state.currentFats).toFixed(0)}g ${(fats - this.state.currentFats < 0) ? 'over' : 'left'}`}
                         </Text>
                     </View>
                     <View style={styles.details}>
@@ -206,7 +206,7 @@ const CreateMacroLog = CreateClass({
                                 thickness={5} formatText={() => "Carbs"} showsText={true}/>
                         <Text
                             style={[styles.smallText, (carbs - this.state.currentCarbs < 0) ? GlobalStyle.redText : null]}>
-                            {`${carbs - this.state.currentCarbs}g ${(carbs - this.state.currentCarbs < 0) ? 'over' : 'left'}`}
+                            {`${(carbs - this.state.currentCarbs).toFixed(0)}g ${(carbs - this.state.currentCarbs < 0) ? 'over' : 'left'}`}
                         </Text>
                     </View>
                     <View style={styles.details}>
@@ -216,7 +216,7 @@ const CreateMacroLog = CreateClass({
                                 thickness={5} formatText={() => "Protein"} showsText={true}/>
                         <Text
                             style={[styles.smallText, (protein - this.state.currentProtein < 0) ? GlobalStyle.redText : null]}>
-                            {`${protein - this.state.currentProtein}g ${(protein - this.state.currentProtein < 0) ? 'over' : 'left'}`}
+                            {`${(protein - this.state.currentProtein).toFixed(0)}g ${(protein - this.state.currentProtein < 0) ? 'over' : 'left'}`}
                         </Text>
                     </View>
                 </View>
