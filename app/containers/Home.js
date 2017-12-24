@@ -423,6 +423,8 @@ const Home = CreateClass({
                                 </Text>
                             </View>
                             <Text style={styles.textTitle}>No Nutrition Plan Today</Text>
+                            <SubmitButton onPress={() => navigate('MacroPlanList')} text="CREATE PLAN"
+                                          buttonStyle={styles.logButton}/>
                         </View>
                     }
                     {data && data.training_day ?

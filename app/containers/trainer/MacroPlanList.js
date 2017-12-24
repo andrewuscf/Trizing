@@ -19,6 +19,7 @@ import {connect} from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
 import RNFetchBlob from 'react-native-fetch-blob';
+import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
 import GlobalStyle from '../globalStyle';
@@ -28,7 +29,7 @@ import CustomIcon from '../../components/CustomIcon';
 import EditButton from '../../components/EditButton';
 import Loading from '../../components/Loading';
 
-const ProgramList = CreateClass({
+const MacroPlanList = CreateClass({
     getInitialState() {
         return {
             isActionButtonVisible: true,
@@ -100,21 +101,21 @@ const ProgramList = CreateClass({
 
     convertToMap() {
         const nutritionMap = {'My Plans': [], 'Trainer Plans': []};
-        this.state.nutrition_plans.forEach((program) => {
-            if (program.trainer.id === this.props.RequestUser.id) {
-                nutritionMap['My Plans'].push(program);
+        this.state.nutrition_plans.forEach((plan) => {
+            if (plan.trainer && plan.trainer.id === this.props.RequestUser.id) {
+                nutritionMap['My Plans'].push(plan);
             } else {
-                nutritionMap['Trainer Plans'].push(program);
+                nutritionMap['Trainer Plans'].push(plan);
             }
         });
         return nutritionMap;
 
     },
 
-    renderSectionHeader: function (sectionData, category) {
+    renderSectionHeader (sectionData, category) {
         if (!sectionData.length) return null;
         return (
-            <View style={[GlobalStyle.simpleBottomBorder, {backgroundColor: 'white'}]}>
+            <View style={[{backgroundColor: 'white', marginLeft: 10}]}>
                 <Text style={styles.sectionTitle}>{category}</Text>
             </View>
         );
@@ -123,11 +124,11 @@ const ProgramList = CreateClass({
 
     _activate(program) {
         Alert.alert(
-            'Activate Workout Program?',
-            `This will override any your current program. Programs can be overwritten by trainers.`,
+            'Activate Nutrition Plan?',
+            `This will override your current nutrition plan. Nutrition plans can be overwritten by trainers.`,
             [
                 {text: 'Cancel', style: 'cancel'},
-                {text: 'Yes', onPress: () => this.props.activateSchedule(program.id)},
+                // {text: 'Yes', onPress: () => this.props.activateSchedule(program.id)},
             ]
         );
     },
@@ -139,28 +140,36 @@ const ProgramList = CreateClass({
     },
 
 
-    renderRow(nutrition_plan) {
-        console.log(nutrition_plan)
-        return null;
-        // program.workouts.forEach((workout) => duration += workout.duration);
-        // const active = this.props.RequestUser.profile.active_program === program.id;
-        // return (
-        //     <TouchableOpacity style={styles.link} onPress={this.goToProgram.bind(null, program)}>
-        //
-        //         <View style={styles.leftSection}>
-        //             <Text style={[styles.simpleTitle, {padding: '2%'}]}>{program.name}</Text>
-        //             <View style={[styles.row, {borderColor: '#e1e3df', borderTopWidth: 1, padding: '2%'}]}>
-        //                 <MaterialIcon name="timer" size={getFontSize(18)} style={styles.timerIcon}/>
-        //                 <Text style={styles.smallText}>
-        //                     {duration} {duration === 1 ? 'week' : 'weeks'}
-        //                 </Text>
-        //             </View>
-        //         </View>
-        //         <Switch value={this.props.RequestUser.profile.active_program === program.id}
-        //                 style={{alignSelf: 'center', marginLeft: '10%'}}
-        //                 onValueChange={(value) => this.onSwitchChange(value, program)} onTintColor='#00AFA3'/>
-        //     </TouchableOpacity>
-        // )
+    renderRow(plan) {
+        console.log(plan)
+        let averageCarbs = _.meanBy(plan.macro_plan_days, 'carbs');
+        let averageFat = _.meanBy(plan.macro_plan_days, 'fats');
+        let averageProtein = _.meanBy(plan.macro_plan_days, 'protein');
+        return (
+            <TouchableOpacity style={styles.link} >
+
+                <View style={styles.leftSection}>
+                    <Text style={[styles.simpleTitle, {padding: '2%'}]}>{plan.name}</Text>
+                    <View style={[styles.row, {borderColor: '#e1e3df', borderTopWidth: 1, padding: '2%'}]}>
+                        <Text style={styles.smallText}>Fats: </Text>
+                        <Text style={{textAlign: 'center', paddingRight: '2%'}}>
+                            {averageFat}
+                        </Text>
+                        <Text style={styles.smallText}>Carbs: </Text>
+                        <Text style={{textAlign: 'center', paddingRight: '2%'}}>
+                            {averageCarbs}
+                        </Text>
+                        <Text style={styles.smallText}>Protein: </Text>
+                        <Text style={{textAlign: 'center', paddingRight: '2%'}}>
+                            {averageProtein}
+                        </Text>
+                    </View>
+                </View>
+                <Switch value={this.props.RequestUser.profile.active_macro_plan === plan.id}
+                        style={{alignSelf: 'center'}}
+                        onValueChange={(value) => this.onSwitchChange(value, plan)} onTintColor='#00AFA3'/>
+            </TouchableOpacity>
+        )
     },
 
     renderHeader() {
@@ -208,7 +217,7 @@ const ProgramList = CreateClass({
     }
 });
 
-ProgramList.navigationOptions = {
+MacroPlanList.navigationOptions = {
     title: 'Workout Programs',
 };
 
@@ -230,15 +239,22 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(12),
         color: '#b1aea5',
         fontFamily: 'Heebo-Medium',
+        textAlign: 'center'
     },
     leftSection: {
-        flex: .9,
+        flex: 1,
     },
     link: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomWidth: 0.5,
+        borderWidth: 0.5,
         borderColor: '#e1e3df',
+
+        padding: 10,
+        backgroundColor: 'white',
+        margin: 10,
+        marginBottom: 0,
+        borderRadius: 7,
     },
     tabbarView: {
         height: 50,
@@ -294,9 +310,8 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
     return {
-        getSchedules: bindActionCreators(GlobalActions.getSchedules, dispatch),
-        activateSchedule: bindActionCreators(GlobalActions.activateSchedule, dispatch),
+        activateMacroPlan: bindActionCreators(GlobalActions.activateMacroPlan, dispatch),
     }
 };
 
-export default connect(stateToProps, dispatchToProps)(ProgramList);
+export default connect(stateToProps, dispatchToProps)(MacroPlanList);

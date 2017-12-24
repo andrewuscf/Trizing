@@ -58,6 +58,7 @@ import EditProfile from './containers/profile/EditProfile';
 import ProgramList from './containers/trainer/ProgramList';
 import SurveyList from './containers/trainer/SurveyList';
 import CreateMacroPlan from './containers/trainer/CreateMacroPlan';
+import MacroPlanList from './containers/trainer/MacroPlanList';
 
 // Payments
 import PayoutInfo from './containers/payment/PayoutInfo';
@@ -158,6 +159,7 @@ const HomeNav = StackNavigator({
 
     ProgramList: {screen: paramsToProps(ProgramList)},
     SurveyList: {screen: SurveyList},
+    MacroPlanList: {screen: MacroPlanList},
 
     CreateMacroPlan: {
         screen: paramsToProps(CreateMacroPlan)

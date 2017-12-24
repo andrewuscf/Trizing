@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -28,7 +29,7 @@ let MacroPlan = t.struct({
 
 const CreateMacroPlan = CreateClass({
     propTypes: {
-        training_plan: PropTypes.number.isRequired,
+        training_plan: PropTypes.number,
         addMacroPlan: PropTypes.func.isRequired
     },
 
@@ -55,7 +56,7 @@ const CreateMacroPlan = CreateClass({
         this.props.navigation.setParams({handleSave: this._save, disabled: this.state.disabled});
     },
 
-    componentDidUpdate(prevProps, prevState){
+    componentDidUpdate(prevProps, prevState) {
         if (prevState.disabled !== this.state.disabled) {
             this.props.navigation.setParams({handleSave: this._save, disabled: this.state.disabled});
         }
@@ -88,12 +89,20 @@ const CreateMacroPlan = CreateClass({
                 if (day.protein && day.carbs && day.fats && day.days.length > 0)
                     return day
             });
-            this.createMacroPlan({
-                ...this.state,
-                name: values.name,
-                macro_plan_days: validPlanDays,
-                training_plan: this.props.training_plan
-            });
+            if (this.props.training_plan) {
+                this.createMacroPlan({
+                    ...this.state,
+                    name: values.name,
+                    macro_plan_days: validPlanDays,
+                    training_plan: this.props.training_plan
+                });
+            } else {
+                this.createMacroPlan({
+                    ...this.state,
+                    name: values.name,
+                    macro_plan_days: validPlanDays,
+                });
+            }
         }
     },
 
@@ -113,8 +122,8 @@ const CreateMacroPlan = CreateClass({
 
     verify() {
         return !!(this.state.macro_plan_days[0] && this.state.macro_plan_days[0].protein
-        && this.state.macro_plan_days[0].carbs && this.state.macro_plan_days[0].fats
-        && this.state.macro_plan_days[0].days.length > 0)
+            && this.state.macro_plan_days[0].carbs && this.state.macro_plan_days[0].fats
+            && this.state.macro_plan_days[0].days.length > 0)
 
     },
 

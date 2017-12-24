@@ -571,7 +571,23 @@ export function logSets(data, asyncActions) {
 export function activateSchedule(programId) {
     let JSONDATA = JSON.stringify({program: programId});
     return (dispatch, getState) => {
-        return fetch(`${API_ENDPOINT}training/program/activate/`,
+        return fetch(`${API_ENDPOINT}training/activate/`,
+            fetchData('PATCH', JSONDATA, getState().Global.UserToken))
+            .then(checkStatus)
+            .then((responseJson) => {
+                if (responseJson.id) {
+                    return dispatch({type: types.LOAD_REQUEST_USER, request_user: responseJson});
+                }
+            }).catch(() => {
+                return dispatch({type: types.API_ERROR});
+            });
+    }
+}
+
+export function activateMacroPlan(macroPlanId) {
+    let JSONDATA = JSON.stringify({macro_plan: macroPlanId});
+    return (dispatch, getState) => {
+        return fetch(`${API_ENDPOINT}training/activate/`,
             fetchData('PATCH', JSONDATA, getState().Global.UserToken))
             .then(checkStatus)
             .then((responseJson) => {
