@@ -112,7 +112,7 @@ const MacroPlanList = CreateClass({
 
     },
 
-    renderSectionHeader (sectionData, category) {
+    renderSectionHeader(sectionData, category) {
         if (!sectionData.length) return null;
         return (
             <View style={[{backgroundColor: 'white', marginLeft: 10}]}>
@@ -122,13 +122,13 @@ const MacroPlanList = CreateClass({
     },
 
 
-    _activate(program) {
+    _activate(plan) {
         Alert.alert(
             'Activate Nutrition Plan?',
             `This will override your current nutrition plan. Nutrition plans can be overwritten by trainers.`,
             [
                 {text: 'Cancel', style: 'cancel'},
-                // {text: 'Yes', onPress: () => this.props.activateSchedule(program.id)},
+                {text: 'Yes', onPress: () => this.props.activateMacroPlan(plan.id)},
             ]
         );
     },
@@ -146,7 +146,7 @@ const MacroPlanList = CreateClass({
         let averageFat = _.meanBy(plan.macro_plan_days, 'fats');
         let averageProtein = _.meanBy(plan.macro_plan_days, 'protein');
         return (
-            <TouchableOpacity style={styles.link} >
+            <TouchableOpacity style={styles.link}>
 
                 <View style={styles.leftSection}>
                     <Text style={[styles.simpleTitle, {padding: '2%'}]}>{plan.name}</Text>
@@ -170,6 +170,15 @@ const MacroPlanList = CreateClass({
                         onValueChange={(value) => this.onSwitchChange(value, plan)} onTintColor='#00AFA3'/>
             </TouchableOpacity>
         )
+    },
+
+    addPlan(data) {
+        this.setState({
+            nutrition_plans: [
+                data,
+                ...this.state.nutrition_plans
+            ]
+        });
     },
 
     renderHeader() {
@@ -206,12 +215,11 @@ const MacroPlanList = CreateClass({
                           renderSectionHeader={this.renderSectionHeader}
                           contentContainerStyle={{paddingBottom: 100}}
                 />
-                <EditButton isActionButtonVisible={this.state.isActionButtonVisible}>
-                    <ActionButton.Item buttonColor='#3498db' title="New Nutrition Plan"
-                                       onPress={() => navigate('CreateMacroPlan')}>
-                        <CustomIcon name="barbell" color="white" size={getFontSize(30)}/>
-                    </ActionButton.Item>
-                </EditButton>
+                {this.state.isActionButtonVisible ?
+                    <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right"
+                                  onPress={() => navigate('CreateMacroPlan', {addMacroPlan: this.addPlan})}/>
+                    : null
+                }
             </View>
         )
     }
@@ -292,7 +300,6 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         paddingTop: 5,
-        paddingBottom: 5,
         paddingLeft: 10,
         fontSize: getFontSize(22),
         fontFamily: 'Heebo-Bold',
