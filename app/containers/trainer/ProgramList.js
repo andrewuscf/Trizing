@@ -25,7 +25,6 @@ import GlobalStyle from '../globalStyle';
 import {API_ENDPOINT, getFontSize, setHeaders, isATrainer, convertSkill, trunc} from '../../actions/utils';
 
 import CustomIcon from '../../components/CustomIcon';
-import EditButton from '../../components/EditButton';
 import Loading from '../../components/Loading';
 
 const ProgramList = CreateClass({
@@ -136,10 +135,10 @@ const ProgramList = CreateClass({
 
     },
 
-    renderSectionHeader: function (sectionData, category) {
+    renderSectionHeader(sectionData, category) {
         if (!sectionData.length) return null;
         return (
-            <View style={[GlobalStyle.simpleBottomBorder, {backgroundColor: 'white'}]}>
+            <View style={[{backgroundColor: 'white', marginLeft: 10}]}>
                 <Text style={styles.sectionTitle}>{category}</Text>
             </View>
         );
@@ -188,7 +187,7 @@ const ProgramList = CreateClass({
                     </View>
                 </View>
                 <Switch value={this.props.RequestUser.profile.active_program === program.id}
-                        style={{alignSelf: 'center', marginLeft: '10%'}}
+                        style={{alignSelf: 'center'}}
                         onValueChange={(value) => this.onSwitchChange(value, program)} onTintColor='#00AFA3'/>
             </TouchableOpacity>
         )
@@ -252,12 +251,11 @@ const ProgramList = CreateClass({
                           renderSectionHeader={this.renderSectionHeader}
                           contentContainerStyle={{paddingBottom: 100}}
                 />
-                <EditButton isActionButtonVisible={this.state.isActionButtonVisible}>
-                    <ActionButton.Item buttonColor='#3498db' title="New Workout"
-                                       onPress={() => navigate('CreateSchedule')}>
-                        <CustomIcon name="barbell" color="white" size={getFontSize(30)}/>
-                    </ActionButton.Item>
-                </EditButton>
+                {this.state.isActionButtonVisible ?
+                    <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right"
+                                  onPress={() => navigate('CreateSchedule')}/>
+                    : null
+                }
             </View>
         )
     }
@@ -287,13 +285,19 @@ const styles = StyleSheet.create({
         fontFamily: 'Heebo-Medium',
     },
     leftSection: {
-        flex: .9,
+        flex: 1,
     },
     link: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomWidth: 0.5,
+        borderWidth: 0.5,
         borderColor: '#e1e3df',
+
+        padding: 10,
+        backgroundColor: 'white',
+        margin: 10,
+        marginBottom: 0,
+        borderRadius: 7,
     },
     tabbarView: {
         height: 50,
@@ -331,7 +335,6 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         paddingTop: 5,
-        paddingBottom: 5,
         paddingLeft: 10,
         fontSize: getFontSize(22),
         fontFamily: 'Heebo-Bold',

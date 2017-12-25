@@ -15,17 +15,14 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
 import RNFetchBlob from 'react-native-fetch-blob';
 import _ from 'lodash';
 
 import * as GlobalActions from '../../actions/globalActions';
 import GlobalStyle from '../globalStyle';
-import {API_ENDPOINT, getFontSize, setHeaders, isATrainer, convertSkill, trunc} from '../../actions/utils';
+import {API_ENDPOINT, getFontSize, setHeaders, isATrainer} from '../../actions/utils';
 
-import CustomIcon from '../../components/CustomIcon';
-import EditButton from '../../components/EditButton';
 import Loading from '../../components/Loading';
 
 const MacroPlanList = CreateClass({
@@ -225,7 +222,7 @@ const MacroPlanList = CreateClass({
 });
 
 MacroPlanList.navigationOptions = {
-    title: 'Workout Programs',
+    title: 'Nutrition Plan',
 };
 
 
