@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -55,7 +56,7 @@ let MacroLogList = CreateClass({
                                 thickness={5} formatText={() => "Fats"} showsText={true}/>
                         <Text
                             style={[styles.smallText, (fats - currentFats < 0) ? GlobalStyle.redText : null]}>
-                            {`${fats - currentFats}g ${(fats - currentFats < 0) ? 'over' : 'left'}`}
+                            {`${(fats - currentFats).toFixed(0)}g ${(fats - currentFats < 0) ? 'over' : 'left'}`}
                         </Text>
                     </View>
                     <View style={styles.details}>
@@ -65,7 +66,7 @@ let MacroLogList = CreateClass({
                                 thickness={5} formatText={() => "Carbs"} showsText={true}/>
                         <Text
                             style={[styles.smallText, (carbs - currentCarbs < 0) ? GlobalStyle.redText : null]}>
-                            {`${carbs - currentCarbs}g ${(carbs - currentCarbs < 0) ? 'over' : 'left'}`}
+                            {`${(carbs - currentCarbs).toFixed(0)}g ${(carbs - currentCarbs < 0) ? 'over' : 'left'}`}
                         </Text>
                     </View>
                     <View style={styles.details}>
@@ -75,7 +76,7 @@ let MacroLogList = CreateClass({
                                 thickness={5} formatText={() => "Protein"} showsText={true}/>
                         <Text
                             style={[styles.smallText, (protein - currentProtein < 0) ? GlobalStyle.redText : null]}>
-                            {`${protein - currentProtein}g ${(protein - currentProtein < 0) ? 'over' : 'left'}`}
+                            {`${(protein - currentProtein).toFixed(0)}g ${(protein - currentProtein < 0) ? 'over' : 'left'}`}
                         </Text>
                     </View>
                 </View>
@@ -118,7 +119,6 @@ const MacroLogDetail = CreateClass({
             },
             refreshing: false,
             disabled: false,
-            tab: 1
         }
     },
 
@@ -143,13 +143,7 @@ const MacroLogDetail = CreateClass({
         })
     },
 
-    _onTabPress(tab) {
-        if (tab !== this.state.tab) this.setState({tab: tab});
-    },
-
     render() {
-        console.log(this.state.macro_response);
-
         let currentFats = 0;
         let currentCarbs = 0;
         let currentProtein = 0;
@@ -159,61 +153,11 @@ const MacroLogDetail = CreateClass({
             currentProtein += log.protein;
         });
 
-        const data = [
-            [
-                {
-                    "v": this.props.macro_log.macro_plan_day.carbs,
-                    "name": "carbs"
-                },
-                {
-                    "v": currentCarbs,
-                    "name": "Logged carbs"
-                }
-            ],
-            [
-                {
-                    "v": this.props.macro_log.macro_plan_day.protein,
-                    "name": "protein"
-                },
-                {
-                    "v": currentProtein,
-                    "name": "Logged protein"
-                }
-            ],
-            [
-                {
-                    "v": this.props.macro_log.macro_plan_day.fats,
-                    "name": "fats"
-                },
-                {
-                    "v": currentFats,
-                    "name": "Logged fats"
-                }
-            ]
-        ];
         return (
-            <View style={styles.container}>
-                <View style={[styles.tabbarView, GlobalStyle.simpleBottomBorder]}>
-                    <TouchableOpacity style={[styles.tabView, (this.state.tab === 1) ? styles.selectedTab : null]}
-                                      onPress={this._onTabPress.bind(null, 1)}>
-                        <FontIcon name="list" style={(this.state.tab === 1) ? styles.selectedText : null}
-                                  size={getFontSize(14)}/>
-                        <Text style={(this.state.tab === 1) ? styles.selectedText : null}>Logs</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.tabView, (this.state.tab === 2) ? styles.selectedTab : null]}
-                                      onPress={this._onTabPress.bind(null, 2)}>
-                        <FontIcon name="bar-chart" style={(this.state.tab === 2) ? styles.selectedText : null}
-                                  size={getFontSize(14)}/>
-                        <Text style={(this.state.tab === 2) ? styles.selectedText : null}>Graph</Text>
-                    </TouchableOpacity>
-                </View>
-                {this.state.tab === 1
-                    ? <MacroLogList logs={this.state.macro_response.results}
-                                    macro_plan_day={this.props.macro_log.macro_plan_day}
-                                    logged_data={{currentFats, currentCarbs, currentProtein}}/>
-                    : <View style={{paddingTop: 20}}><Bar data={data} options={options} accessorKey='v'/></View>
-                }
-            </View>
+
+            <MacroLogList logs={this.state.macro_response.results}
+                          macro_plan_day={this.props.macro_log.macro_plan_day}
+                          logged_data={{currentFats, currentCarbs, currentProtein}}/>
         )
     }
 });
@@ -268,20 +212,6 @@ let options = {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    tabbarView: {
-        height: 50,
-        opacity: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white'
-    },
-    tabView: {
-        flex: 1,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     sectionTitle: {
         fontSize: getFontSize(20),
