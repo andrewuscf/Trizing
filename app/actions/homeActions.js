@@ -1,5 +1,5 @@
 'use strict';
-import {Platform} from 'react-native';
+import {Platform, AsyncStorage} from 'react-native';
 import * as types from './actionTypes';
 import {fetchData, API_ENDPOINT, refreshPage, checkStatus, setHeaders} from './utils';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -100,17 +100,26 @@ export function getWeightLogs(timeFrame, refresh) {
 
 export function setDeviceForNotification(token) {
     return (dispatch, getState) => {
-        const RequestUser = getState().Global.RequestUser;
-        let JSONData = {
-            name: `${RequestUser.profile.first_name}-${RequestUser.profile.last_name}-${Platform.OS}`,
-            registration_id: token,
-            is_active: true,
-            type: Platform.OS
-        };
-        const sendData = JSON.stringify(JSONData);
-        return RNFetchBlob.fetch('POST', `${API_ENDPOINT}devices/`,
-            setHeaders(getState().Global.UserToken), sendData).then(checkStatus).catch((errorMessage, statusCode) => {
-                console.log(errorMessage);
-            });
+        AsyncStorage.getItem('NOTIFICATIONS_SET', (err, result) => {
+            if (!result || (result && result !== token)) {
+                const RequestUser = getState().Global.RequestUser;
+                let JSONData = {
+                    name: `${RequestUser.profile.first_name}-${RequestUser.profile.last_name}-${Platform.OS}`,
+                    registration_id: token,
+                    is_active: true,
+                    type: Platform.OS
+                };
+                const sendData = JSON.stringify(JSONData);
+                return RNFetchBlob.fetch('POST', `${API_ENDPOINT}devices/`,
+                    setHeaders(getState().Global.UserToken), sendData).then(checkStatus).then(()=> {
+                    AsyncStorage.setItem('NOTIFICATIONS_SET', token);
+                }).catch((errorMessage, statusCode) => {
+                    if (errorMessage.errors.registration_id && errorMessage.errors.registration_id[0] ===
+                        "This field must be unique.") {
+                        AsyncStorage.setItem('NOTIFICATIONS_SET', token);
+                    }
+                });
+            }
+        });
     }
 }

@@ -96,7 +96,7 @@ const ManageClients = CreateClass({
                 return person;
             }
         });
-        return clients.concat(this.state.fetchedUsers)
+        return _.uniqBy(clients.concat(this.state.fetchedUsers), 'id');
     },
 
     textChange(text) {

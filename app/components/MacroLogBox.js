@@ -18,8 +18,8 @@ import GlobalStyle from "../containers/globalStyle";
 export default CreateClass({
     propTypes: {
         log: PropTypes.object.isRequired,
-        quickAdd: PropTypes.func.isRequired,
-        deleteLog: PropTypes.func.isRequired
+        quickAdd: PropTypes.func,
+        deleteLog: PropTypes.func
     },
 
     render() {
@@ -32,12 +32,17 @@ export default CreateClass({
                         {macroLog.name}
                     </Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <TouchableOpacity onPress={()=> this.props.quickAdd(macroLog)} style={{paddingRight: '2%'}}>
-                            <MaterialIcon name="add" size={20} style={GlobalStyle.lightBlueText}/>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={()=> this.props.deleteLog(macroLog)}>
-                            <MaterialIcon name="remove" size={20} style={{color: 'red'}}/>
-                        </TouchableOpacity>
+                        {this.props.quickAdd ?
+                            <TouchableOpacity onPress={() => this.props.quickAdd(macroLog)}
+                                              style={{paddingRight: '2%'}}>
+                                <MaterialIcon name="add" size={20} style={GlobalStyle.lightBlueText}/>
+                            </TouchableOpacity>
+                            : null}
+                        {this.props.deleteLog ?
+                            <TouchableOpacity onPress={() => this.props.deleteLog(macroLog)}>
+                                <MaterialIcon name="remove" size={20} style={{color: 'red'}}/>
+                            </TouchableOpacity>
+                            : null}
                     </View>
                 </View>
                 <View style={[styles.box]}>

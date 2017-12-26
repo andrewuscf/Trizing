@@ -323,8 +323,8 @@ const Home = CreateClass({
                             <MaterialIcon name="keyboard-arrow-left" size={getFontSize(24)} color='#00AFA3'/>
                         </TouchableOpacity>
                         <View style={styles.todayTitle}>
-                            <MaterialIcon size={24} color='black' name="date-range"/>
-                            <Text style={[styles.textTitle, {fontFamily: 'Heebo-Bold'}]}>
+                            <MaterialIcon size={24} color='#00AFA3' name="date-range"/>
+                            <Text style={[styles.textTitle, {fontFamily: 'Heebo-Bold', color: '#00AFA3'}]}>
                                 {this.state.dataDate.isSame(today, 'd') ? 'TODAY' : this.state.dataDate.format('ddd, MMM DD').toUpperCase()}
                             </Text>
                         </View>
@@ -335,10 +335,15 @@ const Home = CreateClass({
                     {content}
                     {data && data.macro_plan_day ?
                         <View style={[styles.box, {marginBottom: 5}]}>
-                            <View style={[styles.boxHeader, {borderBottomWidth: 0}]}>
-                                <MaterialIcon name="donut-small" size={getFontSize(22)}/>
-                                <Text style={styles.formCalories}>
-                                    Nutrition Plan
+                            <View style={[styles.boxHeader, {justifyContent: 'space-between'}]}>
+                                <View style={styles.mainHeader}>
+                                    <MaterialIcon name="donut-small" size={getFontSize(22)}/>
+                                    <Text style={styles.formCalories}>
+                                        Nutrition Plan
+                                    </Text>
+                                </View>
+                                <Text style={styles.viewAll} onPress={() => navigate('MacroPlanList')}>
+                                    View All
                                 </Text>
                             </View>
                             <View style={[styles.row, {alignItems: 'center'}]}>
@@ -416,11 +421,16 @@ const Home = CreateClass({
                         </View>
                         :
                         <View style={[styles.box]}>
-                            <View style={styles.boxHeader}>
-                                <MaterialIcon name="donut-small" size={getFontSize(22)}/>
-                                <Text style={styles.formCalories}>
-                                    Nutrition Plan
-                                </Text>
+                            <View style={[styles.boxHeader, {justifyContent: 'space-between'}]}>
+                                <View style={styles.mainHeader}>
+                                    <MaterialIcon name="donut-small" size={getFontSize(22)}/>
+                                    <Text style={styles.formCalories}>
+                                        Nutrition Plan
+                                    </Text>
+                                </View>
+                                {/*<Text style={styles.viewAll} onPress={() => navigate('MacroPlanList')}>*/}
+                                    {/*View All*/}
+                                {/*</Text>*/}
                             </View>
                             <Text style={styles.textTitle}>No Nutrition Plan Today</Text>
                             <SubmitButton onPress={() => navigate('MacroPlanList')} text="CREATE PLAN"
@@ -429,11 +439,15 @@ const Home = CreateClass({
                     }
                     {data && data.training_day ?
                         <View style={[styles.box]}>
-                            <View
-                                style={[styles.boxHeader]}>
-                                <MaterialIcon name="directions-run" size={getFontSize(22)}/>
-                                <Text style={styles.formCalories}>
-                                    Workout
+                            <View style={[styles.boxHeader, {justifyContent: 'space-between'}]}>
+                                <View style={styles.mainHeader}>
+                                    <MaterialIcon name="directions-run" size={getFontSize(22)}/>
+                                    <Text style={styles.formCalories}>
+                                        Workout
+                                    </Text>
+                                </View>
+                                <Text style={styles.viewAll} onPress={() => navigate('ProgramList')}>
+                                    View All
                                 </Text>
                             </View>
                             <View style={[{marginLeft: 40, paddingTop: 5}]}>
@@ -458,11 +472,18 @@ const Home = CreateClass({
                         </View>
                         :
                         <View style={[styles.box]}>
-                            <View
-                                style={[styles.boxHeader]}>
-                                <MaterialIcon name="directions-run" size={getFontSize(22)}/>
-                                <Text style={styles.formCalories}>
-                                    Workout
+                            <View style={[styles.boxHeader, {justifyContent: 'space-between'}]}>
+                                <View style={styles.mainHeader}>
+                                    <MaterialIcon name="directions-run" size={getFontSize(22)}/>
+                                    <Text style={styles.formCalories}>
+                                        Workout
+                                    </Text>
+                                </View>
+                                <Text style={[{
+                                    paddingRight: 10, textDecorationLine: 'underline', fontFamily: 'Heebo-Bold',
+                                    color: 'black'
+                                }]} onPress={() => navigate('ProgramList')}>
+                                    View All
                                 </Text>
                             </View>
                             <Text style={styles.textTitle}>No Workout Today</Text>
@@ -470,35 +491,34 @@ const Home = CreateClass({
                                           buttonStyle={styles.logButton}/>
                         </View>
                     }
-                    {this.state.dataDate.isSameOrBefore(today, 'd') ?<View style={[styles.box]}>
+                    {this.state.dataDate.isSameOrBefore(today, 'd') ? <View style={[styles.box]}>
                         <View style={[styles.boxHeader, {justifyContent: 'space-between'}]}>
-                            <View style={[{flexDirection: 'row', alignItems: 'center'}]}>
+                            <View style={styles.mainHeader}>
                                 <MaterialIcon name="update" size={getFontSize(22)}/>
                                 <Text style={styles.formCalories}>
                                     Updates
                                 </Text>
                             </View>
-                            <Text style={[{paddingRight: 10, textDecorationLine: 'underline',  fontFamily: 'Heebo-Bold',
-                                color: 'black'}]} onPress={()=> navigate('Notifications')}>
+                            <Text style={styles.viewAll} onPress={() => navigate('Notifications')}>
                                 View All
                             </Text>
                         </View>
-                        {!data || !data.notifications.length?
+                        {!data || !data.notifications.length ?
                             <Text style={styles.textTitle}>No updates today</Text> :
                             data.notifications.map((notification, i) => <NotificationBox key={i}
-                                                                              navigate={this.props.navigation.navigate}
-                                                                              notification={notification}
-                                                                              readNotification={this.props.readNotification}/>)
+                                                                                         navigate={this.props.navigation.navigate}
+                                                                                         notification={notification}
+                                                                                         readNotification={this.props.readNotification}/>)
                         }
-                    </View>: null
+                    </View> : null
                     }
                 </ScrollView>
 
 
                 <EditButton icon={isTrainer ? null : <MaterialIcon name="search" size={getFontSize(20)} color="white"/>}
                             isActionButtonVisible={this.state.isActionButtonVisible}>
-                    <ActionButton.Item buttonColor='#FD795B' title="Workouts"
-                                       onPress={() => navigate('ProgramList', {tab: 1})}>
+                    <ActionButton.Item buttonColor='#FD795B' title="Find Workouts"
+                                       onPress={() => navigate('ProgramList', {tab: 2})}>
                         <CustomIcon name="weight" size={getFontSize(22)} color="white"/>
                     </ActionButton.Item>
                     {isTrainer ?
@@ -642,6 +662,16 @@ const styles = StyleSheet.create({
         borderColor: 'blue',
         borderWidth: .5,
         flex: 1 / 3,
+        alignItems: 'center'
+    },
+    viewAll: {
+        paddingRight: 10,
+        textDecorationLine: 'underline',
+        fontFamily: 'Heebo-Bold',
+        color: 'black'
+    },
+    mainHeader: {
+        flexDirection: 'row',
         alignItems: 'center'
     }
 });

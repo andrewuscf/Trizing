@@ -271,7 +271,10 @@ const CreateMacroLog = CreateClass({
             });
     },
 
-    renderRow(log, set, key) {
+    renderRow(log, section, key) {
+        if (section !== "Today's Logs") {
+            return <MacroLogBox log={log} quickAdd={this.quickAdd}/>
+        }
         return <MacroLogBox log={log} quickAdd={this.quickAdd} deleteLog={this.deleteLog}/>
     },
 
