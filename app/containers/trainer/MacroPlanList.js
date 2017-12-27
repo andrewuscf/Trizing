@@ -24,6 +24,7 @@ import GlobalStyle from '../globalStyle';
 import {API_ENDPOINT, getFontSize, setHeaders, isATrainer} from '../../actions/utils';
 
 import Loading from '../../components/Loading';
+import MacroBox from "../../components/MacroBox";
 
 const MacroPlanList = CreateClass({
     getInitialState() {
@@ -118,54 +119,16 @@ const MacroPlanList = CreateClass({
     },
 
 
-    _activate(plan) {
-        Alert.alert(
-            'Activate Nutrition Plan?',
-            `This will override your current nutrition plan. Nutrition plans can be overwritten by trainers.`,
-            [
-                {text: 'Cancel', style: 'cancel'},
-                {text: 'Yes', onPress: () => this.props.activateMacroPlan(plan.id)},
-            ]
-        );
-    },
-
-    onSwitchChange(value, program) {
-        if (value) {
-            this._activate(program)
-        }
+    _activate(planId) {
+        this.props.activateMacroPlan(planId)
     },
 
 
     renderRow(plan) {
-        console.log(plan)
-        let averageCarbs = _.meanBy(plan.macro_plan_days, 'carbs');
-        let averageFat = _.meanBy(plan.macro_plan_days, 'fats');
-        let averageProtein = _.meanBy(plan.macro_plan_days, 'protein');
-        return (
-            <TouchableOpacity style={styles.link}>
+        return <MacroBox plan={plan} selected={this.props.RequestUser.profile.active_macro_plan === plan.id}
+                         navigate={this.props.navigation.navigate}
+                         select={this._activate}/>;
 
-                <View style={styles.leftSection}>
-                    <Text style={[styles.simpleTitle, {padding: '2%'}]}>{plan.name}</Text>
-                    <View style={[styles.row, {borderColor: '#e1e3df', borderTopWidth: 1, padding: '2%'}]}>
-                        <Text style={styles.smallText}>Fats: </Text>
-                        <Text style={{textAlign: 'center', paddingRight: '2%'}}>
-                            {averageFat}
-                        </Text>
-                        <Text style={styles.smallText}>Carbs: </Text>
-                        <Text style={{textAlign: 'center', paddingRight: '2%'}}>
-                            {averageCarbs}
-                        </Text>
-                        <Text style={styles.smallText}>Protein: </Text>
-                        <Text style={{textAlign: 'center', paddingRight: '2%'}}>
-                            {averageProtein}
-                        </Text>
-                    </View>
-                </View>
-                <Switch value={this.props.RequestUser.profile.active_macro_plan === plan.id}
-                        style={{alignSelf: 'center'}}
-                        onValueChange={(value) => this.onSwitchChange(value, plan)} onTintColor='#00AFA3'/>
-            </TouchableOpacity>
-        )
     },
 
     addPlan(data) {
@@ -227,73 +190,6 @@ MacroPlanList.navigationOptions = {
 
 
 const styles = StyleSheet.create({
-    row: {
-        flexDirection: 'row'
-    },
-    timerIcon: {
-        color: '#b1aea5',
-        alignSelf: 'center',
-        paddingRight: 5
-    },
-    simpleTitle: {
-        fontSize: getFontSize(18),
-        fontFamily: 'Heebo-Medium',
-    },
-    smallText: {
-        fontSize: getFontSize(12),
-        color: '#b1aea5',
-        fontFamily: 'Heebo-Medium',
-        textAlign: 'center'
-    },
-    leftSection: {
-        flex: 1,
-    },
-    link: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderWidth: 0.5,
-        borderColor: '#e1e3df',
-
-        padding: 10,
-        backgroundColor: 'white',
-        margin: 10,
-        marginBottom: 0,
-        borderRadius: 7,
-    },
-    tabbarView: {
-        height: 50,
-        opacity: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white'
-    },
-    tabView: {
-        flex: 1,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    selectedTab: {
-        borderBottomWidth: 2,
-        borderBottomColor: '#00AFA3',
-    },
-    selectedText: {
-        color: '#00AFA3',
-    },
-    empty: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 20
-    },
-    emptyText: {
-        fontSize: getFontSize(22),
-        color: '#b1aeb9',
-        textAlign: 'center',
-        paddingTop: 20,
-        fontFamily: 'Heebo-Medium'
-    },
     sectionTitle: {
         paddingTop: 5,
         paddingLeft: 10,

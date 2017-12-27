@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -8,11 +9,12 @@ import {
     TouchableOpacity,
     ListView,
     Platform,
-    Dimensions
+    LayoutAnimation
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
+import ActionButton from "react-native-action-button";
 
 import GlobalStyle from '../globalStyle';
 
@@ -43,7 +45,8 @@ const TrainingPlan = CreateClass({
             tab: this.props.tab ? this.props.tab : 1,
             refreshing: false,
             training_plan: this.props.training_plan,
-            schedule_next: null
+            schedule_next: null,
+            isActionButtonVisible: true,
         }
     },
 
@@ -53,9 +56,28 @@ const TrainingPlan = CreateClass({
         else if (this.state.tab === 2)
             this.getClientSchedules(true);
 
-        if (!this.props.Questionnaires.length) {
-            this.props.getQuestionnaires();
+        // if (!this.props.Questionnaires.length) {
+        //     this.props.getQuestionnaires();
+        // }
+    },
+
+    _listViewOffset: 0,
+
+    _onScroll(event) {
+        const CustomLayoutLinear = {
+            duration: 100,
+            create: {type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity},
+            update: {type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity},
+            delete: {type: LayoutAnimation.Types.linear, property: LayoutAnimation.Properties.opacity}
+        };
+        const currentOffset = event.nativeEvent.contentOffset.y;
+        const direction = (currentOffset > 0 && currentOffset > this._listViewOffset) ? 'down' : 'up';
+        const isActionButtonVisible = direction === 'up';
+        if (isActionButtonVisible !== this.state.isActionButtonVisible) {
+            LayoutAnimation.configureNext(CustomLayoutLinear);
+            this.setState({isActionButtonVisible})
         }
+        this._listViewOffset = currentOffset;
     },
 
     addMacroPlan(data) {
@@ -186,9 +208,8 @@ const TrainingPlan = CreateClass({
         this.updatePlan({program: id})
     },
 
-    renderCreateBar(rowCount){
+    renderCreateBar(rowCount) {
         let textSection = null;
-        let bottomContent = null;
         if (rowCount < 1) {
             if (this.state.tab === 1) {
                 textSection = <Text style={styles.emptyTitle}>No Nutrition plans. Create One!</Text>;
@@ -197,53 +218,32 @@ const TrainingPlan = CreateClass({
             }
         }
         if (this.state.tab === 1 || this.state.tab === 2) {
-            bottomContent = (
-                <View>
-                    {this.state.tab === 1 ?
-                        <TouchableOpacity style={[styles.emptyContainer]}
-                                          activeOpacity={0.8}
-                                          onPress={() => this.props._redirect('CreateMacroPlan', {
-                                              training_plan: this.props.training_plan.id,
-                                              addMacroPlan: this.addMacroPlan
-                                          })}>
-                            <Text style={styles.mainText}>Create New</Text>
-                        </TouchableOpacity>
-                        :
-                        <TouchableOpacity style={styles.emptyContainer}
-                                          onPress={this.props._redirect.bind(null, 'CreateSchedule',
-                                              {training_plan: this.props.training_plan.id})}>
-                            <Text style={styles.mainText}>Create a workout program for client</Text>
-                        </TouchableOpacity>
-                    }
-                    {textSection}
-                </View>
-            )
         }
         return (
             <View>
-                {this.props.Questionnaires.length ?
-                    <View style={[styles.pickersView, GlobalStyle.simpleBottomBorder]}>
-                        <View style={{flexDirection: 'row', flex: .7}}>
-                            <SelectInput ref='questionnaires' options={this.props.Questionnaires}
-                                         selectedId={this.state.training_plan.questionnaire}
-                                         submitChange={this.selectQuestionnaire}/>
-                        </View>
-                        {this.props.training_plan.answered ?
-                            <TouchableOpacity style={{flex: .3, padding: 5}}
-                                              onPress={this.props._redirect.bind(null, 'AnswersDisplay', {
-                                                  questionnaire: _.find(this.props.Questionnaires, {id: this.props.training_plan.questionnaire}),
-                                                  client: this.props.client
-                                              })}>
-                                <Text>View Answers</Text>
-                            </TouchableOpacity>
-                            : null
-                        }
-                    </View> :
-                    <TouchableOpacity style={[styles.pickersView, GlobalStyle.simpleBottomBorder]}
-                                      onPress={this.props.openModal}>
-                        <Text>Create a Survey</Text>
-                    </TouchableOpacity>
-                }
+                {/*{this.props.Questionnaires.length ?*/}
+                {/*<View style={[styles.pickersView, GlobalStyle.simpleBottomBorder]}>*/}
+                {/*<View style={{flexDirection: 'row', flex: .7}}>*/}
+                {/*<SelectInput ref='questionnaires' options={this.props.Questionnaires}*/}
+                {/*selectedId={this.state.training_plan.questionnaire}*/}
+                {/*submitChange={this.selectQuestionnaire}/>*/}
+                {/*</View>*/}
+                {/*{this.props.training_plan.answered ?*/}
+                {/*<TouchableOpacity style={{flex: .3, padding: 5}}*/}
+                {/*onPress={this.props._redirect.bind(null, 'AnswersDisplay', {*/}
+                {/*questionnaire: _.find(this.props.Questionnaires, {id: this.props.training_plan.questionnaire}),*/}
+                {/*client: this.props.client*/}
+                {/*})}>*/}
+                {/*<Text>View Answers</Text>*/}
+                {/*</TouchableOpacity>*/}
+                {/*: null*/}
+                {/*}*/}
+                {/*</View> :*/}
+                {/*<TouchableOpacity style={[styles.pickersView, GlobalStyle.simpleBottomBorder]}*/}
+                {/*onPress={this.props.openModal}>*/}
+                {/*<Text>Create a Survey</Text>*/}
+                {/*</TouchableOpacity>*/}
+                {/*}*/}
 
                 <View style={[styles.tabbarView, GlobalStyle.simpleBottomBorder]}>
                     <TouchableOpacity style={[styles.tabView, (this.isSelected(1)) ? styles.selectedTab : null]}
@@ -256,20 +256,32 @@ const TrainingPlan = CreateClass({
                         <CustomIcon name="weight" size={getFontSize(30)}
                                     color={this.isSelected(2) ? selectedIcon : defaultIcon}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.tabView, (this.isSelected(3)) ? styles.selectedTab : null]}
-                                      onPress={this._onTabPress.bind(null, 3)}>
-                        <CustomIcon name="pie-chart" size={getFontSize(20)}
-                                    color={this.isSelected(3) ? selectedIcon : defaultIcon}/>
-                    </TouchableOpacity>
+                    {/*<TouchableOpacity style={[styles.tabView, (this.isSelected(3)) ? styles.selectedTab : null]}*/}
+                    {/*onPress={this._onTabPress.bind(null, 3)}>*/}
+                    {/*<CustomIcon name="pie-chart" size={getFontSize(20)}*/}
+                    {/*color={this.isSelected(3) ? selectedIcon : defaultIcon}/>*/}
+                    {/*</TouchableOpacity>*/}
                 </View>
-                {bottomContent}
+                {textSection}
             </View>
         );
     },
 
+    onActionButton() {
+        if (this.state.tab === 1) {
+            this.props._redirect('CreateMacroPlan', {
+                training_plan: this.props.training_plan.id,
+                addMacroPlan: this.addMacroPlan
+            });
+        } else if (this.state.tab === 2) {
+            this.props._redirect('CreateSchedule', {training_plan: this.props.training_plan.id});
+        }
+    },
+
+
     render() {
         if (!this.props.Questionnaires && !this.props.Schedules.length && !this.state.macro_plans)
-            return <Loading />;
+            return <Loading/>;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = null;
         if (this.state.tab === 1 && this.state.macro_plans) {
@@ -282,30 +294,38 @@ const TrainingPlan = CreateClass({
             dataSource = ds.cloneWithRows([]);
         }
         return (
-            <ListView ref='content' removeClippedSubviews={(Platform.OS !== 'ios')}
-                      showsVerticalScrollIndicator={false}
-                      renderHeader={this.renderCreateBar.bind(null, dataSource.getRowCount())}
-                      keyboardShouldPersistTaps="handled"
-                      style={[GlobalStyle.container, {backgroundColor: '#f2f3f8'}]} enableEmptySections={true}
-                      dataSource={dataSource}
-                      contentContainerStyle={{paddingBottom: 50}}
-                      onEndReached={this._onEndReached}
-                      onEndReachedThreshold={Dimensions.get('window').height}
-                      renderRow={(object) => {
-                          if (this.state.tab === 1) {
-                              return <MacroBox plan={object}
-                                               selected={object.id === this.state.training_plan.macro_plan}
-                                               select={this.selectMacroPlan}
-                                               deleteMacroPlan={this.deleteMacroPlan}/>
-                          } else if (this.state.tab === 2) {
-                              return <WorkoutProgramBox
-                                  selected={object.id === this.state.training_plan.program}
-                                  select={this.selectTrainingPlan}
-                                  schedule={object} _redirect={this.props._redirect}
-                                  deleteSchedule={this.deleteSchedule}/>
-                          }
-                      }}
-            />
+            <View style={GlobalStyle.container}>
+                <ListView ref='content' removeClippedSubviews={(Platform.OS !== 'ios')}
+                          showsVerticalScrollIndicator={false}
+                          renderHeader={this.renderCreateBar.bind(null, dataSource.getRowCount())}
+                          keyboardShouldPersistTaps="handled"
+                          style={[GlobalStyle.container, {backgroundColor: '#f2f3f8'}]} enableEmptySections={true}
+                          dataSource={dataSource}
+                          contentContainerStyle={{paddingBottom: 100}}
+                          onEndReached={this._onEndReached}
+                          onScroll={this._onScroll}
+                          onEndReachedThreshold={400}
+                          renderRow={(object) => {
+                              if (this.state.tab === 1) {
+                                  return <MacroBox plan={object}
+                                                   selected={object.id === this.state.training_plan.macro_plan}
+                                                   select={this.selectMacroPlan}
+                                                   navigate={this.props._redirect}
+                                                   deleteMacroPlan={this.deleteMacroPlan}/>
+                              } else if (this.state.tab === 2) {
+                                  return <WorkoutProgramBox
+                                      selected={object.id === this.state.training_plan.program}
+                                      select={this.selectTrainingPlan}
+                                      schedule={object} _redirect={this.props._redirect}
+                                      deleteSchedule={this.deleteSchedule}/>
+                              }
+                          }}
+                />
+                {this.state.isActionButtonVisible ?
+                    <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" onPress={this.onActionButton}/>
+                    : null
+                }
+            </View>
         )
     }
 });

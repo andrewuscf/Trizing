@@ -197,8 +197,8 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(22),
     },
     dayOfWeek: {
-        flex: .1,
-        borderRadius: 20,
+        flex: .2,
+        borderRadius: 10,
         height: 40,
         marginLeft: 5,
         marginRight: 5,

@@ -6,9 +6,6 @@ import {
     Text,
     StyleSheet,
     ListView,
-    Alert,
-    Keyboard,
-    RefreshControl,
     Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -25,40 +22,9 @@ const MacroPlanDetail = CreateClass({
         macro_plan: PropTypes.object.isRequired,
     },
 
-    getInitialState(){
-        return {
-            daily_logs: [],
-            refreshing: false,
-        }
-    },
-
-
-    _onCreate() {
-        Keyboard.dismiss();
-        if (this.verify()) {
-        }
-    },
-
-
-    _onDelete() {
-        Keyboard.dismiss();
-        Alert.alert(
-            'Delete Macro Plan',
-            `Are you sure you want delete ${this.props.plan.name}?`,
-            [
-                {text: 'Cancel', style: 'cancel'},
-                {text: 'Delete', onPress: () => this.props.deleteMacroPlan(this.props.plan.id)},
-            ]
-        );
-    },
-
     renderHeader() {
         const plan = this.props.macro_plan;
         let created_at = moment.utc(plan.created_at).local();
-        const planDays = _.orderBy(plan.macro_plan_days, ['id']).map((day_plan, x) => {
-            return <MacroBoxDay key={x} day_plan={day_plan} selectedDays={day_plan.days}
-                                active={!!(plan.is_active && _.includes(day_plan.days, moment().isoWeekday()))}/>
-        });
         return (
             <View>
                 <View style={styles.center}>
@@ -70,7 +36,6 @@ const MacroPlanDetail = CreateClass({
                         </Text>
                     </View>
                 </View>
-                {planDays}
             </View>
         )
     },
@@ -78,17 +43,18 @@ const MacroPlanDetail = CreateClass({
 
     render() {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        let dataSource = ds.cloneWithRows(this.state.daily_logs);
+        const plan = this.props.macro_plan;
+        let dataSource = ds.cloneWithRows(plan.macro_plan_days);
         return (
-            <ListView ref='daily_logs' removeClippedSubviews={(Platform.OS !== 'ios')}
+            <ListView removeClippedSubviews={(Platform.OS !== 'ios')}
                       keyboardShouldPersistTaps="handled"
                       showsVerticalScrollIndicator={false}
-                      refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh}/>}
                       renderHeader={this.renderHeader}
                       style={styles.container} enableEmptySections={true}
                       dataSource={dataSource}
-                      renderRow={(log, sectionID, rowID) =>
-                          <Text>test</Text>
+                      renderRow={(day_plan, sectionID, rowID) =>
+                          <MacroBoxDay day_plan={day_plan} selectedDays={day_plan.days}
+                                       active={(plan.is_active && _.includes(day_plan.days, moment().isoWeekday()))}/>
                       }
             />
         );

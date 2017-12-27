@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -43,7 +44,7 @@ const CreateSchedule = CreateClass({
         }
     },
 
-    asyncActions(success, data = {}){
+    asyncActions(success, data = {}) {
         this.setState({disabled: false});
         if (success && data.routeName) {
             // this.props.navigation.dispatch({
@@ -94,7 +95,8 @@ const CreateSchedule = CreateClass({
         let struct = {
             name: t.String,
             description: t.maybe(t.String),
-            template: t.maybe(template_list)
+            template: t.maybe(template_list),
+            is_loop: t.Boolean
         };
         if (isATrainer(this.props.RequestUser.type)) {
             struct = {
@@ -116,7 +118,7 @@ const CreateSchedule = CreateClass({
         const Schedule = this.getType();
         let options = {
             auto: 'placeholders',
-            order: ['name', 'description', 'skill_level', 'for_sale', 'cost', 'template'],
+            order: ['name', 'description', 'skill_level', 'is_loop', 'for_sale', 'cost', 'template'],
             fields: {
                 name: {
                     placeholder: this.props.training_plan ? `This name will be displayed to your client` : `Program Name`,
@@ -149,6 +151,41 @@ const CreateSchedule = CreateClass({
                     factory: Platform.OS === 'ios' ? ModalPicker : null,
                 },
                 for_sale: {
+                    stylesheet: {
+                        ...t.form.Form.defaultProps.stylesheet,
+                        controlLabel: {
+                            ...t.form.Form.defaultProps.stylesheet.controlLabel,
+                            normal: {
+                                ...t.form.Form.defaultProps.stylesheet.controlLabel.normal,
+                                flex: 1,
+                                margin: 0,
+                                fontWeight: '400',
+                                paddingLeft: 10
+                            },
+                            error: {
+                                ...t.form.Form.defaultProps.stylesheet.controlLabel.error,
+                                flex: 1,
+                                margin: 0,
+                                fontWeight: '400',
+                                paddingLeft: 10
+                            }
+                        },
+                        formGroup: {
+                            ...t.form.Form.defaultProps.stylesheet.formGroup,
+                            normal: {
+                                ...t.form.Form.defaultProps.stylesheet.formGroup.normal,
+                                flexDirection: 'row',
+                                paddingTop: 10
+                            },
+                            error: {
+                                ...t.form.Form.defaultProps.stylesheet.formGroup.error,
+                                flexDirection: 'row',
+                            }
+                        },
+                    }
+                },
+                is_loop: {
+                    label: 'Repeats',
                     stylesheet: {
                         ...t.form.Form.defaultProps.stylesheet,
                         controlLabel: {

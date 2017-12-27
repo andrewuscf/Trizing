@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -7,25 +8,19 @@ import {
     StyleSheet,
     TouchableOpacity,
     Alert,
-    Keyboard,
-    ScrollView,
     Switch
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import moment from 'moment';
 import _ from 'lodash';
-import Modal from 'react-native-modal';
 
 import {getFontSize} from '../actions/utils';
-import GlobalStyle from '../containers/globalStyle';
-
-import MacroBoxDay from './MacroBoxDay';
 
 
 const MacroBox = CreateClass({
     propTypes: {
         plan: PropTypes.object.isRequired,
+        navigate: PropTypes.func.isRequired,
         select: PropTypes.func,
+        deleteMacroPlan: PropTypes.func,
         selected: PropTypes.bool
     },
 
@@ -33,34 +28,32 @@ const MacroBox = CreateClass({
         return {
             name: this.props.plan ? this.props.plan.name : null,
             protein: this.props.plan ? this.props.plan.protein : null,
-            showDetails: false,
             selectedDays: []
         }
     },
 
     _onPress() {
-        Keyboard.dismiss();
-        this.setState({showDetails: !this.state.showDetails});
+        this.props.navigate('MacroPlanDetail', {macro_plan: this.props.plan});
     },
 
     _onDelete() {
-        Keyboard.dismiss();
-        Alert.alert(
-            'Delete Macro Plan',
-            `Are you sure you want delete ${this.props.plan.name}?`,
-            [
-                {text: 'Cancel', style: 'cancel'},
-                {text: 'Delete', onPress: () => this.props.deleteMacroPlan(this.props.plan.id)},
-            ]
-        );
+        if (this.props.deleteMacroPlan) {
+            Alert.alert(
+                'Delete Macro Plan',
+                `Are you sure you want delete ${this.props.plan.name}?`,
+                [
+                    {text: 'Cancel', style: 'cancel'},
+                    {text: 'Delete', onPress: () => this.props.deleteMacroPlan(this.props.plan.id)},
+                ]
+            );
+        }
     },
 
     _activate(value) {
-        Keyboard.dismiss();
         if (value) {
             Alert.alert(
                 'Activate Macro Plan',
-                `Are you sure you want make '${this.props.plan.name}' active?`,
+                `Are you sure you want make ${this.props.plan.name} active?`,
                 [
                     {text: 'Cancel', style: 'cancel'},
                     {text: 'Yes', onPress: () => this.props.select(this.props.plan.id)},
@@ -72,89 +65,77 @@ const MacroBox = CreateClass({
 
     render() {
         const plan = this.props.plan;
-        let created_at = moment.utc(plan.created_at).local();
-        let planDays = _.orderBy(plan.macro_plan_days, ['id']).map((day_plan, x) => {
-            return <MacroBoxDay key={x} day_plan={day_plan} selectedDays={day_plan.days}/>
-        });
+        let averageCarbs = _.meanBy(plan.macro_plan_days, 'carbs');
+        let averageFat = _.meanBy(plan.macro_plan_days, 'fats');
+        let averageProtein = _.meanBy(plan.macro_plan_days, 'protein');
         return (
-            <TouchableOpacity style={[styles.container]}
-                              activeOpacity={0.8}
-                              onPress={this._onPress} onLongPress={this._onDelete}>
-                <View style={styles.center}>
-                    <View style={styles.details}>
-                        <Text style={styles.mainText}>{plan.name}</Text>
-                        <Text style={styles.date}>
-                            <Icon name="clock-o" size={12} color='#4d4d4e'
-                            /> {created_at.format('MMM DD, YY')} at {created_at.format('h:mma')}
+            <TouchableOpacity style={styles.link} onPress={this._onPress} onLongPress={this._onDelete}>
+
+                <View style={styles.leftSection}>
+                    <Text style={[styles.simpleTitle, {padding: '2%'}]}>
+                        {plan.name}
+                    </Text>
+                    {/*<Text style={styles.date}>*/}
+                    {/*{created_at.format('MMM DD, YY')} at {created_at.format('h:mma')}*/}
+                    {/*</Text>*/}
+                    <View style={[styles.row, {borderColor: '#e1e3df', borderTopWidth: 1, padding: '2%'}]}>
+                        <Text style={styles.smallText}>Fats: </Text>
+                        <Text style={{textAlign: 'center', paddingRight: '2%'}}>
+                            {averageFat}
+                        </Text>
+                        <Text style={styles.smallText}>Carbs: </Text>
+                        <Text style={{textAlign: 'center', paddingRight: '2%'}}>
+                            {averageCarbs}
+                        </Text>
+                        <Text style={styles.smallText}>Protein: </Text>
+                        <Text style={{textAlign: 'center', paddingRight: '2%'}}>
+                            {averageProtein}
                         </Text>
                     </View>
-                    <Switch value={this.props.selected}
-                            onValueChange={this._activate} onTintColor='#00AFA3'/>
                 </View>
-                <Modal isVisible={this.state.showDetails} style={{justifyContent: 'center'}}>
-                    <ScrollView style={styles.innerModal} showsVerticalScrollIndicator={false}>
-                        {planDays}
-                    </ScrollView>
-                    <TouchableOpacity onPress={this._onPress} activeOpacity={1}>
-                        <View style={styles.closeButton}>
-                            <Text style={{color: 'grey'}}>Close</Text>
-                        </View>
-                    </TouchableOpacity>
-                </Modal>
+                <Switch value={this.props.selected}
+                        onValueChange={this._activate} onTintColor='#00AFA3'/>
             </TouchableOpacity>
-        );
+        )
     }
 });
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        borderColor: '#e1e3df',
-        borderWidth: 1,
-        backgroundColor: 'white',
-        margin: 10,
-        marginBottom: 5,
-        borderRadius: 5,
-    },
-    center: {
+    link: {
         flexDirection: 'row',
         alignItems: 'center',
-        margin: 10
-    },
-    details: {
-        flexDirection: 'column',
-        paddingLeft: 10,
-        flex: 1
+        borderWidth: 0.5,
+        borderColor: '#e1e3df',
+        padding: 10,
+        backgroundColor: 'white',
+        margin: 10,
+        marginBottom: 0,
+        borderRadius: 7,
+        flexWrap: 'wrap'
     },
     date: {
         fontSize: getFontSize(12),
-        fontFamily: 'Heebo-Medium',
-    },
-    mainText: {
-        fontSize: getFontSize(18),
-        backgroundColor: 'transparent',
-        color: '#4d4d4e',
-        fontFamily: 'Heebo-Medium',
+        fontFamily: 'Heebo-Regular',
+        marginLeft: 5,
         marginBottom: 5,
-        flex: .9
     },
-    innerModal: {
-        backgroundColor: 'white',
-        borderTopLeftRadius: 4,
-        borderTopRightRadius: 4,
-        borderColor: 'rgba(0, 0, 0, 0.1)',
-        padding: 5,
-        marginBottom: 20
+    simpleTitle: {
+        fontSize: getFontSize(18),
+        fontFamily: 'Heebo-Medium',
     },
-    closeButton: {
-        backgroundColor: 'white',
-        padding: 12,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 4,
-        borderTopWidth: .5,
-        borderColor: 'rgba(0, 0, 0, 0.1)',
+    smallText: {
+        fontSize: getFontSize(12),
+        color: '#b1aea5',
+        fontFamily: 'Heebo-Medium',
+        textAlign: 'center'
+    },
+    leftSection: {
+        flex: 1,
+        flexWrap: 'wrap'
+    },
+    row: {
+        flexDirection: 'row'
     },
 });
 
