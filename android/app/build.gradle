@@ -103,7 +103,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -164,6 +164,7 @@ dependencies {
     compile project(':react-native-image-crop-picker')
     compile (project(':tipsi-stripe')) {
         exclude group: 'com.google.android.gms'
+        exclude group: 'com.android.support'
     }
     compile 'com.google.android.gms:play-services-wallet:11.+'
     compile project(':react-native-code-push')

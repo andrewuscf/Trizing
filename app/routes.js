@@ -415,3 +415,11 @@ export const AppNavigator = StackNavigator({
         backgroundColor: 'white'
     }
 });
+
+const prevGetStateForAction = AppNavigator.router.getStateForAction;
+AppNavigator.router.getStateForAction = (action, state) => {
+    if (action.type === 'Navigation/BACK' && state && state.routes[state.index].routeName === 'SplashScreen') {
+        return null;
+    }
+    return prevGetStateForAction(action, state);
+};
