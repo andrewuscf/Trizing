@@ -56,6 +56,7 @@ import EditProfile from './containers/profile/EditProfile';
 
 // Trainer Pages
 import ProgramList from './containers/trainer/ProgramList';
+import FindPrograms from './containers/trainer/FindPrograms';
 import SurveyList from './containers/trainer/SurveyList';
 import CreateMacroPlan from './containers/trainer/CreateMacroPlan';
 import MacroPlanList from './containers/trainer/MacroPlanList';
@@ -95,7 +96,302 @@ const defaultNavigationOptions = {
 };
 
 
-const HomeNav = StackNavigator({
+// const HomeNav = StackNavigator({
+//     Home: {
+//         screen: Home,
+//         navigationOptions: {
+//             header: null,
+//         }
+//     },
+//     ManageClients: {screen: ManageClients},
+//     Notifications: {
+//         screen: Notifications,
+//         navigationOptions: {
+//             headerTitle: 'Notifications',
+//         }
+//     },
+//     CreateMacroLog: {
+//         screen: paramsToProps(CreateMacroLog)
+//     },
+//     CreateWeightLog: {
+//         screen: paramsToProps(CreateWeightLog),
+//         navigationOptions: {
+//             headerTitle: 'Log Weight',
+//         }
+//     },
+//
+//     EditProfile: {screen: EditProfile},
+//
+//     Profile: {
+//         screen: paramsToProps(Profile),
+//     },
+//
+//     MyProfile: {
+//         screen: MyProfile,
+//     },
+//
+//
+//     CreateQuestionnaire: {screen: CreateQuestionnaire},
+//
+//
+//     AnswerQuestionnaire: {screen: paramsToProps(AnswerQuestionnaire)},
+//     AnswersDisplay: {screen: paramsToProps(AnswersDisplay)},
+//
+//
+//     MacroPlanDetail: {screen: paramsToProps(MacroPlanDetail)},
+//     ScheduleDetail: {screen: paramsToProps(ScheduleDetail)},
+//
+//
+//     TrainingPlan: {screen: paramsToProps(TrainingPlan)},
+//     CreateWorkout: {screen: paramsToProps(CreateWorkout)},
+//     EditWorkout: {screen: paramsToProps(EditWorkout)},
+//     CreateWorkoutDay: {screen: paramsToProps(CreateWorkoutDay)},
+//     CreateExercise: {screen: paramsToProps(CreateExercise)},
+//     EditWorkoutDay: {screen: paramsToProps(EditWorkoutDay)},
+//     CreateSchedule: {screen: paramsToProps(CreateSchedule)},
+//     EditSchedule: {screen: paramsToProps(EditSchedule)},
+//     WorkoutDetail: {screen: paramsToProps(WorkoutDetail)},
+//     WorkoutDayDetail: {screen: paramsToProps(WorkoutDayDetail)},
+//     WorkoutDaySession: {screen: paramsToProps(WorkoutDaySession)},
+//     SetGroupDetail: {screen: paramsToProps(SetGroupDetail)},
+//
+//     EventDetail: {screen: paramsToProps(EventDetail)},
+//
+//
+//     ProgramList: {screen: paramsToProps(ProgramList)},
+//     SurveyList: {screen: SurveyList},
+//     MacroPlanList: {screen: MacroPlanList},
+//
+//     CreateMacroPlan: {
+//         screen: paramsToProps(CreateMacroPlan)
+//     },
+//
+//     MacroLogDetail: {
+//         screen: paramsToProps(MacroLogDetail)
+//     },
+//
+//     CreateNote: {
+//         screen: paramsToProps(CreateNote),
+//         navigationOptions: {
+//             headerTitle: 'Add Note',
+//         }
+//     },
+//
+//
+//     // Payments
+//     Earnings: {
+//         screen: Earnings,
+//         navigationOptions: {
+//             headerTitle: 'Earnings',
+//         }
+//     },
+//     PayoutInfo: {
+//         screen: paramsToProps(PayoutInfo)
+//     },
+//     Payment: {
+//         screen: Payment,
+//         navigationOptions: {
+//             headerTitle: 'Payment',
+//         }
+//     }
+//
+//
+// }, {
+//     headerMode: 'screen',
+//     initialRouteName: 'Home',
+//     navigationOptions: ({navigation}) => {
+//         const {state, setParams} = navigation;
+//         return {
+//             headerRight: state.params && state.params.handleSave ?
+//                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
+//                       disabled={state.params.disabled ? state.params.disabled : false}/>
+//                 : null,
+//             headerTitle: state.params && state.params.headerTitle ? state.params.headerTitle : null,
+//             ...defaultNavigationOptions,
+//         };
+//     },
+//     cardStyle: {
+//         backgroundColor: 'white'
+//     }
+// });
+//
+//
+// const prevGetStateHomeNav = HomeNav.router.getStateForAction;
+// HomeNav.router = {
+//     ...HomeNav.router,
+//     getStateForAction(action, state) {
+//         if (state && action.type === 'ReplaceCurrentScreen') {
+//             const routes = state.routes.slice(0, state.routes.length - 1);
+//             routes.push(action);
+//             return {
+//                 ...state,
+//                 routes,
+//                 index: routes.length - 1,
+//             };
+//         }
+//         return prevGetStateHomeNav(action, state)
+//     }
+// };
+//
+// const CalendarNav = StackNavigator({
+//     Calendar: {
+//         screen: Calendar,
+//         navigationOptions: {
+//             headerTitle: 'Calendar',
+//         }
+//     },
+//     CreateEvent: {screen: paramsToProps(CreateEvent)},
+//     EventDetail: {screen: paramsToProps(EventDetail)},
+//     Profile: {screen: paramsToProps(Profile)},
+// }, {
+//     headerMode: 'screen',
+//     initialRouteName: 'Calendar',
+//     navigationOptions: ({navigation}) => {
+//         const {state, setParams} = navigation;
+//         return {
+//             headerRight: state.params && state.params.handleSave ?
+//                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
+//                       disabled={state.params.disabled ? state.params.disabled : false}/>
+//                 : null,
+//             ...defaultNavigationOptions,
+//         };
+//     },
+//     cardStyle: {
+//         backgroundColor: 'white'
+//     }
+// });
+//
+// const ChatNav = StackNavigator({
+//     Chat: {
+//         path: 'chat/',
+//         screen: Chat,
+//         navigationOptions: {
+//             headerTitle: 'Messages',
+//         }
+//     },
+//     CreateChatRoom: {screen: paramsToProps(CreateChatRoom)},
+//     ChatRoom: {screen: paramsToProps(ChatRoom)},
+// }, {
+//     headerMode: 'screen',
+//     initialRouteName: 'Chat',
+//     navigationOptions: ({navigation}) => {
+//         const {state, setParams} = navigation;
+//         return {
+//             headerRight: state.params && state.params.handleSave ?
+//                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
+//                       disabled={state.params.disabled ? state.params.disabled : false}/>
+//                 : null,
+//             ...defaultNavigationOptions,
+//         };
+//     },
+//     cardStyle: {
+//         backgroundColor: 'white'
+//     }
+// });
+
+// const prevGetStateChatNav = ChatNav.router.getStateForAction;
+// ChatNav.router = {
+//     ...ChatNav.router,
+//     getStateForAction(action, state) {
+//         if (state && action.type === 'ReplaceCurrentScreen') {
+//             const routes = state.routes.slice(0, state.routes.length - 1);
+//             routes.push(action);
+//             return {
+//                 ...state,
+//                 routes,
+//                 index: routes.length - 1,
+//             };
+//         }
+//         return prevGetStateChatNav(action, state)
+//     }
+// };
+
+//
+// const MainTabNav = TabNavigator({
+//     Chat: {
+//         screen: ChatNav,
+//         navigationOptions: {
+//             tabBarIcon: (data) => <Icon size={24} color={data.tintColor} name="comment"/>
+//         }
+//     },
+//     Home: {
+//         screen: HomeNav,
+//         navigationOptions: {
+//             tabBarIcon: (data) => <Icon size={24} color={data.tintColor} name="home"/>
+//         },
+//     },
+//     Calendar: {
+//         path: 'calendar/',
+//         screen: CalendarNav,
+//         navigationOptions: {
+//             header: null,
+//             tabBarIcon: (data) => <Icon size={24} color={data.tintColor} name="date-range"/>
+//         }
+//     },
+// }, {
+//     tabBarComponent: props => {
+//         const {navigation, navigationState} = props
+//         const jumpToIndex = index => {
+//             const lastPosition = navigationState.index
+//             const tab = navigationState.routes[index]
+//             const tabRoute = tab.routeName;
+//             if (!tab.routes) {
+//                 navigation.dispatch(NavigationActions.navigate({routeName: tabRoute}));
+//                 return;
+//             }
+//             const firstTab = tab.routes[0].routeName;
+//
+//             lastPosition !== index && navigation.dispatch(NavigationActions.navigate({routeName: tabRoute}))
+//             lastPosition === index && navigation.dispatch(NavigationActions.reset({
+//                 index: 0,
+//                 actions: [
+//                     NavigationActions.navigate({routeName: firstTab}),
+//                 ],
+//             }));
+//         };
+//         return <TabBarBottom {...props} jumpToIndex={jumpToIndex}/>
+//     },
+//     initialRouteName: 'Home',
+//     tabBarPosition: 'bottom',
+//     lazy: true,
+//     swipeEnabled: false,
+//     animationEnabled: false,
+//     navigationOptions: {
+//         header: null,
+//     },
+//     tabBarOptions: {
+//         showLabel: false,
+//         activeTintColor: globalBlue
+//     }
+// });
+
+export const AppNavigator = StackNavigator({
+    SplashScreen: {
+        screen: SplashScreen,
+        navigationOptions: {
+            header: null,
+        },
+    },
+    Login: {
+        screen: Login,
+        navigationOptions: {
+            headerTitle: 'Login',
+        }
+    },
+    ResetPassword: {
+        screen: ResetPassword,
+        navigationOptions: {
+            headerTitle: 'Reset Password',
+        }
+    },
+    SignUp: {
+        screen: SignUp,
+        navigationOptions: {
+            headerTitle: 'Create an account',
+        }
+    },
+    EditProfile: {screen: EditProfile},
+
     Home: {
         screen: Home,
         navigationOptions: {
@@ -192,211 +488,10 @@ const HomeNav = StackNavigator({
         navigationOptions: {
             headerTitle: 'Payment',
         }
+    },
+    FindPrograms: {
+        screen: FindPrograms,
     }
-
-
-}, {
-    headerMode: 'screen',
-    initialRouteName: 'Home',
-    navigationOptions: ({navigation}) => {
-        const {state, setParams} = navigation;
-        return {
-            headerRight: state.params && state.params.handleSave ?
-                <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
-                      disabled={state.params.disabled ? state.params.disabled : false}/>
-                : null,
-            headerTitle: state.params && state.params.headerTitle ? state.params.headerTitle : null,
-            ...defaultNavigationOptions,
-        };
-    },
-    cardStyle: {
-        backgroundColor: 'white'
-    }
-});
-
-
-const prevGetStateHomeNav = HomeNav.router.getStateForAction;
-HomeNav.router = {
-    ...HomeNav.router,
-    getStateForAction(action, state) {
-        if (state && action.type === 'ReplaceCurrentScreen') {
-            const routes = state.routes.slice(0, state.routes.length - 1);
-            routes.push(action);
-            return {
-                ...state,
-                routes,
-                index: routes.length - 1,
-            };
-        }
-        return prevGetStateHomeNav(action, state)
-    }
-};
-
-const CalendarNav = StackNavigator({
-    Calendar: {
-        screen: Calendar,
-        navigationOptions: {
-            headerTitle: 'Calendar',
-        }
-    },
-    CreateEvent: {screen: paramsToProps(CreateEvent)},
-    EventDetail: {screen: paramsToProps(EventDetail)},
-    Profile: {screen: paramsToProps(Profile)},
-}, {
-    headerMode: 'screen',
-    initialRouteName: 'Calendar',
-    navigationOptions: ({navigation}) => {
-        const {state, setParams} = navigation;
-        return {
-            headerRight: state.params && state.params.handleSave ?
-                <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
-                      disabled={state.params.disabled ? state.params.disabled : false}/>
-                : null,
-            ...defaultNavigationOptions,
-        };
-    },
-    cardStyle: {
-        backgroundColor: 'white'
-    }
-});
-
-const ChatNav = StackNavigator({
-    Chat: {
-        path: 'chat/',
-        screen: Chat,
-        navigationOptions: {
-            headerTitle: 'Messages',
-        }
-    },
-    CreateChatRoom: {screen: paramsToProps(CreateChatRoom)},
-    ChatRoom: {screen: paramsToProps(ChatRoom)},
-}, {
-    headerMode: 'screen',
-    initialRouteName: 'Chat',
-    navigationOptions: ({navigation}) => {
-        const {state, setParams} = navigation;
-        return {
-            headerRight: state.params && state.params.handleSave ?
-                <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
-                      disabled={state.params.disabled ? state.params.disabled : false}/>
-                : null,
-            ...defaultNavigationOptions,
-        };
-    },
-    cardStyle: {
-        backgroundColor: 'white'
-    }
-});
-
-const prevGetStateChatNav = ChatNav.router.getStateForAction;
-ChatNav.router = {
-    ...ChatNav.router,
-    getStateForAction(action, state) {
-        if (state && action.type === 'ReplaceCurrentScreen') {
-            const routes = state.routes.slice(0, state.routes.length - 1);
-            routes.push(action);
-            return {
-                ...state,
-                routes,
-                index: routes.length - 1,
-            };
-        }
-        return prevGetStateChatNav(action, state)
-    }
-};
-
-
-const MainTabNav = TabNavigator({
-    Chat: {
-        screen: ChatNav,
-        navigationOptions: {
-            tabBarIcon: (data) => <Icon size={24} color={data.tintColor} name="comment"/>
-        }
-    },
-    Home: {
-        screen: HomeNav,
-        navigationOptions: {
-            tabBarIcon: (data) => <Icon size={24} color={data.tintColor} name="home"/>
-        },
-    },
-    Calendar: {
-        path: 'calendar/',
-        screen: CalendarNav,
-        navigationOptions: {
-            header: null,
-            tabBarIcon: (data) => <Icon size={24} color={data.tintColor} name="date-range"/>
-        }
-    },
-}, {
-    tabBarComponent: props => {
-        const {navigation, navigationState} = props
-        const jumpToIndex = index => {
-            const lastPosition = navigationState.index
-            const tab = navigationState.routes[index]
-            const tabRoute = tab.routeName;
-            if (!tab.routes) {
-                navigation.dispatch(NavigationActions.navigate({routeName: tabRoute}));
-                return;
-            }
-            const firstTab = tab.routes[0].routeName;
-
-            lastPosition !== index && navigation.dispatch(NavigationActions.navigate({routeName: tabRoute}))
-            lastPosition === index && navigation.dispatch(NavigationActions.reset({
-                index: 0,
-                actions: [
-                    NavigationActions.navigate({routeName: firstTab}),
-                ],
-            }));
-        };
-        return <TabBarBottom {...props} jumpToIndex={jumpToIndex}/>
-    },
-    initialRouteName: 'Home',
-    tabBarPosition: 'bottom',
-    lazy: true,
-    swipeEnabled: false,
-    animationEnabled: false,
-    navigationOptions: {
-        header: null,
-    },
-    tabBarOptions: {
-        showLabel: false,
-        activeTintColor: globalBlue
-    }
-});
-
-export const AppNavigator = StackNavigator({
-    SplashScreen: {
-        screen: SplashScreen,
-        navigationOptions: {
-            header: null,
-        },
-    },
-    Login: {
-        screen: Login,
-        navigationOptions: {
-            headerTitle: 'Login',
-        }
-    },
-    ResetPassword: {
-        screen: ResetPassword,
-        navigationOptions: {
-            headerTitle: 'Reset Password',
-        }
-    },
-    SignUp: {
-        screen: SignUp,
-        navigationOptions: {
-            headerTitle: 'Create an account',
-        }
-    },
-    EditProfile: {screen: EditProfile},
-
-    Main: {
-        screen: HomeNav,
-        navigationOptions: {
-            header: null,
-        },
-    },
 }, {
     headerMode: 'screen',
     initialRouteName: 'SplashScreen',
@@ -407,6 +502,7 @@ export const AppNavigator = StackNavigator({
                 <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
                       disabled={state.params.disabled ? state.params.disabled : false}/>
                 : null,
+            headerTitle: state.params && state.params.headerTitle ? state.params.headerTitle : null,
             ...defaultNavigationOptions,
         };
     },
@@ -420,6 +516,14 @@ const prevGetStateForAction = AppNavigator.router.getStateForAction;
 AppNavigator.router.getStateForAction = (action, state) => {
     if (action.type === 'Navigation/BACK' && state && state.routes[state.index].routeName === 'SplashScreen') {
         return null;
+    } else if (state && action.type === 'ReplaceCurrentScreen') {
+        const routes = state.routes.slice(0, state.routes.length - 1);
+        routes.push(action);
+        return {
+            ...state,
+            routes,
+            index: routes.length - 1,
+        };
     }
     return prevGetStateForAction(action, state);
 };

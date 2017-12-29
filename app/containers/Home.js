@@ -66,6 +66,7 @@ const Home = CreateClass({
     },
 
     componentDidUpdate(prevProps, prevState) {
+        const user = this.props.RequestUser;
         if (this.props.Notifications && this.props.Notifications.length && Platform.OS === 'ios') {
             let unreadcount = 0;
             this.props.Notifications.forEach((notification) => {
@@ -74,6 +75,12 @@ const Home = CreateClass({
                 }
             });
             if (FCM) FCM.setBadgeNumber(unreadcount);
+        }
+        if ((!!user && !!prevProps.RequestUser &&
+                (user.profile.active_macro_plan !== prevProps.RequestUser.profile.active_macro_plan ||
+                    user.profile.active_program !== prevProps.RequestUser.profile.active_program))
+            || (prevState.dataDate !== this.state.dataDate)) {
+            this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), true);
         }
     },
 
@@ -201,9 +208,9 @@ const Home = CreateClass({
         this.setState({
             dataDate: newDate
         });
-        if (!_.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")})) {
-            this.props.actions.getActiveData(newDate.format("YYYY-MM-DD"), false)
-        }
+        // if (!_.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")})) {
+        //     this.props.actions.getActiveData(newDate.format("YYYY-MM-DD"), false)
+        // }
     },
 
     subtractDay() {
@@ -211,9 +218,9 @@ const Home = CreateClass({
         this.setState({
             dataDate: newDate
         });
-        if (!_.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")})) {
-            this.props.actions.getActiveData(newDate.format("YYYY-MM-DD"), false)
-        }
+        // if (!_.find(this.props.ActiveData, {date: this.state.dataDate.format("YYYY-MM-DD")})) {
+        //     this.props.actions.getActiveData(newDate.format("YYYY-MM-DD"), false)
+        // }
     },
 
     changeTimeFrame(timeFrame) {
@@ -222,7 +229,6 @@ const Home = CreateClass({
             // this.props.actions.getWeightLogs(timeFrame)
         }
     },
-
 
     render() {
         const user = this.props.RequestUser;
@@ -428,12 +434,12 @@ const Home = CreateClass({
                                         Nutrition Plan
                                     </Text>
                                 </View>
-                                {/*<Text style={styles.viewAll} onPress={() => navigate('MacroPlanList')}>*/}
-                                    {/*View All*/}
-                                {/*</Text>*/}
+                                <Text style={styles.viewAll} onPress={() => navigate('MacroPlanList')}>
+                                    View All
+                                </Text>
                             </View>
                             <Text style={styles.textTitle}>No Nutrition Plan Today</Text>
-                            <SubmitButton onPress={() => navigate('MacroPlanList')} text="CREATE PLAN"
+                            <SubmitButton onPress={() => navigate('CreateMacroPlan')} text="CREATE PLAN"
                                           buttonStyle={styles.logButton}/>
                         </View>
                     }
@@ -487,7 +493,7 @@ const Home = CreateClass({
                                 </Text>
                             </View>
                             <Text style={styles.textTitle}>No Workout Today</Text>
-                            <SubmitButton onPress={() => navigate('ProgramList')} text="PROGRAMS"
+                            <SubmitButton onPress={() => navigate('ProgramList')} text="MY PROGRAMS"
                                           buttonStyle={styles.logButton}/>
                         </View>
                     }
@@ -515,19 +521,19 @@ const Home = CreateClass({
                 </ScrollView>
 
 
-                <EditButton icon={isTrainer ? null : <MaterialIcon name="search" size={getFontSize(20)} color="white"/>}
+                <EditButton icon={<MaterialIcon name="search" size={getFontSize(20)} color="white"/>}
                             isActionButtonVisible={this.state.isActionButtonVisible}>
                     <ActionButton.Item buttonColor='#FD795B' title="Find Workouts"
-                                       onPress={() => navigate('ProgramList', {tab: 2})}>
+                                       onPress={() => navigate('FindPrograms')}>
                         <CustomIcon name="weight" size={getFontSize(22)} color="white"/>
                     </ActionButton.Item>
-                    {isTrainer ?
-                        <ActionButton.Item buttonColor='#FD795B' title="Surveys"
-                                           onPress={() => navigate('SurveyList')}>
-                            <MaterialIcon name="question-answer" size={getFontSize(22)} color="white"/>
-                        </ActionButton.Item>
-                        : <View/>
-                    }
+                    {/*{isTrainer ?*/}
+                    {/*<ActionButton.Item buttonColor='#FD795B' title="Surveys"*/}
+                    {/*onPress={() => navigate('SurveyList')}>*/}
+                    {/*<MaterialIcon name="question-answer" size={getFontSize(22)} color="white"/>*/}
+                    {/*</ActionButton.Item>*/}
+                    {/*: <View/>*/}
+                    {/*}*/}
                     <ActionButton.Item buttonColor='#FD795B'
                                        title={isTrainer ? "Clients" : "Trainers"}
                                        onPress={() => navigate('ManageClients')}>

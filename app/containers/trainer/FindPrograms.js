@@ -1,7 +1,6 @@
 import React from 'react';
 
 const CreateClass = require('create-react-class');
-import PropTypes from 'prop-types';
 import {
     StyleSheet,
     Text,
@@ -11,35 +10,34 @@ import {
     TouchableOpacity,
     Platform,
     LayoutAnimation,
-    Alert,
-    Switch
 } from 'react-native';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import ActionButton from 'react-native-action-button';
+import RNFetchBlob from 'react-native-fetch-blob';
 
-import * as GlobalActions from '../../actions/globalActions';
 import GlobalStyle from '../globalStyle';
-import {getFontSize, isATrainer} from '../../actions/utils';
+import {API_ENDPOINT, getFontSize, setHeaders, isATrainer} from '../../actions/utils';
 
 import CustomIcon from '../../components/CustomIcon';
 import Loading from '../../components/Loading';
 
-const ProgramList = CreateClass({
-    propTypes: {
-    },
+const FindPrograms = CreateClass({
+    propTypes: {},
 
     getInitialState() {
         return {
             isActionButtonVisible: true,
-            isTrainer: isATrainer(this.props.RequestUser.type),
-            refresh: false
+            forSale: [],
+            forSaleNext: null,
+            loading: false,
+            refresh: false,
+            isTrainer: isATrainer(this.props.RequestUser.type)
         }
     },
 
     componentDidMount() {
-        this.getNeeded(true);
+        this.getForSale();
     },
 
 
@@ -62,41 +60,37 @@ const ProgramList = CreateClass({
         this._listViewOffset = currentOffset;
     },
 
-    getNeeded(refresh = false) {
-        if (isATrainer(this.props.RequestUser.type)) {
-            this.props.getSchedules('?template=true', refresh);
-        } else {
-            this.props.getSchedules('', refresh);
+
+    getForSale(refresh = false) {
+        this.setState({loading: true});
+        if (refresh) {
+            this.setState({refresh: true});
         }
+
+        const url = `${API_ENDPOINT}training/program/sale/`;
+        RNFetchBlob.fetch('GET', url, setHeaders(this.props.UserToken))
+            .then((res) => {
+                let json = res.json();
+                this.setState({
+                    forSale: json.results,
+                    forSaleNext: json.next,
+                    loading: false,
+                    refresh: false
+                });
+
+            }).catch((errorMessage, statusCode) => {
+            this.setState({loading: false});
+            console.log(errorMessage)
+        });
     },
 
     _refresh() {
-        this.getNeeded(true);
+        this.getForSale(true);
     },
 
     onEndReached() {
     },
 
-    convertToMap() {
-        const workoutMap = {'My Programs': [], 'Trainer Programs': []};
-        this.props.Schedules.forEach((program) => {
-            if (program.trainer.id === this.props.RequestUser.id) {
-                workoutMap['My Programs'].push(program);
-            } else {
-                workoutMap['Trainer Programs'].push(program);
-            }
-        });
-        return workoutMap;
-    },
-
-    renderSectionHeader(sectionData, category) {
-        if (!sectionData.length) return null;
-        return (
-            <View style={[{backgroundColor: 'white', marginLeft: 10}]}>
-                <Text style={styles.sectionTitle}>{category}</Text>
-            </View>
-        );
-    },
 
     goToProgram(program) {
         if (isATrainer(this.props.RequestUser.type) || program.trainer.id === this.props.RequestUser.id) {
@@ -106,30 +100,11 @@ const ProgramList = CreateClass({
         }
     },
 
-    _activate(program) {
-        Alert.alert(
-            'Activate Workout Program?',
-            `This will override any your current program. Programs can be overwritten by trainers.`,
-            [
-                {text: 'Cancel', style: 'cancel'},
-                {text: 'Yes', onPress: () => this.props.activateSchedule(program.id)},
-            ]
-        );
-    },
-
-    onSwitchChange(value, program) {
-        if (value) {
-            this._activate(program)
-        }
-    },
-
-
     renderRow(program) {
         let duration = 0;
         program.workouts.forEach((workout) => duration += workout.duration);
         return (
             <TouchableOpacity style={styles.link} onPress={this.goToProgram.bind(null, program)}>
-
                 <View style={styles.leftSection}>
                     <Text style={[styles.simpleTitle, {padding: '2%'}]}>{program.name}</Text>
                     <View style={[styles.row, {borderColor: '#e1e3df', borderTopWidth: 1, padding: '2%'}]}>
@@ -139,9 +114,6 @@ const ProgramList = CreateClass({
                         </Text>
                     </View>
                 </View>
-                <Switch value={this.props.RequestUser.profile.active_program === program.id}
-                        style={{alignSelf: 'center'}}
-                        onValueChange={(value) => this.onSwitchChange(value, program)} onTintColor='#00AFA3'/>
             </TouchableOpacity>
         )
     },
@@ -151,13 +123,13 @@ const ProgramList = CreateClass({
     },
 
     renderFooter() {
-        const length = this.props.Schedules.length;
-        if (length > 0 || this.props.SchedulesLoading) return null;
+        const length = this.state.forSale.length;
+        if (length > 0 || this.state.loading) return null;
         return (
             <View style={styles.empty}>
                 <CustomIcon name="weight" size={getFontSize(60)} color="#b1aea5"/>
                 <Text style={styles.emptyText}>
-                    You currently have no workout programs.
+                        There are currently no workout programs for sale
                 </Text>
             </View>
         )
@@ -165,7 +137,7 @@ const ProgramList = CreateClass({
 
 
     render() {
-        if (this.props.SchedulesLoading) {
+        if (this.state.loading) {
             return (
                 <View style={GlobalStyle.container}>
                     {this.renderHeader()}
@@ -174,14 +146,12 @@ const ProgramList = CreateClass({
             )
         }
         const {navigate} = this.props.navigation;
-        const ds = new ListView.DataSource({
+        const ProgramsDs = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2,
-            sectionHeaderHasChanged: (s1, s2) => s1 !== s2
-        });
-        const ProgramsDs = ds.cloneWithRowsAndSections(this.convertToMap());
+        }).cloneWithRows(this.state.forSale);
         return (
             <View style={GlobalStyle.container}>
-                <ListView ref='schedules_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                <ListView ref='for_sale_list' removeClippedSubviews={(Platform.OS !== 'ios')}
                           refreshControl={<RefreshControl refreshing={this.state.refresh}
                                                           onRefresh={this._refresh}/>}
                           enableEmptySections={true} dataSource={ProgramsDs} showsVerticalScrollIndicator={false}
@@ -189,12 +159,11 @@ const ProgramList = CreateClass({
                           renderHeader={this.renderHeader}
                           onScroll={this._onScroll}
                           renderFooter={this.renderFooter}
-                          renderSectionHeader={this.renderSectionHeader}
                           contentContainerStyle={{paddingBottom: 100}}
                 />
-                {this.state.isActionButtonVisible ?
+                {this.state.isTrainer && this.state.isActionButtonVisible ?
                     <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right"
-                                  onPress={() => navigate('CreateSchedule')}/>
+                                  onPress={() => navigate('CreateSchedule', {allow_sale: true})}/>
                     : null
                 }
             </View>
@@ -202,9 +171,10 @@ const ProgramList = CreateClass({
     }
 });
 
-ProgramList.navigationOptions = {
-    title: 'My Programs',
+FindPrograms.navigationOptions = {
+    title: 'Find Programs',
 };
+
 
 const styles = StyleSheet.create({
     row: {
@@ -263,17 +233,8 @@ const styles = StyleSheet.create({
 const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
-        Schedules: state.Global.Schedules,
         UserToken: state.Global.UserToken,
-        SchedulesLoading: state.Global.SchedulesLoading
     };
 };
 
-const dispatchToProps = (dispatch) => {
-    return {
-        getSchedules: bindActionCreators(GlobalActions.getSchedules, dispatch),
-        activateSchedule: bindActionCreators(GlobalActions.activateSchedule, dispatch),
-    }
-};
-
-export default connect(stateToProps, dispatchToProps)(ProgramList);
+export default connect(stateToProps, null)(FindPrograms);

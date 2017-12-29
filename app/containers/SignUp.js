@@ -81,7 +81,7 @@ const SignUp = CreateClass({
     componentDidUpdate (prevProps) {
         if (this.props.UserToken) {
             if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
-                this.props.navigation.dispatch(resetNav('Main'))
+                this.props.navigation.dispatch(resetNav('Home'))
             } else if (this.props.RequestUser && !this.props.RequestUser.profile.completed) {
                 this.props.navigation.dispatch(resetNav('EditProfile'))
             }

@@ -2,7 +2,7 @@ import React from 'react';
 
 const CreateClass = require('create-react-class');
 import {Platform} from 'react-native';
-import {MenuContext} from 'react-native-popup-menu';
+import {MenuProvider} from 'react-native-popup-menu';
 import {
     setCustomText,
     setCustomTouchableOpacity,
@@ -38,9 +38,9 @@ const App = CreateClass({
     render() {
         const prefix = Platform.OS === 'android' ? 'trainerbase://trainerbase/' : 'trainerbase://';
         return (
-            <MenuContext lazyRender={200}>
+            <MenuProvider lazyRender={200}>
                 <AppNavigator uriPrefix={prefix}/>
-            </MenuContext>
+            </MenuProvider>
         );
     }
 });

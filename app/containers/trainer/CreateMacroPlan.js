@@ -30,7 +30,7 @@ let MacroPlan = t.struct({
 const CreateMacroPlan = CreateClass({
     propTypes: {
         training_plan: PropTypes.number,
-        addMacroPlan: PropTypes.func.isRequired
+        addMacroPlan: PropTypes.func
     },
 
     getInitialState() {
@@ -74,7 +74,16 @@ const CreateMacroPlan = CreateClass({
             .then(checkStatus)
             .then((responseJson) => {
                 if (responseJson.id) {
-                    this.props.addMacroPlan(responseJson);
+                    if (this.props.addMacroPlan) {
+                        this.props.addMacroPlan(responseJson);
+                    } else {
+                        this.props.navigation.dispatch({
+                            type: 'ReplaceCurrentScreen',
+                            routeName: 'MacroPlanList',
+                            params: null,
+                            key: 'MacroPlanList'
+                        });
+                    }
                     this.goBack();
                 }
             }).catch(error => console.log(error))

@@ -82,6 +82,7 @@ const MyProfile = CreateClass({
 
     render() {
         const user = this.props.RequestUser;
+        if (!user) return null;
         const isTrainer = isATrainer(user.type);
         const {navigate} = this.props.navigation;
         if (user) {

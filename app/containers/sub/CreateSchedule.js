@@ -24,6 +24,7 @@ const Form = t.form.Form;
 const CreateSchedule = CreateClass({
     propTypes: {
         training_plan: PropTypes.number,
+        allow_sale: PropTypes.bool
     },
 
     getInitialState() {
@@ -98,7 +99,7 @@ const CreateSchedule = CreateClass({
             template: t.maybe(template_list),
             is_loop: t.Boolean
         };
-        if (isATrainer(this.props.RequestUser.type)) {
+        if (isATrainer(this.props.RequestUser.type) && this.props.allow_sale) {
             struct = {
                 ...struct,
                 for_sale: t.Boolean,

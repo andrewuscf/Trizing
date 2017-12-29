@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import {View, ActivityIndicator, StyleSheet, Text, Image, Dimensions, AsyncStorage} from 'react-native';
 import {bindActionCreators} from 'redux';
@@ -29,10 +30,10 @@ const SplashScreen = CreateClass({
     },
 
     componentDidUpdate(prevProps) {
-        if (this.props.AppIsReady && this.props.UserToken) {
-            if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
-                this._navigateTo('Main')
-            } else if (this.props.RequestUser && !this.props.RequestUser.profile.completed) {
+        if (this.props.AppIsReady && (prevProps.AppIsReady !== this.props.AppIsReady || prevProps.RequestUser !== this.props.RequestUser)) {
+            if (this.props.RequestUser && this.props.RequestUser.profile.completed && this.props.navigation.state.routeName !== 'Home') {
+                this._navigateTo('Home')
+            } else if (this.props.RequestUser && !this.props.RequestUser.profile.completed && this.props.navigation.state.routeName !== 'EditProfile') {
                 this._navigateTo('EditProfile')
             }
         } else if (!this.props.AppIsReady && this.props.AppIsReady !== prevProps.AppIsReady) {
