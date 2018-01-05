@@ -1,7 +1,8 @@
 import React from 'react';
 
 const CreateClass = require('create-react-class');
-import {Platform} from 'react-native';
+import {Platform, AsyncStorage, Linking} from 'react-native';
+import {connect} from 'react-redux';
 import {MenuProvider} from 'react-native-popup-menu';
 import {
     setCustomText,
@@ -34,6 +35,14 @@ setCustomScrollView({
 });
 
 const App = CreateClass({
+    componentDidMount() {
+        Linking.addEventListener('url', this.handleURL);
+        Linking.getInitialURL().then(this.handleURL);
+    },
+
+    handleURL(url) {
+        if (url && !this.props.RequestUser) AsyncStorage.setItem('deep_link', url.url ? url.url : url);
+    },
 
     render() {
         const prefix = Platform.OS === 'android' ? 'trainerbase://trainerbase/' : 'trainerbase://';
@@ -152,5 +161,11 @@ stylesheet.dateValue = {
 // override globally
 t.form.Form.defaultProps.stylesheet = stylesheet;
 
+const stateToProps = (state) => {
+    return {
+        RequestUser: state.Global.RequestUser,
+    }
+};
 
-export default App;
+export default connect(stateToProps, null)(App);
+

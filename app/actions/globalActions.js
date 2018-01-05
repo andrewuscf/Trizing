@@ -49,14 +49,18 @@ export function setTokenInRedux(token, FromAPI = false) {
     return {type: types.SET_TOKEN, token: token}
 }
 
-export function removeToken() {
+export function removeToken(afterLogout) {
     return (dispatch) => {
         AsyncStorage.removeItem('USER_TOKEN');
-        return dispatch({type: types.REMOVE_TOKEN}).then(() => purgeStoredState({storage: AsyncStorage}).then(() => {
-                LoginManager.logOut();
-            }).catch(() => {
-                console.log('purge of someReducer failed')
-            })
+        return dispatch({type: types.REMOVE_TOKEN}).then(() => {
+                if (afterLogout) afterLogout();
+
+                purgeStoredState({storage: AsyncStorage}).then(() => {
+                    LoginManager.logOut();
+                }).catch(() => {
+                    console.log('purge of someReducer failed')
+                })
+            }
         );
     };
 }

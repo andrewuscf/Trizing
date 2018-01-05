@@ -8,7 +8,8 @@ import {
     Alert,
     Keyboard,
     Dimensions,
-    Platform
+    Platform,
+    AsyncStorage
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import t from 'tcomb-form-native';
@@ -86,10 +87,6 @@ const EditProfile = CreateClass({
         });
     },
 
-    clearForm() {
-        this.setState({value: null});
-    },
-
     componentDidMount() {
         this.props.navigation.setParams({handleSave: this._onSubmit});
     },
@@ -111,11 +108,39 @@ const EditProfile = CreateClass({
             })
         }
         if (user && prevProps.RequestUser && prevProps.RequestUser.profile.completed !== user.profile.completed) {
-            this.props.navigation.dispatch(resetNav('Main'));
+            AsyncStorage.getItem('deep_link', (err, result) => {
+                if (result) {
+                    this._handleOpenURL(result);
+                    AsyncStorage.removeItem('deep_link');
+                } else {
+                    this.props.navigation.dispatch(resetNav('Main'));
+                }
+            });
         }
-        if (!this.props.UserToken) {
-            this.props.navigation.dispatch(resetNav('SplashScreen'));
+    },
+
+    _handleOpenURL(url) {
+        const parsedUrl = this._urlToPathAndParams(url);
+        if (parsedUrl) {
+            const {path, params} = parsedUrl;
+            const action = AppNavigator.router.getActionForPathAndParams(path, params);
+            if (action) {
+                this.props.navigation.dispatch(action);
+            }
         }
+    },
+
+    _urlToPathAndParams(url: string) {
+        const params = {};
+        const delimiter = this.props.uriPrefix || '://';
+        let path = url.split(delimiter)[1];
+        if (typeof path === 'undefined') {
+            path = url;
+        }
+        return {
+            path,
+            params,
+        };
     },
 
     asyncActions(progress) {
@@ -210,18 +235,17 @@ const EditProfile = CreateClass({
     },
 
     _logOut() {
-        const self = this;
         Alert.alert(
             'Log out',
             'Are you sure you want to log out?',
             [
-                {text: 'Cancel', style: 'cancel'},
                 {
                     text: 'Yes', onPress: () => {
-                    if (FCM) FCM.setBadgeNumber(0);
-                    this.props.removeToken();
-                }
+                        if (FCM) FCM.setBadgeNumber(0);
+                        this.props.removeToken(()=> this.props.navigation.dispatch(resetNav('SplashScreen')));
+                    }
                 },
+                {text: 'Cancel', style: 'cancel'},
             ]
         );
     },

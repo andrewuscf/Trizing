@@ -10,7 +10,8 @@ import {
     ScrollView,
     TouchableOpacity,
     Platform,
-    LayoutAnimation
+    LayoutAnimation,
+    AppState
 } from 'react-native';
 import FCM, {
     FCMEvent,
@@ -51,7 +52,8 @@ const Home = CreateClass({
         return {
             dataDate: moment(),
             isActionButtonVisible: true,
-            weightTimeFrame: 'month'
+            weightTimeFrame: 'month',
+            appState: AppState.currentState
         }
     },
 
@@ -91,7 +93,7 @@ const Home = CreateClass({
             if (token) self.props.actions.setDeviceForNotification(token);
         });
         this.notificationListener = FCM.on(FCMEvent.Notification, async (notification) => {
-            const action = notif.action ? JSON.parse(notification.action) : null;
+            const action = notification.action ? JSON.parse(notification.action) : null;
 
             if (action && notification.user && notification.id) {
                 const newNotification = {
@@ -124,9 +126,7 @@ const Home = CreateClass({
                 } else if (action.action_object.macro_plan_days) {
                     this.props.navigation.navigate('MacroPlanDetail', {macro_plan: action.action_object});
                 } else if (action.action_object.macro_plan_day) {
-
                     this.props.navigation.navigate('MacroLogDetail', {macro_log: action.action_object});
-
                 } else if (action.action_object.workouts) {
                     this.props.navigation.navigate('ScheduleDetail', {schedule: action.action_object});
                 } else if (action.action_object.questions) {
@@ -139,8 +139,6 @@ const Home = CreateClass({
                         })
                     }
                 }
-
-
                 FCM.removeAllDeliveredNotifications();
             } else if (!notification.opened_from_tray && action) {
                 console.log(action)
@@ -149,18 +147,25 @@ const Home = CreateClass({
                 //     FCM.removeAllDeliveredNotifications();
                 // }
             }
-
-
         });
         this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {
             if (token) self.props.actions.setDeviceForNotification(token);
         });
+        AppState.addEventListener('change', this._handleAppStateChange);
     },
 
     componentWillUnmount() {
         this.notificationListener.remove();
         this.refreshTokenListener.remove();
     },
+
+    _handleAppStateChange(nextAppState) {
+        if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+            this.props.actions.getActiveData(this.state.dataDate.format("YYYY-MM-DD"), true);
+        }
+        this.setState({appState: nextAppState});
+    },
+
 
     _refresh() {
         if (this.props.RequestUser.type === 1) {
