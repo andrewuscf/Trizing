@@ -17,6 +17,7 @@ import t from 'tcomb-form-native';
 import _ from 'lodash';
 import RNFetchBlob from 'react-native-fetch-blob';
 import {CachedImage} from "react-native-img-cache";
+import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {API_ENDPOINT, setHeaders, checkStatus} from '../../actions/utils';
@@ -286,17 +287,15 @@ const CreateExercise = CreateClass({
     render() {
         return (
             <View style={{flex: 1}}>
-                <KeyboardAvoidingView behavior="padding">
-                    <FlatList removeClippedSubviews={false}
-                              keyboardDismissMode='interactive'
-                              keyboardShouldPersistTaps='always'
-                              showsVerticalScrollIndicator={false}
-                              ListHeaderComponent={this.renderHeader}
-                              ListFooterComponent={this.renderFooter}
-                              data={this.state.resultsOpen && this.state.fetchedExercises.length ? this.state.fetchedExercises : this.state.sets}
-                              renderItem={this._renderItem} extraData={this.state}
-                              keyExtractor={(item, index) => index}/>
-                </KeyboardAvoidingView>
+                <KeyboardAwareFlatList removeClippedSubviews={false}
+                                       keyboardDismissMode='interactive'
+                                       keyboardShouldPersistTaps='always'
+                                       showsVerticalScrollIndicator={false}
+                                       ListHeaderComponent={this.renderHeader}
+                                       ListFooterComponent={this.renderFooter}
+                                       data={this.state.resultsOpen && this.state.fetchedExercises.length ? this.state.fetchedExercises : this.state.sets}
+                                       renderItem={this._renderItem} extraData={this.state}
+                                       keyExtractor={(item, index) => index}/>
                 <InputAccessory onClose={this.closeResults}/>
             </View>
         )

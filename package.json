@@ -28,7 +28,7 @@
     "react-native-image-crop-picker": "^0.19.1",
     "react-native-image-gallery": "^2.1.4",
     "react-native-img-cache": "^1.5.0",
-    "react-native-keyboard-aware-scroll-view": "^0.4.1",
+    "react-native-keyboard-aware-scroll-view": "^0.4.2",
     "react-native-modal": "^4.1.1",
     "react-native-pathjs-charts": "0.0.33",
     "react-native-popup-menu": "^0.12.1",

@@ -65,7 +65,8 @@ const InputAccessory = CreateClass({
         Keyboard.dismiss();
     },
 
-    render: function () {
+
+    render() {
         return (
             <View style={[s.InputAccessory, {opacity: this.state.opacity, top: this.state.visibleHeight - 1}]}
                   onLayout={(e) => this.rotateDevice(e)}>
