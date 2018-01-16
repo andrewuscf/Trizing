@@ -15,7 +15,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
-import DropdownAlert from 'react-native-dropdownalert';
 import RNFetchBlob from 'react-native-fetch-blob';
 import {CachedImage} from "react-native-img-cache";
 
@@ -145,7 +144,7 @@ const CreateExercise = CreateClass({
     asyncActions(success, data) {
         this.setState({disabled: false});
         if (success) {
-            this.dropdown.alertWithType('success', 'Success', 'Created exercise.');
+            this.props.actions.appMessage("Created exercise.", null, "green");
             if (typeof this.props.newDay !== 'undefined') {
                 this.props.newDay(data);
             }
@@ -154,7 +153,7 @@ const CreateExercise = CreateClass({
                 this.props.navigation.goBack();
             }, 1000);
         } else {
-            this.dropdown.alertWithType('error', 'Error', "Couldn't create exercise.");
+            this.props.actions.appMessage("Couldn't create exercise.", null, "red");
         }
     },
 
@@ -299,7 +298,6 @@ const CreateExercise = CreateClass({
                               keyExtractor={(item, index) => index}/>
                 </KeyboardAvoidingView>
                 <InputAccessory onClose={this.closeResults}/>
-                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
         )
     }

@@ -5,6 +5,8 @@ import {fetchData, API_ENDPOINT, refreshPage, checkStatus, setHeaders} from './u
 import RNFetchBlob from 'react-native-fetch-blob';
 import moment from 'moment';
 
+export {appMessage} from './globalActions';
+
 
 export function getClients(refresh = false) {
     let url = `${API_ENDPOINT}clients/`;

@@ -11,7 +11,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
-import DropdownAlert from 'react-native-dropdownalert';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {isATrainer} from '../../actions/utils';
@@ -48,6 +47,7 @@ const CreateSchedule = CreateClass({
     asyncActions(success, data = {}) {
         this.setState({disabled: false});
         if (success && data.routeName) {
+            this.props.actions.appMessage("Created", null, "green");
             this.props.navigation.dispatch({
                 type: 'ReplaceCurrentScreen',
                 routeName: data.routeName,
@@ -55,7 +55,7 @@ const CreateSchedule = CreateClass({
                 key: data.routeName
             });
         } else {
-            this.dropdown.alertWithType('error', 'Error', "Couldn't create workout block.")
+            this.props.actions.appMessage("Couldn't create program block", null, "red");
         }
     },
 
@@ -237,7 +237,6 @@ const CreateSchedule = CreateClass({
                     onChange={this.onChange}
                     value={this.state.value}
                 />
-                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
                 <InputAccessory/>
             </View>
         )

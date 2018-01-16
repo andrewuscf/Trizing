@@ -10,6 +10,7 @@ export const CLEAR_STATE = 'CLEAR_STATE';
 export const LOAD_REQUEST_USER = 'LOAD_REQUEST_USER';
 
 export const API_ERROR = 'API_ERROR';
+export const CLEAR_ERROR = 'CLEAR_ERROR';
 
 // Workout Constants
 export const CREATE_WORKOUT = 'CREATE_WORKOUT';

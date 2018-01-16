@@ -9,7 +9,6 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
-import DropdownAlert from 'react-native-dropdownalert';
 
 import * as GlobalActions from '../../actions/globalActions';
 
@@ -63,10 +62,11 @@ const CreateWorkoutDay = CreateClass({
     asyncActions(success, data = {}) {
         this.setState({disabled: false});
         if (success && data.props) {
+            this.props.actions.appMessage("Created", null, "green");
             this.props.newDay(data.newTrainingDay);
             this.props.navigation.goBack();
         } else {
-            this.dropdown.alertWithType('error', 'Error', "Couldn't create workout day.")
+            this.props.actions.appMessage("Couldn't create workout day.", null, "red");
         }
     },
 
@@ -120,7 +120,6 @@ const CreateWorkoutDay = CreateClass({
                 </View>
                 <Text style={styles.inputLabel}>Day of the week</Text>
                 <DaysOfWeek daySelectedState={this.selectDay} days={this.state.days}/>
-                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
         )
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const CreateClass = require('create-react-class');
-import {Platform, AsyncStorage, Linking} from 'react-native';
+import {Platform, AsyncStorage, Linking, View, StyleSheet, Text} from 'react-native';
 import {connect} from 'react-redux';
 import {MenuProvider} from 'react-native-popup-menu';
 import {
@@ -49,8 +49,43 @@ const App = CreateClass({
         return (
             <MenuProvider lazyRender={200}>
                 <AppNavigator uriPrefix={prefix}/>
+                {this.props.Error ?
+                    <View style={[styles.appMessage,
+                        this.props.Error && this.props.Error.bColor ?
+                            {backgroundColor: this.props.Error.bColor, borderColor: this.props.Error.bColor}: null]}>
+                        <Text style={styles.appMessageText}>
+                            {this.props.Error && this.props.Error.title ? this.props.Error.title : 'Action could not be performed.'}
+                        </Text>
+                        {this.props.Error && this.props.Error.text ? <Text style={styles.appMessageText}>
+                                {this.props.Error.text}
+                            </Text>
+                            : null
+                        }
+                    </View> : null}
             </MenuProvider>
         );
+    }
+});
+
+const styles = StyleSheet.create({
+    appMessage: {
+        flexWrap: 'wrap',
+        position: 'absolute',
+        alignSelf: 'center',
+        bottom: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 20,
+        backgroundColor: 'grey',
+        padding: 10,
+        paddingRight: 20,
+        paddingLeft: 20,
+        borderWidth: 1,
+        borderColor: 'grey'
+    },
+    appMessageText: {
+        textAlign: 'center',
+        color: 'white'
     }
 });
 
@@ -164,6 +199,7 @@ t.form.Form.defaultProps.stylesheet = stylesheet;
 const stateToProps = (state) => {
     return {
         RequestUser: state.Global.RequestUser,
+        Error: state.Global.Error
     }
 };
 

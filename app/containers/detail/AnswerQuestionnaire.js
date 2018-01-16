@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -10,7 +11,6 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
-import DropdownAlert from 'react-native-dropdownalert';
 
 import * as GlobalActions from '../../actions/globalActions';
 
@@ -37,12 +37,12 @@ const AnswerQuestionnaire = CreateClass({
 
     asyncActions(success) {
         if (success) {
-            this.dropdown.alertWithType('success', 'Success', 'Submitted survey.');
+            this.props.actions.appMessage("Survey submitted", null, "green");
             setTimeout(() => {
                 this.props.navigation.goBack();
             }, 2000);
         } else {
-            this.dropdown.alertWithType('error', 'Error', "Couldn't log submit.")
+            this.props.actions.appMessage("Couldn't submit log .", null, "red");
         }
         this.setState({disabled: false});
     },
@@ -80,18 +80,15 @@ const AnswerQuestionnaire = CreateClass({
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         let dataSource = ds.cloneWithRows(this.props.questionnaire.questions);
         return (
-            <View style={styles.container}>
-                <ListView ref='questionnaire_list' removeClippedSubviews={(Platform.OS !== 'ios')}
-                          keyboardShouldPersistTaps="handled"
-                          showsVerticalScrollIndicator={false}
-                          style={[styles.container, {margin: 20}]} enableEmptySections={true}
-                          dataSource={dataSource}
-                          renderRow={(question, sectionID, rowID) =>
-                              <AnswerQuestionBox ref={(row) => this.rows.push(row)}
-                                                 question={question} number={parseInt(rowID) + 1}/>}
-                />
-                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
-            </View>
+            <ListView ref='questionnaire_list' removeClippedSubviews={(Platform.OS !== 'ios')}
+                      keyboardShouldPersistTaps="handled"
+                      showsVerticalScrollIndicator={false}
+                      style={[styles.container, {margin: 20}]} enableEmptySections={true}
+                      dataSource={dataSource}
+                      renderRow={(question, sectionID, rowID) =>
+                          <AnswerQuestionBox ref={(row) => this.rows.push(row)}
+                                             question={question} number={parseInt(rowID) + 1}/>}
+            />
         );
     }
 });

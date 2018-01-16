@@ -12,9 +12,8 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import moment from 'moment';
-import DropdownAlert from 'react-native-dropdownalert';
 
-import {addWeightLog, getWeightLogs} from '../../actions/homeActions';
+import {addWeightLog, getWeightLogs, appMessage} from '../../actions/homeActions';
 import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../actions/utils';
 
 import GlobalStyle from '../globalStyle';
@@ -48,10 +47,10 @@ const CreateWeightLog = CreateClass({
 
     asyncActions(success) {
         if (success) {
-            this.dropdown.alertWithType('success', 'Success', 'You have logged your daily weight.');
+            this.props.actions.appMessage("You have logged your daily weight.", null, "green");
             this.setState({value: null});
         } else {
-            this.dropdown.alertWithType('error', 'Error', "Couldn't log weight.")
+            this.props.actions.appMessage("Couldn't log weight.", null, "red");
         }
         this.setState({disabled: false});
     },
@@ -136,7 +135,6 @@ const CreateWeightLog = CreateClass({
                           renderHeader={this.renderHeader}
                           renderRow={this.renderRow}
                 />
-                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
                 <InputAccessory/>
             </View>
         )
@@ -176,7 +174,8 @@ const dispatchToProps = (dispatch) => {
     return {
         actions: {
             addWeightLog: bindActionCreators(addWeightLog, dispatch),
-            getWeightLogs: bindActionCreators(getWeightLogs, dispatch)
+            getWeightLogs: bindActionCreators(getWeightLogs, dispatch),
+            appMessage: bindActionCreators(appMessage, dispatch),
         }
     }
 };

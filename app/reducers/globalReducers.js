@@ -1,7 +1,6 @@
 import * as constants from '../actions/actionTypes';
 import _ from 'lodash';
 import React from 'react';
-const CreateClass = require('create-react-class');
 
 
 const initialState = {
@@ -40,6 +39,12 @@ export default function AppReducers(state = initialState, action = null) {
 
         case constants.CLEAR_STATE:
             return initialState;
+
+        case constants.CLEAR_ERROR:
+            return {
+                ...state,
+                Error: null,
+            };
 
         case constants.LOAD_REQUEST_USER:
             return {

@@ -14,7 +14,6 @@ import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
 import moment from 'moment';
-import DropdownAlert from 'react-native-dropdownalert';
 
 import * as CalendarActions from '../../actions/calendarActions';
 
@@ -76,13 +75,13 @@ const CreateEvent = CreateClass({
     asyncActions(success){
         this.setState({disabled: false});
         if (success) {
-            this.dropdown.alertWithType('success', 'Success', 'You created an event.');
+            this.props.actions.appMessage("You created an event.", null, "green");
             setTimeout(() => {
                 this.setState({value: null});
                 this._back();
             }, 1000);
         } else {
-            this.dropdown.alertWithType('error', 'Error', "Couldn't create event.")
+            this.props.actions.appMessage("Couldn't create event.", null, "red");
         }
     },
 
@@ -250,7 +249,6 @@ const CreateEvent = CreateClass({
                         })}
                     </ScrollView>
                 }
-                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
         )
     }
@@ -339,7 +337,7 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
     return {
-        actions: bindActionCreators(CalendarActions, dispatch)
+        actions: bindActionCreators(CalendarActions, dispatch),
     }
 };
 

@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -11,10 +12,9 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import DropdownAlert from 'react-native-dropdownalert';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
-import {logSets} from '../../actions/globalActions';
+import {appMessage, logSets} from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 import GlobalStyle from '../../containers/globalStyle';
 
@@ -38,7 +38,7 @@ const WorkoutDaySession = CreateClass({
         this.props.navigation.setParams({handleSave: this._onSubmit, disabled: this.state.disabled});
     },
 
-    componentDidUpdate(prevProps, prevState){
+    componentDidUpdate(prevProps, prevState) {
         if (prevState.disabled !== this.state.disabled) {
             this.props.navigation.setParams({handleSave: this._onSubmit, disabled: this.state.disabled});
         }
@@ -47,13 +47,13 @@ const WorkoutDaySession = CreateClass({
     asyncActions(success) {
         this.setState({disabled: false});
         if (success) {
-            this.dropdown.alertWithType('success', 'Success', 'You have logged your workout session.');
+            this.props.actions.appMessage('You have logged your workout session.', null, "green");
             setTimeout(() => {
                 this.setState({value: null});
                 this.props.navigation.goBack();
             }, 1000);
         } else {
-            this.dropdown.alertWithType('error', 'Error', "Couldn't log workout session.")
+            this.props.actions.appMessage("Couldn't log workout session.", null, "red");
         }
     },
 
@@ -70,7 +70,7 @@ const WorkoutDaySession = CreateClass({
         }
         if (completed) {
             this.setState({disabled: true});
-            this.props.logSets(totalLogs, this.asyncActions);
+            this.props.actions.logSets(totalLogs, this.asyncActions);
         }
     },
 
@@ -95,7 +95,7 @@ const WorkoutDaySession = CreateClass({
         });
     },
 
-    _renderItem(object){
+    _renderItem(object) {
         let isComplete = false;
         const set_group = object.item;
         if (set_group.logs && set_group.logs.length === set_group.sets.length) {
@@ -144,14 +144,11 @@ const WorkoutDaySession = CreateClass({
     },
 
     render() {
-        console.log(this.props.workout_day)
         return (
-            <View style={{flex: 1}}>
-                <FlatList removeClippedSubviews={false} ListHeaderComponent={this._renderHeader}
-                          showsVerticalScrollIndicator={false} data={this.state.set_groups}
-                          renderItem={this._renderItem} extraData={this.state} keyExtractor={(item, index) => index}/>
-                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
-            </View>
+            <FlatList removeClippedSubviews={false} ListHeaderComponent={this._renderHeader}
+                      showsVerticalScrollIndicator={false} data={this.state.set_groups}
+                      style={{flex: 1}}
+                      renderItem={this._renderItem} extraData={this.state} keyExtractor={(item, index) => index}/>
         )
 
     }
@@ -214,7 +211,10 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
     return {
-        logSets: bindActionCreators(logSets, dispatch)
+        actions: {
+            logSets: bindActionCreators(logSets, dispatch),
+            appMessage: bindActionCreators(appMessage, dispatch)
+        }
     }
 };
 

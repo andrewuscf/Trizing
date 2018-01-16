@@ -4,6 +4,8 @@ import * as types from './actionTypes';
 import {fetchData, API_ENDPOINT, refreshPage, checkStatus} from './utils';
 
 
+export {appMessage} from './globalActions';
+
 export function getEvents(refresh = false) {
     let url = `${API_ENDPOINT}social/events/`;
     return (dispatch, getState) => {

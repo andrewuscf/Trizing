@@ -8,14 +8,16 @@ import {
     Text
 } from 'react-native';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
-import DropdownAlert from 'react-native-dropdownalert';
 
 import {fetchData, API_ENDPOINT, checkStatus, getFontSize} from '../../actions/utils';
 import GlobalStyle from '../../containers/globalStyle';
 
 import InputAccessory from '../../components/InputAccessory';
+import {appMessage} from "../../actions/homeActions";
+
 
 const Form = t.form.Form;
 const Note = t.struct({
@@ -54,7 +56,7 @@ const CreateNote = CreateClass({
         if (success) {
             this.props.navigation.goBack();
         } else {
-            this.dropdown.alertWithType('error', 'Error', "Couldn't create note.")
+            this.props.actions.appMessage("Couldn't create note.", null, "red");
         }
         this.setState({disabled: false});
     },
@@ -125,7 +127,6 @@ const CreateNote = CreateClass({
                     onChange={this.onChange}
                     value={this.state.value}
                 />
-                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
                 <InputAccessory/>
             </View>
         )
@@ -225,5 +226,12 @@ const stateToProps = (state) => {
     return state.Global;
 };
 
+const dispatchToProps = (dispatch) => {
+    return {
+        actions: {
+            appMessage: bindActionCreators(appMessage, dispatch)
+        }
+    }
+};
 
-export default connect(stateToProps, null)(CreateNote);
+export default connect(stateToProps, dispatchToProps)(CreateNote);

@@ -13,11 +13,10 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
 import moment from 'moment';
-import DropdownAlert from 'react-native-dropdownalert';
 import {Circle} from 'react-native-progress';
 import _ from 'lodash';
 
-import {addMacroLog, deleteMacroLog} from '../../actions/homeActions';
+import {addMacroLog, deleteMacroLog, appMessage} from '../../actions/homeActions';
 import {fetchData, API_ENDPOINT, trunc, checkStatus, getFontSize} from '../../actions/utils';
 
 import GlobalStyle from '../globalStyle';
@@ -103,10 +102,10 @@ const CreateMacroLog = CreateClass({
 
     asyncActions(success) {
         if (success) {
-            this.dropdown.alertWithType('success', 'Success', 'You have logged your daily nutrition.');
+            this.props.actions.appMessage('You have logged your daily nutrition.', null, 'green');
             this.setState({value: null});
         } else {
-            this.dropdown.alertWithType('error', 'Error', "Couldn't log nutrition.")
+            this.props.actions.appMessage("Couldn't log nutrition.", null, 'red');
         }
         this.setState({disabled: false});
     },
@@ -264,7 +263,7 @@ const CreateMacroLog = CreateClass({
         fetch(`${API_ENDPOINT}training/macro/log/${logId}/`, fetchData('DELETE', null, this.props.UserToken))
             .then(checkStatus).then(()=>{this.props.actions.deleteMacroLog(log)})
             .catch(() => {
-                this.dropdown.alertWithType('error', 'Error', "Couldn't delete log nutrition.");
+                this.props.actions.appMessage("Couldn't delete log nutrition.", null, 'red');
                 this.setState({
                     ...oldState
                 })
@@ -315,7 +314,6 @@ const CreateMacroLog = CreateClass({
                           onEndReached={this._onEndReached}
                           onEndReachedThreshold={400}
                 />
-                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
                 <InputAccessory/>
             </View>
         )
@@ -372,7 +370,8 @@ const dispatchToProps = (dispatch) => {
     return {
         actions: {
             addMacroLog: bindActionCreators(addMacroLog, dispatch),
-            deleteMacroLog: bindActionCreators(deleteMacroLog, dispatch)
+            deleteMacroLog: bindActionCreators(deleteMacroLog, dispatch),
+            appMessage: bindActionCreators(appMessage, dispatch)
         }
     }
 };

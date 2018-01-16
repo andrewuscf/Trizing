@@ -8,7 +8,6 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
-import DropdownAlert from 'react-native-dropdownalert';
 
 import * as GlobalActions from '../../actions/globalActions';
 
@@ -45,10 +44,10 @@ const CreateWorkout = CreateClass({
     asyncActions(success, data = {}){
         this.setState({disabled: false});
         if (success && data.routeName) {
-
+            this.props.actions.appMessage("Created", null, "green");
             this.props.navigation.goBack();
         } else {
-            this.dropdown.alertWithType('error', 'Error', "Couldn't create workout block.")
+            this.props.actions.appMessage("Couldn't create workout block.", null, "red");
         }
     },
 
@@ -108,7 +107,6 @@ const CreateWorkout = CreateClass({
                         value={this.state.value}
                     />
                 </View>
-                <DropdownAlert ref={(ref) => this.dropdown = ref}/>
             </View>
         )
     }

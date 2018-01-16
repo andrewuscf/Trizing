@@ -12,15 +12,21 @@ import {purgeStoredState} from 'redux-persist';
 
 import {getClients, getActiveData} from './homeActions';
 
-export function alertMessage() {
+export function clearError() {
     return (dispatch, getState) => {
-        Alert.alert(
-            getState().Global.Error ? getState().Global.Error.title : 'Request could not be performed.',
-            getState().Global.Error ? getState().Global.Error.text : 'Please try again later.',
-            [
-                {text: 'OK'},
-            ]
-        );
+        setTimeout(function () {
+            dispatch({type: types.CLEAR_ERROR});
+        }, 2500);
+    }
+}
+
+export function appMessage(title = null, text = null, bColor = null) {
+    return {
+        type: types.API_ERROR, error: {
+            title: title,
+            text: text,
+            bColor: bColor
+        }
     }
 }
 
@@ -192,39 +198,6 @@ export function register(data, asyncActions) {
                 }
                 return dispatch({type: types.API_ERROR, error: message});
             });
-
-        // return fetch(`${API_ENDPOINT}auth/register/`, fetchData('POST', JSONDATA))
-        //     .then(checkStatus)
-        //     .then((responseJson) => {
-        //         asyncActions(false);
-        //         let message;
-        //         console.log(responseJson)
-        //         if (responseJson.email) {
-        //
-        //             asyncActions(false, true);
-        //             message = {
-        //                 title: 'Email verification required',
-        //                 text: 'Please check your email in order to verify your account'
-        //             };
-        //             if (responseJson.email.constructor === Array)
-        //                 message = {
-        //                     title: responseJson.email[0],
-        //                     text: 'Please use another email or log into your account.'
-        //                 };
-        //         }
-        //         if (responseJson.username) {
-        //             if (responseJson.username.constructor === Array)
-        //                 message = {
-        //                     title: responseJson.username[0],
-        //                     text: 'Please use another username or log into your account.'
-        //                 };
-        //         }
-        //         return dispatch({type: types.API_ERROR, error: message});
-        //     }).catch((error) => {
-        //         asyncActions(false);
-        //         console.log(error);
-        //         return dispatch({type: types.API_ERROR});
-        //     });
     }
 }
 
@@ -457,15 +430,15 @@ export function addEditExercise(data, asyncActions) {
         method = 'PATCH';
     }
     return (dispatch, getState) => {
-        return fetch(url, fetchData(method, JSON.stringify(data), getState().Global.UserToken)).then(checkStatus)
+        return RNFetchBlob.fetch(method, url,
+            setHeaders(getState().Global.UserToken), JSON.stringify(data)).then(checkStatus)
             .then((responseJson) => {
-
                 if (responseJson.id) {
                     asyncActions(true, responseJson);
                 } else {
                     asyncActions(false);
                 }
-            }).catch(() => {
+            }).catch((error) => {
                 asyncActions(false);
                 return dispatch({type: types.API_ERROR});
             });
