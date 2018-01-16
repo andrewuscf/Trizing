@@ -48,13 +48,12 @@ const CreateSchedule = CreateClass({
     asyncActions(success, data = {}) {
         this.setState({disabled: false});
         if (success && data.routeName) {
-            // this.props.navigation.dispatch({
-            //     type: 'ReplaceCurrentScreen',
-            //     routeName: data.routeName,
-            //     params: data.props,
-            //     key: data.routeName
-            // });
-            this.props.navigation.goBack();
+            this.props.navigation.dispatch({
+                type: 'ReplaceCurrentScreen',
+                routeName: data.routeName,
+                params: data.props,
+                key: data.routeName
+            });
         } else {
             this.dropdown.alertWithType('error', 'Error', "Couldn't create workout block.")
         }
@@ -115,7 +114,7 @@ const CreateSchedule = CreateClass({
         return t.struct(struct)
     },
 
-    render: function () {
+    render() {
         const Schedule = this.getType();
         let options = {
             auto: 'placeholders',

@@ -24,6 +24,7 @@ import GlobalStyle from '../../containers/globalStyle';
 
 
 import CustomIcon from '../../components/CustomIcon';
+import CreateWorkout from "../sub/CreateWorkout";
 
 
 const EditSchedule = CreateClass({
@@ -35,6 +36,8 @@ const EditSchedule = CreateClass({
         const schedule = _.find(this.props.Schedules, {id: this.props.scheduleId});
         return {
             schedule: schedule,
+            value: null,
+            createWorkout: false,
         }
     },
 
@@ -171,6 +174,15 @@ const EditSchedule = CreateClass({
     },
 
     renderFooter(rowCount) {
+        if (this.state.createWorkout) {
+            return (
+                <View style={[styles.workoutBox, GlobalStyle.simpleBottomBorder]}>
+
+                    <CreateWorkout scheduleId={this.props.scheduleId} _onWorkoutDelete={this._onWorkoutDelete}/>
+
+                </View>
+            )
+        }
         if (rowCount !== 0) return null;
         return (
             <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
@@ -186,6 +198,10 @@ const EditSchedule = CreateClass({
             scheduleId: this.props.scheduleId,
             template_workout: workout,
         })
+    },
+
+    onCreatePress() {
+        this.setState({value: null, createWorkout: true});
     },
 
 
@@ -207,7 +223,7 @@ const EditSchedule = CreateClass({
                           renderFooter={this.renderFooter.bind(null, dataSource.getRowCount())}
                 />
                 <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" offsetX={10} offsetY={20}
-                              onPress={this._toCreateWorkout}/>
+                              onPress={this.onCreatePress}/>
             </View>
         )
     },

@@ -33,12 +33,12 @@ const CreateWorkout = CreateClass({
     },
 
     componentDidMount() {
-        this.props.navigation.setParams({handleSave: this._onSubmit});
+        // this.props.navigation.setParams({handleSave: this._onSubmit});
     },
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.disabled !== this.state.disabled) {
-            this.props.navigation.setParams({handleSave: this._onSubmit, disabled: this.state.disabled});
+            // this.props.navigation.setParams({handleSave: this._onSubmit, disabled: this.state.disabled});
         }
     },
 
