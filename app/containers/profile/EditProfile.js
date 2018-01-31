@@ -35,7 +35,6 @@ import {EMPTY_AVATAR} from '../../assets/constants';
 
 import AvatarImage from '../../components/AvatarImage';
 import Loading from '../../components/Loading';
-import {ModalPicker} from '../../components/ModalPicker';
 import SubmitButton from '../../components/SubmitButton';
 
 
@@ -256,7 +255,6 @@ const EditProfile = CreateClass({
             fields: {
                 type: {
                     nullOption: {value: '', text: 'Choose a Profile Type'},
-                    factory: Platform.OS == 'ios' ? ModalPicker : null,
                 },
                 username: {
                     onSubmitEditing: () => this.refs.form.getComponent('first_name').refs.input.focus(),
@@ -277,7 +275,6 @@ const EditProfile = CreateClass({
                     hasError: !this.state.date_of_birth
                 },
                 gender: {
-                    factory: Platform.OS === 'ios' ? ModalPicker : null,
                     nullOption: {value: '', text: 'Gender'},
                 },
                 first_name: {

@@ -101,11 +101,11 @@ function select(locals) {
         <View style={formGroupStyle}>
             {label}
             <TouchableOpacity
-                style={[touchableStyle, styles.button]}
+                style={[touchableStyle]}
                 onPress={() => {
                     modal.setVisible(true)
                 }}>
-                <Text style={[styles.buttonText]}>{selectedOption ? selectedOption.text : null}</Text>
+                <Text style={[pickerValue]}>{selectedOption ? selectedOption.text : null}</Text>
             </TouchableOpacity>
             <StandaloneModal ref={innerModal => modal = innerModal}>
                 <View style={styles.innerModal}>
@@ -146,18 +146,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Heebo-Regular',
         color: '#2e7fb2'
     },
-    button: {
-        height: 40,
-        backgroundColor: 'white',
-        paddingHorizontal: 15,
-        borderRadius: 4,
-    },
-    buttonText: {
-        color: '#3D3C3B',
-        fontSize: 13,
-        fontFamily: 'Heebo-Regular',
-        borderWidth: 0
-    }
 });
 
 module.exports = select;

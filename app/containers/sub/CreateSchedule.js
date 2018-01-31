@@ -16,7 +16,6 @@ import * as GlobalActions from '../../actions/globalActions';
 import {isATrainer} from '../../actions/utils';
 
 import InputAccessory from '../../components/InputAccessory';
-import {ModalPicker} from '../../components/ModalPicker';
 
 const Form = t.form.Form;
 
@@ -148,7 +147,6 @@ const CreateSchedule = CreateClass({
                 skill_level: {
                     label: Platform.OS === 'ios' ? 'SKILL LEVEL' : '',
                     nullOption: {value: '', text: 'Choose a skill level'},
-                    factory: Platform.OS === 'ios' ? ModalPicker : null,
                 },
                 for_sale: {
                     stylesheet: {
@@ -224,7 +222,6 @@ const CreateSchedule = CreateClass({
                 },
                 template: {
                     nullOption: {value: '', text: 'Copy a Program'},
-                    factory: Platform.OS === 'ios' ? ModalPicker : null,
                 }
             }
         };

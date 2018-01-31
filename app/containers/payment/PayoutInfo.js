@@ -20,7 +20,6 @@ import GlobalStyle from '../../containers/globalStyle';
 import {STATES} from '../../assets/constants';
 
 import InputAccessory from '../../components/InputAccessory';
-import {ModalPicker} from '../../components/ModalPicker';
 
 
 const Form = t.form.Form;
@@ -180,7 +179,6 @@ const PayoutInfo = CreateClass({
                     },
                     state: {
                         nullOption: {value: '', text: 'State'},
-                        factory: Platform.OS === 'ios' ? ModalPicker : null
                     },
                     postal_code: {
                         onSubmitEditing: () => this.refs.form.getComponent('phone_number').refs.input.focus(),
