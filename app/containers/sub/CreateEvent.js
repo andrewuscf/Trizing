@@ -17,7 +17,6 @@ import moment from 'moment';
 
 import * as CalendarActions from '../../actions/calendarActions';
 
-import {ModalDatePicker} from '../../components/ModalDatePicker';
 import PersonBox from '../../components/PersonBox';
 
 
@@ -194,7 +193,6 @@ const CreateEvent = CreateClass({
                         },
                     },
                     hasError: this.state.dateError,
-                    factory: Platform.OS === 'ios' ? ModalDatePicker : null,
                 },
                 start_time: {
                     mode: 'time',
@@ -209,7 +207,6 @@ const CreateEvent = CreateClass({
                         },
                     },
                     hasError: this.state.startError,
-                    factory: Platform.OS === 'ios' ? ModalDatePicker : null,
                 },
                 end_time: {
                     mode: 'time',
@@ -224,7 +221,6 @@ const CreateEvent = CreateClass({
                         minuteInterval: 10,
                     },
                     hasError: this.state.endError,
-                    factory: Platform.OS === 'ios' ? ModalDatePicker : null,
                 }
             }
         };

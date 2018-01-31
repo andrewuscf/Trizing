@@ -36,7 +36,6 @@ import {EMPTY_AVATAR} from '../../assets/constants';
 import AvatarImage from '../../components/AvatarImage';
 import Loading from '../../components/Loading';
 import {ModalPicker} from '../../components/ModalPicker';
-import {ModalDatePicker} from '../../components/ModalDatePicker';
 import SubmitButton from '../../components/SubmitButton';
 
 
@@ -130,7 +129,7 @@ const EditProfile = CreateClass({
         }
     },
 
-    _urlToPathAndParams(url: string) {
+    _urlToPathAndParams(url) {
         const params = {};
         const delimiter = this.props.uriPrefix || '://';
         let path = url.split(delimiter)[1];
@@ -275,12 +274,9 @@ const EditProfile = CreateClass({
                             }
                         },
                     },
-                    label: Platform.OS === 'ios' ? 'Birthday' : '',
-                    factory: Platform.OS === 'ios' ? ModalDatePicker : null,
                     hasError: !this.state.date_of_birth
                 },
                 gender: {
-                    label: Platform.OS === 'ios' ? 'Gender' : '',
                     factory: Platform.OS === 'ios' ? ModalPicker : null,
                     nullOption: {value: '', text: 'Gender'},
                 },
