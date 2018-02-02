@@ -177,12 +177,11 @@ const EditSchedule = CreateClass({
     renderFooter(rowCount) {
         if (this.state.createWorkout) {
             return (
-                <View style={[styles.workoutBox, GlobalStyle.simpleBottomBorder]}>
-                    <CreateWorkout scheduleId={this.props.scheduleId}
-                                   _onWorkoutDelete={this._onWorkoutDelete}
-                                   template_workout={this.state.template_workout}
-                                   resetCreate={this.resetCreate}/>
-                </View>
+                <CreateWorkout scheduleId={this.props.scheduleId}
+                               _onWorkoutDelete={this._onWorkoutDelete}
+                               template_workout={this.state.template_workout}
+                               resetCreate={this.resetCreate}
+                               style={styles.workoutBox}/>
             )
         }
         if (rowCount !== 0) return null;
@@ -215,7 +214,7 @@ const EditSchedule = CreateClass({
     render: function () {
         if (!this.state.schedule) return null;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        let dataSource = ds.cloneWithRows(_.orderBy(this.state.schedule.workouts, '-order'));
+        let dataSource = ds.cloneWithRows(_.orderBy(this.state.schedule.workouts, 'order'));
         return (
             <View style={styles.flexCenter}>
                 <ListView removeClippedSubviews={(Platform.OS !== 'ios')}

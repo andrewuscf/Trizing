@@ -13,6 +13,7 @@ import t from 'tcomb-form-native';
 import * as GlobalActions from '../../actions/globalActions';
 
 import SubmitButton from "../../components/SubmitButton";
+import GlobalStyle from "../globalStyle";
 
 
 const CreateWorkout = CreateClass({
@@ -104,7 +105,7 @@ const CreateWorkout = CreateClass({
             }
         };
         return (
-            <View style={styles.flexCenter}>
+            <View style={[styles.flexCenter, GlobalStyle.simpleBottomBorder, this.props.style]}>
                 <Form
                     ref="form"
                     type={Workout}
