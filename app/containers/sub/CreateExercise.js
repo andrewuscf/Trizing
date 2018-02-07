@@ -8,8 +8,6 @@ import {
     Keyboard,
     TouchableOpacity,
     Text,
-    KeyboardAvoidingView,
-    FlatList,
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
