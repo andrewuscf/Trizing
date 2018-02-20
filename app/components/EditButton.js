@@ -15,12 +15,14 @@ export default CreateClass({
         }
         if (this.props.onPress) {
             return (
-                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" icon={this.props.icon ?
+                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right"
+                              offsetX={10} offsetY={20} icon={this.props.icon ?
                     this.props.icon : null} onPress={this.props.onPress}/>
             )
         }
         return (
-            <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" icon={this.props.icon ?
+            <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right"
+                          offsetX={10} offsetY={20} icon={this.props.icon ?
                 this.props.icon : null}>
                 {this.props.children}
             </ActionButton>

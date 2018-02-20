@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -11,16 +12,19 @@ import t from 'tcomb-form-native';
 
 import * as GlobalActions from '../../actions/globalActions';
 
+import SubmitButton from "../../components/SubmitButton";
+import GlobalStyle from "../globalStyle";
+
 
 const CreateWorkout = CreateClass({
     propTypes: {
         scheduleId: PropTypes.number.isRequired,
+        resetCreate: PropTypes.func.isRequired,
         template_workout: PropTypes.object
     },
 
     getInitialState() {
         return {
-            template: null,
             disabled: false,
             value: this.props.template_workout ?
                 {
@@ -31,21 +35,26 @@ const CreateWorkout = CreateClass({
         }
     },
 
-    componentDidMount() {
-        // this.props.navigation.setParams({handleSave: this._onSubmit});
-    },
-
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.disabled !== this.state.disabled) {
-            // this.props.navigation.setParams({handleSave: this._onSubmit, disabled: this.state.disabled});
+    componentDidUpdate(prevProps) {
+        if (prevProps.template_workout !== this.props.template_workout) {
+            if (this.props.template_workout) {
+                this.setState({
+                    value: {
+                        name: `${this.props.template_workout.name} - Copy`,
+                        duration: this.props.template_workout.duration
+                    }
+                });
+            } else {
+                this.setState({value: null})
+            }
         }
     },
 
-    asyncActions(success, data = {}){
-        this.setState({disabled: false});
-        if (success && data.routeName) {
+    asyncActions(success, data = {}) {
+        this.setState({disabled: false, value: null});
+        if (success) {
+            this.props.resetCreate();
             this.props.actions.appMessage("Created", null, "green");
-            this.props.navigation.goBack();
         } else {
             this.props.actions.appMessage("Couldn't create workout block.", null, "red");
         }
@@ -53,7 +62,7 @@ const CreateWorkout = CreateClass({
 
     _onSubmit() {
         let values = this.refs.form.getValue();
-        if (values) {
+        if (values && !this.state.disabled) {
             this.setState({disabled: true});
             if (this.props.template_workout) {
                 values = {
@@ -79,7 +88,6 @@ const CreateWorkout = CreateClass({
         this.setState({value});
     },
 
-
     render: function () {
         let options = {
             auto: 'placeholders',
@@ -97,16 +105,15 @@ const CreateWorkout = CreateClass({
             }
         };
         return (
-            <View style={styles.flexCenter}>
-                <View style={{margin: 10}}>
-                    <Form
-                        ref="form"
-                        type={Workout}
-                        options={options}
-                        onChange={this.onChange}
-                        value={this.state.value}
-                    />
-                </View>
+            <View style={[styles.flexCenter, GlobalStyle.simpleBottomBorder, this.props.style]}>
+                <Form
+                    ref="form"
+                    type={Workout}
+                    options={options}
+                    onChange={this.onChange}
+                    value={this.state.value}
+                />
+                <SubmitButton onPress={this._onSubmit} text='Create'/>
             </View>
         )
     }

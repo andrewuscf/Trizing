@@ -1,4 +1,5 @@
 import React from 'react';
+
 const CreateClass = require('create-react-class');
 import PropTypes from 'prop-types';
 import {
@@ -15,6 +16,8 @@ import * as GlobalActions from '../../actions/globalActions';
 import {getFontSize} from '../../actions/utils';
 
 import DaysOfWeek from '../../components/DaysOfWeek';
+import GlobalStyle from "../globalStyle";
+import SubmitButton from "../../components/SubmitButton";
 
 
 const Form = t.form.Form;
@@ -36,7 +39,7 @@ const CreateWorkoutDay = CreateClass({
     propTypes: {
         workoutId: PropTypes.number.isRequired,
         newDay: PropTypes.func.isRequired,
-        navigation: PropTypes.object.isRequired,
+        resetCreate: PropTypes.func.isRequired,
         template_day: PropTypes.object
     },
 
@@ -48,23 +51,12 @@ const CreateWorkoutDay = CreateClass({
         }
     },
 
-    componentDidMount() {
-        this.props.navigation.setParams({handleSave: this.createDay});
-    },
-
-
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.disabled !== this.state.disabled) {
-            this.props.navigation.setParams({handleSave: this.createDay, disabled: this.state.disabled});
-        }
-    },
-
     asyncActions(success, data = {}) {
         this.setState({disabled: false});
         if (success && data.props) {
             this.props.actions.appMessage("Created", null, "green");
             this.props.newDay(data.newTrainingDay);
-            this.props.navigation.goBack();
+            this.props.resetCreate();
         } else {
             this.props.actions.appMessage("Couldn't create workout day.", null, "red");
         }
@@ -108,18 +100,17 @@ const CreateWorkoutDay = CreateClass({
 
     render: function () {
         return (
-            <View style={styles.flexCenter}>
-                <View style={{padding: 10}}>
-                    <Form
-                        ref="form"
-                        type={WorkoutDay}
-                        options={options}
-                        onChange={this.onChange}
-                        value={this.state.value}
-                    />
-                </View>
+            <View style={[styles.flexCenter, GlobalStyle.simpleBottomBorder, this.props.style]}>
+                <Form
+                    ref="form"
+                    type={WorkoutDay}
+                    options={options}
+                    onChange={this.onChange}
+                    value={this.state.value}
+                />
                 <Text style={styles.inputLabel}>Day of the week</Text>
                 <DaysOfWeek daySelectedState={this.selectDay} days={this.state.days}/>
+                <SubmitButton onPress={this.createDay} text='Create'/>
             </View>
         )
     }
@@ -129,24 +120,18 @@ const CreateWorkoutDay = CreateClass({
 const styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
-    },
-    save: {
-        position: 'absolute',
-        top: 20,
-        right: 10
+        padding: 10,
+        backgroundColor: 'white',
+        margin: 10,
+        marginBottom: 0,
+        borderRadius: 7,
     },
     inputLabel: {
-        fontSize: getFontSize(30),
+        paddingTop: 10,
+        fontSize: getFontSize(22),
         fontFamily: 'Heebo-Medium',
         textAlign: 'center'
     },
-    templateSection: {
-        padding: 10,
-        backgroundColor: 'white',
-        borderColor: '#e1e3df',
-        borderBottomWidth: 1,
-        borderTopWidth: 1,
-    }
 });
 
 const stateToProps = (state) => {

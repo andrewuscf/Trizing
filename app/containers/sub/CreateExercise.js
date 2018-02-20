@@ -8,8 +8,6 @@ import {
     Keyboard,
     TouchableOpacity,
     Text,
-    KeyboardAvoidingView,
-    FlatList,
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -18,13 +16,14 @@ import _ from 'lodash';
 import RNFetchBlob from 'react-native-fetch-blob';
 import {CachedImage} from "react-native-img-cache";
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
+import ActionButton from "react-native-action-button";
+import FontIcon from 'react-native-vector-icons/FontAwesome';
 
 import * as GlobalActions from '../../actions/globalActions';
 import {API_ENDPOINT, setHeaders, checkStatus} from '../../actions/utils';
 
 import CreateSetBox from '../../components/trainer/CreateSetBox';
 import InputAccessory from '../../components/InputAccessory';
-import SubmitButton from '../../components/SubmitButton';
 
 const BlankSet = {reps: null, weight: null};
 const Form = t.form.Form;
@@ -278,10 +277,10 @@ const CreateExercise = CreateClass({
         return null;
     },
 
-    renderFooter() {
-        return <SubmitButton onPress={this.state.resultsOpen ? this.closeResults : this._addSet}
-                             text={this.state.resultsOpen ? "CLOSE" : "ADD SET"} buttonStyle={styles.logButton}/>;
-    },
+    // renderFooter() {
+    //     return <SubmitButton onPress={this.state.resultsOpen ? this.closeResults : this._addSet}
+    //                          text={this.state.resultsOpen ? "CLOSE" : "ADD SET"} buttonStyle={styles.logButton}/>;
+    // },
 
 
     render() {
@@ -292,11 +291,15 @@ const CreateExercise = CreateClass({
                                        keyboardShouldPersistTaps='always'
                                        showsVerticalScrollIndicator={false}
                                        ListHeaderComponent={this.renderHeader}
-                                       ListFooterComponent={this.renderFooter}
+                                       // ListFooterComponent={this.renderFooter}
                                        data={this.state.resultsOpen && this.state.fetchedExercises.length ? this.state.fetchedExercises : this.state.sets}
                                        renderItem={this._renderItem} extraData={this.state}
                                        keyExtractor={(item, index) => index}/>
                 <InputAccessory onClose={this.closeResults}/>
+                <ActionButton buttonColor={this.state.create ? "red" : "rgba(0, 175, 163, 1)"}
+                              position="right" offsetX={10} offsetY={20}
+                              onPress={this.state.resultsOpen ? this.closeResults : this._addSet}
+                              icon={this.state.resultsOpen ? <FontIcon name="minus" color="white" size={22}/> : null}/>
             </View>
         )
     }

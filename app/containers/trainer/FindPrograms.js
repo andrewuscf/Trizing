@@ -163,6 +163,7 @@ const FindPrograms = CreateClass({
                 />
                 {this.state.isTrainer && this.state.isActionButtonVisible ?
                     <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right"
+                                  offsetX={10} offsetY={20}
                                   onPress={() => navigate('CreateSchedule', {allow_sale: true})}/>
                     : null
                 }

@@ -7,15 +7,15 @@ import {
     View,
     Text,
     StyleSheet,
-    ListView,
-    Platform,
     Alert
 } from 'react-native';
 import {connect} from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import FontIcon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
 import ActionButton from 'react-native-action-button';
 import moment from 'moment';
+import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 
 import {fetchData, API_ENDPOINT, getFontSize, checkStatus} from '../../actions/utils';
 import GlobalStyle from '../../containers/globalStyle';
@@ -35,7 +35,9 @@ const EditWorkout = CreateClass({
     getInitialState() {
         return {
             workout: this.props.workout ? this.props.workout : null,
-            refreshing: false
+            refreshing: false,
+            create: false,
+            template_day: null,
         }
     },
 
@@ -69,8 +71,11 @@ const EditWorkout = CreateClass({
 
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.state.workout != prevState.workout) {
+        if (this.state.workout !== prevState.workout) {
             this.props.navigation.setParams({headerTitle: this.state.workout.name});
+        }
+        if (this.state.create && this.state.create !== prevState.create) {
+            this.flatList.scrollToEnd();
         }
     },
 
@@ -86,24 +91,9 @@ const EditWorkout = CreateClass({
         });
     },
 
-    _createWorkoutDay() {
-        this.props.navigation.navigate('CreateWorkoutDay', {
-            workoutId: this.state.workout.id,
-            newDay: this.newDay,
-        });
-    },
-
     _toWorkoutDay(workout_day_id) {
         this.props.navigation.navigate('EditWorkoutDay', {
             workout_day_id: workout_day_id,
-        });
-    },
-
-    _onDuplicate(template_day) {
-        this.props.navigation.navigate('CreateWorkoutDay', {
-            workoutId: this.state.workout.id,
-            newDay: this.newDay,
-            template_day: template_day,
         });
     },
 
@@ -157,22 +147,30 @@ const EditWorkout = CreateClass({
         return (
             <View style={[GlobalStyle.simpleBottomBorder, styles.headerContainer]}>
                 <Text style={styles.smallBold}>Duration:
-                    <Text style={styles.notBold}> {workout.duration} {workout.duration == 1 ? 'week' : 'weeks'}</Text>
+                    <Text style={styles.notBold}> {workout.duration} {workout.duration === 1 ? 'week' : 'weeks'}</Text>
                 </Text>
                 <Text style={styles.smallBold}>Created: <Text style={styles.notBold}>{created}</Text></Text>
             </View>
         )
     },
 
-    renderRow(workout_day, index) {
-        const intIndex = parseInt(index);
-        return <DisplayWorkoutDay key={intIndex} _toWorkoutDay={this._toWorkoutDay} workout_day={workout_day}
+    renderRow(object) {
+        const workout_day = object.item;
+        const index = object.index;
+        return <DisplayWorkoutDay key={index} _toWorkoutDay={this._toWorkoutDay} workout_day={workout_day}
                                   onLongPress={this.onLongPress}
-                                  dayIndex={intIndex}/>
+                                  dayIndex={index}/>
     },
 
     renderFooter(rowCount) {
-        if (rowCount !== 0) return null;
+        if (this.state.create) {
+            return (
+                <CreateWorkoutDay workoutId={this.state.workout.id}
+                                  template_day={this.state.template_day}
+                                  resetCreate={this.resetCreate}
+                                  newDay={this.newDay}/>
+            )
+        } else if (rowCount !== 0) return null;
         return (
             <View style={{justifyContent: 'center', alignItems: 'center', paddingTop: 50}}>
                 <MaterialIcon name="today" style={[styles.notBold, {fontSize: getFontSize(40), paddingBottom: 20}]}/>
@@ -182,6 +180,21 @@ const EditWorkout = CreateClass({
         )
     },
 
+    _onDuplicate(template_day) {
+        this.setState({create: true, template_day: template_day});
+    },
+
+    _onCreatePress() {
+        if (this.state.create) {
+            this.resetCreate();
+        } else {
+            this.setState({create: true, template_day: null});
+        }
+    },
+
+    resetCreate() {
+        this.setState({create: false, template_day: null});
+    },
 
     render: function () {
         if (!this.state.workout) return <Loading/>;
@@ -191,25 +204,26 @@ const EditWorkout = CreateClass({
                 return workout_day.day
             });
         }
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        let dataSource = ds.cloneWithRows(workout_days);
         return (
             <View style={{flex: 1, backgroundColor: '#f1f1f3'}}>
-                <ListView removeClippedSubviews={(Platform.OS !== 'ios')}
-                          keyboardShouldPersistTaps="handled"
-                          showsVerticalScrollIndicator={false}
-                          style={[styles.flexCenter]}
-                          contentContainerStyle={styles.contentContainerStyle}
-                          enableEmptySections={true}
-                          dataSource={dataSource}
-                          renderHeader={this.renderHeader}
-                          renderRow={this.renderRow}
-                          renderFooter={this.renderFooter.bind(null, dataSource.getRowCount())}
-                          refreshControl={<RefreshControl refreshing={this.state.refreshing}
-                                                          onRefresh={() => this.getWorkout(true)}/>}
-                />
-                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" offsetX={10} offsetY={20}
-                              onPress={this._createWorkoutDay}/>
+                <KeyboardAwareFlatList removeClippedSubviews={false}
+                                       style={{flex:1}}
+                                       ref={ref => this.flatList = ref}
+                                       keyboardDismissMode='interactive'
+                                       keyboardShouldPersistTaps='always'
+                                       showsVerticalScrollIndicator={false}
+                                       ListHeaderComponent={this.renderHeader}
+                                       ListFooterComponent={this.renderFooter}
+                                       contentContainerStyle={styles.contentContainerStyle}
+                                       data={workout_days}
+                                       refreshControl={<RefreshControl refreshing={this.state.refreshing}
+                                                                       onRefresh={() => this.getWorkout(true)}/>}
+                                       renderItem={this.renderRow} extraData={this.state}
+                                       keyExtractor={(item, index) => index}/>
+                <ActionButton buttonColor={this.state.create ? "red" : "rgba(0, 175, 163, 1)"}
+                              position="right" offsetX={10} offsetY={20}
+                              onPress={this._onCreatePress}
+                              icon={this.state.create ? <FontIcon name="minus" color="white" size={22}/> : null}/>
             </View>
         )
     }
@@ -221,13 +235,6 @@ const styles = StyleSheet.create({
     },
     contentContainerStyle: {
         paddingBottom: 100
-    },
-    title: {
-        fontSize: 24,
-        fontFamily: 'Heebo-Bold',
-        alignSelf: 'center',
-        paddingTop: 10,
-        paddingBottom: 10
     },
     headerContainer: {
         paddingTop: 20,

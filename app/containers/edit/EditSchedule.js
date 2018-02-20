@@ -14,6 +14,7 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import FontIcon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
 import moment from 'moment';
 import ActionButton from 'react-native-action-button';
@@ -36,8 +37,8 @@ const EditSchedule = CreateClass({
         const schedule = _.find(this.props.Schedules, {id: this.props.scheduleId});
         return {
             schedule: schedule,
-            value: null,
             createWorkout: false,
+            template_workout: null
         }
     },
 
@@ -176,11 +177,11 @@ const EditSchedule = CreateClass({
     renderFooter(rowCount) {
         if (this.state.createWorkout) {
             return (
-                <View style={[styles.workoutBox, GlobalStyle.simpleBottomBorder]}>
-
-                    <CreateWorkout scheduleId={this.props.scheduleId} _onWorkoutDelete={this._onWorkoutDelete}/>
-
-                </View>
+                <CreateWorkout scheduleId={this.props.scheduleId}
+                               _onWorkoutDelete={this._onWorkoutDelete}
+                               template_workout={this.state.template_workout}
+                               resetCreate={this.resetCreate}
+                               style={styles.workoutBox}/>
             )
         }
         if (rowCount !== 0) return null;
@@ -194,21 +195,26 @@ const EditSchedule = CreateClass({
     },
 
     duplicate(workout) {
-        this.props.navigation.navigate('CreateWorkout', {
-            scheduleId: this.props.scheduleId,
-            template_workout: workout,
-        })
+        this.setState({createWorkout: true, template_workout: workout});
     },
 
     onCreatePress() {
-        this.setState({value: null, createWorkout: true});
+        if (this.state.createWorkout) {
+            this.resetCreate();
+        } else {
+            this.setState({createWorkout: true, template_workout: null});
+        }
+    },
+
+    resetCreate() {
+        this.setState({createWorkout: false, template_workout: null});
     },
 
 
     render: function () {
         if (!this.state.schedule) return null;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        let dataSource = ds.cloneWithRows(_.orderBy(this.state.schedule.workouts, ['order']));
+        let dataSource = ds.cloneWithRows(_.orderBy(this.state.schedule.workouts, 'order'));
         return (
             <View style={styles.flexCenter}>
                 <ListView removeClippedSubviews={(Platform.OS !== 'ios')}
@@ -222,17 +228,12 @@ const EditSchedule = CreateClass({
                           renderRow={this.renderRow}
                           renderFooter={this.renderFooter.bind(null, dataSource.getRowCount())}
                 />
-                <ActionButton buttonColor="rgba(0, 175, 163, 1)" position="right" offsetX={10} offsetY={20}
-                              onPress={this.onCreatePress}/>
+                <ActionButton buttonColor={this.state.createWorkout ? "red" : "rgba(0, 175, 163, 1)"} position="right"
+                              offsetX={10} offsetY={20}
+                              onPress={this.onCreatePress} icon={
+                    this.state.createWorkout ? <FontIcon name="minus" color="white" size={22}/> : null}/>
             </View>
         )
-    },
-
-    _toCreateWorkout() {
-        this.props.navigation.navigate('CreateWorkout', {
-            scheduleId: this.props.scheduleId,
-            _onWorkoutDelete: this._onWorkoutDelete
-        })
     },
 });
 

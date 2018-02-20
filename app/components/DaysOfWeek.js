@@ -82,24 +82,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     wrap: {
-        // flex: 1,
-        minHeight: 50,
-        alignItems: 'center',
         justifyContent: 'center',
-
-        height: 50,
         backgroundColor: 'white',
-        marginTop: 10,
-        marginBottom: 10,
-        borderColor: '#e1e3df',
     },
     dayOfWeek: {
-        flex: .1,
-        borderRadius: 20,
-        height: 40,
-        marginLeft: 5,
-        marginRight: 5,
-        borderColor: 'black',
+        width: '13%',
+        padding: '3%',
         alignItems: 'center',
         justifyContent: 'center'
     },
