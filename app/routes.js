@@ -122,7 +122,7 @@ export const AppNavigator = StackNavigator({
     Home: {
         screen: Home,
         navigationOptions: {
-            header: null,
+            headerTitle: null,
         }
     },
     ManageClients: {screen: ManageClients},
@@ -221,11 +221,17 @@ export const AppNavigator = StackNavigator({
     initialRouteName: 'SplashScreen',
     navigationOptions: ({navigation}) => {
         const {state, setParams} = navigation;
+        let headerRight = null;
+        if (state.params) {
+            if(state.params.handleSave) {
+                headerRight = <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
+                                    disabled={state.params.disabled ? state.params.disabled : false}/>;
+            } else if (state.params.right) {
+                headerRight = state.params.right
+            }
+        }
         return {
-            headerRight: state.params && state.params.handleSave ?
-                <Save save={state.params.handleSave} text={state.params.saveText ? state.params.saveText : null}
-                      disabled={state.params.disabled ? state.params.disabled : false}/>
-                : null,
+            headerRight: headerRight,
             headerTitle: state.params && state.params.headerTitle ? state.params.headerTitle : null,
             ...defaultNavigationOptions,
         };

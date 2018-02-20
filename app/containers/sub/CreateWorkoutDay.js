@@ -127,7 +127,8 @@ const styles = StyleSheet.create({
         borderRadius: 7,
     },
     inputLabel: {
-        fontSize: getFontSize(30),
+        paddingTop: 10,
+        fontSize: getFontSize(22),
         fontFamily: 'Heebo-Medium',
         textAlign: 'center'
     },

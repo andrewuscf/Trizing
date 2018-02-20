@@ -7,8 +7,6 @@ import {
     View,
     Text,
     StyleSheet,
-    ListView,
-    Platform,
     Alert
 } from 'react-native';
 import {connect} from 'react-redux';
@@ -168,6 +166,7 @@ const EditWorkout = CreateClass({
         if (this.state.create) {
             return (
                 <CreateWorkoutDay workoutId={this.state.workout.id}
+                                  template_day={this.state.template_day}
                                   resetCreate={this.resetCreate}
                                   newDay={this.newDay}/>
             )

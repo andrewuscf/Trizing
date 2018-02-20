@@ -65,6 +65,14 @@ const Home = CreateClass({
         } else if (this.props.RequestUser.type === 2) {
             // this.props.actions.getWeightLogs(this.state.weightTimeFrame, true);
         }
+
+        this.props.navigation.setParams({
+            right: (
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('MyProfile')} style={[{paddingRight: 10}]}>
+                    <FontIcon size={getFontSize(25)} name="user-circle-o"/>
+                </TouchableOpacity>
+            )
+        });
     },
 
     componentDidUpdate(prevProps, prevState) {
@@ -311,16 +319,7 @@ const Home = CreateClass({
         }
 
         return (
-            <View style={GlobalStyle.noHeaderContainer}>
-                <View style={styles.topBar}>
-                    <View style={[styles.topItem]}/>
-                    <View style={[styles.topItem]}/>
-                    <View style={styles.topItem}>
-                        <TouchableOpacity onPress={() => navigate('MyProfile')} style={[{paddingRight: 10}]}>
-                            <FontIcon size={getFontSize(25)} name="user-circle-o"/>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+            <View style={GlobalStyle.container}>
                 <ScrollView ref='home_scroll' showsVerticalScrollIndicator={false}
                             refreshControl={<RefreshControl refreshing={this.props.Refreshing}
                                                             onRefresh={this._refresh}/>}
