@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: getFontSize(17),
         fontFamily: 'Heebo-Light',
-        backgroundColor: 'transparent',
+        backgroundColor: 'white',
         paddingTop: 3,
         paddingBottom: 3,
         minHeight: 50,

@@ -164,11 +164,7 @@ export function register(data, asyncActions) {
                 asyncActions(false);
                 let message;
                 if (responseJson.email) {
-                    asyncActions(false, true);
-                    message = {
-                        title: 'Email verification required',
-                        text: 'Please check your email in order to verify your account'
-                    };
+                    return dispatch(login(data, asyncActions));
                 }
                 return dispatch({type: types.API_ERROR, error: message});
             }).catch((error) => {

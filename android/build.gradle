@@ -32,6 +32,7 @@ allprojects {
                         details.useVersion version
                     }
                 }
+                force 'com.facebook.android:facebook-android-sdk:4.28.0'
             }
         }
     }

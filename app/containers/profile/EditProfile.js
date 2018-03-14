@@ -111,7 +111,7 @@ const EditProfile = CreateClass({
                     this._handleOpenURL(result);
                     AsyncStorage.removeItem('deep_link');
                 } else {
-                    this.props.navigation.dispatch(resetNav('Main'));
+                    this.props.navigation.dispatch(resetNav('Home'));
                 }
             });
         }
